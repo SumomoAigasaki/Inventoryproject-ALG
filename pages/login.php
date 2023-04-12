@@ -15,6 +15,26 @@
   <link rel="stylesheet" href="../public/css/adminlte.min.css"> 
 
   </head>
+
+<!--CODIGO PARA VALIDAR LOS CAMPOS VACIOS
+JAVASCRIP -->
+<script>
+
+  function validate() {
+    var usuario = document.getElementById("username");
+    var contrasenhia = document.getElemntById("pass");
+    
+    alert($contrasenhia,$usuario);
+
+     if (usuario.value != "" && contrasenhia != ""){
+      document.getElementById("formulario").submit();
+    }
+    return false;
+  }
+
+</script>
+
+
 <body class="hold-transition login-page">
 <div class="login-box">
   <!-- /.login-logo -->
@@ -25,9 +45,9 @@
     <div class="card-body">
       <p class="login-box-msg">Ingresa tu usuario para Iniciar sesion</p>
 
-      <form action="../../index3.html" method="post">
+      <form action="views/login_validation.php" method="POST" name="log_val" id="login">
         <div class="input-group mb-3">
-          <input type="email" class="form-control" placeholder="Usuario">
+          <input type="email" class="form-control" name="username" id="username" placeholder="Usuario" required>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-user"></span>
@@ -35,7 +55,7 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Contraseña">
+          <input type="password" class="form-control" name="password" id="pass" placeholder="Contraseña" required>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
@@ -47,7 +67,7 @@
 
           <!-- /.col -->
           <div class="col-6">
-            <button type="submit" class="btn btn-primary btn-block">Iniciar Sesion</button>
+            <button type="submit" class="btn btn-primary btn-block" onclick='validate()'>Iniciar Sesion</button>
           </div>
           <!-- /.col -->
         </div>
