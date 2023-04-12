@@ -1,7 +1,9 @@
 <?php
-// Solicitar el archivo de coneccion a la base de datos 
-
-include "../includes/conecta.php";
+//valida si el usuario existe y al no existir lo manda al login
+session_start();
+if(!isset($_SESSION["username"])){
+    header("location: login.php");
+}
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -13,3 +15,7 @@ include "../includes/conecta.php";
     Prueba
   </body>
 </html>
+
+<?php 
+session_destroy();
+?>

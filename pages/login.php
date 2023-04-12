@@ -1,3 +1,12 @@
+<?php
+session_start();
+//Verificamos si existe la session en caso de exister redirigimos a la pagina home
+if (isset($_SESSION["username"])) {
+	header("location: ../pages/index.php");
+}
+include "../includes/conecta.php";
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
