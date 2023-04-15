@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       $_SESSION['username'] = $username;
       //echo "LOGIN SUCCESS";
       //echo "<script>window.location='../index.php; </script>";
-      header("Location: ../index.php");
+      header("Location: ../template/menu.php");
       exit();
   } else {
       // Usuario y/o contraseña son incorrectos, mostrar un mensaje de error

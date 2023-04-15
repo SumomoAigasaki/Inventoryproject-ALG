@@ -4,7 +4,7 @@ session_start();
 if (isset($_SESSION["username"])) {
 	header("location: ../pages/index.php");
 }
-include "../includes/conecta.php";
+include "../../includes/conecta.php";
 ?>
 
 <!DOCTYPE html>
@@ -12,7 +12,7 @@ include "../includes/conecta.php";
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Inicio Sesion | Sistema para la Gestión y Control de Inventario en Departamento IT de ALG</title>
+  <title>Inicio Sesion  <?php echo nameWeb; ?></title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
