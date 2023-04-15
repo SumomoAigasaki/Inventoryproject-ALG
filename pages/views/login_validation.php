@@ -18,9 +18,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       // Usuario y contraseña son correctos, redirigir a la página de bienvenida
       session_start();
       $_SESSION['username'] = $username;
+    
       //echo "LOGIN SUCCESS";
-      //echo "<script>window.location='../index.php; </script>";
-      header("Location: ../template/menu.php");
+      //echo "<script>window.location='./template/index.php; </script>";
+      header("Location: ../template/index.php");
       exit();
   } else {
       // Usuario y/o contraseña son incorrectos, mostrar un mensaje de error

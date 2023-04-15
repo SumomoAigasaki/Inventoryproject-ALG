@@ -1,8 +1,7 @@
 <?php
     include "../../includes/conecta.php";
-
-    $username= $_SESSION["User_Username"] ; 
-  
+    session_start();
+    $username = $_SESSION["username"] ; 
 
     $resultado = null;
     $stmt =  $conecta->prepare("CALL sp_user_search('$username')");
@@ -14,7 +13,7 @@
     while ($row = $result->fetch_assoc()) {
         $_SESSION["User_Username"] =  $row["User_Username"] ;
         //$username= $row["User_Username"] ;
-        $stmt->close();
+           $stmt->close();
        
      }
   

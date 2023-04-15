@@ -1,10 +1,12 @@
 <?php
+include "../includes/conecta.php";
+include "../includes/constantes.php";
 session_start();
 //Verificamos si existe la session en caso de exister redirigimos a la pagina home
 if (isset($_SESSION["username"])) {
-	header("location: ../pages/index.php");
+	header("location: template/index.php");
 }
-include "../../includes/conecta.php";
+
 ?>
 
 <!DOCTYPE html>
