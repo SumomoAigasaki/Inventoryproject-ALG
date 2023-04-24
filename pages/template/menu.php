@@ -43,16 +43,16 @@ include "../views/user_search.php";
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">             
           <li class="nav-item">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-chart-pie"></i>
-              <p>  Reportes </p>
+              <i class="nav-icon fas fa-globe"></i>
+              <p>Explorar </p>
             </a>
           
           </li>
           
           <li class="nav-item">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-edit"></i>
-              <p>Registrar Garantia  </p>
+              <i class="nav-icon fas fa-chart-pie"></i>
+              <p>Reportes </p>
             </a>
           </li>
 
@@ -77,3 +77,8 @@ include "../views/user_search.php";
     </div>
     <!-- /.sidebar -->
   </aside>
+
+  <div class="content-wrapper">
+    
+
+  

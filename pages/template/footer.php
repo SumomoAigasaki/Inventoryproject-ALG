@@ -4,7 +4,11 @@
 // y como aca estamos heredando las asimila
 
 ?>
-          <!-- right col -->
+
+          <!-- ./col -->
+          </div>
+          <!-- /.content -->
+        </div>
         </div>
         <!-- /.row (main row) -->
       </div><!-- /.container-fluid -->
