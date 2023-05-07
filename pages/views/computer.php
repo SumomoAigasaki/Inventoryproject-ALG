@@ -53,22 +53,6 @@ include "../templates/title.php";
     </script>
     
 -->
- 
-<script>
-   $(function() {
-    // Agrega un controlador de eventos click a cualquier elemento con la clase "toastrDefaultWarning"
-    $('.toastrDefaultWarning').click(function() {
-      // Utiliza la función warning de Toastr para mostrar una notificación de advertencia
-        toastr.warning('Mensaje', 'Advertencia', {
-        closeButton: true,
-        progressBar: true,
-        positionClass: 'toast-top-right',
-        timeOut: 3000,
-        extendedTimeOut: 1000
-        });
-      });
-  });
-  </script>
 <section class="content">
   <div class="container-fluid">
     <div class="row">
@@ -294,8 +278,26 @@ include "../templates/title.php";
 </section>
 
     
-<script src="../../public/jquery/jquery.min.js" >
+<script src="../../public/jquery/jquery.min.js" ></script>
+<!-- Toastr -->
+<script src="../../public/js/toastr.min.js"></script>
+<script>
+   $(function() {
+    // Agrega un controlador de eventos click a cualquier elemento con la clase "toastrDefaultWarning"
+    $('.toastrDefaultWarning').click(function() {
+      // Utiliza la función warning de Toastr para mostrar una notificación de advertencia
+        toastr.warning(':D Ya me dio esta mierda', 'Advertencia', {
+        closeButton: true,
+        progressBar: true,
+        positionClass: 'toast-top-right',
+        timeOut: 3000,
+        extendedTimeOut: 1000
+        });
+      });
+  });
+</script>
 
+<script>
 function filtrarModelos() {
   // Obtener el valor seleccionado en el primer select
    var manufacturerSeleccionado = document.getElementById("manufacturerSelect").value;
@@ -340,9 +342,7 @@ function filtrarModelos() {
      }).prop('selected', true);
    });
   });
- </script>
-  
- 
+ </script> 
  
 <?php
 include "../templates/footer.php";
