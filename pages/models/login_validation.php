@@ -1,7 +1,6 @@
 <?php
 include "../../includes/conecta.php";
 
-
 // Verificar si se envió el formulario de inicio de sesión
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   // Recuperar los valores del formulario
@@ -10,8 +9,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   
   // Llamar al procedimiento almacenado para validar el usuario y la contraseña
   $resultado = null;
-  $conecta->query("CALL sp_validate_user('$username','$password', @resultado)");
-  $resultado = $conecta->query("SELECT @resultado")->fetch_assoc()["@resultado"];
+  $conn->query("CALL sp_validate_user('$username','$password', @resultado)");
+  $resultado = $conn->query("SELECT @resultado")->fetch_assoc()["@resultado"];
   
   // Verificar el resultado del procedimiento almacenado 
   if ($resultado == 1) {
@@ -21,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
       //echo "LOGIN SUCCESS";
       //echo "<script>window.location='./template/index.php; </script>";
-      header("Location: ../template/index.php");
+      header("Location: ../templates/index.php");
       exit();
   } else {
       // Usuario y/o contraseña son incorrectos, mostrar un mensaje de error
@@ -29,8 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
      // $error = "Usuario y/o contraseña incorrectos.";
        echo "<script> alert ('Credenciales erroneas, A continuación sera redirigido al inicio de sesion');
        window.location='../login.php'
-       </script>";
-      
+       </script>"; 
   }
 }
 ?>

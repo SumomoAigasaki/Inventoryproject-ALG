@@ -24,6 +24,7 @@
   </footer>
 
   <!-- jQuery -->
+
 <script src="../../public/js/jquery.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
 <script src="../../public/js/jquery-ui.min.js"></script>

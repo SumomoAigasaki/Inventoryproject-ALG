@@ -1,6 +1,6 @@
 <?php
 include "nav.php"; 
-include "../views/user_search.php";
+include "../models/user_search.php";
 ?>
 
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
@@ -64,7 +64,7 @@ include "../views/user_search.php";
           </li>
           
           <li class="nav-item">
-            <a href="SignOff.php" class="nav-link">
+            <a href="../templates/SignOff.php" class="nav-link">
               <i class="nav-icon   fas fa-arrow-right"></i>
               <!--<i class="fa-solid fa-arrow-right-from-bracket"></i> -->
               <p>Cerrar Sesion  </p>

@@ -1,15 +1,15 @@
 <?php
 //declarar variables de conexion 
+$servername = "localhost";
+$username = "root";
+$password = "admin123";
+$dbname = "dbinventorywarrantyalg";
 
-$sevidor= "localhost";
-$usuariobd= "root"; 
-$clavebd= "admin123";
-$bd= "dbinventorywarrantyalg";
+// Crea una conexión a la base de datos
+$conn = new mysqli($servername, $username, $password, $dbname);
 
-$conecta=mysqli_connect($sevidor, $usuariobd, $clavebd, $bd);
-if($conecta->connect_error){
-    die ("Error a conectar la base de datos de la pagina".$conecta->connect_error);
-}//else{
-   // echo "Success ";
-//}
+// Verifica si la conexión fue exitosa
+if ($conn->connect_error) {
+  die("La conexión con la base de datos falló: " . $conn->connect_error);
+}
 ?>

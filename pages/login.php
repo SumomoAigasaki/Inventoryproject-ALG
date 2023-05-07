@@ -4,7 +4,7 @@ include "../includes/constantes.php";
 session_start();
 //Verificamos si existe la session en caso de exister redirigimos a la pagina home
 if (isset($_SESSION["username"])) {
-	header("location: template/index.php");
+	header("location: templates/index.php");
 }
 
 ?>
@@ -14,7 +14,7 @@ if (isset($_SESSION["username"])) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Inicio Sesion  <?php echo nameWeb; ?></title>
+  <title><?php echo  $pageName; echo nameWeb; ?></title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -51,12 +51,12 @@ JAVASCRIP -->
   <!-- /.login-logo -->
   <div class="card card-outline card-primary">
     <div class="card-header text-center">
-      <a href="../../index2.html" class="h1"><b>INFRA </b>ALG</a>
+      <a href="what_is.php" class="h1"><b>INFRAG</b></a>
     </div>
     <div class="card-body">
       <p class="login-box-msg">Ingresa tu usuario para Iniciar sesion</p>
 
-      <form action="views/login_validation.php" method="POST" name="log_val" id="login">
+      <form action="models/login_validation.php" method="POST" name="log_val" id="login">
         <div class="input-group mb-3">
           <input type="email" class="form-control" name="username" id="username" placeholder="Usuario" required>
           <div class="input-group-append">
