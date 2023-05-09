@@ -1,13 +1,19 @@
 <?php
 include "../templates/title.php"; 
 ?>
-<!---
-<script src="../models/modelComputer.php">
-        // Crea un objeto de la clase Computer
-        var computer = new Computer();
-
-        // Obtén los elementos del formulario HTML
-        var form = document.getElementById('formulario');
+<script src="../../public/js/toastr.min.js"></script>
+<script type="text/javascript">
+   
+     // Función para validar los datos ingresados en el formulario
+     function validate_data() {
+      toastr.options = {
+      closeButton: true,
+      progressBar: true,
+      positionClass: "toast-top-right",
+      timeOut: 5000,
+      extendedTimeOut: 100
+      };
+        var accionInput = document.getElementById('accion');
         var acquisitionFecha = document.getElementById('acquisitionDate');
         var manufacturerSelect = document.getElementById('manufacturerSelect');
         var modelSelect = document.getElementById('modelSelect');
@@ -15,44 +21,100 @@ include "../templates/title.php";
         var nombreInput = document.getElementById('nombre');
         var servitagInput = document.getElementById('servitag');
         var warrantyExpirationInput = document.getElementById('warrantyExpiration');
-        var yearExpirationInput = document.getElementById('yearExpiration');
-        var licenceInput = document.getElementById('licence');
+        var yearExpirationInput = document.getElementById('yearExpiration');;
         var statusSelect = document.getElementById('status');
         var locationsSelect = document.getElementById('locations');
+        var todayDateInput = document.getElementById('todayDate');
+      
                 
-        
-        // Agrega un evento "submit" al formulario
-        form.addEventListener('submit', function(event) {
-            // Previene que el formulario se envíe automáticamente
-            event.preventDefault();
-            
-            // Obtén los valores ingresados en el formulario
-            var acquisitionDate = acquisitionFecha.value;
-            var select_manufacturer = manufacturerSelect.value;
-            var select_model = modelSelect.value;
-            var select_computerType = computerTypesSelect.value;
-            var txt_nombre = nombreInput.value;
-            var txt_servitag = servitagInput.value;
-            var warrantyExpiration = warrantyExpirationInput.value;
-            var yearExpiration = yearExpirationInput.value;
-            var txt_licencia = licenceInput.value;
-            var select_statu = statusSelect.value;
-            var select_location = locationsSelect.value;
+        if (acquisitionFecha.value.trim() === "" ) {  
+          console.log("dentro de fecha");          
+            toastr.warning("La <b>Fecha de Compra</b> esta vacio(a).<br>Por favor Ingrese una fecha valida");
+            acquisitionFecha.focus();            
+        }      
+        else if (manufacturerSelect.selectedIndex == 0) {
+          console.log("dentro de Marca");
+             toastr.warning('La <b>Marca</b> esta vacio(a).<br>Por favor Ingrese una Marca valida');
+             manufacturerSelect.focus();  
+        }
+      
+        else if (modelSelect.selectedIndex == 0) {
+          console.log("dentro de model");
+             toastr.warning('El <b>Modelo</b> esta vacio(a).<br>Por favor Ingrese un Modelo valida');
+        }
 
-            
-            // Valida los datos ingresados
-            var isValid = computer.validate_data(acquisitionDate, select_manufacturer, select_model, select_computerType, nombreInput, 
-                                                  txt_servitag, warrantyExpiration, warrantyExpiration, yearExpiration,txt_licencia,
-                                                  select_statu, select_location);
-            
-            // Si los datos son válidos, agrega la computadora a la base de datos
-            //if (isValid) {
-              //  computer.create_computer(name, type, brand);
-            //}
-        });
-    </script>
-    
--->
+        else if (computerTypesSelect.selectedIndex == 0) {
+          console.log("dentro de tipo de computadora");
+             toastr.warning('El <b>Tipo de computadora</b> esta vacio(a).<br>Por favor Ingrese un tipo de computadora valido');
+             computerTypesSelect.foucs();
+        }
+
+        else if (nombreInput.value.trim() === "") {
+          console.log("dentro de nombre tecnico");
+             toastr.warning('El <b>Nombre técnico</b> esta vacio(a).<br>Por favor Ingrese un Nombre valido');
+             nombreInput.focus();
+        }
+
+        else if (servitagInput.value.trim() === "") {
+          console.log("dentro de servitag");
+             toastr.warning('El <b>Servitag</b> esta vacio(a).<br>Por favor Ingrese una servitag valido');
+             servitagInput.focus();
+        }
+
+        else  if (warrantyExpirationInput.value.trim() === "") {
+          console.log("dentro de fehca limite");
+             toastr.warning('La <b>Fecha Límite Garantía</b> esta vacio(a).<br>Por favor Ingrese una Fecha Límite Garantía valida');
+             warrantyExpirationInput.focus();
+        }
+
+            //validaremos que la fecha ingreso no sea la actual
+           // var warrantyExpiration = (warrantyExpirationInput); // asumiendo que el valor viene por POST
+
+            // Separar la fecha en día, mes y año
+            //let [day, month, year] = warrantyExpiration.split('-');
+
+            // Crear un objeto Date con la fecha ingresada
+           //let dateObj = new Date(year, month - 1, day);
+
+            // Obtener el timestamp correspondiente a la fecha ingresada
+           // let warrantyExpirationTimestamp = dateObj.getTime() / 1000; // Dividir por 1000 para obtener el timestamp en segundos
+
+            // Verificar si la fecha de expiración de garantía es menor o igual a la fecha actual
+            // if (warrantyExpirationTimestamp <= todayDateInput) {
+             //   errors.push['La Fecha Límite Garantía debe ser Distinta a la fecha actual.'];
+           // }
+
+        else if (yearExpirationInput.value.trim() === "") {
+          console.log("dentro de anho");
+             toastr.warning('El <b>Año Limite Garantía</b> esta vacio(a).<br>Por favor Ingrese una Año Limite Garantía valida');
+             yearExpirationInput.focus();
+        }
+
+        else if (statusSelect.selectedIndex == 0) {
+          console.log("dentro de estado");
+             toastr.warning('El <b>Estado del Computador</b> esta vacio(a).<br>Por favor Ingrese una Estado del Computador valida');
+             statusSelect.focus();
+        }
+
+        else if (locationsSelect.selectedIndex == 0) {
+          console.log("dentro de localizacion");
+             toastr.warning('La <b>Localizacion del Computador</b> esta vacio(a).<br>Por favor Ingrese una Localizacion del Computador valida');
+             locationsSelect.focus();
+        }
+          else {
+            // Si no hay errores, procesa los datos enviados
+            //$opcion = $_POST['opciones'];
+            if(accionInput.value.trim() === ""){
+              accionInput.value = "1";
+            }
+            document.getElementById("formulario").submit();
+            // Realiza las operaciones necesarias con los datos
+            // ...
+        } 
+   
+     }
+      
+</script> 
 <section class="content">
   <div class="container-fluid">
     <div class="row">
@@ -63,15 +125,13 @@ include "../templates/title.php";
           </div>
   
           <!-- form start -->
-          <form role="form" class="form-horizontal" >
+          <form role="form" action="computer.php" method="POST" name="formulario" id="formulario"  class="form-horizontal" >
             <div class="card-body">
-              <label class="form-check-label" for="exampleCheck2" style="padding-bottom: 5px;" >  A continuación se le pedirá que ingrese los siguientes datos:</label>
+              <label class="form-check-label" for="exampleCheck2" style="padding-bottom: 5px;" >  A continuación se le pedirá que <b> Ingrese</b> los siguientes datos:</label>
                 <!-- Input ocultos  -->
                 <input type="hidden" class="form-control" id="todayDate" name="todayDate" placeholder="<?php echo $todayDate ?>" >
                 <input type="hidden" class="form-control" id="cmpId" name="cmpId" placeholder="" >
-                
-                <input type="hidden" class="form-control"  placeholder=<?php echo  $_SESSION["User_Username"] ; ?>>
-
+                <input type="hidden" class="form-control" id="accion" name="accion" placeholder="" >
                 <div class="row" style="padding-top:10px; padding-bottom:10px;">
                   <!-- Fecha de Compra -->
                   <div class="col-sm-4" >
@@ -245,8 +305,9 @@ include "../templates/title.php";
                   </div>
                   <!-- Boton guardar -->
                   <div class="col-sm-2" style="padding-top:40px;">
-                    <button type="button" class="btn btn-block btn-info toastrDefaultWarning">Guardar</button>
+                    <button type="button" class="btn btn-block btn-info" onclick='return validate_data();' >Guardar</button>
                   </div>
+                  
                    
                     <!-- IMAGEN
                     <div class="col-sm-3">
@@ -279,14 +340,14 @@ include "../templates/title.php";
 
     
 <script src="../../public/jquery/jquery.min.js" ></script>
-<!-- Toastr -->
+<!-- Toastr 
 <script src="../../public/js/toastr.min.js"></script>
 <script>
    $(function() {
     // Agrega un controlador de eventos click a cualquier elemento con la clase "toastrDefaultWarning"
     $('.toastrDefaultWarning').click(function() {
       // Utiliza la función warning de Toastr para mostrar una notificación de advertencia
-        toastr.warning(':D Ya me dio esta mierda', 'Advertencia', {
+        toastr.warning('Mensaje de abvertencia', 'Advertencia', {
         closeButton: true,
         progressBar: true,
         positionClass: 'toast-top-right',
@@ -295,9 +356,11 @@ include "../templates/title.php";
         });
       });
   });
-</script>
+</script>-->
 
 <script>
+
+
 function filtrarModelos() {
   // Obtener el valor seleccionado en el primer select
    var manufacturerSeleccionado = document.getElementById("manufacturerSelect").value;

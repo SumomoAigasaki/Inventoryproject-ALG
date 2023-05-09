@@ -1,35 +1,28 @@
 <?php
 include "menu.php";
 ?>
-
 <!-- Content Header (Page header) -->
-
 <div class="content-header">
     <div class="container-fluid">
-        
         <div class="row mb-2">
           <div class="col-sm-6">
             <h1 ><?php echo $pageName; ?></h1>
         </div>
-    
         <div class="col-sm-3">
             <!--cinta de home y el nombre de la pagina --> 
             <ol class="breadcrumb float-sm-right">
             <div class="btn-group" class="col-sm-3">
                  <!--botones  de agregar  -->
                     <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" title="Crear Bienes">
-                   
                     <span class="fa fa-plus"></span>                       
                     </button>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" class="btn btn-default" data-toggle="modal" data-target="#modal-default">Crear Nuevos </a>
                         <a class="dropdown-item" href="#">Import Cl's</a>
                     </div>
-                </div>
-                    
+                </div>        
             </ol>
         </div>
-             
         <div class="col-sm-3">
             <!--cinta de home y el nombre de la pagina --> 
             <ol class="breadcrumb float-sm-right">
@@ -42,14 +35,8 @@ include "menu.php";
             </ol>
         </div>
           <!-- /.col -->
-        
     </div><!-- /.row -->
 </div><!-- /.container-fluid -->
-
-  
-
- 
-
 
 <div class="modal fade" id="modal-default">
     <div class="modal-dialog">
@@ -90,6 +77,5 @@ include "menu.php";
         <!-- /.modal-dialog -->
 </div>
       <!-- /.modal -->
-
       <section class="content">
     <div class="container-fluid">

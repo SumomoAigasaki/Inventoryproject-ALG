@@ -1,9 +1,7 @@
 <?php
-
 include "../../includes/conecta.php";
 include "../../includes/constantes.php";
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -39,18 +37,14 @@ include "../../includes/constantes.php";
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
-
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
   </head>
   <body class="hold-transition sidebar-mini layout-fixed">
   <div class="wrapper">
-
     <!-- Preloader -->
   <!-- <div class="preloader flex-column justify-content-center align-items-center">
       <img class="animation__shake" src="../../public/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
     </div>-->
-
     <!-- Navbar -->
     <nav class="main-header navbar navbar-expand navbar-white navbar-light">
       <!-- Left navbar links -->
@@ -89,14 +83,11 @@ include "../../includes/constantes.php";
             </form>
           </div>
         </li>
-
         <!-- Notifications Dropdown Menu -->
-      
         <li class="nav-item">
           <a class="nav-link" data-widget="fullscreen" href="#" role="button">
             <i class="fas fa-expand-arrows-alt"></i>
           </a>
         </li>
-      
       </ul>
     </nav>
