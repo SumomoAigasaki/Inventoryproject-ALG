@@ -3,16 +3,16 @@ include "../templates/title.php";
 ?>
 <script src="../../public/js/toastr.min.js"></script>
 <script type="text/javascript">
-   
-     // Función para validar los datos ingresados en el formulario
-     function validate_data() {
-      toastr.options = {
+   toastr.options = {
       closeButton: true,
       progressBar: true,
       positionClass: "toast-top-right",
       timeOut: 5000,
       extendedTimeOut: 100
       };
+     // Función para validar los datos ingresados en el formulario
+     function validate_data() {
+      
         var accionInput = document.getElementById('accion');
         var acquisitionFecha = document.getElementById('acquisitionDate');
         var manufacturerSelect = document.getElementById('manufacturerSelect');
@@ -21,11 +21,12 @@ include "../templates/title.php";
         var nombreInput = document.getElementById('nombre');
         var servitagInput = document.getElementById('servitag');
         var warrantyExpirationInput = document.getElementById('warrantyExpiration');
-        var yearExpirationInput = document.getElementById('yearExpiration');;
+        var yearExpirationInput = document.getElementById('yearExpiration');
+        var licenceInput = document.getElementById('licence');
         var statusSelect = document.getElementById('status');
         var locationsSelect = document.getElementById('locations');
         var todayDateInput = document.getElementById('todayDate');
-      
+              
                 
         if (acquisitionFecha.value.trim() === "" ) {  
           console.log("dentro de fecha");          
@@ -85,19 +86,20 @@ include "../templates/title.php";
            // }
 
         else if (yearExpirationInput.value.trim() === "") {
-          console.log("dentro de anho");
              toastr.warning('El <b>Año Limite Garantía</b> esta vacio(a).<br>Por favor Ingrese una Año Limite Garantía valida');
              yearExpirationInput.focus();
         }
+        else if (licenceInput.value.trim() === "") {
+             toastr.warning('La <b>Lincencia</b> esta vacio(a).<br>Por favor Ingrese una Lincensia valida');
+             licenceInput.focus();
+        }
 
         else if (statusSelect.selectedIndex == 0) {
-          console.log("dentro de estado");
              toastr.warning('El <b>Estado del Computador</b> esta vacio(a).<br>Por favor Ingrese una Estado del Computador valida');
              statusSelect.focus();
         }
 
         else if (locationsSelect.selectedIndex == 0) {
-          console.log("dentro de localizacion");
              toastr.warning('La <b>Localizacion del Computador</b> esta vacio(a).<br>Por favor Ingrese una Localizacion del Computador valida');
              locationsSelect.focus();
         }
@@ -111,10 +113,39 @@ include "../templates/title.php";
             // Realiza las operaciones necesarias con los datos
             // ...
         } 
-   
+        return false;
      }
-      
-</script> 
+</script>
+<?php 
+if (isset($_POST["accion"])) {
+  $accion = $_POST["accion"];
+  $cmpID = $_POST["cmpId"];
+	$cmpAcquisitionDate = $_POST["acquisitionDate"];
+	$cmpIdManufacturer = $_POST['select_manufacturer'];
+	$cmpIdModel = $_POST['select_model'];
+	$cmpCompType = $_POST['select_computerType'];
+	$cmptName = $_POST['txt_nombre'];
+	$cmpServitag = $_POST['txt_servitag'];
+	$cmpWarrantyExpiration = $_POST['warrantyExpiration'];
+  $cmpYearExpiration = $_POST['yearExpiration'];
+  $cmpLincence = $_POST['txt_licence'];
+  $cmpMotherboard = $_POST['txt_motherboard'];
+	$cmpIdStatu = $_POST['select_statu'];
+	$cmpIdLocation = $_POST['select_location'];
+  $cmpImgComp = $_POST['img_Comp'];
+  $cmpObservation = $_POST['txt_observation'];
+  $cmptodayDate = $_POST['todayDate'];
+
+  if($accion == "1" && $_SESSION["C-CMP"]){
+    //la opcion 1 es para guardar y el C-CMP valida que tenga el permiso C-reateE en (CMP)computer 
+    
+    echo '<script language="javascript"> toastr.success("Guardar");</script>';
+
+  }
+
+}
+ 
+?>  
 <section class="content">
   <div class="container-fluid">
     <div class="row">
