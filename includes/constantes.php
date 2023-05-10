@@ -39,5 +39,5 @@ else {
 
 date_default_timezone_set('America/Mexico_City');
 //variables globales 
-$todayDate = date("Y-m-d");
+$todayDate = date("yy-mm-dd");
 ?>

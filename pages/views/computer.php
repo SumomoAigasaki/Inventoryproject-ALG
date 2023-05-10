@@ -8,11 +8,25 @@ include "../templates/title.php";
       progressBar: true,
       positionClass: "toast-top-right",
       timeOut: 5000,
-      extendedTimeOut: 100
+      extendedTimeOut: 200
       };
+
+      function clearForm() {
+        var form = document.getElementById('formulario');
+        var inputs = form.getElementsByTagName('input');
+        var selects = form.getElementsByTagName('select');
+
+        for (var i = 0; i < inputs.length; i++) {
+          inputs[i].value = '';
+        }
+
+        for (var i = 0; i < selects.length; i++) {
+          selects[i].selectedIndex = 1;
+        }
+      }
      // Función para validar los datos ingresados en el formulario
      function validate_data() {
-      
+       
         var accionInput = document.getElementById('accion');
         var acquisitionFecha = document.getElementById('acquisitionDate');
         var manufacturerSelect = document.getElementById('manufacturerSelect');
@@ -39,15 +53,16 @@ include "../templates/title.php";
              manufacturerSelect.focus();  
         }
       
-        else if (modelSelect.selectedIndex == 0) {
+        else if (modelSelect.value == 1) {
           console.log("dentro de model");
              toastr.warning('El <b>Modelo</b> esta vacio(a).<br>Por favor Ingrese un Modelo valida');
+             modelSelect.focus();
         }
 
         else if (computerTypesSelect.selectedIndex == 0) {
           console.log("dentro de tipo de computadora");
              toastr.warning('El <b>Tipo de computadora</b> esta vacio(a).<br>Por favor Ingrese un tipo de computadora valido');
-             computerTypesSelect.foucs();
+             computerTypesSelect.focus();
         }
 
         else if (nombreInput.value.trim() === "") {
@@ -68,22 +83,6 @@ include "../templates/title.php";
              warrantyExpirationInput.focus();
         }
 
-            //validaremos que la fecha ingreso no sea la actual
-           // var warrantyExpiration = (warrantyExpirationInput); // asumiendo que el valor viene por POST
-
-            // Separar la fecha en día, mes y año
-            //let [day, month, year] = warrantyExpiration.split('-');
-
-            // Crear un objeto Date con la fecha ingresada
-           //let dateObj = new Date(year, month - 1, day);
-
-            // Obtener el timestamp correspondiente a la fecha ingresada
-           // let warrantyExpirationTimestamp = dateObj.getTime() / 1000; // Dividir por 1000 para obtener el timestamp en segundos
-
-            // Verificar si la fecha de expiración de garantía es menor o igual a la fecha actual
-            // if (warrantyExpirationTimestamp <= todayDateInput) {
-             //   errors.push['La Fecha Límite Garantía debe ser Distinta a la fecha actual.'];
-           // }
 
         else if (yearExpirationInput.value.trim() === "") {
              toastr.warning('El <b>Año Limite Garantía</b> esta vacio(a).<br>Por favor Ingrese una Año Limite Garantía valida');
@@ -106,17 +105,23 @@ include "../templates/title.php";
           else {
             // Si no hay errores, procesa los datos enviados
             //$opcion = $_POST['opciones'];
-            if(accionInput.value.trim() === ""){
-              accionInput.value = "1";
-            }
+              if(accionInput.value.trim() === ""){
+                accionInput.value = "1";
+                
+              }
             document.getElementById("formulario").submit();
+            
+            
             // Realiza las operaciones necesarias con los datos
             // ...
         } 
         return false;
      }
 </script>
+
 <?php 
+
+
 if (isset($_POST["accion"])) {
   $accion = $_POST["accion"];
   $cmpID = $_POST["cmpId"];
@@ -128,21 +133,40 @@ if (isset($_POST["accion"])) {
 	$cmpServitag = $_POST['txt_servitag'];
 	$cmpWarrantyExpiration = $_POST['warrantyExpiration'];
   $cmpYearExpiration = $_POST['yearExpiration'];
-  $cmpLincence = $_POST['txt_licence'];
+  $cmpLicence = $_POST['txt_licence'];
   $cmpMotherboard = $_POST['txt_motherboard'];
 	$cmpIdStatu = $_POST['select_statu'];
 	$cmpIdLocation = $_POST['select_location'];
   $cmpImgComp = $_POST['img_Comp'];
   $cmpObservation = $_POST['txt_observation'];
-  $cmptodayDate = $_POST['todayDate'];
+  $cmpImgCompReport = "NULL";
+  date_default_timezone_set('America/Mexico_City');
+  //variables globales 
+  $todayDate = date("Y-m-d");
+  //$cmptodayDate = $_POST['todayDate'];
 
   if($accion == "1" && $_SESSION["C-CMP"]){
-    //la opcion 1 es para guardar y el C-CMP valida que tenga el permiso C-reateE en (CMP)computer 
-    
-    echo '<script language="javascript"> toastr.success("Guardar");</script>';
+     //la opcion 1 es para guardar y el C-CMP valida que tenga el permiso C-reateE en (CMP)computer
+  
+      // Codigo para llamar procedimiento almacenado 
+      $stmt = $conn->prepare("CALL 	cp_insertComputer(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,@spID)");
+      $stmt->bind_param("sssssssssssssssss", $todayDate,$cmpIdManufacturer,$cmpImgComp,$cmptName,$cmpIdModel,$cmpCompType,$cmpServitag,$cmpLicence,$cmpMotherboard,$cmpAcquisitionDate,$cmpWarrantyExpiration,$cmpYearExpiration,$cmpIdLocation,$cmpIdLocation,$cmpObservation,$cmpImgCompReport,$idUser);
+      $stmt->execute();
 
+      // Obtener el valor de la variable de salida
+      $result = $conn->query("SELECT @spID AS id")->fetch_assoc();
+      $id = $result['id'];
+
+      if($id > 0) {
+        echo '<script > toastr.success("¡¡Enhorabuena!!\\nLos datos de <b>' . $cmptName . '</b> se Guardaron de manera exitosa.");</script>';
+        exit();
+      }else {
+        echo '<script > toastr.error("¡¡UPS!!\\n Recuerda que no pueden existir dos:  <b>' . $cmpServitag . '</b> por los tando no se pueden guardar.");</script>';
+        exit();
+      }
+
+      
   }
-
 }
  
 ?>  
@@ -200,7 +224,7 @@ if (isset($_POST["accion"])) {
                           <?php $resultado = mysqli_query($conn, "CALL sp_model_select()");?>
                         <select class="form-control" id="modelSelect" name="select_model">
                             <?php while($row = mysqli_fetch_array($resultado)) {?>
-                          <option value="<?php echo $row['MDL_Description']; ?>" data-manufacturer="<?php echo $row['MFC_idTbl_Manufacturer']; ?>"><?php echo $row['MDL_Description']; ?></option>
+                          <option value="<?php echo $row['MDL_idTbl_Model']; ?>" data-manufacturer="<?php echo $row['MFC_idTbl_Manufacturer']; ?>"><?php echo $row['MDL_Description']; ?></option>
                              <?php }
                              #NOTA
                              #CADA QUE QUIERA HACER UNA NUEVA CONSULTA CON PROCEDIMIENTOS ALMACENADOS ESTOS EL RESULTADO SE CIERRA Y LA VARIABLE DE LA CONECCION SE PREPARA PARA EL NUEVO RESULTADO
@@ -403,7 +427,7 @@ function filtrarModelos() {
    var contenidoModelo = document.getElementsByTagName("option");
    
    // Recorrer todas las opciones y ocultar las que no pertenecen al fabricante seleccionado
-   for (var i = 0; i <=opcionesModelos.length; i++) {
+   for (var i = 1; i <opcionesModelos.length; i++) {
     var modelo = opcionesModelos[i];
     if(modelo.getAttribute("data-manufacturer") == manufacturerSeleccionado || manufacturerSeleccionado == "") {
       modelo.style.display = "";
