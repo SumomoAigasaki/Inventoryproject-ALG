@@ -139,7 +139,7 @@ if (isset($_POST["accion"])) {
 	$cmpIdLocation = $_POST['select_location'];
   $cmpImgComp = $_POST['img_Comp'];
   $cmpObservation = $_POST['txt_observation'];
-  $cmpImgCompReport = "NULL";
+  $cmpImgCompReport = "";
   date_default_timezone_set('America/Mexico_City');
   //variables globales 
   $todayDate = date("Y-m-d");
@@ -159,10 +159,10 @@ if (isset($_POST["accion"])) {
 
       if($id > 0) {
         echo '<script > toastr.success("¡¡Enhorabuena!!\\nLos datos de <b>' . $cmptName . '</b> se Guardaron de manera exitosa.");</script>';
-        exit();
+        
       }else {
         echo '<script > toastr.error("¡¡UPS!!\\n Recuerda que no pueden existir dos:  <b>' . $cmpServitag . '</b> por los tando no se pueden guardar.");</script>';
-        exit();
+        
       }
 
       
