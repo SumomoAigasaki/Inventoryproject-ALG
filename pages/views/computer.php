@@ -11,19 +11,21 @@ include "../templates/title.php";
       extendedTimeOut: 200
       };
 
-      function clearForm() {
-        var form = document.getElementById('formulario');
-        var inputs = form.getElementsByTagName('input');
-        var selects = form.getElementsByTagName('select');
+      function Limpiar() {
+        var input = document.getElementById("formulario").getElementsByTagName("input");
+        var selects =  document.getElementById("formulario").getElementsByTagName('select');
 
-        for (var i = 0; i < inputs.length; i++) {
-          inputs[i].value = '';
+        for (var i=0; i<input.length; i++) {
+          input[i].value = "";
         }
 
         for (var i = 0; i < selects.length; i++) {
           selects[i].selectedIndex = 1;
         }
       }
+      
+
+      
      // Función para validar los datos ingresados en el formulario
      function validate_data() {
        
@@ -140,32 +142,60 @@ if (isset($_POST["accion"])) {
   $cmpImgComp = $_POST['img_Comp'];
   $cmpObservation = $_POST['txt_observation'];
   $cmpImgCompReport = "";
+
   date_default_timezone_set('America/Mexico_City');
-  //variables globales 
-  $todayDate = date("Y-m-d");
-  //$cmptodayDate = $_POST['todayDate'];
-
-  if($accion == "1" && $_SESSION["C-CMP"]){
-     //la opcion 1 es para guardar y el C-CMP valida que tenga el permiso C-reateE en (CMP)computer
   
-      // Codigo para llamar procedimiento almacenado 
-      $stmt = $conn->prepare("CALL 	cp_insertComputer(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,@spID)");
-      $stmt->bind_param("sssssssssssssssss", $todayDate,$cmpIdManufacturer,$cmpImgComp,$cmptName,$cmpIdModel,$cmpCompType,$cmpServitag,$cmpLicence,$cmpMotherboard,$cmpAcquisitionDate,$cmpWarrantyExpiration,$cmpYearExpiration,$cmpIdLocation,$cmpIdLocation,$cmpObservation,$cmpImgCompReport,$idUser);
-      $stmt->execute();
+  $todayDate = date("Y-m-d");
 
-      // Obtener el valor de la variable de salida
-      $result = $conn->query("SELECT @spID AS id")->fetch_assoc();
-      $id = $result['id'];
-
-      if($id > 0) {
-        echo '<script > toastr.success("¡¡Enhorabuena!!\\nLos datos de <b>' . $cmptName . '</b> se Guardaron de manera exitosa.");</script>';
-        
-      }else {
-        echo '<script > toastr.error("¡¡UPS!!\\n Recuerda que no pueden existir dos:  <b>' . $cmpServitag . '</b> por los tando no se pueden guardar.");</script>';
-        
-      }
-
+  //la opcion 1 es para guardar y el C-CMP valida que tenga el permiso C-reateE en (CMP)computer
+  if($accion == "1" && $_SESSION["C-CMP"]){
       
+      //validacion para saber si existe un registro con el servitag 
+      // Preparar la llamada al procedimiento almacenado
+      $stmt= $conn->prepare("CALL sp_existsComputer(?)");
+      // Enlazar los parámetros de entrada
+      $stmt-> bind_param("s",$cmpServitag);
+      // Ejecutar el procedimiento almacenado
+      $stmt->execute();
+      // Obtener el valor de la variable de salida
+      $stmt->bind_result($answerExistsComp);
+      $stmt->fetch();
+      $stmt->close();
+      $conn->next_result();
+
+      // Si existe un valor no guarda
+      if ($answerExistsComp == 1){
+        echo '<script > toastr.error("¡¡UPS!!\\n Recuerda que no pueden existir dos:  <b>' . $cmpServitag . '</b> por los tando no se pueden guardar.");
+        servitagInput.value = "";
+        </script>';
+        $accion = "";
+        
+       }else {
+        //Caso contrario Guardara
+        $stmt = $conn->prepare("CALL sp_insertComputer(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+        // Mandamos los parametros y los input que seran enviados al PA O SP
+        $stmt-> bind_param("sssssssssssssssss",$todayDate,$cmpIdManufacturer,$cmpImgComp,$cmptName,$cmpIdModel,$cmpCompType,$cmpServitag,$cmpLicence,$cmpMotherboard,$cmpAcquisitionDate,$cmpWarrantyExpiration,$cmpYearExpiration,$cmpIdLocation,$cmpIdStatu,$cmpObservation,$cmpImgCompReport,$idUser);
+        // Ejecutar el procedimiento almacenado
+        $stmt->execute();
+        // Obtener el número de filas afectadas por el insert
+        $num_rows = $stmt->affected_rows;
+        // Cerrar el statement
+        $stmt->close();
+        // Avanzar al siguiente conjunto de resultados si hay varios
+        $conn->next_result();
+        
+
+        if ($num_rows > 0) {
+          echo '<script > toastr.success("¡¡Enhorabuena!!\\nLos datos de <b>' . $cmptName . '</b> se Guardaron de manera exitosa.");
+          Limpiar(); 
+          setTimeout(function() { location.reload(); }, 4000); </script>';         
+         
+        }else {
+          echo '<script > toastr.error("¡¡UPS!!\\n No se pudo realizar la operacion de  guardar.");</script>';
+        //  echo '<script>setTimeout(function() { location.reload(); }, 2000);</script>' 
+        }
+      
+      }
   }
 }
  
