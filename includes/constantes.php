@@ -11,7 +11,7 @@ $actualPage = basename($_SERVER['PHP_SELF']);
 
 if ($actualPage == 'index.php') {
   //nombre de pagina
-  $pageName = "Inicio";
+  $pageName = 'Inicio';
   //link de pagina
   $pageLink ="index.php";
 } elseif ($actualPage == 'contact.php') {
@@ -30,6 +30,12 @@ if ($actualPage == 'index.php') {
   }elseif($actualPage == 'what_is.php'){
     $pageName = 'Que es';
     $pageLink = "what_is.php";
+  }elseif($actualPage == 'explorer.php'){
+    $pageName = 'Explorar';
+    $pageLink = "explorer.php";
+  }elseif($actualPage == 'readComputer.php'){
+    $pageName = 'Lista de Computadoras';
+    $pageLink = "readComputer.php";
   }
 
 else {

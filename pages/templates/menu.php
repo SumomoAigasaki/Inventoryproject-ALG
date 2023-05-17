@@ -39,7 +39,7 @@ include "../models/user_search.php";
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">             
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="../views/explorer.php" class="nav-link">
               <i class="nav-icon fas fa-globe"></i>
               <p>Explorar </p>
             </a>

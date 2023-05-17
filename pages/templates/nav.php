@@ -4,10 +4,12 @@ include "../../includes/constantes.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title><?php echo  $pageName; echo nameWeb; ?></title>
+  <title><?php echo $pageName;
+          echo nameWeb; ?></title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -22,27 +24,29 @@ include "../../includes/constantes.php";
   <!-- JQVMap -->
   <link rel="stylesheet" href="../../public/css/jqvmap.min.css">
   <!-- Theme style -->
-  <link rel="stylesheet" href="../../public/css/adminlte.min.css"> 
+  <link rel="stylesheet" href="../../public/css/adminlte.min.css">
   <!-- overlayScrollbars -->
   <link rel="stylesheet" href="../../public/css/OverlayScrollbars.min.css">
   <!-- Daterange picker -->
   <link rel="stylesheet" href="../../public/css/daterangepicker.css">
   <!-- summernote -->
-  <link rel="stylesheet" href="../../public/css/summernote-bs4.min.css">  
-   <!-- Toastr -->
-   <link rel="stylesheet" href="../../public/css/toastr.min.css">
-
-  <!-- daterange picker -->
+  <link rel="stylesheet" href="../../public/css/summernote-bs4.min.css">
+  <!-- Toastr -->
+  <link rel="stylesheet" href="../../public/css/toastr.min.css">
+  
   <!-- Agrega jQuery y jQuery UI a tu página -->
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+  <!-- daterange picker -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
-  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  </head>
-  <body class="hold-transition sidebar-mini layout-fixed">
+  <!--<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
+  
+</head>
+
+<body class="hold-transition sidebar-mini layout-fixed">
   <div class="wrapper">
     <!-- Preloader -->
-  <!-- <div class="preloader flex-column justify-content-center align-items-center">
+    <!-- <div class="preloader flex-column justify-content-center align-items-center">
       <img class="animation__shake" src="../../public/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
     </div>-->
     <!-- Navbar -->

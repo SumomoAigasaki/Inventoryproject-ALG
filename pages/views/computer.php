@@ -1,30 +1,55 @@
 <?php
 include "../templates/title.php"; 
 ?>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>  
+<script src="../../public/jquery/jquery.min.js" ></script>
 <script src="../../public/js/toastr.min.js"></script>
 <script type="text/javascript">
-   toastr.options = {
-      closeButton: true,
-      progressBar: true,
-      positionClass: "toast-top-right",
-      timeOut: 5000,
-      extendedTimeOut: 200
-      };
 
+  toastr.options = {
+    closeButton: true,
+    debug: true,
+    newestOnTop: false,
+    progressBar: true,
+    positionClass: "toast-top-right",
+    preventDuplicates: false,
+    onclick: null,
+    showDuration: "300",
+    hideDuration: "1000",
+    timeOut: "5000",
+    extendedTimeOut: "1000",
+    showEasing: "swing",
+    hideEasing: "linear",
+    showMethod: "fadeIn",
+    hideMethod: "fadeOut"
+  }
       function Limpiar() {
-        var input = document.getElementById("formulario").getElementsByTagName("input");
-        var selects =  document.getElementById("formulario").getElementsByTagName('select');
+        var accionInput = document.getElementById('accion');
+        var acquisitionFecha = document.getElementById('acquisitionDate');
+        var manufacturerSelect = document.getElementById('manufacturerSelect');
+        var modelSelect = document.getElementById('modelSelect');
+        var computerTypesSelect = document.getElementById('computerTypes');
+        var nombreInput = document.getElementById('nombre');
+        var servitagInput = document.getElementById('servitag');
+        var warrantyExpirationInput = document.getElementById('warrantyExpiration');
+        var yearExpirationInput = document.getElementById('yearExpiration');
+        var licenceInput = document.getElementById('licence');
+        var statusSelect = document.getElementById('status');
+        var locationsSelect = document.getElementById('locations');
+        var todayDateInput = document.getElementById('todayDate');
 
-        for (var i=0; i<input.length; i++) {
-          input[i].value = "";
-        }
-
-        for (var i = 0; i < selects.length; i++) {
-          selects[i].selectedIndex = 1;
+        if(accionInput!= null && acquisitionFecha!= null && nombreInput!= null && servitagInput!= null && warrantyExpirationInput!= null && licenceInput!= null){
+          accionInput.value = "";
+          acquisitionFecha.value = "";
+          nombreInput.value = "";
+          servitagInput.value = "";
+          warrantyExpirationInput.value = "";
+          licenceInput.value = "";
+          document.write("inputs");
         }
       }
       
-
       
      // Función para validar los datos ingresados en el formulario
      function validate_data() {
@@ -119,6 +144,19 @@ include "../templates/title.php";
         } 
         return false;
      }
+
+     // Función para actualizar el valor del campo de entrada del año
+    function actualizarAnio() {
+      var warrantyExpirationInput = document.getElementById('warrantyExpiration');
+      var yearExpirationInput = document.getElementById('yearExpiration');
+      
+      // Obtener el año a partir de la fecha
+      var fecha = new Date(warrantyExpirationInput.value);
+      var anio = fecha.getFullYear();
+      
+      // Actualizar el valor del campo de entrada del año
+      yearExpirationInput.value = anio;
+    }
 </script>
 
 <?php 
@@ -134,6 +172,7 @@ if (isset($_POST["accion"])) {
 	$cmptName = $_POST['txt_nombre'];
 	$cmpServitag = $_POST['txt_servitag'];
 	$cmpWarrantyExpiration = $_POST['warrantyExpiration'];
+  //$cmpYearExpiration = date("Y", strtotime($cmpWarrantyExpiration));
   $cmpYearExpiration = $_POST['yearExpiration'];
   $cmpLicence = $_POST['txt_licence'];
   $cmpMotherboard = $_POST['txt_motherboard'];
@@ -146,6 +185,8 @@ if (isset($_POST["accion"])) {
   date_default_timezone_set('America/Mexico_City');
   
   $todayDate = date("Y-m-d");
+  
+
 
   //la opcion 1 es para guardar y el C-CMP valida que tenga el permiso C-reateE en (CMP)computer
   if($accion == "1" && $_SESSION["C-CMP"]){
@@ -164,10 +205,9 @@ if (isset($_POST["accion"])) {
       $conn->next_result();
 
       // Si existe un valor no guarda
-      if ($answerExistsComp == 1){
-        echo '<script > toastr.error("¡¡UPS!!\\n Recuerda que no pueden existir dos:  <b>' . $cmpServitag . '</b> por los tando no se pueden guardar.");
-        servitagInput.value = "";
-        </script>';
+      if ($answerExistsComp == 1 ){
+        echo "<script > toastr.error('Recuerda que no pueden existir dos:  <b>" . $cmpServitag . "</b> por los tando no se pueden guardar.', '¡¡UPS!!');
+        Limpiar();  </script>"; 
         $accion = "";
         
        }else {
@@ -186,12 +226,11 @@ if (isset($_POST["accion"])) {
         
 
         if ($num_rows > 0) {
-          echo '<script > toastr.success("¡¡Enhorabuena!!\\nLos datos de <b>' . $cmptName . '</b> se Guardaron de manera exitosa.");
-          Limpiar(); 
-          setTimeout(function() { location.reload(); }, 4000); </script>';         
+          echo '<script > toastr.success("Los datos de <b>' . $cmptName . '</b> se Guardaron de manera exitosa.", "¡¡Enhorabuena!!");
+          Limpiar(); </script>';         
          
         }else {
-          echo '<script > toastr.error("¡¡UPS!!\\n No se pudo realizar la operacion de  guardar.");</script>';
+          echo '<script > toastr.error(" No se pudo realizar la operacion de  guardar.","¡¡UPS!!");</script>';
         //  echo '<script>setTimeout(function() { location.reload(); }, 2000);</script>' 
         }
       
@@ -304,7 +343,7 @@ if (isset($_POST["accion"])) {
                     <div class="form-group">
                       <label>Fecha Límite Garantía:</label>
                         <div class="input-group">
-                          <input type="text" class="form-control"  name="warrantyExpiration" id="warrantyExpiration"  >
+                          <input type="text" class="form-control"  name="warrantyExpiration" id="warrantyExpiration"  onchange="actualizarAnio()"  >
                         </div>
                     </div>
                   </div>
@@ -313,7 +352,7 @@ if (isset($_POST["accion"])) {
                     <div class="form-group">
                       <label>Año Limite Garantía: </label>
                         <div class="input-group">
-                          <input type="number" class="form-control" min="2000" max="2050" name="yearExpiration" id="yearExpiration">
+                          <input type="number" class="form-control" min="2000" max="2050" name="yearExpiration" id="yearExpiration" readonly>
                         </div>
                     </div>
                   </div>
@@ -423,8 +462,8 @@ if (isset($_POST["accion"])) {
  <!-- /.section--> 
 </section>
 
-    
-<script src="../../public/jquery/jquery.min.js" ></script>
+  <!-- daterange picker -->
+  
 <!-- Toastr 
 <script src="../../public/js/toastr.min.js"></script>
 <script>

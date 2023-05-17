@@ -36,7 +36,8 @@
         {
             //$_SESSION[$fila["PRV_Nomenclature"]];
            $_SESSION[$fila["PRV_Nomenclature"]]=true;
-            //echo "<script>alert('$privilegio');</script>";
+          // $privilegio=$fila["PRV_Nomenclature"];
+           //echo "<script> document.write('$privilegio');</script>";
         }
         $stmt->close();
         $conn->next_result();

@@ -31,7 +31,19 @@
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 <!-- Bootstrap 4 -->
 <script src="../../public/js/bootstrap.bundle.min.js"></script>
-
+<!-- DataTables  & Plugins -->
+<script src="../../public/js/jquery.dataTables.min.js"></script>
+<script src="../../public/js/dataTables.bootstrap4.min.js"></script>
+<script src="../../public/js/dataTables.responsive.min.js"></script>
+<script src="../../public/js/responsive.bootstrap4.min.js"></script>
+<script src="../../public/js/dataTables.buttons.min.js"></script>
+<script src="../../public/js/buttons.bootstrap4.min.js"></script>
+<script src="../../public/js/jszip.min.js"></script>
+<script src="../../public/js/pdfmake.min.js"></script>
+<script src="../../public/js/vfs_fonts.js"></script>
+<script src="../../public/js/buttons.html5.min.js"></script>
+<script src="../../public/js/buttons.print.min.js"></script>
+<script src="../../public/js/buttons.colVis.min.js"></script>
 
 <!-- JQVMap -->
 <script src="../../public/js/jquery.vmap.min.js"></script>
