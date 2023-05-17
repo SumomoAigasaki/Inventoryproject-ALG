@@ -45,5 +45,9 @@ else {
 
 date_default_timezone_set('America/Mexico_City');
 //variables globales 
-$todayDate = date("yy-mm-dd");
+$todayDate = date("Y-m-d");
+
+echo '<script>';
+echo 'var todayDate = ' . json_encode($todayDate) . ';'; // Convertir la variable en JSON y asignarla a la variable de JavaScript
+echo '</script>';
 ?>
