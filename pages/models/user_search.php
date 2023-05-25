@@ -32,12 +32,13 @@
   
       // Obtiene los resultados
        $result = $stmt->get_result();
+       
        while ($fila = $result->fetch_assoc())
         {
             //$_SESSION[$fila["PRV_Nomenclature"]];
            $_SESSION[$fila["PRV_Nomenclature"]]=true;
-          // $privilegio=$fila["PRV_Nomenclature"];
-           //echo "<script> document.write('$privilegio');</script>";
+        //$privilegio=$fila["PRV_Nomenclature"];
+          // echo "<script> document.write('$privilegio');</script>";
         }
         $stmt->close();
         $conn->next_result();

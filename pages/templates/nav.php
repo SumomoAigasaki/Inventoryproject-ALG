@@ -33,14 +33,14 @@ include "../../includes/constantes.php";
   <link rel="stylesheet" href="../../public/css/summernote-bs4.min.css">
   <!-- Toastr -->
   <link rel="stylesheet" href="../../public/css/toastr.min.css">
-  
+
   <!-- Agrega jQuery y jQuery UI a tu página -->
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
   <!-- daterange picker -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
-  <!--<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
-  
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">

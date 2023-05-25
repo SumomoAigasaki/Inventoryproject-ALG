@@ -164,7 +164,6 @@ include "../templates/title.php";
 
 if (isset($_POST["accion"])) {
   $accion = $_POST["accion"];
-  $cmpID = $_POST["cmpId"];
 	$cmpAcquisitionDate = $_POST["acquisitionDate"];
 	$cmpIdManufacturer = $_POST['select_manufacturer'];
 	$cmpIdModel = $_POST['select_model'];
@@ -245,7 +244,7 @@ if (isset($_POST["accion"])) {
       <div class="col-md-12">
         <div class="card card-primary card-outline">
           <div class="card-header">
-              <h3 class="card-title">Formulario para  <?php echo $pageName; ?> </h3>
+              <h3 class="card-title">Formulario para Añadir <?php echo $pageName; ?> </h3>
           </div>
   
           <!-- form start -->
@@ -254,7 +253,6 @@ if (isset($_POST["accion"])) {
               <label class="form-check-label" for="exampleCheck2" style="padding-bottom: 5px;" >  A continuación se le pedirá que <b> Ingrese</b> los siguientes datos:</label>
                 <!-- Input ocultos  -->
                 <input type="hidden" class="form-control" id="todayDate" name="todayDate" placeholder="<?php echo $todayDate ?>" >
-                <input type="hidden" class="form-control" id="cmpId" name="cmpId" placeholder="" >
                 <input type="hidden" class="form-control" id="accion" name="accion" placeholder="" >
                 <div class="row" style="padding-top:10px; padding-bottom:10px;">
                   <!-- Fecha de Compra -->
@@ -432,19 +430,6 @@ if (isset($_POST["accion"])) {
                     <button type="button" class="btn btn-block btn-info" onclick='return validate_data();' >Guardar</button>
                   </div>
                   
-                   
-                    <!-- IMAGEN
-                    <div class="col-sm-3">
-                      
-                      <div class="form-group">
-                        <label>Reporte de Extravio/Robo: </label>
-                        <input type="file" name="imageComp"  id="imageComp" > 
-                        <input type="submit" value="Upload">
-                      </div>
-                    </div>
-                    -->
-
-                 <!--/. fila 4 --> 
                 </div>
               <label class="form-check-label"> </label> 
              <!-- /.card body -->

@@ -18,8 +18,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       session_start();
       $_SESSION['username'] = $username;
     
-      //echo "LOGIN SUCCESS";
-      //echo "<script>window.location='./template/index.php; </script>";
       header("Location: ../templates/index.php");
       exit();
   } else {
