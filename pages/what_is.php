@@ -1,17 +1,16 @@
 <?php
-include "../includes/conecta.php";
+// include "../includes/conecta.php";
 include "../includes/constantes.php";
 
 
-session_start();
+// session_start();
 //Verificamos si existe la session en caso de exister redirigimos a la pagina home
-if (isset($_SESSION["username"])) {
-	header("location: templates/index.php");
-}
-
+// if (isset($_SESSION["username"])) {
+// 	header("location: templates/index.php");
+// }
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -24,7 +23,6 @@ if (isset($_SESSION["username"])) {
     <link rel="stylesheet" href="../public/css/icheck-bootstrap.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="../public/css/adminlte.min.css"> 
-
     </head>
 
 <body>

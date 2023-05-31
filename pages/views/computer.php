@@ -26,13 +26,13 @@ require_once "../templates/title.php";
         hideMethod: 'fadeOut'
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
-        const formInsert = document.getElementById('formInsertCMP');
-        const btnInsert = document.getElementById('buttonInsert');
-        btnInsert.addEventListener('click', function() {
-            formInsert.reset();
-        });
-    });
+    // document.addEventListener('DOMContentLoaded', function() {
+    //     const formInsert = document.getElementById('formInsertCMP');
+    //     const btnInsert = document.getElementById('buttonInsert');
+    //     btnInsert.addEventListener('click', function() {
+    //         formInsert.reset();
+    //     });
+    // });
 
 
     // Función para validar los datos ingresados en el formulario
@@ -120,58 +120,63 @@ require_once "../templates/title.php";
 </script>
 
 <?php
-if (isset($_POST["accion"])) {
-    $accion = $_POST["accion"];
-    $cmpAcquisitionDate = $_POST["acquisitionDate"];
-    $cmpIdManufacturer = $_POST['select_manufacturer'];
-    $cmpIdModel = $_POST['select_model'];
-    $cmpCompType = $_POST['select_computerType'];
-    $cmptName = $_POST['txt_nombre'];
-    $cmpServitag = $_POST['txt_servitag'];
-    $cmpWarrantyExpiration = $_POST['warrantyExpiration'];
-    //$cmpYearExpiration = date("Y", strtotime($cmpWarrantyExpiration));
-    $cmpYearExpiration = $_POST['yearExpiration'];
-    $cmpLicence = $_POST['txt_licence'];
-    $cmpMotherboard = $_POST['txt_motherboard'];
-    $cmpIdStatu = $_POST['select_statu'];
-    $cmpIdLocation = $_POST['select_location'];
-    $cmpImgComp = $_POST['img_Comp'];
-    $cmpObservation = $_POST['txt_observation'];
-    $cmpImgCompReport = "";
-    date_default_timezone_set('America/Mexico_City');
-    $todayDate = date("Y-m-d");
+// if ($_SERVER["REQUEST_METHOD"] == "POST") {
+//     if (isset($_POST['buttonInsert'])) {
+        
+        if (isset($_POST["accion"])) {
+            $accion = $_POST["accion"];
+            $cmpAcquisitionDate = $_POST["acquisitionDate"];
+            $cmpIdManufacturer = $_POST['select_manufacturer'];
+            $cmpIdModel = $_POST['select_model'];
+            $cmpCompType = $_POST['select_computerType'];
+            $cmptName = $_POST['txt_nombre'];
+            $cmpServitag = $_POST['txt_servitag'];
+            $cmpWarrantyExpiration = $_POST['warrantyExpiration'];
+            //$cmpYearExpiration = date("Y", strtotime($cmpWarrantyExpiration));
+            $cmpYearExpiration = $_POST['yearExpiration'];
+            $cmpLicence = $_POST['txt_licence'];
+            $cmpMotherboard = $_POST['txt_motherboard'];
+            $cmpIdStatu = $_POST['select_statu'];
+            $cmpIdLocation = $_POST['select_location'];
+            $cmpImgComp = $_POST['img_Comp'];
+            $cmpObservation = $_POST['txt_observation'];
+            $cmpImgCompReport = "";
+            date_default_timezone_set('America/Mexico_City');
+            $todayDate = date("Y-m-d");
+
+            
+
+            //la opcion 1 es para guardar y el C-CMP valida que tenga el permiso C-reateE en (CMP)computer
+            if ($accion == "1" && $_SESSION["C-CMP"]) {
+                echo "despues";
+           
+                //Caso contrario Guardara
+                $stmt = $conn->prepare("CALL sp_insertComputer(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                // Mandamos los parametros y los input que seran enviados al PA O SP
+                $stmt->bind_param("sssssssssssssssss", $todayDate, $cmpIdManufacturer, $cmpImgComp, $cmptName, $cmpIdModel, $cmpCompType, $cmpServitag, $cmpLicence, $cmpMotherboard, $cmpAcquisitionDate, $cmpWarrantyExpiration, $cmpYearExpiration, $cmpIdLocation, $cmpIdStatu, $cmpObservation, $cmpImgCompReport, $idUser);
+                // Ejecutar el procedimiento almacenado
+                $stmt->execute();
+                if ($stmt->error) {
+                    error_log("Error en la ejecución del procedimiento almacenado: " . $stmt->error);
+                }
+                // Obtener el valor de la variable de salida
+                $stmt->bind_result($answerExistsComp);
+                $stmt->fetch();
+                $stmt->close();
+                $conn->next_result();
 
 
 
-    //la opcion 1 es para guardar y el C-CMP valida que tenga el permiso C-reateE en (CMP)computer
-    if ($accion == "1" && $_SESSION["C-CMP"]) {
-        //Caso contrario Guardara
-        $stmt = $conn->prepare("CALL sp_insertComputer(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-        // Mandamos los parametros y los input que seran enviados al PA O SP
-        $stmt->bind_param("sssssssssssssssss", $todayDate, $cmpIdManufacturer, $cmpImgComp, $cmptName, $cmpIdModel, $cmpCompType, $cmpServitag, $cmpLicence, $cmpMotherboard, $cmpAcquisitionDate, $cmpWarrantyExpiration, $cmpYearExpiration, $cmpIdLocation, $cmpIdStatu, $cmpObservation, $cmpImgCompReport, $idUser);
-        // Ejecutar el procedimiento almacenado
-        $stmt->execute();
-        if ($stmt->error) {
-            error_log("Error en la ejecución del procedimiento almacenado: " . $stmt->error);
+                if ($answerExistsComp > 0) {
+                    echo '<script > toastr.success("Los datos de <b>' . $cmptName . '</b> se Guardaron de manera exitosa.", "¡¡Enhorabuena!!");</script>';
+                } else {
+                    echo '<script > toastr.error(" No se pudo guardar recuerda que tiene que tener un Servitag unico. ' . $cmpServitag . '","¡¡UPS!!");</script>';
+                    //  echo '<script>setTimeout(function() { location.reload(); }, 2000);</script>' 
+                }
+            }
         }
-        // Obtener el valor de la variable de salida
-        $stmt->bind_result($answerExistsComp);
-        $stmt->fetch();
-        $stmt->close();
-        $conn->next_result();
-
-
-
-        if ($answerExistsComp > 0) {
-            echo '<script > toastr.success("Los datos de <b>' . $cmptName . '</b> se Guardaron de manera exitosa.", "¡¡Enhorabuena!!");
-      </script>';
-        } else {
-            echo '<script > toastr.error(" No se pudo guardar recuerda que tiene que tener un Servitag unico. ' . $cmpServitag . '","¡¡UPS!!");
-      </script>';
-            //  echo '<script>setTimeout(function() { location.reload(); }, 2000);</script>' 
-        }
-    }
-}
+//     }
+// }
 
 
 ?>
@@ -365,7 +370,7 @@ if (isset($_POST["accion"])) {
                             </div>
                             <!-- Boton guardar -->
                             <div class="col-sm-2" style="padding-top:40px;">
-                                <button type="button" class="btn btn-block btn-info" id="buttonInsert" onclick='return validate_data();'>Guardar</button>
+                                <button type="button" class="btn btn-block btn-info" id="buttonInsert" name="buttonInsert" onclick='return validate_data();'>Guardar</button>
                             </div>
 
                         </div>

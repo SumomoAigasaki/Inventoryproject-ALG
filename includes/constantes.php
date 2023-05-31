@@ -41,7 +41,11 @@ if ($actualPage == 'index.php') {
     $pageLink = "what_is.php";
   }elseif($actualPage == 'explorer.php'){
     $pageName = 'Explorar';
-    $pageLink = "explorer.php";}
+    $pageLink = "explorer.php";
+  }
+    elseif($actualPage == 'prueba.php'){
+      $pageName = 'prueba';
+      $pageLink = "prueba.php";}
 
 else {
   $pageName = 'Error 404';

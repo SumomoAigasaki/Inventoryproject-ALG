@@ -1,12 +1,11 @@
 <?php
 require_once "nav.php";
-require_once "../models/user_search.php";
 ?>
  <!-- Main Sidebar Container (MENU) -->
  <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="index.php" class="brand-link">
-                <img src="<?php echo BASE_URL?>public/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+                <img src="../../public/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
                 <span class="brand-text font-weight-light"> <?php echo nameProject; ?> </span>
             </a>
             <!-- Sidebar detecta -->
@@ -41,7 +40,7 @@ require_once "../models/user_search.php";
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
                         <li class="nav-item">
-                            <a href="<?php echo BASE_URL?>/views/explorer.php" class="nav-link">
+                            <a href="../views/explorer.php" class="nav-link">
                                 <i class="nav-icon fas fa-globe"></i>
                                 <p>Explorar </p>
                             </a>

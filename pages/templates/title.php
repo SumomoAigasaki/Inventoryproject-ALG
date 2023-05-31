@@ -52,7 +52,7 @@ require_once "menu.php";
 
             <div class="modal-body">
                 <!-- pages/views/computer.php -->
-                <a class="btn btn-app" href="<?php echo BASE_URL?>pages/views/computer.php">
+                <a class="btn btn-app" href="../views/computer.php">
                     <i class="fas fa-desktop"></i> Computadoras
                 </a>
 

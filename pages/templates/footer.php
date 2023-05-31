@@ -23,42 +23,42 @@
 </div>
 
 <!-- jQuery -->
-<script src="<?php echo BASE_URL?>public/js/jquery.min.js"></script>
+<script src="../../public/js/jquery.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
-<script src="<?php echo BASE_URL?>public/js/jquery-ui.min.js"></script>
+<script src="../../public/js/jquery-ui.min.js"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 <!-- Bootstrap 4 -->
-<script src="<?php echo BASE_URL?>public/js/bootstrap.bundle.min.js"></script>
+<script src="../../public/js/bootstrap.bundle.min.js"></script>
 <!-- DataTables  & Plugins -->
-<script src="<?php echo BASE_URL?>public/js/jquery.dataTables.min.js"></script>
-<script src="<?php echo BASE_URL?>public/js/dataTables.bootstrap4.min.js"></script>
-<script src="<?php echo BASE_URL?>public/js/dataTables.responsive.min.js"></script>
-<script src="<?php echo BASE_URL?>public/js/responsive.bootstrap4.min.js"></script>
-<script src="<?php echo BASE_URL?>public/js/dataTables.buttons.min.js"></script>
-<script src="<?php echo BASE_URL?>public/js/buttons.bootstrap4.min.js"></script>
-<script src="<?php echo BASE_URL?>public/js/jszip.min.js"></script>
-<script src="<?php echo BASE_URL?>public/js/pdfmake.min.js"></script>
-<script src="<?php echo BASE_URL?>public/js/vfs_fonts.js"></script>
-<script src="<?php echo BASE_URL?>public/js/buttons.html5.min.js"></script>
-<script src="<?php echo BASE_URL?>public/js/buttons.print.min.js"></script>
-<script src="<?php echo BASE_URL?>public/js/buttons.colVis.min.js"></script>
+<script src="../../public/js/jquery.dataTables.min.js"></script>
+<script src="../../public/js/dataTables.bootstrap4.min.js"></script>
+<script src="../../public/js/dataTables.responsive.min.js"></script>
+<script src="../../public/js/responsive.bootstrap4.min.js"></script>
+<script src="../../public/js/dataTables.buttons.min.js"></script>
+<script src="../../public/js/buttons.bootstrap4.min.js"></script>
+<script src="../../public/js/jszip.min.js"></script>
+<script src="../../public/js/pdfmake.min.js"></script>
+<script src="../../public/js/vfs_fonts.js"></script>
+<script src="../../public/js/buttons.html5.min.js"></script>
+<script src="../../public/js/buttons.print.min.js"></script>
+<script src="../../public/js/buttons.colVis.min.js"></script>
 
 <!-- JQVMap -->
-<script src="<?php echo BASE_URL?>public/js/jquery.vmap.min.js"></script>
-<script src="<?php echo BASE_URL?>public/js/jquery.vmap.usa.js"></script>
+<script src="../../public/js/jquery.vmap.min.js"></script>
+<script src="../../public/js/jquery.vmap.usa.js"></script>
 <!-- jQuery Knob Chart -->
-<script src="<?php echo BASE_URL?>public/js/jquery.knob.min.js"></script>
+<script src="../../public/js/jquery.knob.min.js"></script>
 <!-- daterangepicker -->
-<script src="<?php echo BASE_URL?>public/js/moment.min.js"></script>
-<script src="<?php echo BASE_URL?>public/js/daterangepicker.js"></script>
+<script src="../../public/js/moment.min.js"></script>
+<script src="../../public/js/daterangepicker.js"></script>
 <!-- Tempusdominus Bootstrap 4 -->
-<script src="<?php echo BASE_URL?>public/js/tempusdominus-bootstrap-4.min.js"></script>
+<script src="../../public/js/tempusdominus-bootstrap-4.min.js"></script>
 <!-- Summernote -->
-<script src="<?php echo BASE_URL?>public/js/summernote-bs4.min.js"></script>
+<script src="../../public/js/summernote-bs4.min.js"></script>
 <!-- overlayScrollbars -->
-<script src="<?php echo BASE_URL?>public/js/jquery.overlayScrollbars.min.js"></script>
+<script src="../../public/js/jquery.overlayScrollbars.min.js"></script>
 <!-- AdminLTE App -->
-<script src="<?php echo BASE_URL?>public/js/adminlte.js"></script>
+<script src="../../public/js/adminlte.js"></script>
 
 </body>
 

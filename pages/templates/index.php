@@ -1,10 +1,10 @@
 <?php
-require_once "title.php";
+include "title.php";
 ?>
 
 
     
 
 <?php
-require_once "footer.php";
+include "footer.php";
 ?>

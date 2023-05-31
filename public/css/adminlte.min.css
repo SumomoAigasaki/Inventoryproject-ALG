@@ -76,9 +76,7 @@ body {
     color: #212529;
     text-align: left;
     background-color: #fff;
-    display: grid;
-    min-height: 100vh;
-    grid-template-rows: auto 1 fr auto;
+    
 }
 
 [tabindex="-1"]:focus:not(:focus-visible) {
