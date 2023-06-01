@@ -2,7 +2,7 @@
    session_start();
    // Comprueba si $_SESSION["username"] está vacía
     if(empty($_SESSION["username"])) {
-        header("Location: SignOff.php");
+        header("Location: ../templates/SignOff.php");
         exit();
     }
 

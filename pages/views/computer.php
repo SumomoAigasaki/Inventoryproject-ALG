@@ -120,64 +120,75 @@ require_once "../templates/title.php";
 </script>
 
 <?php
-// if ($_SERVER["REQUEST_METHOD"] == "POST") {
-//     if (isset($_POST['buttonInsert'])) {
-        
-        if (isset($_POST["accion"])) {
-            $accion = $_POST["accion"];
-            $cmpAcquisitionDate = $_POST["acquisitionDate"];
-            $cmpIdManufacturer = $_POST['select_manufacturer'];
-            $cmpIdModel = $_POST['select_model'];
-            $cmpCompType = $_POST['select_computerType'];
-            $cmptName = $_POST['txt_nombre'];
-            $cmpServitag = $_POST['txt_servitag'];
-            $cmpWarrantyExpiration = $_POST['warrantyExpiration'];
-            //$cmpYearExpiration = date("Y", strtotime($cmpWarrantyExpiration));
-            $cmpYearExpiration = $_POST['yearExpiration'];
-            $cmpLicence = $_POST['txt_licence'];
-            $cmpMotherboard = $_POST['txt_motherboard'];
-            $cmpIdStatu = $_POST['select_statu'];
-            $cmpIdLocation = $_POST['select_location'];
-            $cmpImgComp = $_POST['img_Comp'];
-            $cmpObservation = $_POST['txt_observation'];
-            $cmpImgCompReport = "";
-            date_default_timezone_set('America/Mexico_City');
-            $todayDate = date("Y-m-d");
 
-            
+    if (isset($_POST["accion"])) {
+        $accion = $_POST["accion"];
+        $cmpAcquisitionDate = $_POST["acquisitionDate"];
+        $cmpIdManufacturer = $_POST['select_manufacturer'];
+        $cmpIdModel = $_POST['select_model'];
+        $cmpCompType = $_POST['select_computerType'];
+        $cmptName = $_POST['txt_nombre'];
+        $cmpServitag = $_POST['txt_servitag'];
+        $cmpWarrantyExpiration = $_POST['warrantyExpiration'];
+        //$cmpYearExpiration = date("Y", strtotime($cmpWarrantyExpiration));
+        $cmpYearExpiration = $_POST['yearExpiration'];
+        $cmpLicence = $_POST['txt_licence'];
+        $cmpMotherboard = $_POST['txt_motherboard'];
+        $cmpIdStatu = $_POST['select_statu'];
+        $cmpIdLocation = $_POST['select_location'];
 
-            //la opcion 1 es para guardar y el C-CMP valida que tenga el permiso C-reateE en (CMP)computer
-            if ($accion == "1" && $_SESSION["C-CMP"]) {
-                echo "despues";
-           
-                //Caso contrario Guardara
-                $stmt = $conn->prepare("CALL sp_insertComputer(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-                // Mandamos los parametros y los input que seran enviados al PA O SP
-                $stmt->bind_param("sssssssssssssssss", $todayDate, $cmpIdManufacturer, $cmpImgComp, $cmptName, $cmpIdModel, $cmpCompType, $cmpServitag, $cmpLicence, $cmpMotherboard, $cmpAcquisitionDate, $cmpWarrantyExpiration, $cmpYearExpiration, $cmpIdLocation, $cmpIdStatu, $cmpObservation, $cmpImgCompReport, $idUser);
-                // Ejecutar el procedimiento almacenado
-                $stmt->execute();
-                if ($stmt->error) {
-                    error_log("Error en la ejecución del procedimiento almacenado: " . $stmt->error);
-                }
-                // Obtener el valor de la variable de salida
-                $stmt->bind_result($answerExistsComp);
-                $stmt->fetch();
-                $stmt->close();
-                $conn->next_result();
+        // var_dump($_FILES['archivo']);
 
 
+        $cmpImgComp = '/resources/Computer/'.$_FILES['archivo']['name'];
+        // Obtener la ruta completa de la imagen
+        $uploads_dir = '../../resources/Computer/';  // Ruta de la carpeta de destino para los archivos
 
-                if ($answerExistsComp > 0) {
-                    echo '<script > toastr.success("Los datos de <b>' . $cmptName . '</b> se Guardaron de manera exitosa.", "¡¡Enhorabuena!!");</script>';
-                } else {
-                    echo '<script > toastr.error(" No se pudo guardar recuerda que tiene que tener un Servitag unico. ' . $cmpServitag . '","¡¡UPS!!");</script>';
-                    //  echo '<script>setTimeout(function() { location.reload(); }, 2000);</script>' 
-                }
+        move_uploaded_file($_FILES['archivo']['tmp_name'], $uploads_dir . $_FILES['archivo']['name']);
+
+
+        $cmpObservation = $_POST['txt_observation'];
+        $cmpImgCompReport = "";
+        date_default_timezone_set('America/Mexico_City');
+        $todayDate = date("Y-m-d");
+
+        //la opcion 1 es para guardar y el C-CMP valida que tenga el permiso C-reateE en (CMP)computer
+        if ($accion == "1" && $_SESSION["C-CMP"]) {
+
+            //Caso contrario Guardara
+            $stmt = $conn->prepare("CALL sp_insertComputer(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            // Mandamos los parametros y los input que seran enviados al PA O SP
+            $stmt->bind_param("sssssssssssssssss", $todayDate, $cmpIdManufacturer, $cmpImgComp, $cmptName, $cmpIdModel, $cmpCompType, $cmpServitag, $cmpLicence, $cmpMotherboard, $cmpAcquisitionDate, $cmpWarrantyExpiration, $cmpYearExpiration, $cmpIdLocation, $cmpIdStatu, $cmpObservation, $cmpImgCompReport, $idUser);
+            // $query = "CALL sp_insertComputer('$todayDate', '$cmpIdManufacturer', '$cmpImgComp', '$cmptName', '$cmpIdModel', '$cmpCompType', '$cmpServitag', '$cmpLicence', '$cmpMotherboard', '$cmpAcquisitionDate', '$cmpWarrantyExpiration', '$cmpYearExpiration', '$cmpIdLocation', '$cmpIdStatu', '$cmpObservation', '$cmpImgCompReport', '$idUser');";
+            // echo $query;
+
+            // Ejecutar el procedimiento almacenado
+            $stmt->execute();
+            if ($stmt->error) {
+                error_log("Error en la ejecución del procedimiento almacenado: " . $stmt->error);
+            }
+            // Obtener el valor de la variable de salida
+            $stmt->bind_result($answerExistsComp);
+            $stmt->fetch();
+            $stmt->close();
+            $conn->next_result();
+
+            if ($answerExistsComp > 0) {
+                echo '<script > toastr.success("Los datos de <b>' . $cmptName . '</b> se Guardaron de manera exitosa.", "¡¡Enhorabuena!!");
+            // setTimeout(function() {
+            //     window.location.href = "explorer.php";
+            // }, 2000); // 2000 milisegundos = 2 segundos de retraso             
+            </script>';
+            } else {
+                echo '<script > toastr.error(" No se pudo guardar recuerda que tiene que tener un Servitag unico. ' . $cmpServitag . '","¡¡UPS!!");
+                setTimeout(function() {
+                    window.location.href = "computer.php"; 
+                }, 3000);     
+            </script>';
+                //  echo '<script>setTimeout(function() { location.reload(); }, 2000);</script>' 
             }
         }
-//     }
-// }
-
+    }
 
 ?>
 <section class="content">
@@ -187,11 +198,11 @@ require_once "../templates/title.php";
                 <div class="card-header">
                     <h3 class="card-title">Formulario para Añadir <?php echo $pageName; ?> </h3>
                 </div>
-
                 <!-- form start -->
-                <form role="form" action="computer.php" method="POST" name="formInsertCMP" id="formInsertCMP" class="form-horizontal">
+                <form role="form" action="computer.php" method="POST" name="formInsertCMP" id="formInsertCMP" class="form-horizontal" enctype="multipart/form-data">
                     <div class="card-body">
-                        <label class="form-check-label" for="exampleCheck2" style="padding-bottom: 5px;"> A continuación se le pedirá que <b> Ingrese</b> los siguientes datos:</label>
+                            <label class="form-check-label" style="padding-bottom: 5px;"> A continuación se le pedirá que <b> Ingrese</b> los siguientes datos:</label>
+                     
                         <!-- Input ocultos  -->
                         <input type="hidden" class="form-control" id="todayDate" name="todayDate" placeholder="<?php echo $todayDate ?>">
                         <input type="hidden" class="form-control" id="accion" name="accion" placeholder="">
@@ -268,14 +279,14 @@ require_once "../templates/title.php";
                             <!-- Nombre Tecnico-->
                             <div class="col-sm-3">
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1">Nombre Técnico: </label>
+                                    <label >Nombre Técnico:</label>
                                     <input type="text" class="form-control" name="txt_nombre" id="nombre" maxlength="45" value="<?php echo (isset($nombres) ? $nombres : ""); ?>" placeholder="ASSET2023-0#">
                                 </div>
                             </div>
                             <!-- Servitag-->
                             <div class="col-sm-2">
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1">Servitag: </label>
+                                    <label >Servitag: </label>
                                     <input type="text" class="form-control" name="txt_servitag" id="servitag" maxlength="45" value="<?php echo (isset($servitags) ? $servitags : ""); ?>" placeholder="FKCX???">
                                 </div>
                             </div>
@@ -303,14 +314,14 @@ require_once "../templates/title.php";
                             <!-- Lincencia -->
                             <div class="col-sm-3">
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1">Licencia: </label>
+                                    <label >Licencia: </label>
                                     <input type="text" class="form-control" name="txt_licence" id="licence" maxlength="60" value="<?php echo (isset($licenses) ? $licenses : ""); ?>" placeholder="CMCDN-?????-?????-?????-?????">
                                 </div>
                             </div>
                             <!-- Tarjeta Madre -->
                             <div class="col-sm-3">
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1">Tarjeta Madre: </label>
+                                    <label >Tarjeta Madre: </label>
                                     <input type="text" class="form-control" name="txt_motherboard" id="motherboard" maxlength="60" value="<?php echo (isset($motherboards) ? $motherboards : ""); ?>" placeholder="0W3XW5-A00">
                                 </div>
                             </div>
@@ -357,14 +368,15 @@ require_once "../templates/title.php";
                             <div class="col-sm-5">
                                 <div class="form-group">
                                     <label>Imagen: </label>
-                                    <input type="file" name="img_Comp" id="imageComp">
-                                    <input type="submit" value="Upload">
+                                    <div class="input-group">
+                                        <input type="file" name="archivo">
+                                    </div>
                                 </div>
                             </div>
                             <!-- Observaciones -->
                             <div class="col-sm-5">
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1">Observaciones: </label>
+                                    <label >Observaciones: </label>
                                     <textarea type="text" class="form-control" name="txt_observation" id="observation" maxlength="100" value="<?php echo (isset($observations) ? $observations : ""); ?>"> </textarea>
                                 </div>
                             </div>
