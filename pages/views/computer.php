@@ -37,7 +37,6 @@ require_once "../templates/title.php";
 
     // Función para validar los datos ingresados en el formulario
     function validate_data() {
-
         var accionInput = document.getElementById('accion');
         var acquisitionFecha = document.getElementById('acquisitionDate');
         var manufacturerSelect = document.getElementById('manufacturerSelect');
@@ -46,44 +45,34 @@ require_once "../templates/title.php";
         var nombreInput = document.getElementById('nombre');
         var servitagInput = document.getElementById('servitag');
         var warrantyExpirationInput = document.getElementById('warrantyExpiration');
-        var yearExpirationInput = document.getElementById('yearExpiration');
         var licenceInput = document.getElementById('licence');
         var statusSelect = document.getElementById('status');
         var locationsSelect = document.getElementById('locations');
+        var guaranteeSelect = document.getElementById('typeGuarantee');
         var todayDateInput = document.getElementById('todayDate');
 
 
         if (acquisitionFecha.value.trim() === "") {
-            console.log("dentro de fecha");
             toastr.warning("La <b>Fecha de Compra</b> esta vacio(a).<br>Por favor Ingrese una fecha valida");
             acquisitionFecha.focus();
         } else if (manufacturerSelect.selectedIndex == 0) {
-            console.log("dentro de Marca");
             toastr.warning('La <b>Marca</b> esta vacio(a).<br>Por favor Ingrese una Marca valida');
             manufacturerSelect.focus();
         } else if (modelSelect.value == 1) {
-            console.log("dentro de model");
             toastr.warning('El <b>Modelo</b> esta vacio(a).<br>Por favor Ingrese un Modelo valida');
             modelSelect.focus();
         } else if (computerTypesSelect.selectedIndex == 0) {
-            console.log("dentro de tipo de computadora");
             toastr.warning('El <b>Tipo de computadora</b> esta vacio(a).<br>Por favor Ingrese un tipo de computadora valido');
             computerTypesSelect.focus();
         } else if (nombreInput.value.trim() === "") {
-            console.log("dentro de nombre tecnico");
             toastr.warning('El <b>Nombre técnico</b> esta vacio(a).<br>Por favor Ingrese un Nombre valido');
             nombreInput.focus();
         } else if (servitagInput.value.trim() === "") {
-            console.log("dentro de servitag");
             toastr.warning('El <b>Servitag</b> esta vacio(a).<br>Por favor Ingrese una servitag valido');
             servitagInput.focus();
         } else if (warrantyExpirationInput.value.trim() === "") {
-            console.log("dentro de fehca limite");
             toastr.warning('La <b>Fecha Límite Garantía</b> esta vacio(a).<br>Por favor Ingrese una Fecha Límite Garantía valida');
             warrantyExpirationInput.focus();
-        } else if (yearExpirationInput.value.trim() === "") {
-            toastr.warning('El <b>Año Limite Garantía</b> esta vacio(a).<br>Por favor Ingrese una Año Limite Garantía valida');
-            yearExpirationInput.focus();
         } else if (licenceInput.value.trim() === "") {
             toastr.warning('La <b>Lincencia</b> esta vacio(a).<br>Por favor Ingrese una Lincensia valida');
             licenceInput.focus();
@@ -93,6 +82,9 @@ require_once "../templates/title.php";
         } else if (locationsSelect.selectedIndex == 0) {
             toastr.warning('La <b>Localizacion del Computador</b> esta vacio(a).<br>Por favor Ingrese una Localizacion del Computador valida');
             locationsSelect.focus();
+        } else if (guaranteeSelect.selectedIndex == 0) {
+            toastr.warning('El <b>Tipo de Garantia </b> esta vacio(a).<br>Por favorTipo de Garantia del Computador valida');
+            guaranteeSelect.focus();
         } else {
             // Si no hay errores, procesa los datos enviados
             //$opcion = $_POST['opciones'];
@@ -121,74 +113,72 @@ require_once "../templates/title.php";
 
 <?php
 
-    if (isset($_POST["accion"])) {
-        $accion = $_POST["accion"];
-        $cmpAcquisitionDate = $_POST["acquisitionDate"];
-        $cmpIdManufacturer = $_POST['select_manufacturer'];
-        $cmpIdModel = $_POST['select_model'];
-        $cmpCompType = $_POST['select_computerType'];
-        $cmptName = $_POST['txt_nombre'];
-        $cmpServitag = $_POST['txt_servitag'];
-        $cmpWarrantyExpiration = $_POST['warrantyExpiration'];
-        //$cmpYearExpiration = date("Y", strtotime($cmpWarrantyExpiration));
-        $cmpYearExpiration = $_POST['yearExpiration'];
-        $cmpLicence = $_POST['txt_licence'];
-        $cmpMotherboard = $_POST['txt_motherboard'];
-        $cmpIdStatu = $_POST['select_statu'];
-        $cmpIdLocation = $_POST['select_location'];
+if (isset($_POST["accion"])) {
+    $accion = $_POST["accion"];
+    $cmpAcquisitionDate = $_POST["acquisitionDate"];
+    $cmpIdManufacturer = $_POST['select_manufacturer'];
+    $cmpIdModel = $_POST['select_model'];
+    $cmpCompType = $_POST['select_computerType'];
+    $cmptName = $_POST['txt_nombre'];
+    $cmpServitag = $_POST['txt_servitag'];
+    $cmpWarrantyExpiration = $_POST['warrantyExpiration'];
+    //$cmpYearExpiration = date("Y", strtotime($cmpWarrantyExpiration));
+    $cmpYearExpiration = $_POST['yearExpiration'];
+    $cmpLicence = $_POST['txt_licence'];
+    $cmpMotherboard = $_POST['txt_motherboard'];
+    $cmpIdStatu = $_POST['select_statu'];
+    $cmpIdLocation = $_POST['select_location'];
 
-        // var_dump($_FILES['archivo']);
+    // var_dump($_FILES['archivo']);
+    $cmpImgComp = '/resources/Computer/' . $_FILES['archivo']['name'];
+    // Obtener la ruta completa de la imagen
+    $uploads_dir = '../../resources/Computer/';  // Ruta de la carpeta de destino para los archivos
 
+    $cmpObservation = $_POST['txt_observation'];
+    $cmpIdGuarantee = $_POST['select_typeGuarantee'];
+    //$cmpImgCompReport = "";
+    date_default_timezone_set('America/Mexico_City');
+    $todayDate = date("Y-m-d");
 
-        $cmpImgComp = '/resources/Computer/'.$_FILES['archivo']['name'];
-        // Obtener la ruta completa de la imagen
-        $uploads_dir = '../../resources/Computer/';  // Ruta de la carpeta de destino para los archivos
+    //la opcion 1 es para guardar y el C-CMP valida que tenga el permiso C-reateE en (CMP)computer
+    if ($accion == "1" && $_SESSION["C-CMP"]) {
 
-        move_uploaded_file($_FILES['archivo']['tmp_name'], $uploads_dir . $_FILES['archivo']['name']);
+        //Caso contrario Guardara
+        $stmt = $conn->prepare("CALL sp_insertComputer(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
+        // Mandamos los parametros y los input que seran enviados al PA O SP
+        $stmt->bind_param("sssssssssssssssss", $todayDate, $cmpIdManufacturer, $cmpImgComp, $cmptName, $cmpIdModel, $cmpCompType, $cmpServitag, $cmpLicence, $cmpMotherboard, $cmpAcquisitionDate, $cmpWarrantyExpiration, $cmpYearExpiration, $cmpIdLocation, $cmpIdStatu, $cmpObservation, $idUser,$cmpIdGuarantee);
+        $query = "CALL sp_insertComputer('$todayDate', '$cmpIdManufacturer', '$cmpImgComp', '$cmptName', '$cmpIdModel', '$cmpCompType', '$cmpServitag', '$cmpLicence', '$cmpMotherboard', '$cmpAcquisitionDate', '$cmpWarrantyExpiration', '$cmpYearExpiration', '$cmpIdLocation', '$cmpIdStatu', '$cmpObservation', '$idUser','$cmpIdGuarantee');";
+        echo $query;
 
-        $cmpObservation = $_POST['txt_observation'];
-        $cmpImgCompReport = "";
-        date_default_timezone_set('America/Mexico_City');
-        $todayDate = date("Y-m-d");
+        // Ejecutar el procedimiento almacenado
+        $stmt->execute();
+        if ($stmt->error) {
+            error_log("Error en la ejecución del procedimiento almacenado: " . $stmt->error);
+        }
+        // Obtener el valor de la variable de salida
+        $stmt->bind_result($answerExistsComp);
+        $stmt->fetch();
+        $stmt->close();
+        $conn->next_result();
 
-        //la opcion 1 es para guardar y el C-CMP valida que tenga el permiso C-reateE en (CMP)computer
-        if ($accion == "1" && $_SESSION["C-CMP"]) {
-
-            //Caso contrario Guardara
-            $stmt = $conn->prepare("CALL sp_insertComputer(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-            // Mandamos los parametros y los input que seran enviados al PA O SP
-            $stmt->bind_param("sssssssssssssssss", $todayDate, $cmpIdManufacturer, $cmpImgComp, $cmptName, $cmpIdModel, $cmpCompType, $cmpServitag, $cmpLicence, $cmpMotherboard, $cmpAcquisitionDate, $cmpWarrantyExpiration, $cmpYearExpiration, $cmpIdLocation, $cmpIdStatu, $cmpObservation, $cmpImgCompReport, $idUser);
-            // $query = "CALL sp_insertComputer('$todayDate', '$cmpIdManufacturer', '$cmpImgComp', '$cmptName', '$cmpIdModel', '$cmpCompType', '$cmpServitag', '$cmpLicence', '$cmpMotherboard', '$cmpAcquisitionDate', '$cmpWarrantyExpiration', '$cmpYearExpiration', '$cmpIdLocation', '$cmpIdStatu', '$cmpObservation', '$cmpImgCompReport', '$idUser');";
-            // echo $query;
-
-            // Ejecutar el procedimiento almacenado
-            $stmt->execute();
-            if ($stmt->error) {
-                error_log("Error en la ejecución del procedimiento almacenado: " . $stmt->error);
-            }
-            // Obtener el valor de la variable de salida
-            $stmt->bind_result($answerExistsComp);
-            $stmt->fetch();
-            $stmt->close();
-            $conn->next_result();
-
-            if ($answerExistsComp > 0) {
-                echo '<script > toastr.success("Los datos de <b>' . $cmptName . '</b> se Guardaron de manera exitosa.", "¡¡Enhorabuena!!");
+        if ($answerExistsComp > 0) {
+            echo '<script > toastr.success("Los datos de <b>' . $cmptName . '</b> se Guardaron de manera exitosa.", "¡¡Enhorabuena!!");
             // setTimeout(function() {
             //     window.location.href = "explorer.php";
             // }, 2000); // 2000 milisegundos = 2 segundos de retraso             
             </script>';
-            } else {
-                echo '<script > toastr.error(" No se pudo guardar recuerda que tiene que tener un Servitag unico. ' . $cmpServitag . '","¡¡UPS!!");
+            move_uploaded_file($_FILES['archivo']['tmp_name'], $uploads_dir . $_FILES['archivo']['name']);
+        } else {
+            echo '<script > toastr.error(" No se pudo guardar recuerda que tiene que tener un Servitag unico. ' . $cmpServitag . '","¡¡UPS!!");
                 setTimeout(function() {
                     window.location.href = "computer.php"; 
                 }, 3000);     
             </script>';
-                //  echo '<script>setTimeout(function() { location.reload(); }, 2000);</script>' 
-            }
+            //  echo '<script>setTimeout(function() { location.reload(); }, 2000);</script>' 
         }
     }
+}
 
 ?>
 <section class="content">
@@ -201,8 +191,8 @@ require_once "../templates/title.php";
                 <!-- form start -->
                 <form role="form" action="computer.php" method="POST" name="formInsertCMP" id="formInsertCMP" class="form-horizontal" enctype="multipart/form-data">
                     <div class="card-body">
-                            <label class="form-check-label" style="padding-bottom: 5px;"> A continuación se le pedirá que <b> Ingrese</b> los siguientes datos:</label>
-                     
+                        <label class="form-check-label" style="padding-bottom: 5px;"> A continuación se le pedirá que <b> Ingrese</b> los siguientes datos:</label>
+
                         <!-- Input ocultos  -->
                         <input type="hidden" class="form-control" id="todayDate" name="todayDate" placeholder="<?php echo $todayDate ?>">
                         <input type="hidden" class="form-control" id="accion" name="accion" placeholder="">
@@ -279,14 +269,14 @@ require_once "../templates/title.php";
                             <!-- Nombre Tecnico-->
                             <div class="col-sm-3">
                                 <div class="form-group">
-                                    <label >Nombre Técnico:</label>
+                                    <label>Nombre Técnico:</label>
                                     <input type="text" class="form-control" name="txt_nombre" id="nombre" maxlength="45" value="<?php echo (isset($nombres) ? $nombres : ""); ?>" placeholder="ASSET2023-0#">
                                 </div>
                             </div>
                             <!-- Servitag-->
                             <div class="col-sm-2">
                                 <div class="form-group">
-                                    <label >Servitag: </label>
+                                    <label>Servitag: </label>
                                     <input type="text" class="form-control" name="txt_servitag" id="servitag" maxlength="45" value="<?php echo (isset($servitags) ? $servitags : ""); ?>" placeholder="FKCX???">
                                 </div>
                             </div>
@@ -311,17 +301,36 @@ require_once "../templates/title.php";
                         </div>
                         <!-- Comienzo fila 3 -->
                         <div class="row" style="padding-bottom:10px;">
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label>Tipo de Garantia: </label>
+                                    <?php
+                                    #Se procede a llamar al procedimiento almacenado que se llama sp_manufacturer_select,con la variable que almancena "cnn" la base de datos 
+                                    $resultado = mysqli_query($conn, "CALL sp_typeGuarantee_select()"); ?>
+                                    <select class="form-control" id="typeGuarantee" name="select_typeGuarantee">
+                                        <?php while ($row = mysqli_fetch_array($resultado)) { ?>
+                                            <option value="<?php echo $row['TG_idtbl_Type_Guarantee']; ?>"><?php echo $row['TG_Description']; ?></option>
+                                        <?php }
+                                        #NOTA
+                                        #CADA QUE QUIERA HACER UNA NUEVA CONSULTA CON PROCEDIMIENTOS ALMACENADOS ESTOS EL RESULTADO SE CIERRA Y LA VARIABLE DE LA CONECCION SE PREPARA PARA EL NUEVO RESULTADO
+                                        # QUE TENDRA ABAJO
+                                        $resultado->close();
+                                        $conn->next_result();
+                                        ?>
+                                    </select>
+                                </div>
+                            </div>
                             <!-- Lincencia -->
                             <div class="col-sm-3">
                                 <div class="form-group">
-                                    <label >Licencia: </label>
+                                    <label>Licencia: </label>
                                     <input type="text" class="form-control" name="txt_licence" id="licence" maxlength="60" value="<?php echo (isset($licenses) ? $licenses : ""); ?>" placeholder="CMCDN-?????-?????-?????-?????">
                                 </div>
                             </div>
                             <!-- Tarjeta Madre -->
                             <div class="col-sm-3">
                                 <div class="form-group">
-                                    <label >Tarjeta Madre: </label>
+                                    <label>Tarjeta Madre: </label>
                                     <input type="text" class="form-control" name="txt_motherboard" id="motherboard" maxlength="60" value="<?php echo (isset($motherboards) ? $motherboards : ""); ?>" placeholder="0W3XW5-A00">
                                 </div>
                             </div>
@@ -343,6 +352,10 @@ require_once "../templates/title.php";
                                     </select>
                                 </div>
                             </div>
+
+                        </div>
+                        <!-- Comienzo fila 4 -->
+                        <div class="row">
                             <!-- Localizacion -->
                             <div class="col-sm-3">
                                 <div class="form-group">
@@ -361,11 +374,8 @@ require_once "../templates/title.php";
                                     </select>
                                 </div>
                             </div>
-                        </div>
-                        <!-- Comienzo fila 4 -->
-                        <div class="row">
                             <!-- IMAGEN -->
-                            <div class="col-sm-5">
+                            <div class="col-sm-4">
                                 <div class="form-group">
                                     <label>Imagen: </label>
                                     <div class="input-group">
@@ -376,7 +386,7 @@ require_once "../templates/title.php";
                             <!-- Observaciones -->
                             <div class="col-sm-5">
                                 <div class="form-group">
-                                    <label >Observaciones: </label>
+                                    <label>Observaciones: </label>
                                     <textarea type="text" class="form-control" name="txt_observation" id="observation" maxlength="100" value="<?php echo (isset($observations) ? $observations : ""); ?>"> </textarea>
                                 </div>
                             </div>
