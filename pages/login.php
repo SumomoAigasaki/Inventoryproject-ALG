@@ -24,6 +24,8 @@ if (isset($_SESSION["username"])) {
  <link rel="stylesheet" href="../public/css/base/icheck-bootstrap.min.css">
   <!-- Theme style -->
  <link rel="stylesheet" href="../public/css/base/adminlte.min.css"> 
+  <!-- SweetAlert2 -->
+  <link rel="stylesheet" href="../public/css/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
 
   </head>
 
@@ -35,15 +37,15 @@ JAVASCRIP -->
     var usuario = document.getElementById("username");
     var contrasenhia = document.getElemntById("pass");
     
-    alert($contrasenhia,$usuario);
+    alert(contrasenhia.value + " - " + usuario.value);
 
      if (usuario.value != "" && contrasenhia != ""){
-      document.getElementById("formulario").submit();
+      document.getElementById("formLogin").submit();
     }
     return false;
   }
+  </script>
 
-</script>
 
 
 <body class="hold-transition login-page">
@@ -56,7 +58,7 @@ JAVASCRIP -->
     <div class="card-body">
       <p class="login-box-msg">Ingresa tu usuario para Iniciar sesion</p>
 
-      <form action="models/login_validation.php" method="POST" name="log_val" id="login">
+      <form action="" method="POST" name="formLogin" id="formLogin">
         <div class="input-group mb-3">
           <input type="email" class="form-control" name="username" id="username" placeholder="Usuario" required>
           <div class="input-group-append">
@@ -90,14 +92,49 @@ JAVASCRIP -->
   </div>
   <!-- /.card -->
 </div>
-<!-- /.login-box -->
 
+<!-- /.login-box -->
 <!-- jQuery -->
 <script src="../public/js/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
 <script src="../public/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
 <script src="../public/js/adminlte.min.js"></script>
+<script src='../public/js/sweetalert2/sweetalert2.min.js'></script>
 
+<?php 
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  // Recuperar los valores del formulario
+  $username =$_POST['username'];
+  $password =$_POST['password']; 
+  
+  // Llamar al procedimiento almacenado para validar el usuario y la contraseña
+  $resultado = null;
+  $conn->query("CALL sp_validate_user('$username','$password', @resultado)");
+  $resultado = $conn->query("SELECT @resultado")->fetch_assoc()["@resultado"];
+  
+  // Verificar el resultado del procedimiento almacenado 
+  if ($resultado == 1) {
+      // Usuario y contraseña son correctos, redirigir a la página de bienvenida
+      session_start();
+      $_SESSION['username'] = $username;
+    
+      header("Location:../pages/templates/index.php");
+      exit();
+  } else {
+      // Usuario y/o contraseña son incorrectos, mostrar un mensaje de error
+     
+        echo"";
+       echo " <script>  Swal.fire({
+        icon: 'question',
+        title: 'Credenciales erroneas.',
+        text: 'Contraseña y/o Usuario Invalido, Ingrese credencial Correcta'
+      }).then(() => {
+        window.location.href = 'login.php'; 
+      });
+    </script>"; 
+  }
+}
+?>
 </body>
 </html>
