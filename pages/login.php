@@ -19,11 +19,11 @@ if (isset($_SESSION["username"])) {
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="../public/css/all.min.css">
+  <link rel="stylesheet" href="../public/css/base/all.min.css">
   <!-- icheck bootstrap -->
-  <link rel="stylesheet" href="../public/css/icheck-bootstrap.min.css">
+ <link rel="stylesheet" href="../public/css/base/icheck-bootstrap.min.css">
   <!-- Theme style -->
-  <link rel="stylesheet" href="../public/css/adminlte.min.css"> 
+ <link rel="stylesheet" href="../public/css/base/adminlte.min.css"> 
 
   </head>
 
