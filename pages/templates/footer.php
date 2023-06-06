@@ -9,7 +9,7 @@
 <footer class="text text-white" style="background-color: #fff;text-align: center;display: flex;justify-content: center;" ">
   
         <div style="color:#869099; padding: 1rem">
-        <strong>Copyright &copy; 2022-2023 <a href="https://productoresdeazucarhonduras.com/ingenios/compania-azucarera-la-grecia/">.<?php echo companyName; ?></a>.</strong>All rights reserved.      <b >Version</b> 1.0
+        <strong>Copyright &copy; 2022-2023 <a href="https://productoresdeazucarhonduras.com/ingenios/compania-azucarera-la-grecia/">.<?php echo companyName; ?></a>.</strong>All rights reserved.      <b >Version</b> 0.1
         </div>
         
     </div>
