@@ -32,11 +32,6 @@ while ($row = $stmt->fetch_assoc()) {
   $LCT_idTbl_Location = $row['LCT_idTbl_Location'];
   $CMP_Observations = $row['CMP_Observations'];
   $CMP_Report = $row['CMP_Report'];
-  //valido si viene nulos o vacios los datos de BD ponga una imagen por default
-  if (empty($CMP_Report) || $CMP_Report === null || $CMP_Report == "/resources/Computer/") {
-    $CMP_Report = "/resources/Computer/default.jpg";
-  }
-  
   $User_Username = $row['User_Username'];
   $TG_idtbl_Type_Guarantee = $row['TG_idtbl_Type_Guarantee'];
 }
@@ -195,7 +190,6 @@ if (isset($_POST["accion"])) {
     $cmpImgComp = '/resources/Computer/' . $_FILES['archivo']['name'];
   }
 
-  $cmpObservation = $_POST['txt_observation'];
 
   if (empty($_FILES['imagReport']['name'])) {
     // El campo de imagen está vacío
@@ -206,6 +200,7 @@ if (isset($_POST["accion"])) {
   }
   // Obtener la ruta completa de la imagen
   $cmpObservation = $_POST['txt_observation'];
+  $cmpeIdGuarate = $_POST['select_typeGuarantee'];
   date_default_timezone_set('America/Mexico_City');
   $todayDate = date("Y-m-d");
 
@@ -213,14 +208,14 @@ if (isset($_POST["accion"])) {
   //la opcion 2 es para actualizar y el C-CMP valida que tenga el permiso U-pdate en (CMP)computer
   if ($accion == "2" && $_SESSION["U-CMP"]) {
     //llamamos el procedimiento almacemado de actualizar computadora 
-    $stmt = $conn->prepare("CALL sp_updateComputer(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+    $stmt = $conn->prepare("CALL sp_updateComputer(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
     // Mandamos los parametros y los input que seran enviados al PA O SP
-    $stmt->bind_param("ssssssssssssssssss", $cmpId, $todayDate, $cmpIdManufacturer, $cmpImgComp, $cmptName, $cmpIdModel, $cmpCompType, $cmpServitag, $cmpLicence, $cmpMotherboard, $cmpAcquisitionDate, $cmpWarrantyExpiration, $cmpYearExpiration, $cmpIdLocation, $cmpIdStatu, $cmpObservation, $cmpImgCompReport, $idUser);
+    $stmt->bind_param("sssssssssssssssssss", $cmpId, $todayDate, $cmpIdManufacturer, $cmpImgComp, $cmptName, $cmpIdModel, $cmpCompType, $cmpServitag, $cmpLicence, $cmpMotherboard, $cmpAcquisitionDate, $cmpWarrantyExpiration, $cmpYearExpiration, $cmpIdLocation, $cmpIdStatu, $cmpObservation, $cmpImgCompReport, $idUser, $cmpeIdGuarate);
     // Ejecutar el procedimiento almacenado
 
     $stmt->execute();
-    $query = "CALL sp_updateComputer('$cmpId', '$todayDate', '$cmpIdManufacturer', '$cmpImgComp', '$cmptName', '$cmpIdModel', '$cmpCompType', '$cmpServitag', '$cmpLicence', '$cmpMotherboard', '$cmpAcquisitionDate', '$cmpWarrantyExpiration', '$cmpYearExpiration', '$cmpIdLocation', '$cmpIdStatu', '$cmpObservation', '$cmpImgCompReport', '$idUser');";
-    echo $query;
+    // $query = "CALL sp_updateComputer('$cmpId', '$todayDate', '$cmpIdManufacturer', '$cmpImgComp', '$cmptName', '$cmpIdModel', '$cmpCompType', '$cmpServitag', '$cmpLicence', '$cmpMotherboard', '$cmpAcquisitionDate', '$cmpWarrantyExpiration', '$cmpYearExpiration', '$cmpIdLocation', '$cmpIdStatu', '$cmpObservation', '$cmpImgCompReport', '$idUser', '$cmpeIdGuarate');";
+    // echo $query;
     // echo '<pre>';
     if ($stmt->error) {
       error_log("Error en la ejecución del procedimiento almacenado: " . $stmt->error);
@@ -285,15 +280,15 @@ if (isset($_POST["accion"])) {
 
                     <?php if (!$primerImagenMostrada && !empty($imagen)) : ?>
                       <?php if (!empty($imagenes[0])) : ?>
-                        <a href="../..<?php echo $imagenes[0] ?>" data-toggle="lightbox" data-title="Imagen de Computadora: <?php echo $CMP_Technical_Name;?>" data-gallery="gallery">
-                          <img src="../..<?php echo $imagenes[0] ?>" class="img-fluid" alt="Imagen de Computadora: <?php echo $CMP_Technical_Name;?>" width="300" height="400" />
+                        <a href="../..<?php echo $imagenes[0] ?>" data-toggle="lightbox" data-title="Imagen de Computadora: <?php echo $CMP_Technical_Name; ?>" data-gallery="gallery">
+                          <img src="../..<?php echo $imagenes[0] ?>" class="img-fluid" alt="Imagen de Computadora: <?php echo $CMP_Technical_Name; ?>" width="300" height="400" />
                         </a>
                       <?php endif; ?>
 
                       <!-- Mostrar las demás imágenes en el modal -->
                       <?php foreach ($imagenes as $index => $imagen) : ?>
                         <?php if ($index > 0 && !empty($imagen)) : ?>
-                          <a href="../..<?php echo $imagen ?>" data-toggle="lightbox" data-title="Imagen de denuncia: <?php echo $CMP_Technical_Name;?>" data-gallery="gallery"></a>
+                          <a href="../..<?php echo $imagen ?>" data-toggle="lightbox" data-title="Imagen de denuncia: <?php echo $CMP_Technical_Name; ?>" data-gallery="gallery"></a>
                         <?php endif; ?>
                       <?php endforeach; ?>
                       <?php $primerImagenMostrada = true; ?>
@@ -547,6 +542,9 @@ if (isset($_POST["accion"])) {
             <div class="row justify-content-center" style="padding-bottom:10px;">
               <div class="col-mb-3">
                 <button type="button" class="btn btn-block bg-olive" onclick='return validate_data();'>Actualizar</button>
+              </div>
+              <div class="col-mb-3" style="margin-left: 5px;">
+                <button type="button" class="btn btn-block btn-primary" onclick="window.location.href = 'explorer.php';">Atras</button>
               </div>
             </div>
           </div>
