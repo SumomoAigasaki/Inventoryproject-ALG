@@ -7,14 +7,18 @@ $idComp = $_GET['p'];
 // Preparar la llamada al procedimiento almacenado
 $stmt = $conn->query("CALL sp_selectComputer($idComp)");
 while ($row = $stmt->fetch_assoc()) {
-  echo '<pre>';
-  print_r($row);
-  echo '</pre>';
+  // echo '<pre>';
+  // print_r($row);
+  // echo '</pre>';
   // Obtener el valor de [CMP_Inventory_Date]
   $CMP_idTbl_Computer = $row['CMP_idTbl_Computer'];
   $inventoryDate = $row['CMP_Inventory_Date'];
   $MFC_idTbl_Manufacturer = $row['MFC_idTbl_Manufacturer'];
   $CMP_Image = $row['CMP_Image'];
+  //valido si viene nulos o vacios los datos de BD ponga una imagen por default
+  if (empty($CMP_Image) || $CMP_Image === null || $CMP_Image == "/resources/Computer/") {
+    $CMP_Image = "/resources/Computer/default.jpg";
+  }
   $CMP_Technical_Name = $row['CMP_Technical_Name'];
   $MDL_idTbl_Model = $row['MDL_idTbl_Model'];
   $CT_idTbl_Computer_Type = $row['CT_idTbl_Computer_Type'];
@@ -27,11 +31,12 @@ while ($row = $stmt->fetch_assoc()) {
   $STS_idTbl_Status = $row['STS_idTbl_Status'];
   $LCT_idTbl_Location = $row['LCT_idTbl_Location'];
   $CMP_Observations = $row['CMP_Observations'];
-  if($CMP_Report=="/resources/Computer/"){
-    $CMP_Report= "/resources/Computer/default.jpg";
-  }else {
-    $CMP_Report = $row['CMP_Report'];
+  $CMP_Report = $row['CMP_Report'];
+  //valido si viene nulos o vacios los datos de BD ponga una imagen por default
+  if (empty($CMP_Report) || $CMP_Report === null || $CMP_Report == "/resources/Computer/") {
+    $CMP_Report = "/resources/Computer/default.jpg";
   }
+  
   $User_Username = $row['User_Username'];
   $TG_idtbl_Type_Guarantee = $row['TG_idtbl_Type_Guarantee'];
 }
@@ -181,9 +186,24 @@ if (isset($_POST["accion"])) {
   $cmpMotherboard = $_POST['txt_motherboard'];
   $cmpIdStatu = $_POST['select_statu'];
   $cmpIdLocation = $_POST['select_location'];
-  $cmpImgComp = '/resources/Computer/' . $_FILES['archivo']['name'];
+
+  if (empty($_FILES['archivo']['name'])) {
+    // El campo de imagen está vacío
+    $cmpImgComp = $CMP_Image;
+  } else {
+    // El campo no está vacío
+    $cmpImgComp = '/resources/Computer/' . $_FILES['archivo']['name'];
+  }
+
   $cmpObservation = $_POST['txt_observation'];
-  $cmpImgCompReport = '/resources/Computer/' . $_FILES['imagReport']['name'];
+
+  if (empty($_FILES['imagReport']['name'])) {
+    // El campo de imagen está vacío
+    $cmpImgCompReport = $CMP_Report;
+  } else {
+    // El campo no está vacío
+    $cmpImgCompReport = '/resources/Computer/' . $_FILES['imagReport']['name'];
+  }
   // Obtener la ruta completa de la imagen
   $cmpObservation = $_POST['txt_observation'];
   date_default_timezone_set('America/Mexico_City');
@@ -199,8 +219,8 @@ if (isset($_POST["accion"])) {
     // Ejecutar el procedimiento almacenado
 
     $stmt->execute();
-    // $query = "CALL sp_updateComputer('$cmpId', '$todayDate', '$cmpIdManufacturer', '$cmpImgComp', '$cmptName', '$cmpIdModel', '$cmpCompType', '$cmpServitag', '$cmpLicence', '$cmpMotherboard', '$cmpAcquisitionDate', '$cmpWarrantyExpiration', '$cmpYearExpiration', '$cmpIdLocation', '$cmpIdStatu', '$cmpObservation', '$cmpImgCompReport', '$idUser');";
-    // echo $query;
+    $query = "CALL sp_updateComputer('$cmpId', '$todayDate', '$cmpIdManufacturer', '$cmpImgComp', '$cmptName', '$cmpIdModel', '$cmpCompType', '$cmpServitag', '$cmpLicence', '$cmpMotherboard', '$cmpAcquisitionDate', '$cmpWarrantyExpiration', '$cmpYearExpiration', '$cmpIdLocation', '$cmpIdStatu', '$cmpObservation', '$cmpImgCompReport', '$idUser');";
+    echo $query;
     // echo '<pre>';
     if ($stmt->error) {
       error_log("Error en la ejecución del procedimiento almacenado: " . $stmt->error);
@@ -265,15 +285,15 @@ if (isset($_POST["accion"])) {
 
                     <?php if (!$primerImagenMostrada && !empty($imagen)) : ?>
                       <?php if (!empty($imagenes[0])) : ?>
-                        <a href="../..<?php echo $imagenes[0] ?>" data-toggle="lightbox" data-title="Imagen Computadora" data-gallery="gallery">
-                          <img src="../..<?php echo $imagenes[0] ?>" class="img-fluid" alt="Imagen Computadora" width="300" height="400" />
+                        <a href="../..<?php echo $imagenes[0] ?>" data-toggle="lightbox" data-title="Imagen de Computadora: <?php echo $CMP_Technical_Name;?>" data-gallery="gallery">
+                          <img src="../..<?php echo $imagenes[0] ?>" class="img-fluid" alt="Imagen de Computadora: <?php echo $CMP_Technical_Name;?>" width="300" height="400" />
                         </a>
                       <?php endif; ?>
 
                       <!-- Mostrar las demás imágenes en el modal -->
                       <?php foreach ($imagenes as $index => $imagen) : ?>
                         <?php if ($index > 0 && !empty($imagen)) : ?>
-                          <a href="../..<?php echo $imagen ?>" data-toggle="lightbox" data-title="Imagen Computadora" data-gallery="gallery"></a>
+                          <a href="../..<?php echo $imagen ?>" data-toggle="lightbox" data-title="Imagen de denuncia: <?php echo $CMP_Technical_Name;?>" data-gallery="gallery"></a>
                         <?php endif; ?>
                       <?php endforeach; ?>
                       <?php $primerImagenMostrada = true; ?>
@@ -500,7 +520,7 @@ if (isset($_POST["accion"])) {
                 <!-- IMAGEN -->
                 <label>Imagen del PC: </label>
                 <div class="form-group mb-3">
-                  <input accept="image/png,image/jpeg" type="file" name="archivo" value="<?php echo $CMP_Image; ?>">
+                  <input accept="image/png,image/jpeg" type="file" name="archivo">
                 </div>
 
 
