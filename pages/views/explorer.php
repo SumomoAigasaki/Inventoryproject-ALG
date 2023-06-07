@@ -28,6 +28,7 @@ function dataTableComputer($stmt)
                 <td>" . $row['CMP_Motherboard'] . "</td>
                 <td>" . $row['CMP_Acquisition_Date'] . "</td>
                 <td>" . $row['CMP_Warranty_Expiration'] . "</td>
+                <td>" . $row['TG_Description'] . "</td>
                 <td>" . $row['CMP_Warranty_Year'] . "</td>
                 <td>" . $row['STS_Description'] . "</td>
                 <td>" . $row['LCT_Description'] . "</td>
@@ -105,7 +106,8 @@ function dataTableComputer($stmt)
                         <th>Motherboard</th>
                         <th>Fecha Adquisición</th>
                         <th>Fecha Limite Garantia</th>
-                        <th>Año limite Garantia</th>
+                        <th>Tipo Garantia</th>
+                        <th>Año limite Garantia</th>                        
                         <th>Estado</th>
                         <th>Localizacion</th>
                         <th>Observaciones</th>
@@ -175,6 +177,7 @@ function dataTableComputer($stmt)
                         <th>Motherboard</th>
                         <th>Fecha Adquisición</th>
                         <th>Fecha Limite Garantia</th>
+                        <th>Tipo Garantia</th>
                         <th>Año limite Garantia</th>
                         <th>Estado</th>
                         <th>Localizacion</th>

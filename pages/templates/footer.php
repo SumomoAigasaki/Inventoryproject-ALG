@@ -59,6 +59,8 @@
 <script src="../../public/js/jquery.overlayScrollbars.min.js"></script>
 <!-- AdminLTE App -->
 <script src="../../public/js/adminlte.js"></script>
+<!-- Ekko Lightbox -->
+<script src="../../public/css/ekko-lightbox/ekko-lightbox.min.js"></script>
 
 </body>
 

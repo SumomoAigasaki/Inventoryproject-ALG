@@ -31,7 +31,8 @@ include "../models/user_search.php";
     <!-- summernote -->
     <link rel="stylesheet" href="../../public/css/base/summernote-bs4.min.css">
 <!-- ./Archivos Base para el Dashboard -->
-
+  <!-- Ekko Lightbox -->
+  <link rel="stylesheet" href="../../public/css/ekko-lightbox/ekko-lightbox.css">
     <!-- Toastr -->
     <link rel="stylesheet" href="../../public/css/toastr.min.css">
     <!-- Agrega jQuery y jQuery UI a tu página -->

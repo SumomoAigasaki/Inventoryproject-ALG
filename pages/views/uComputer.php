@@ -7,9 +7,9 @@ $idComp = $_GET['p'];
 // Preparar la llamada al procedimiento almacenado
 $stmt = $conn->query("CALL sp_selectComputer($idComp)");
 while ($row = $stmt->fetch_assoc()) {
-  // echo '<pre>';
-  //print_r($row);
-  //echo '</pre>';
+  echo '<pre>';
+  print_r($row);
+  echo '</pre>';
   // Obtener el valor de [CMP_Inventory_Date]
   $CMP_idTbl_Computer = $row['CMP_idTbl_Computer'];
   $inventoryDate = $row['CMP_Inventory_Date'];
@@ -27,9 +27,26 @@ while ($row = $stmt->fetch_assoc()) {
   $STS_idTbl_Status = $row['STS_idTbl_Status'];
   $LCT_idTbl_Location = $row['LCT_idTbl_Location'];
   $CMP_Observations = $row['CMP_Observations'];
-  $CMP_Report = $row['CMP_Report'];
+  if($CMP_Report=="/resources/Computer/"){
+    $CMP_Report= "/resources/Computer/default.jpg";
+  }else {
+    $CMP_Report = $row['CMP_Report'];
+  }
   $User_Username = $row['User_Username'];
+  $TG_idtbl_Type_Guarantee = $row['TG_idtbl_Type_Guarantee'];
 }
+$stmt->close();
+$conn->next_result();
+
+$stmt = $conn->query("CALL sp_imgCMP($idComp)");
+// Obtener las imágenes y almacenarlas en un array
+$imagenes = array();
+while ($fila = $stmt->fetch_assoc()) {
+  $imagenes[] = $fila['CMP_Image'];
+  $imagenes[] = $fila['CMP_Report'];
+}
+$primerImagenMostrada = false;
+
 $stmt->close();
 $conn->next_result();
 
@@ -129,14 +146,7 @@ $conn->next_result();
     showMethod: "fadeIn",
     hideMethod: "fadeOut"
   }
-  //Funcion para limpiar los campos del formulario
-  function Limpiar() {
-    let formUpdate = document.querySelector('#formUpdateCMP');
-    if (formUpdate !== null) {
-      formUpdate.reset();
-    }
 
-  }
   // Función para obtener el anho automaticamente
   function actualizarAnio() {
     var warrantyExpirationInput = document.getElementById('warrantyExpiration');
@@ -154,6 +164,8 @@ $conn->next_result();
 
 <!--Validaciones de PHP-->
 <?php
+// Obtener la ruta completa de la imagen
+$uploads_dir = '../../resources/Computer/';  // Ruta de la carpeta de destino para los archivos
 if (isset($_POST["accion"])) {
   $accion = $_POST["accion"];
   $cmpId = $_POST["cmpId"];
@@ -169,11 +181,14 @@ if (isset($_POST["accion"])) {
   $cmpMotherboard = $_POST['txt_motherboard'];
   $cmpIdStatu = $_POST['select_statu'];
   $cmpIdLocation = $_POST['select_location'];
-  $cmpImgComp = $_POST['img_Comp'];
+  $cmpImgComp = '/resources/Computer/' . $_FILES['archivo']['name'];
   $cmpObservation = $_POST['txt_observation'];
-  $cmpImgCompReport = $_POST['imagReport'];
+  $cmpImgCompReport = '/resources/Computer/' . $_FILES['imagReport']['name'];
+  // Obtener la ruta completa de la imagen
+  $cmpObservation = $_POST['txt_observation'];
   date_default_timezone_set('America/Mexico_City');
   $todayDate = date("Y-m-d");
+
 
   //la opcion 2 es para actualizar y el C-CMP valida que tenga el permiso U-pdate en (CMP)computer
   if ($accion == "2" && $_SESSION["U-CMP"]) {
@@ -206,10 +221,11 @@ if (isset($_POST["accion"])) {
       toastr.success("Los datos de <b>' . $cmptName . '</b> se actualizaron de manera exitosa con el <b>ID</b> de: ' . $cmpId . '", "¡Enhorabuena!");
 
       setTimeout(function() {
-        Limpiar();
-        window.location.href = "' .BASE_URL. 'pages/views/explorer.php";
+        window.location.href = "' . BASE_URL . 'pages/views/explorer.php";
       }, 2000); // 2000 milisegundos = 2 segundos de retraso
     </script>';
+      move_uploaded_file($_FILES['archivo']['tmp_name'], $uploads_dir . $_FILES['archivo']['name']);
+      move_uploaded_file($_FILES['imagReport']['tmp_name'], $uploads_dir . $_FILES['imagReport']['name']);
     } else {
       echo '<script > toastr.error(" No se pudo realizar la operacion de  Actualizar.","¡¡UPS!!");</script>';
       //  echo '<script>setTimeout(function() { location.reload(); }, 2000);</script>' 
@@ -229,29 +245,57 @@ if (isset($_POST["accion"])) {
         </div>
 
         <!-- form start -->
-        <form role="form" action="" method="POST" name="formUpdateCMP" id="formUpdateCMP" class="form-horizontal">
+        <form role="form" action="" method="POST" name="formUpdateCMP" id="formUpdateCMP" class="form-horizontal" enctype="multipart/form-data">
           <div class="card-body">
-            <label class="form-check-label" for="exampleCheck2" style="padding-bottom: 5px;"> A continuación se le mostrara el formulario con información tenga <b> cuidado</b> al momento de presionar el boton:</label>
+            <label class="form-check-label" style="padding-bottom: 5px;"> A continuación se le mostrara el formulario con información tenga <b> cuidado</b> al momento de presionar el boton:</label>
             <!-- Input ocultos  -->
             <input type="hidden" class="form-control" id="cmpId" name="cmpId" value="<?php echo $CMP_idTbl_Computer ?>">
             <input type="hidden" class="form-control" id="accion" name="accion" value="2">
+
+            <!--  Primer Row -->
             <div class="row" style="padding-top:10px; padding-bottom:10px;">
               <!--  Carusel de imagenes -->
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <img class="img-fluid" src="../../resources/Computer/DELL_Inspiron_155567.jpg" alt="User profile picture">
-                </div>
+              <div class="col-sm-6 d-flex justify-content-center align-items-center">
+                <?php if (empty($imagenes)) : ?>
+                  <!-- Imagen por defecto si $imagenes está vacío -->
+                  <img class="img-fluid" src="../../resources/Computer/default.jpg" alt="Imagen por defecto" width='300' height='400'>
+                <?php else : ?>
+                  <!-- Imagen si $imagenes tiene valores -->
+                  <?php foreach ($imagenes as $imagen) : ?>
+
+                    <?php if (!$primerImagenMostrada && !empty($imagen)) : ?>
+                      <?php if (!empty($imagenes[0])) : ?>
+                        <a href="../..<?php echo $imagenes[0] ?>" data-toggle="lightbox" data-title="Imagen Computadora" data-gallery="gallery">
+                          <img src="../..<?php echo $imagenes[0] ?>" class="img-fluid" alt="Imagen Computadora" width="300" height="400" />
+                        </a>
+                      <?php endif; ?>
+
+                      <!-- Mostrar las demás imágenes en el modal -->
+                      <?php foreach ($imagenes as $index => $imagen) : ?>
+                        <?php if ($index > 0 && !empty($imagen)) : ?>
+                          <a href="../..<?php echo $imagen ?>" data-toggle="lightbox" data-title="Imagen Computadora" data-gallery="gallery"></a>
+                        <?php endif; ?>
+                      <?php endforeach; ?>
+                      <?php $primerImagenMostrada = true; ?>
+                    <?php endif; ?>
+                  <?php endforeach; ?>
+
+                  <?php if (!$primerImagenMostrada) : ?>
+                    <!-- Imagen por defecto si no se mostró ninguna imagen -->
+                    <img class="img-fluid" src="../../resources/Computer/default.jpg" alt="Imagen Computadora" width="300" height="400">
+                  <?php endif; ?>
+                <?php endif; ?>
               </div>
 
               <div class="col-sm-3">
-                <!-- Fecha de Inventariado -->
-                <div class="form-group mb-3">
+                <!-- FECHA DE INVENTARIO -->
+                <div class="form-group">
                   <label>Fecha de Inventariado:</label>
                   <div class="input-group">
                     <input type="text" class="form-control datepicker-input" id="todayDate" name="todayDate" value="<?php echo $inventoryDate ?>" require>
                   </div>
                 </div>
-                <!-- MARCA -->
+                <!-- MARCA  -->
                 <div>
                   <div class="form-group">
                     <label>Marca: </label>
@@ -275,6 +319,7 @@ if (isset($_POST["accion"])) {
                   </div>
                 </div>
               </div>
+
 
               <div class="col-sm-3">
                 <div class="form-group">
@@ -307,6 +352,7 @@ if (isset($_POST["accion"])) {
                 </div>
               </div>
             </div>
+
             <!-- Comienzo fila 2 -->
             <div class="row">
               <!-- TIPO DE COMPUTADORA -->
@@ -332,14 +378,14 @@ if (isset($_POST["accion"])) {
               <!-- Nombre Tecnico-->
               <div class="col-sm-3">
                 <div class="form-group">
-                  <label for="exampleInputEmail1">Nombre Técnico: </label>
+                  <label>Nombre Técnico: </label>
                   <input type="text" class="form-control" name="txt_nombre" id="nombre" maxlength="45" value="<?php echo $CMP_Technical_Name; ?>" placeholder="ASSET2023-0#">
                 </div>
               </div>
               <!-- Servitag-->
               <div class="col-sm-2">
                 <div class="form-group">
-                  <label for="exampleInputEmail1">Servitag: </label>
+                  <label>Servitag: </label>
                   <input type="text" class="form-control" name="txt_servitag" id="servitag" maxlength="45" value="<?php echo $CMP_Servitag; ?>" placeholder="FKCX???">
                 </div>
               </div>
@@ -363,19 +409,41 @@ if (isset($_POST["accion"])) {
                 </div>
               </div>
             </div>
-            <!-- Comienzo fila 3 -->           
+            <!-- Comienzo fila 3 -->
             <div class="row" style="padding-bottom:10px;">
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label>Tipo de Garantia: </label>
+                  <?php
+                  #Se procede a llamar al procedimiento almacenado que se llama sp_manufacturer_select,con la variable que almancena "cnn" la base de datos 
+                  $resultado = mysqli_query($conn, "CALL sp_typeGuarantee_select()"); ?>
+                  <select class="form-control" id="typeGuarantee" name="select_typeGuarantee">
+                    <?php while ($row = mysqli_fetch_array($resultado)) {
+
+                      $select = ($TG_idtbl_Type_Guarantee == $row['TG_idtbl_Type_Guarantee']) ? "selected=selected" : "";
+                    ?>
+                      <option value="<?php echo $row['TG_idtbl_Type_Guarantee']; ?>" <?php echo $select; ?>><?php echo $row['TG_Description']; ?></option>
+                    <?php }
+                    #NOTA
+                    #CADA QUE QUIERA HACER UNA NUEVA CONSULTA CON PROCEDIMIENTOS ALMACENADOS ESTOS EL RESULTADO SE CIERRA Y LA VARIABLE DE LA CONECCION SE PREPARA PARA EL NUEVO RESULTADO
+                    # QUE TENDRA ABAJO
+                    $resultado->close();
+                    $conn->next_result();
+                    ?>
+                  </select>
+                </div>
+              </div>
               <!-- Lincencia -->
               <div class="col-sm-3">
                 <div class="form-group">
-                  <label for="exampleInputEmail1">Licencia: </label>
+                  <label>Licencia: </label>
                   <input type="text" class="form-control" name="txt_licence" id="licence" maxlength="60" value="<?php echo $CMP_License; ?>" placeholder="CMCDN-?????-?????-?????-?????">
                 </div>
               </div>
               <!-- Tarjeta Madre -->
               <div class="col-sm-3">
                 <div class="form-group">
-                  <label for="exampleInputEmail1">Tarjeta Madre: </label>
+                  <label>Tarjeta Madre: </label>
                   <input type="text" class="form-control" name="txt_motherboard" id="motherboard" maxlength="60" value="<?php echo $CMP_Motherboard; ?>" placeholder="0W3XW5-A00">
                 </div>
               </div>
@@ -399,10 +467,15 @@ if (isset($_POST["accion"])) {
                   </select>
                 </div>
               </div>
-              <!-- Localizacion -->
+
+            </div>
+            <!-- Comienzo fila 4 -->
+            <div class="row" style="padding-bottom:10px;">
               <div class="col-sm-3">
+                <!-- Localizacion -->
+
+                <label>Localización Computadora: </label>
                 <div class="form-group">
-                  <label>Localización Computadora: </label>
                   <?php $resultado = mysqli_query($conn, "CALL sp_location_select"); ?>
                   <select class="form-control" id="locations" name="select_location">
                     <?php while ($row = mysqli_fetch_array($resultado)) {
@@ -418,30 +491,24 @@ if (isset($_POST["accion"])) {
                     ?>
                   </select>
                 </div>
-              </div>
-            </div>
-            <!-- Comienzo fila 4 -->
-            <div class="row">
-              <div class="col-sm-5">
-                <!-- IMAGEN -->
-                <div class="col-sm-5">
-                  <label>Imagen del PC: </label>
-                  <div class="form-group mb-3">
-                    <input type="file" name="img_Comp" id="imageComp">
-                    <input type="submit" value="Upload">
-                  </div>
-
-                  <div class="form-group" id="imgReport" style="display:none;">
-                    <label>Reporte de Extravio/Robo: </label>
-                    <input type="file" name="imagReport" id="imagReport">
-                    <input type="submit" value="Upload">
-                  </div>
+                <div class="form-group" id="imgReport" style="display:none;">
+                  <label>Reporte de Extravio/Robo: </label>
+                  <input accept="image/png,image/jpeg" type="file" name="imagReport" value="<?php echo $CMP_Report; ?>">
                 </div>
+              </div>
+              <div class="col-sm-4">
+                <!-- IMAGEN -->
+                <label>Imagen del PC: </label>
+                <div class="form-group mb-3">
+                  <input accept="image/png,image/jpeg" type="file" name="archivo" value="<?php echo $CMP_Image; ?>">
+                </div>
+
+
               </div>
               <!-- Observaciones -->
               <div class="col-sm-5">
                 <div class="form-group  mb-3">
-                  <label for="exampleInputEmail1">Observaciones: </label>
+                  <label>Observaciones: </label>
                   <textarea type="text" class="form-control" name="txt_observation" id="observation" maxlength="100" value="<?php echo $CMP_Observations; ?>"> </textarea>
                 </div>
                 <div class="form-group">
@@ -453,22 +520,27 @@ if (isset($_POST["accion"])) {
               </div>
 
               <!-- Boton guardar -->
-              <div class="col-mb-3" style="padding-top:75px; margin-left:55px">
-                <button type="button" class="btn btn-block bg-olive" onclick='return validate_data();'>Actualizar</button>
-              </div>
+
               <!--/. fila 4 -->
             </div>
-            <div class="form-group">
+            <!-- Comienzo fila 5 -->
+            <div class="row justify-content-center" style="padding-bottom:10px;">
+              <div class="col-mb-3">
+                <button type="button" class="btn btn-block bg-olive" onclick='return validate_data();'>Actualizar</button>
+              </div>
             </div>
-
           </div>
-        </form>
+
+
       </div>
+      </form>
     </div>
+  </div>
   </div>
 </section>
 </div>
 </section>
+<!-- Ekko Lightbox -->
 
 <script>
   var checkbox = document.getElementById('checkReport');
@@ -522,6 +594,15 @@ if (isset($_POST["accion"])) {
       $('#modelSelect option').filter(function() {
         return $(this).text().toLowerCase().indexOf(texto) > -1;
       }).prop('selected', true);
+    });
+  });
+
+  $(function() {
+    $(document).on('click', '[data-toggle="lightbox"]', function(event) {
+      event.preventDefault();
+      $(this).ekkoLightbox({
+        alwaysShowClose: true
+      });
     });
   });
 </script>
