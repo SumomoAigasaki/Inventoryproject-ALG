@@ -42,6 +42,9 @@ if ($actualPage == 'index.php') {
   }elseif($actualPage == 'explorer.php'){
     $pageName = 'Explorar';
     $pageLink = "explorer.php";
+  }elseif($actualPage == 'view_computer.php'){
+    $pageName = 'Lista de Computadoras';
+    $pageLink = "view_computer.php";
   }
     elseif($actualPage == 'prueba.php'){
       $pageName = 'prueba';

@@ -9,28 +9,32 @@ include "../models/user_search.php";
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?php echo $pageName; echo nameWeb; ?></title>
-
+    <title><?php echo $pageName;
+            echo nameWeb; ?></title>
+    <!-- Archivos Base para el Dashboard -->
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="../../public/css/all.min.css">
+    <link rel="stylesheet" href="../../public/css/base/all.min.css">
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- Tempusdominus Bootstrap 4 -->
-    <link rel="stylesheet" href="../../public/css/tempusdominus-bootstrap-4.min.css">
+    <link rel="stylesheet" href="../../public/css/base/tempusdominus-bootstrap-4.min.css">
     <!-- iCheck -->
-    <link rel="stylesheet" href="../../public/css/icheck-bootstrap.min.css">
+    <link rel="stylesheet" href="../../public/css/base/icheck-bootstrap.min.css">
     <!-- JQVMap -->
-    <link rel="stylesheet" href="../../public/css/jqvmap.min.css">
+    <link rel="stylesheet" href="../../public/css/base/jqvmap.min.css">
     <!-- Theme style -->
-    <link rel="stylesheet" href="../../public/css/adminlte.min.css">
+    <link rel="stylesheet" href="../../public/css/base/adminlte.min.css">
     <!-- overlayScrollbars -->
-    <link rel="stylesheet" href="../../public/css/OverlayScrollbars.min.css">
+    <link rel="stylesheet" href="../../public/css/base/OverlayScrollbars.min.css">
     <!-- Daterange picker -->
-    <link rel="stylesheet" href="../../public/css/daterangepicker.css">
+    <link rel="stylesheet" href="../../public/css/base/daterangepicker.css">
     <!-- summernote -->
-    <link rel="stylesheet" href="../../public/css/summernote-bs4.min.css">
+    <link rel="stylesheet" href="../../public/css/base/summernote-bs4.min.css">
+    <!-- ./Archivos Base para el Dashboard -->
+    <!-- Ekko Lightbox -->
+    <link rel="stylesheet" href="../../public/css/ekko-lightbox/ekko-lightbox.css">
     <!-- Toastr -->
     <link rel="stylesheet" href="../../public/css/toastr.min.css">
     <!-- Agrega jQuery y jQuery UI a tu página -->
@@ -39,12 +43,18 @@ include "../models/user_search.php";
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- DataTables -->
+    <link rel="stylesheet" href="../../public/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="../../public/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="../../public/css/buttons.bootstrap4.min.css">
+    <!-- SweetAlert2 -->
+  <link rel="stylesheet" href="../../public/css/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
 
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
-
+        <!-- Navbar -->
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
             <!-- Left navbar links -->
             <ul class="navbar-nav">
@@ -90,22 +100,35 @@ include "../models/user_search.php";
                 </li>
             </ul>
         </nav>
-        <!-- Main Sidebar Container menu -->
+        <!-- /.navbar -->
+
+
+        <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="index.php" class="brand-link">
                 <img src="../../public/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
                 <span class="brand-text font-weight-light"> <?php echo nameProject; ?> </span>
             </a>
-            <!-- Sidebar -->
+            <!-- Sidebar detecta -->
             <div class="sidebar">
                 <!-- Sidebar user panel (optional) -->
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
-                        <img src="../../public/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                        <?php
+                        $ImgProfile = $_SESSION["User_img"];
+                        if (empty($ImgProfile) || $ImgProfile == "/resources/User/") {
+                            // La variable está vacía
+                            $ImgProfile = "/resources/User/default.png";
+                        }
+                        ?>
+                        <img src="../../<?php echo $ImgProfile ?>" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
-                        <a href="#" class="d-block"> <?php echo  $_SESSION["User_Username"];?></a>
+                        <a href="#" class="d-block">
+                            <?php echo  $_SESSION["User_Username"];
+                            ?>
+                        </a>
                     </div>
                 </div>
 
@@ -124,26 +147,106 @@ include "../models/user_search.php";
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-
-                        <li class="nav-item ">
-                            <a href="../views/explorer.php" class="nav-link">
-                                <i class="nav-icon fas fa-globe"></i>
-                                <p>Explorar </p>
-                            </a>
-                        </li>
-
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-chart-pie"></i>
-                                <p>Reportes </p>
+                                <p>Dashboard </p>
                             </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Computadoras por area</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Computadoras Ingresadas recientemente</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Garantia vigentes</p>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
 
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon   fas  fa-crown"></i>
-                                <p>Privilegios </p>
+                            <a href="../views/explorer.php" class="nav-link">
+                                <i class="nav-icon fas fa-folder-open"></i>
+                                <p>Master Data </p>
                             </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Software</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Perifericos</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Colaboradores</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../views/explorer.php" class="nav-link">
+                                <i class="nav-icon fa fa-database"></i>
+                                <p> Transaction </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="../views/view_computer.php" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Computadoras</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Asignar PC</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Garantia</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon  fa fa-shield-alt"></i>
+                                <p>Security </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Roles</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Usuario</p>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
 
                         <li class="nav-item">
@@ -153,38 +256,83 @@ include "../models/user_search.php";
                                 <p>Cerrar Sesion </p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="../views/explorer.php" class="nav-link">
+                                <i class="nav-icon fas fa-globe"></i>
+                                <p>Explorar </p>
+                            </a>
+                        </li>
                     </ul>
                 </nav>
-                <!-- /.nav -->
+                <!-- /.sidebar-menu -->
             </div>
-            <!-- /.div -->
+            <!-- /.sidebar -->
         </aside>
-         <!-- /.aside -->
 
+        <!--- NAV-->
+        <!-- ---------------------------------------------------------------------------- -->
         <div class="content-wrapper">
 
             <!-- Content Header (Page header) -->
             <section class="content-header">
                 <div class="container-fluid">
-                    <div class="row mb-2">
+                    <div class="row mb-3">
                         <div class="col-sm-6">
                             <h1><?php echo $pageName; ?></h1>
                         </div>
-                        <div class="col-sm-3">
-                            <!--cinta de home y el nombre de la pagina -->
-                            <ol class="breadcrumb float-sm-right">
+                        <div class="col-sm-2">
+                            <!--cinta donde va el boton de + -->
+                            <ol class="breadcrumb float-sm-left">
                                 <div class="btn-group" class="col-sm-3">
                                     <!--botones  de agregar  -->
-                                    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="modal" data-target="#modal-default" title="Crear Bienes">
+                                    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="modal" data-target=".bd-example-modal-lg" title="Agegar Nuevos (as)">
                                         <span class="fa fa-plus"></span>
                                     </button>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item" class="btn btn-default" >Agregar Nuevos (as) </a>
+                                </div>
+                                <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title" style="text-align:center">Crear Nuevos</h4>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+
+                                            <div class="modal-body">
+                                                <!-- pages/views/computer.php -->
+                                                <a class="btn btn-app" href="../views/computer.php">
+                                                    <i class="fas fa-desktop"></i> Computadoras
+                                                </a>
+
+                                                <a class="btn btn-app" style="Margin:0px,0px,50px,50px;">
+                                                    <i class="fab fa-uncharted"></i> Software
+                                                </a>
+
+                                                <a class="btn btn-app" href="../views/user.php">
+                                                    <i class="fas fa-user-plus"></i> Usuario
+                                                </a>
+
+                                                <a class="btn btn-app" style="Margin:0px,0px,50px,50px;">
+                                                    <i class="fas fa-laptop"></i> Asignar Pc
+                                                </a>
+                                                <a class="btn btn-app" style="Margin:0px,0px,50px,50px;">
+                                                    <i class="fa fa-mouse"></i>Perifericos
+                                                </a>
+
+                                                <a class="btn btn-app" style="Margin:0px,0px,50px,50px;">
+                                                    <i class="fas fa-certificate"></i> Garantia
+                                                </a>
+                                            </div>
+
+                                        </div>
+                                        <!-- /.modal-content -->
                                     </div>
+                                    <!-- /.modal-dialog -->
                                 </div>
                             </ol>
-                        </div>
-                        <div class="col-sm-3">
+                        </div><!-- /.modal -->
+                        <div class="col-sm-4">
                             <!--cinta de home y el nombre de la pagina -->
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="<?php echo $pageLink; ?>">
@@ -194,377 +342,310 @@ include "../models/user_search.php";
                                     <?php echo nameProject; ?>
                                 </li>
                             </ol>
-                            <!-- /.col -->
-                        </div>
-                        <!-- /.row -->
-                    </div>
-                    <!-- /.container-fluid -->
-                </div>
-            </section>
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+                </div> <!-- /.container-fluid -->
+            </section><!-- /.content-header-->
 
-
-            <div class="modal fade" id="modal-default">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title" style="text-align:center">Crear Nuevos</h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-
-                        <div class="modal-body">
-                            <!-- pages/views/computer.php -->
-                            <a class="btn btn-app" href="<?php echo BASE_URL ?>pages/views/computer.php">
-                                <i class="fas fa-desktop"></i> Computadoras
-                            </a>
-
-                            <a class="btn btn-app" style="Margin:0px,0px,50px,50px;">
-                                <i class="fab fa-uncharted"></i> Software
-                            </a>
-
-                            <a class="btn btn-app" href="../views/user.php">
-                                <i class="fas fa-user-plus"></i> Usuario
-                            </a>
-
-                            <a class="btn btn-app" style="Margin:0px,0px,50px,50px;">
-                                <i class="fas fa-laptop"></i> Asignar Pc
-                            </a>
-
-                            <a class="btn btn-app" style="Margin:0px,0px,50px,50px;">
-                                <i class="fas fa-certificate"></i> Garantia
-                            </a>
-                        </div>
-
-                    </div>
-                    <!-- /.modal-content -->
-                </div>
-                <!-- /.modal-dialog -->
-            </div>
-            <!-- /.modal -->
+            <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                    <section class="content">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="card card-primary card-outline card-tabs">
-                                    <div class="card-header">
-                                        <h3 class="card-title">Formulario para Registrar Computadoras</h3>
-                                    </div>
 
-                                    <!-- form start -->
-                                    <form role="form" action="computer.php" method="POST" name="formInsertCMP" id="formInsertCMP" class="form-horizontal">
-                                        <div class="card-body">
-                                            <label class="form-check-label" for="exampleCheck2" style="padding-bottom: 5px;"> A continuación se le pedirá que <b> Ingrese</b> los siguientes datos:</label>
-                                            <!-- Input ocultos  -->
-                                            <input type="hidden" class="form-control" id="todayDate" name="todayDate" placeholder="<?php echo $todayDate ?>">
-                                            <input type="hidden" class="form-control" id="accion" name="accion" placeholder="">
-                                            <div class="row" style="padding-top:10px; padding-bottom:10px;">
-                                                <!-- Fecha de Compra -->
-                                                <div class="col-sm-4">
-                                                    <div class="form-group">
-                                                        <label>Fecha de Compra:</label>
-                                                        <div class="input-group">
-                                                            <input type="text" class="form-control datepicker-input" name="acquisitionDate" id="acquisitionDate">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- MARCA -->
-                                                <div class="col-sm-2">
-                                                    <div class="form-group">
-                                                        <label>Marca: </label>
-                                                        <?php
-                                                        #Se procede a llamar al procedimiento almacenado que se llama sp_manufacturer_select,con la variable que almancena "cnn" la base de datos 
-                                                        $resultado = mysqli_query($conn, "CALL sp_manufacturer_select()"); ?>
-                                                        <select class="form-control" id="manufacturerSelect" name="select_manufacturer" onchange="filtrarModelos()">
-                                                            <?php while ($row = mysqli_fetch_array($resultado)) { ?>
-                                                                <option value="<?php echo $row['MFC_idTbl_Manufacturer']; ?>"><?php echo $row['MFC_Description']; ?></option>
-                                                            <?php }
-                                                            #NOTA
-                                                            #CADA QUE QUIERA HACER UNA NUEVA CONSULTA CON PROCEDIMIENTOS ALMACENADOS ESTOS EL RESULTADO SE CIERRA Y LA VARIABLE DE LA CONECCION SE PREPARA PARA EL NUEVO RESULTADO
-                                                            # QUE TENDRA ABAJO
-                                                            $resultado->close();
-                                                            $conn->next_result();
-                                                            ?>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <!-- MODELOS  -->
-                                                <div class="col-sm-3">
-                                                    <div class="form-group">
-                                                        <label>Modelo : </label>
-                                                        <input type="text" id="lookModels" placeholder="Buscar modelo en especifico" class="form-control">
-                                                        <?php $resultado = mysqli_query($conn, "CALL sp_model_select()"); ?>
-                                                        <select class="form-control" id="modelSelect" name="select_model">
-                                                            <?php while ($row = mysqli_fetch_array($resultado)) { ?>
-                                                                <option value="<?php echo $row['MDL_idTbl_Model']; ?>" data-manufacturer="<?php echo $row['MFC_idTbl_Manufacturer']; ?>"><?php echo $row['MDL_Description']; ?></option>
-                                                            <?php }
-                                                            #NOTA
-                                                            #CADA QUE QUIERA HACER UNA NUEVA CONSULTA CON PROCEDIMIENTOS ALMACENADOS ESTOS EL RESULTADO SE CIERRA Y LA VARIABLE DE LA CONECCION SE PREPARA PARA EL NUEVO RESULTADO
-                                                            # QUE TENDRA ABAJO
-                                                            $resultado->close();
-                                                            $conn->next_result();
-                                                            ?>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <!-- TIPO DE COMPUTADORA -->
-                                                <div class="col-sm-3">
-                                                    <div class="form-group">
-                                                        <label>Tipo de Computadora : </label>
-                                                        <?php $resultado = mysqli_query($conn, "CALL sp_computerType_select()"); ?>
-                                                        <select class="form-control" id="computerTypes" name="select_computerType">
-                                                            <?php while ($row = mysqli_fetch_array($resultado)) { ?>
-                                                                <option value="<?php echo $row['CT_idTbl_Computer_Type']; ?>"><?php echo $row['CT_Description']; ?></option>
-                                                            <?php }
-                                                            #NOTA
-                                                            #CADA QUE QUIERA HACER UNA NUEVA CONSULTA CON PROCEDIMIENTOS ALMACENADOS ESTOS EL RESULTADO SE CIERRA Y LA VARIABLE DE LA CONECCION SE PREPARA PARA EL NUEVO RESULTADO
-                                                            # QUE TENDRA ABAJO
-                                                            $resultado->close();
-                                                            $conn->next_result();
-                                                            ?>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
+                    <!-- -------------------------------------------------------------------------------------- -->
+                    <?php function dataTableComputer($stmt)
+                    {
+                        while ($row = $stmt->fetch_assoc()) {
+                            echo "
+                                <tr> 
+                                <td>" . $row['CMP_idTbl_Computer'] . "</td>
+                                <td>" . $row['CMP_Inventory_Date'] . "</td>
+                                <td>" . $row['MFC_Description'] . "</td>
+                                ";
+                            if (empty($row['CMP_Image'])) {
+                                echo "<td> <li class='list-inline-item'>
+                                <img alt='Avatar' width='50' height='50'  class='table-avatar  img-circle' src='../../resources/Computer/default.jpg ' >         
+                                </li></td>";
+                            } else {
+                                echo "<td> <li class='list-inline-item'>
+                                <img alt='Avatar' width='50' height='50'  class='table-avatar  img-circle' src='../.." . $row['CMP_Image'] . " ' >         
+                                </li></td>";
+                            }
+                            echo "
+                                <td>" . $row['CMP_Technical_Name'] . "</td>
+                                <td>" . $row['MDL_Description'] . "</td>
+                                <td>" . $row['CT_Description'] . "</td>
+                                <td>" . $row['CMP_Servitag'] . "</td>
+                                <td>" . $row['CMP_License'] . "</td>
+                                <td>" . $row['CMP_Motherboard'] . "</td>
+                                <td>" . $row['CMP_Acquisition_Date'] . "</td>
+                                <td>" . $row['CMP_Warranty_Expiration'] . "</td>
+                                <td>" . $row['TG_Description'] . "</td>
+                                <td>" . $row['CMP_Warranty_Year'] . "</td>
+                                <td>" . $row['STS_Description'] . "</td>
+                                <td>" . $row['LCT_Description'] . "</td>
+                                <td>" . $row['CMP_Observations'] . "</td>
+                                <td>" . $row['CMP_Report'] . "</td>
+                                <td>" . $row['User_Username'] . "</td>
+                                <td align='center'>";
 
-                                            <!-- Comienzo fila 2 -->
-                                            <div class="row" style="padding-bottom:10px;">
-                                                <!-- Nombre Tecnico-->
-                                                <div class="col-sm-3">
-                                                    <div class="form-group">
-                                                        <label for="exampleInputEmail1">Nombre Técnico: </label>
-                                                        <input type="text" class="form-control" name="txt_nombre" id="nombre" maxlength="45" value="<?php echo (isset($nombres) ? $nombres : ""); ?>" placeholder="ASSET2023-0#">
-                                                    </div>
-                                                </div>
-                                                <!-- Servitag-->
-                                                <div class="col-sm-2">
-                                                    <div class="form-group">
-                                                        <label for="exampleInputEmail1">Servitag: </label>
-                                                        <input type="text" class="form-control" name="txt_servitag" id="servitag" maxlength="45" value="<?php echo (isset($servitags) ? $servitags : ""); ?>" placeholder="FKCX???">
-                                                    </div>
-                                                </div>
-                                                <!-- Fecha limite garantia -->
-                                                <div class="col-sm-4">
-                                                    <div class="form-group">
-                                                        <label>Fecha Límite Garantía:</label>
-                                                        <div class="input-group">
-                                                            <input type="text" class="form-control datepicker-input" name="warrantyExpiration" id="warrantyExpiration" onchange="actualizarAnio()">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- Anho limite garantia -->
-                                                <div class="col-sm-3">
-                                                    <div class="form-group">
-                                                        <label>Año Limite Garantía: </label>
-                                                        <div class="input-group">
-                                                            <input type="number" class="form-control" min="2000" max="2050" name="yearExpiration" id="yearExpiration" readonly>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                            // Verificamos si tiene permiso para actualizar
+                            if (isset($_SESSION["U-CMP"]) && $_SESSION["U-CMP"]) {
+                                echo '<a href="../views/uComputer.php?p=' . $row['CMP_idTbl_Computer'] . '" class="btn btn-outline-primary btn-sm" title="Editar Registro"><i class="fas fa-pencil-alt"></i></a>';
+                            } else {
+                                echo '';
+                            }
 
-                                            <!-- Comienzo fila 3 -->
-                                            <div class="row" style="padding-bottom:10px;">
-                                                <!-- Lincencia -->
-                                                <div class="col-sm-3">
-                                                    <div class="form-group">
-                                                        <label for="exampleInputEmail1">Licencia: </label>
-                                                        <input type="text" class="form-control" name="txt_licence" id="licence" maxlength="60" value="<?php echo (isset($licenses) ? $licenses : ""); ?>" placeholder="CMCDN-?????-?????-?????-?????">
-                                                    </div>
-                                                </div>
-                                                <!-- Tarjeta Madre -->
-                                                <div class="col-sm-3">
-                                                    <div class="form-group">
-                                                        <label for="exampleInputEmail1">Tarjeta Madre: </label>
-                                                        <input type="text" class="form-control" name="txt_motherboard" id="motherboard" maxlength="60" value="<?php echo (isset($motherboards) ? $motherboards : ""); ?>" placeholder="0W3XW5-A00">
-                                                    </div>
-                                                </div>
-                                                <!-- Estado de la computadora  -->
-                                                <div class="col-sm-3">
-                                                    <div class="form-group">
-                                                        <label>Estado del Computador: </label>
-                                                        <?php $resultado = mysqli_query($conn, "CALL sp_status_select()"); ?>
-                                                        <select class="form-control" id="status" name="select_statu">
-                                                            <?php while ($row = mysqli_fetch_array($resultado)) { ?>
-                                                                <option value="<?php echo $row['STS_idTbl_Status']; ?>"><?php echo $row['STS_Description']; ?></option>
-                                                            <?php }
-                                                            #NOTA
-                                                            #CADA QUE QUIERA HACER UNA NUEVA CONSULTA CON PROCEDIMIENTOS ALMACENADOS ESTOS EL RESULTADO SE CIERRA Y LA VARIABLE DE LA CONECCION SE PREPARA PARA EL NUEVO RESULTADO
-                                                            # QUE TENDRA ABAJO
-                                                            $resultado->close();
-                                                            $conn->next_result();
-                                                            ?>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <!-- Localizacion -->
-                                                <div class="col-sm-3">
-                                                    <div class="form-group">
-                                                        <label>Localizacion del Computador : </label>
-                                                        <?php $resultado = mysqli_query($conn, "CALL sp_location_select"); ?>
-                                                        <select class="form-control" id="locations" name="select_location">
-                                                            <?php while ($row = mysqli_fetch_array($resultado)) { ?>
-                                                                <option value="<?php echo $row['LCT_idTbl_Location']; ?>"><?php echo $row['LCT_Description']; ?></option>
-                                                            <?php }
-                                                            #NOTA
-                                                            #CADA QUE QUIERA HACER UNA NUEVA CONSULTA CON PROCEDIMIENTOS ALMACENADOS ESTOS EL RESULTADO SE CIERRA Y LA VARIABLE DE LA CONECCION SE PREPARA PARA EL NUEVO RESULTADO
-                                                            # QUE TENDRA ABAJO
-                                                            $resultado->close();
-                                                            $conn->next_result();
-                                                            ?>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
+                            if (isset($_SESSION["D-CMP"]) && $_SESSION["D-CMP"]) {
+                                echo '<button class="btn btn-outline-danger btn-sm btnDeleteCMP"  title="Eliminar Registro" name="btnDeleteCMP" id="btnDeleteCMP" data-id="' . $row['CMP_idTbl_Computer'] . '"><i class="fas fa-trash-alt"></i></button> </td>';
+                            } else {
+                                echo '';
+                            }
 
-                                            <!-- Comienzo fila 4 -->
-                                            <div class="row">
-                                                <!-- IMAGEN -->
-                                                <div class="col-sm-5">
-                                                    <div class="form-group">
-                                                        <label>Imagen: </label>
-                                                        <input type="file" name="img_Comp" id="imageComp">
-                                                        <input type="submit" value="Upload">
-                                                    </div>
-                                                </div>
-                                                <!-- Observaciones -->
-                                                <div class="col-sm-5">
-                                                    <div class="form-group">
-                                                        <label for="exampleInputEmail1">Observaciones: </label>
-                                                        <textarea type="text" class="form-control" name="txt_observation" id="observation" maxlength="100" value="<?php echo (isset($observations) ? $observations : ""); ?>"> </textarea>
-                                                    </div>
-                                                </div>
-                                                <!-- Boton guardar -->
-                                                <div class="col-sm-2" style="padding-top:40px;">
-                                                    <button type="button" class="btn btn-block btn-info" id="buttonInsert" onclick='return validate_data();'>Guardar</button>
-                                                </div>
-
-                                            </div>
-                                            <div class="form-group">
-                                            </div>
-                                            <!-- /.card body -->
-                                        </div>
-                                        <!-- /.form-->
-                                    </form>
-                                    <!-- /.card card-primary card-outline -->
-
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                </div>
-            </section>
-            <script>
-                function filtrarModelos() {
-                    // Obtener el valor seleccionado en el primer select
-                    var manufacturerSeleccionado = document.getElementById("manufacturerSelect").value;
-
-                    // Obtener todos los options del segundo select
-                    var opcionesModelos = document.getElementById("modelSelect").options;
-
-                    // Obtenr el texto del segundo seletc
-                    var contenidoModelo = document.getElementsByTagName("option");
-
-                    // Recorrer todas las opciones y ocultar las que no pertenecen al fabricante seleccionado
-                    for (var i = 1; i < opcionesModelos.length; i++) {
-                        var modelo = opcionesModelos[i];
-                        if (modelo.getAttribute("data-manufacturer") == manufacturerSeleccionado || manufacturerSeleccionado == "") {
-                            modelo.style.display = "";
-                        } else {
-                            modelo.style.display = "none";
+                            echo "</tr>";
                         }
-                    }
+                    } ?>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <!-- contenido para la el datatable 1-->
+                                <div class="card-header">
+                                    <h3 class="card-title">Listado General de Computadoras del sistema <?php echo nameProject; ?> </h3>
+                                </div>
+                                <div class="card-body">
+                                    <table id="example1" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Fecha Inventario</th>
+                                                <th>Marca</th>
+                                                <th>Imagen</th>
+                                                <th>Nomb. Tecnico</th>
+                                                <th>Modelo</th>
+                                                <th>Tipo PC</th>
+                                                <th>Serial</th>
+                                                <th>Licencia</th>
+                                                <th>Motherboard</th>
+                                                <th>Fecha Adquisición</th>
+                                                <th>Fecha Limite Garantia</th>
+                                                <th>Tipo Garantia</th>
+                                                <th>Año limite Garantia</th>
+                                                <th>Estado</th>
+                                                <th>Localizacion</th>
+                                                <th>Observaciones</th>
+                                                <th>Imagen de Reporte</th>
+                                                <th>Usuario</th>
+                                                <th>Opciones</th>
 
-                    // Si no hay modelos disponibles para el fabricante seleccionado, mostrar un mensaje en el segundo select
-                    if (document.querySelectorAll("#modelSelect option[style='display: none;']").length === opcionesModelos.length - 1) {
-                        document.getElementById("modelSelect").innerHTML = "<option value=''>No hay modelos disponibles para este fabricante</option>";
-                    }
-                }
+                                            </tr>
+                                        </thead>
 
-                $(function() {
-                    $(".datepicker-input").datepicker({
-                        dateFormat: "yy-mm-dd"
-                    });
-                });
+                                        <tbody>
 
-                // Vincula el input de búsqueda con el select ded models 
-                $(document).ready(function() {
-                    $('#lookModels').on('keyup', function() {
-                        var texto = $(this).val().toLowerCase();
-                        $('#modelSelect option').filter(function() {
-                            return $(this).text().toLowerCase().indexOf(texto) > -1;
-                        }).prop('selected', true);
-                    });
-                });
+                                            <?php
 
-                document.addEventListener('DOMContentLoaded', function() {
-                    const formInsert = document.getElementById('formInsertCMP');
-                    const btnInsert = document.getElementById('buttonInsert');
-                    btnInsert.addEventListener('click', function() {
-                        formInsert.reset();
-                    });
-                });
-            </script>
+                                            // Validar permiso VR-CMP
+                                            $permisoVRCMP = isset($_SESSION["VR-CMP"]) && $_SESSION["VR-CMP"];
 
-            <!-- Copyright -->
-            <footer class="text text-white" style="background-color: #fff;">
-                <div class="text text-dark p-3" style="background-color: #fff;  padding: 1rem;color:#869099;">
-                    <div class="float-right d-none d-sm-block" style="color:#869099;">
-                        <b>Version</b> 1.0
+                                            // Validar permiso VA-CMP
+                                            $permisoVACMP = isset($_SESSION["VA-CMP"]) && $_SESSION["VA-CMP"];
+
+                                            //Valido si tiene el permiso de ver todos los registros 
+                                            if ($permisoVRCMP) {
+                                                $stmt = $conn->query("CALL sp_selectAllComputers()");
+                                                // Ejecutar el procedimiento almacenado
+                                                // Obtener todos los resultados
+                                                dataTableComputer($stmt);
+                                                $stmt->close();
+                                                $conn->next_result();
+                                            }
+                                            //Registros solo Activos 
+                                            else if ($permisoVACMP) {
+                                                $stmt = $conn->query("CALL sp_selectActiveComputers()");
+                                                // Ejecutar el procedimiento almacenado
+                                                // Obtener todos los resultados
+                                                dataTableComputer($stmt);
+                                                $stmt->close();
+                                                $conn->next_result();
+                                            }
+                                            //si tiene ambos permisos
+
+
+                                            else if ($permisoVRCMP && $permisoVACMP) {
+                                                $stmt = $conn->query("CALL sp_selectAllComputers()");
+                                                // Ejecutar el procedimiento almacenado
+                                                // Obtener todos los resultados
+                                                dataTableComputer($stmt);
+
+                                                $stmt->close();
+                                                $conn->next_result();
+                                            }
+                                            //si no tiene ninguno
+                                            else {
+                                                // Al menos uno de los permisos no está activo;
+                                            }
+                                            ?>
+                                        </tbody>
+
+                                        <tfoot>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Fecha Inventario</th>
+                                                <th>Marca</th>
+                                                <th>Imagen</th>
+                                                <th>Nomb. Tecnico</th>
+                                                <th>Modelo</th>
+                                                <th>Tipo PC</th>
+                                                <th>Serial</th>
+                                                <th>Licencia</th>
+                                                <th>Motherboard</th>
+                                                <th>Fecha Adquisición</th>
+                                                <th>Fecha Limite Garantia</th>
+                                                <th>Tipo Garantia</th>
+                                                <th>Año limite Garantia</th>
+                                                <th>Estado</th>
+                                                <th>Localizacion</th>
+                                                <th>Observaciones</th>
+                                                <th>Imagen de Reporte</th>
+                                                <th>Usuario</th>
+                                                <th>Opciones</th>
+
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                            <!-- /.card -->
+                        </div>
+                        <!-- /.col -->
                     </div>
-                    <div style="color:#869099;">
-                        <strong>Copyright &copy; 2022-2023 <a href="https://productoresdeazucarhonduras.com/ingenios/compania-azucarera-la-grecia/">.<?php echo companyName; ?></a>.</strong>
-                        All rights reserved.
-                    </div>
+                    <!-- /.row -->
 
+                    <script>
+                        $(function() {
+                            var table = $("#example1").DataTable({
+                                "stateSave": true,
+                                "responsive": true,
+                                "searching": true,
+                                "lengthChange": false,
+                                "autoWidth": false,
+                                dom: 'Bfrtip',
+
+                                "columnDefs": [{
+                                    "targets": [18], // Ajusta el índice según la columna de 'Opciones' en tu DataTable
+                                    "createdCell": function(td, cellData, rowData, row, col) {
+                                        var Estado = rowData[14]; // Ajusta el índice según la columna del estado en tu DataTable
+
+                                        // Deshabilitar eventos en las filas con estado 'Inactivo'
+                                        if (Estado === 'Inactivo(a)') {
+                                            $(td).find('a').off('click').addClass('disabled');
+                                            $(td).find('button').off('click').prop('disabled', true).addClass('disabled');
+                                        }
+                                    }
+                                }],
+
+                                "buttons": [{
+
+
+                                    extend: 'colvis',
+                                    text: '<i class="fas fa-eye"></i>',
+                                    titleAttr: 'Habilitar',
+                                    className: 'btn btn-info'
+                                }]
+                            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+
+
+                        });
+
+                        $('#example1').on('click', 'button.btnDeleteCMP', function() {
+                            var id = $(this).data('id');
+
+                            // Mostrar Sweet Alert
+                            Swal.fire({
+                                title: "Eliminar registro",
+                                text: "¿Estás seguro de eliminar este registro?",
+                                icon: "warning",
+                                showCancelButton: true,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Si, Quier Elimnarlo!'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    Swal.fire("Registro eliminado",
+                                        "El registro ha sido eliminado correctamente",
+                                        "success");
+
+
+                                }
+                            })
+
+                        });
+                    </script>
+
+                    <!-- ----------------------------------------------------------------------------------------------- -->
                 </div>
+                <!-- /.content-wrapper -->
 
+            </section>
+            <!-- /.content -->
+        
+        <footer class="main-footer">
+            <div class="float-right d-none d-sm-block">
+                <b>Version</b> 0.1
+            </div>
+            <strong>Copyright &copy; 2022-2023 <a href="https://productoresdeazucarhonduras.com/ingenios/compania-azucarera-la-grecia/">.<?php echo companyName; ?></a>.</strong>All rights reserved.
+        </footer>
+       
 
-                <aside class="control-sidebar control-sidebar-dark">
-                    <!-- Control sidebar content goes here -->
-                </aside>
-                <!-- /.control-sidebar -->
-        </div>
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+        </aside>
+    </div><!-- ./wrapper -->
+    </div>
+        <!-- /.content-wrapper -->
+    <!-- SWEETALERT -->
+    <script src='../../public/js/sweetalert2/sweetalert2.min.js'></script>
 
-        <!-- jQuery -->
-        <script src="../../public/js/jquery.min.js"></script>
-        <!-- jQuery UI 1.11.4 -->
-        <script src="../../public/js/jquery-ui.min.js"></script>
-        <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-        <!-- Bootstrap 4 -->
-        <script src="../../public/js/bootstrap.bundle.min.js"></script>
-        <!-- DataTables  & Plugins -->
-        <script src="../../public/js/jquery.dataTables.min.js"></script>
-        <script src="../../public/js/dataTables.bootstrap4.min.js"></script>
-        <script src="../../public/js/dataTables.responsive.min.js"></script>
-        <script src="../../public/js/responsive.bootstrap4.min.js"></script>
-        <script src="../../public/js/dataTables.buttons.min.js"></script>
-        <script src="../../public/js/buttons.bootstrap4.min.js"></script>
-        <script src="../../public/js/jszip.min.js"></script>
-        <script src="../../public/js/pdfmake.min.js"></script>
-        <script src="../../public/js/vfs_fonts.js"></script>
-        <script src="../../public/js/buttons.html5.min.js"></script>
-        <script src="../../public/js/buttons.print.min.js"></script>
-        <script src="../../public/js/buttons.colVis.min.js"></script>
+    <!-- jQuery -->
+    <script src="../../public/js/jquery.min.js"></script>
+    <!-- jQuery UI 1.11.4 -->
+    <script src="../../public/js/jquery-ui.min.js"></script>
+    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+    <!-- Bootstrap 4 -->
+    <script src="../../public/js/bootstrap.bundle.min.js"></script>
+    <!-- DataTables  & Plugins -->
+    <script src="../../public/js/jquery.dataTables.min.js"></script>
+    <script src="../../public/js/dataTables.bootstrap4.min.js"></script>
+    <script src="../../public/js/dataTables.responsive.min.js"></script>
+    <script src="../../public/js/responsive.bootstrap4.min.js"></script>
+    <script src="../../public/js/dataTables.buttons.min.js"></script>
+    <script src="../../public/js/buttons.bootstrap4.min.js"></script>
+    <script src="../../public/js/jszip.min.js"></script>
+    <script src="../../public/js/pdfmake.min.js"></script>
+    <script src="../../public/js/vfs_fonts.js"></script>
+    <script src="../../public/js/buttons.html5.min.js"></script>
+    <script src="../../public/js/buttons.print.min.js"></script>
+    <script src="../../public/js/buttons.colVis.min.js"></script>
 
-        <!-- JQVMap -->
-        <script src="../../public/js/jquery.vmap.min.js"></script>
-        <script src="../../public/js/jquery.vmap.usa.js"></script>
-        <!-- jQuery Knob Chart -->
-        <script src="../../public/js/jquery.knob.min.js"></script>
-        <!-- daterangepicker -->
-        <script src="../../public/js/moment.min.js"></script>
-        <script src="../../public/js/daterangepicker.js"></script>
-        <!-- Tempusdominus Bootstrap 4 -->
-        <script src="../../public/js/tempusdominus-bootstrap-4.min.js"></script>
-        <!-- Summernote -->
-        <script src="../../public/js/summernote-bs4.min.js"></script>
-        <!-- overlayScrollbars -->
-        <script src="../../public/js/jquery.overlayScrollbars.min.js"></script>
-        <!-- AdminLTE App -->
-        <script src="../../public/js/adminlte.js"></script>
+    <!-- JQVMap -->
+    <script src="../../public/js/jquery.vmap.min.js"></script>
+    <script src="../../public/js/jquery.vmap.usa.js"></script>
+    <!-- jQuery Knob Chart -->
+    <script src="../../public/js/jquery.knob.min.js"></script>
+    <!-- daterangepicker -->
+    <script src="../../public/js/moment.min.js"></script>
+    <script src="../../public/js/daterangepicker.js"></script>
+    <!-- Tempusdominus Bootstrap 4 -->
+    <script src="../../public/js/tempusdominus-bootstrap-4.min.js"></script>
+    <!-- Summernote -->
+    <script src="../../public/js/summernote-bs4.min.js"></script>
+    <!-- overlayScrollbars -->
+    <script src="../../public/js/jquery.overlayScrollbars.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="../../public/js/adminlte.js"></script>
+    <!-- Ekko Lightbox -->
+    <script src="../../public/css/ekko-lightbox/ekko-lightbox.min.js"></script>
 
 </body>
-
 </html>

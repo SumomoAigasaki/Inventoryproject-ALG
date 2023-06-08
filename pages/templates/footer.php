@@ -1,26 +1,25 @@
-<?php
+</div><!-- /.content-wrapper -->
 
-//NO es necesario llamar los includes de constantes y conexion porque en MENU.PHP ya hicimos la relacion
-// y como aca estamos heredando las asimila
-
-?>  
-</div>
-<!-- Copyright -->
-<footer class="text text-white" style="background-color: #fff;text-align: center;display: flex;justify-content: center;" ">
-  
-        <div style="color:#869099; padding: 1rem">
-        <strong>Copyright &copy; 2022-2023 <a href="https://productoresdeazucarhonduras.com/ingenios/compania-azucarera-la-grecia/">.<?php echo companyName; ?></a>.</strong>All rights reserved.      <b >Version</b> 0.1
-        </div>
-        
+</section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+  <footer class="main-footer">
+    <div class="float-right d-none d-sm-block">
+      <b>Version</b> 0.1
     </div>
-</footer>
+    <strong>Copyright &copy; 2022-2023 <a href="https://productoresdeazucarhonduras.com/ingenios/compania-azucarera-la-grecia/">.<?php echo companyName; ?></a>.</strong>All rights reserved.
+  </footer>
 
-
-    <aside class="control-sidebar control-sidebar-dark">
-        <!-- Control sidebar content goes here -->
-    </aside>
-    <!-- /.control-sidebar -->
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.div WRAPPER-->
 </div>
+
+<!-- SWEETALERT -->
+<script src='../../public/js/sweetalert2/sweetalert2.min.js'></script>
 
 <!-- jQuery -->
 <script src="../../public/js/jquery.min.js"></script>

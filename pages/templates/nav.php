@@ -5,11 +5,13 @@ include "../models/user_search.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?php echo $pageName;echo nameWeb; ?></title>
- <!-- Archivos Base para el Dashboard -->
+    <title><?php echo $pageName;
+            echo nameWeb; ?></title>
+    <!-- Archivos Base para el Dashboard -->
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
@@ -30,9 +32,9 @@ include "../models/user_search.php";
     <link rel="stylesheet" href="../../public/css/base/daterangepicker.css">
     <!-- summernote -->
     <link rel="stylesheet" href="../../public/css/base/summernote-bs4.min.css">
-<!-- ./Archivos Base para el Dashboard -->
-  <!-- Ekko Lightbox -->
-  <link rel="stylesheet" href="../../public/css/ekko-lightbox/ekko-lightbox.css">
+    <!-- ./Archivos Base para el Dashboard -->
+    <!-- Ekko Lightbox -->
+    <link rel="stylesheet" href="../../public/css/ekko-lightbox/ekko-lightbox.css">
     <!-- Toastr -->
     <link rel="stylesheet" href="../../public/css/toastr.min.css">
     <!-- Agrega jQuery y jQuery UI a tu página -->
@@ -41,12 +43,20 @@ include "../models/user_search.php";
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- DataTables -->
+    <link rel="stylesheet" href="../../public/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="../../public/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="../../public/css/buttons.bootstrap4.min.css">
+     <!-- SweetAlert2 -->
+  <link rel="stylesheet" href="../../public/css/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+
 
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
+    <!-- div WRAPPER-->
     <div class="wrapper">
-      
+
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
             <!-- Left navbar links -->
             <ul class="navbar-nav">
@@ -92,3 +102,4 @@ include "../models/user_search.php";
                 </li>
             </ul>
         </nav>
+        <!-- /.navbar -->

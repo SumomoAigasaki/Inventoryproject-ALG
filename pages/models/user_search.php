@@ -18,6 +18,9 @@
    
        $_SESSION["User_Username"] =  $row["User_Username"];
        $_SESSION["User_idTbl_User"] =  $row["User_idTbl_User"];
+       $_SESSION["User_img"] =  $row["User_img"];
+       $_SESSION["RLS_idTbl_Roles"] =  $row["RLS_idTbl_Roles"];
+       $_SESSION["STS_idTbl_Status"] =  $row["STS_idTbl_Status"];
        $stmt->close();
        $conn->next_result();
 

@@ -236,7 +236,7 @@ if (isset($_POST["accion"])) {
       toastr.success("Los datos de <b>' . $cmptName . '</b> se actualizaron de manera exitosa con el <b>ID</b> de: ' . $cmpId . '", "¡Enhorabuena!");
 
       setTimeout(function() {
-        window.location.href = "' . BASE_URL . 'pages/views/explorer.php";
+        window.location.href = "' . BASE_URL . 'pages/views/view_computer.php";
       }, 2000); // 2000 milisegundos = 2 segundos de retraso
     </script>';
       move_uploaded_file($_FILES['archivo']['tmp_name'], $uploads_dir . $_FILES['archivo']['name']);
@@ -544,7 +544,7 @@ if (isset($_POST["accion"])) {
                 <button type="button" class="btn btn-block bg-olive" onclick='return validate_data();'>Actualizar</button>
               </div>
               <div class="col-mb-3" style="margin-left: 5px;">
-                <button type="button" class="btn btn-block btn-primary" onclick="window.location.href = 'explorer.php';">Atras</button>
+                <button type="button" class="btn btn-block btn-primary" onclick="window.location.href = 'view_computer.php';">Atras</button>
               </div>
             </div>
           </div>

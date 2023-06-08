@@ -13,7 +13,14 @@ require_once "nav.php";
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                <img src="../../public/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+            <?php 
+            $ImgProfile=$_SESSION["User_img"];
+            if (empty($ImgProfile)|| $ImgProfile=="/resources/User/") {
+                // La variable está vacía
+                $ImgProfile="/resources/User/default.png";
+              } 
+            ?>
+                <img src="../../<?php echo $ImgProfile?>" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
                 <a href="#" class="d-block">
@@ -98,7 +105,7 @@ require_once "nav.php";
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="../views/explorer.php" class="nav-link">
+                            <a href="../views/view_computer.php" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Computadoras</p>
                             </a>
