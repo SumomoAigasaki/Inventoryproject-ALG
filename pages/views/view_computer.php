@@ -41,7 +41,7 @@ function dataTableComputer($stmt)
 
     // Verificamos si tiene permiso para actualizar
     if (isset($_SESSION["U-CMP"]) && $_SESSION["U-CMP"]) {
-      echo '<a href="../views/uComputer.php?p=' . $row['CMP_idTbl_Computer'] . '" class="btn btn-outline-primary btn-sm" title="Editar Registro"><i class="fas fa-pencil-alt"></i></a>';
+      echo '<a href="../views/update_computer.php?p=' . $row['CMP_idTbl_Computer'] . '" class="btn btn-outline-primary btn-sm" title="Editar Registro"><i class="fas fa-pencil-alt"></i></a>';
     } else {
       echo '';
     }

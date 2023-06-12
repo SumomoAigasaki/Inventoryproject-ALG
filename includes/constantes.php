@@ -25,16 +25,16 @@ if ($actualPage == 'index.php') {
   }elseif ($actualPage == 'user.php') {
     $pageName = 'Usuario';
     $pageLink = "user.php";
-  }elseif ($actualPage == 'computer.php') {
+  }elseif ($actualPage == 'insert_computer.php') {
     $pageName = 'Computadoras';
-    $pageLink = "computer.php";
+    $pageLink = "insert_computer.php";
     $imagepath = "resources/Computer/";
   }elseif($actualPage == 'readComputer.php'){
     $pageName = 'Lista de Computadoras';
     $pageLink = "readComputer.php";
-  }elseif($actualPage == 'uComputer.php'){
+  }elseif($actualPage == 'update_computer.php'){
     $pageName = 'Computadoras';
-    $pageLink = "uComputer.php"; 
+    $pageLink = "update_Computer.php"; 
     $imagepath = "resources/Computer/";
   }elseif($actualPage == 'what_is.php'){
     $pageName = 'Que es';

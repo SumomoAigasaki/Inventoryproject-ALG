@@ -189,7 +189,7 @@ if (isset($_POST["accion"])) {
                     <h3 class="card-title">Formulario para Añadir <?php echo $pageName; ?> </h3>
                 </div>
                 <!-- form start -->
-                <form role="form" action="computer.php" method="POST" name="formInsertCMP" id="formInsertCMP" class="form-horizontal" enctype="multipart/form-data">
+                <form role="form" action="" method="POST" name="formInsertCMP" id="formInsertCMP" class="form-horizontal" enctype="multipart/form-data">
                     <div class="card-body">
                         <label class="form-check-label" style="padding-bottom: 5px;"> A continuación se le pedirá que <b> Ingrese</b> los siguientes datos:</label>
 
