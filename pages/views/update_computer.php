@@ -1,5 +1,6 @@
 <?php
-require_once "../templates/title.php";
+require_once "../templates/menu.php";
+$permisoCMP = isset($privilegios["CMP"]) && $privilegios["CMP"];
 
 //obtendremos lA VARIABLE QUE PASAMOS POR METODO get 
 $idComp = $_GET['p'];
@@ -250,7 +251,56 @@ if (isset($_POST["accion"])) {
 }
 
 ?>
+<div class="content-wrapper">
 
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-1">
+            <div class="col-sm-4">
+                <h1><?php echo $pageName; ?></h1>
+            </div>
+            <div class="col-sm-4">
+                <!--cinta de home y el nombre de la pagina -->
+                <ol class="breadcrumb float-sm-right">
+                    <div class="btn-group" class="col-sm-4">
+                        <!--botones  de agregar  -->
+                        <?php
+                        if ($permisoCMP) {
+                            // Agregar la ruta al array $arrayAdd
+                            $ruta = "../views/view_computer.php";
+                            $arrayAdd[] = $ruta;
+
+                            // Crear el botón con la ruta almacenada en la variable
+                            echo "<a href=\"$ruta\"><button button type='button' class='btn btn-block btn-primary'></i><span class='fas fa-arrow-circle-left'>   Volver</button></span></a>";
+                        }
+                        ?>
+                        </button>
+                    </div>
+                    <!--  -->
+
+                    <!-- /.modal-dialog -->
+            </div>
+            </ol>
+
+            <div class="col-sm-4">
+                <!--cinta de home y el nombre de la pagina -->
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="<?php echo $pageLink; ?>">
+                            <?php echo $pageName; ?>
+                        </a></li>
+                    <li class="breadcrumb-item active">
+                        <?php echo nameProject; ?>
+                    </li>
+                </ol>
+                <!-- /.col -->
+            </div>
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+</section>
+<!-- Termina la cinta del nav -->
 <section class="content">
   <div class="row">
     <div class="col-md-12">
@@ -543,9 +593,9 @@ if (isset($_POST["accion"])) {
               <div class="col-mb-3">
                 <button type="button" class="btn btn-block bg-olive" onclick='return validate_data();'>Actualizar</button>
               </div>
-              <div class="col-mb-3" style="margin-left: 5px;">
+              <!-- <div class="col-mb-3" style="margin-left: 5px;">
                 <button type="button" class="btn btn-block btn-primary" onclick="window.location.href = 'view_computer.php';">Atras</button>
-              </div>
+              </div> -->
             </div>
           </div>
 

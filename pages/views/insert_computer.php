@@ -1,5 +1,7 @@
 <?php
-require_once "../templates/title.php";
+require_once "../templates/menu.php";
+
+$permisoCMP = isset($privilegios["CMP"]) && $privilegios["CMP"];
 ?>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
@@ -147,9 +149,9 @@ if (isset($_POST["accion"])) {
         $stmt = $conn->prepare("CALL sp_insertComputer(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
         // Mandamos los parametros y los input que seran enviados al PA O SP
-        $stmt->bind_param("sssssssssssssssss", $todayDate, $cmpIdManufacturer, $cmpImgComp, $cmptName, $cmpIdModel, $cmpCompType, $cmpServitag, $cmpLicence, $cmpMotherboard, $cmpAcquisitionDate, $cmpWarrantyExpiration, $cmpYearExpiration, $cmpIdLocation, $cmpIdStatu, $cmpObservation, $idUser,$cmpIdGuarantee);
-       // $query = "CALL sp_insertComputer('$todayDate', '$cmpIdManufacturer', '$cmpImgComp', '$cmptName', '$cmpIdModel', '$cmpCompType', '$cmpServitag', '$cmpLicence', '$cmpMotherboard', '$cmpAcquisitionDate', '$cmpWarrantyExpiration', '$cmpYearExpiration', '$cmpIdLocation', '$cmpIdStatu', '$cmpObservation', '$idUser','$cmpIdGuarantee');";
-       // echo $query;
+        $stmt->bind_param("sssssssssssssssss", $todayDate, $cmpIdManufacturer, $cmpImgComp, $cmptName, $cmpIdModel, $cmpCompType, $cmpServitag, $cmpLicence, $cmpMotherboard, $cmpAcquisitionDate, $cmpWarrantyExpiration, $cmpYearExpiration, $cmpIdLocation, $cmpIdStatu, $cmpObservation, $idUser, $cmpIdGuarantee);
+        // $query = "CALL sp_insertComputer('$todayDate', '$cmpIdManufacturer', '$cmpImgComp', '$cmptName', '$cmpIdModel', '$cmpCompType', '$cmpServitag', '$cmpLicence', '$cmpMotherboard', '$cmpAcquisitionDate', '$cmpWarrantyExpiration', '$cmpYearExpiration', '$cmpIdLocation', '$cmpIdStatu', '$cmpObservation', '$idUser','$cmpIdGuarantee');";
+        // echo $query;
 
         // Ejecutar el procedimiento almacenado
         $stmt->execute();
@@ -181,232 +183,284 @@ if (isset($_POST["accion"])) {
 }
 
 ?>
-<section class="content">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card card-primary card-outline card-tabs">
-                <div class="card-header">
-                    <h3 class="card-title">Formulario para Añadir <?php echo $pageName; ?> </h3>
+<div class="content-wrapper">
+
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-1">
+                <div class="col-sm-4">
+                    <h1><?php echo $pageName; ?></h1>
                 </div>
-                <!-- form start -->
-                <form role="form" action="" method="POST" name="formInsertCMP" id="formInsertCMP" class="form-horizontal" enctype="multipart/form-data">
-                    <div class="card-body">
-                        <label class="form-check-label" style="padding-bottom: 5px;"> A continuación se le pedirá que <b> Ingrese</b> los siguientes datos:</label>
+                <div class="col-sm-4">
+                    <!--cinta de home y el nombre de la pagina -->
+                    <ol class="breadcrumb float-sm-right">
+                        <div class="btn-group" class="col-sm-4">
+                            <!--botones  de agregar  -->
+                            <?php
+                            if ($permisoCMP) {
+                                // Agregar la ruta al array $arrayAdd
+                                $ruta = "../views/view_computer.php";
+                                $arrayAdd[] = $ruta;
 
-                        <!-- Input ocultos  -->
-                        <input type="hidden" class="form-control" id="todayDate" name="todayDate" placeholder="<?php echo $todayDate ?>">
-                        <input type="hidden" class="form-control" id="accion" name="accion" placeholder="">
-                        <div class="row" style="padding-top:10px; padding-bottom:10px;">
-                            <!-- Fecha de Compra -->
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label>Fecha de Compra:</label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control datepicker-input" name="acquisitionDate" id="acquisitionDate">
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- MARCA -->
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label>Marca: </label>
-                                    <?php
-                                    #Se procede a llamar al procedimiento almacenado que se llama sp_manufacturer_select,con la variable que almancena "cnn" la base de datos 
-                                    $resultado = mysqli_query($conn, "CALL sp_manufacturer_select()"); ?>
-                                    <select class="form-control" id="manufacturerSelect" name="select_manufacturer" onchange="filtrarModelos()">
-                                        <?php while ($row = mysqli_fetch_array($resultado)) { ?>
-                                            <option value="<?php echo $row['MFC_idTbl_Manufacturer']; ?>"><?php echo $row['MFC_Description']; ?></option>
-                                        <?php }
-                                        #NOTA
-                                        #CADA QUE QUIERA HACER UNA NUEVA CONSULTA CON PROCEDIMIENTOS ALMACENADOS ESTOS EL RESULTADO SE CIERRA Y LA VARIABLE DE LA CONECCION SE PREPARA PARA EL NUEVO RESULTADO
-                                        # QUE TENDRA ABAJO
-                                        $resultado->close();
-                                        $conn->next_result();
-                                        ?>
-                                    </select>
-                                </div>
-                            </div>
-                            <!-- MODELOS  -->
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label>Modelo : </label>
-                                    <input type="text" id="lookModels" placeholder="Buscar modelo en especifico" class="form-control">
-                                    <?php $resultado = mysqli_query($conn, "CALL sp_model_select()"); ?>
-                                    <select class="form-control" id="modelSelect" name="select_model">
-                                        <?php while ($row = mysqli_fetch_array($resultado)) { ?>
-                                            <option value="<?php echo $row['MDL_idTbl_Model']; ?>" data-manufacturer="<?php echo $row['MFC_idTbl_Manufacturer']; ?>"><?php echo $row['MDL_Description']; ?></option>
-                                        <?php }
-                                        #NOTA
-                                        #CADA QUE QUIERA HACER UNA NUEVA CONSULTA CON PROCEDIMIENTOS ALMACENADOS ESTOS EL RESULTADO SE CIERRA Y LA VARIABLE DE LA CONECCION SE PREPARA PARA EL NUEVO RESULTADO
-                                        # QUE TENDRA ABAJO
-                                        $resultado->close();
-                                        $conn->next_result();
-                                        ?>
-                                    </select>
-                                </div>
-                            </div>
-                            <!-- TIPO DE COMPUTADORA -->
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label>Tipo de Computadora : </label>
-                                    <?php $resultado = mysqli_query($conn, "CALL sp_computerType_select()"); ?>
-                                    <select class="form-control" id="computerTypes" name="select_computerType">
-                                        <?php while ($row = mysqli_fetch_array($resultado)) { ?>
-                                            <option value="<?php echo $row['CT_idTbl_Computer_Type']; ?>"><?php echo $row['CT_Description']; ?></option>
-                                        <?php }
-                                        #NOTA
-                                        #CADA QUE QUIERA HACER UNA NUEVA CONSULTA CON PROCEDIMIENTOS ALMACENADOS ESTOS EL RESULTADO SE CIERRA Y LA VARIABLE DE LA CONECCION SE PREPARA PARA EL NUEVO RESULTADO
-                                        # QUE TENDRA ABAJO
-                                        $resultado->close();
-                                        $conn->next_result();
-                                        ?>
-                                    </select>
-                                </div>
-                            </div>
+                                // Crear el botón con la ruta almacenada en la variable
+                                echo "<a href=\"$ruta\"><button button type='button' class='btn btn-primary'></i><span class='fas fa-arrow-circle-left'>   Volver</button></span></a>";
+                            }
+                            ?>
+                            </button>
                         </div>
-                        <!-- Comienzo fila 2 -->
-                        <div class="row" style="padding-bottom:10px;">
-                            <!-- Nombre Tecnico-->
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label>Nombre Técnico:</label>
-                                    <input type="text" class="form-control" name="txt_nombre" id="nombre" maxlength="45" value="<?php echo (isset($nombres) ? $nombres : ""); ?>" placeholder="ASSET2023-0#">
-                                </div>
-                            </div>
-                            <!-- Servitag-->
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label>Servitag: </label>
-                                    <input type="text" class="form-control" name="txt_servitag" id="servitag" maxlength="45" value="<?php echo (isset($servitags) ? $servitags : ""); ?>" placeholder="FKCX???">
-                                </div>
-                            </div>
-                            <!-- Fecha limite garantia -->
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label>Fecha Límite Garantía:</label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control datepicker-input" name="warrantyExpiration" id="warrantyExpiration" onchange="actualizarAnio()">
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Anho limite garantia -->
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label>Año Limite Garantía: </label>
-                                    <div class="input-group">
-                                        <input type="number" class="form-control" min="2000" max="2050" name="yearExpiration" id="yearExpiration" readonly>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Comienzo fila 3 -->
-                        <div class="row" style="padding-bottom:10px;">
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label>Tipo de Garantia: </label>
-                                    <?php
-                                    #Se procede a llamar al procedimiento almacenado que se llama sp_manufacturer_select,con la variable que almancena "cnn" la base de datos 
-                                    $resultado = mysqli_query($conn, "CALL sp_typeGuarantee_select()"); ?>
-                                    <select class="form-control" id="typeGuarantee" name="select_typeGuarantee">
-                                        <?php while ($row = mysqli_fetch_array($resultado)) { ?>
-                                            <option value="<?php echo $row['TG_idtbl_Type_Guarantee']; ?>"><?php echo $row['TG_Description']; ?></option>
-                                        <?php }
-                                        #NOTA
-                                        #CADA QUE QUIERA HACER UNA NUEVA CONSULTA CON PROCEDIMIENTOS ALMACENADOS ESTOS EL RESULTADO SE CIERRA Y LA VARIABLE DE LA CONECCION SE PREPARA PARA EL NUEVO RESULTADO
-                                        # QUE TENDRA ABAJO
-                                        $resultado->close();
-                                        $conn->next_result();
-                                        ?>
-                                    </select>
-                                </div>
-                            </div>
-                            <!-- Lincencia -->
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label>Licencia: </label>
-                                    <input type="text" class="form-control" name="txt_licence" id="licence" maxlength="60" value="<?php echo (isset($licenses) ? $licenses : ""); ?>" placeholder="CMCDN-?????-?????-?????-?????">
-                                </div>
-                            </div>
-                            <!-- Tarjeta Madre -->
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label>Tarjeta Madre: </label>
-                                    <input type="text" class="form-control" name="txt_motherboard" id="motherboard" maxlength="60" value="<?php echo (isset($motherboards) ? $motherboards : ""); ?>" placeholder="0W3XW5-A00">
-                                </div>
-                            </div>
-                            <!-- Estado de la computadora  -->
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label>Estado del Computador: </label>
-                                    <?php $resultado = mysqli_query($conn, "CALL sp_status_select()"); ?>
-                                    <select class="form-control" id="status" name="select_statu">
-                                        <?php while ($row = mysqli_fetch_array($resultado)) { ?>
-                                            <option value="<?php echo $row['STS_idTbl_Status']; ?>"><?php echo $row['STS_Description']; ?></option>
-                                        <?php }
-                                        #NOTA
-                                        #CADA QUE QUIERA HACER UNA NUEVA CONSULTA CON PROCEDIMIENTOS ALMACENADOS ESTOS EL RESULTADO SE CIERRA Y LA VARIABLE DE LA CONECCION SE PREPARA PARA EL NUEVO RESULTADO
-                                        # QUE TENDRA ABAJO
-                                        $resultado->close();
-                                        $conn->next_result();
-                                        ?>
-                                    </select>
-                                </div>
-                            </div>
+                        <!--  -->
 
-                        </div>
-                        <!-- Comienzo fila 4 -->
-                        <div class="row">
-                            <!-- Localizacion -->
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label>Localizacion del Computador : </label>
-                                    <?php $resultado = mysqli_query($conn, "CALL sp_location_select"); ?>
-                                    <select class="form-control" id="locations" name="select_location">
-                                        <?php while ($row = mysqli_fetch_array($resultado)) { ?>
-                                            <option value="<?php echo $row['LCT_idTbl_Location']; ?>"><?php echo $row['LCT_Description']; ?></option>
-                                        <?php }
-                                        #NOTA
-                                        #CADA QUE QUIERA HACER UNA NUEVA CONSULTA CON PROCEDIMIENTOS ALMACENADOS ESTOS EL RESULTADO SE CIERRA Y LA VARIABLE DE LA CONECCION SE PREPARA PARA EL NUEVO RESULTADO
-                                        # QUE TENDRA ABAJO
-                                        $resultado->close();
-                                        $conn->next_result();
-                                        ?>
-                                    </select>
-                                </div>
-                            </div>
-                            <!-- IMAGEN -->
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label>Imagen: </label>
-                                    <div class="input-group">
-                                        <input type="file" name="archivo">
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Observaciones -->
-                            <div class="col-sm-5">
-                                <div class="form-group">
-                                    <label>Observaciones: </label>
-                                    <textarea type="text" class="form-control" name="txt_observation" id="observation" maxlength="100" value="<?php echo (isset($observations) ? $observations : ""); ?>"> </textarea>
-                                </div>
-                            </div>
-                            <!-- Boton guardar -->
-                            <div class="col-sm-2" style="padding-top:40px;">
-                                <button type="button" class="btn btn-block btn-info" id="buttonInsert" name="buttonInsert" onclick='return validate_data();'>Guardar</button>
-                            </div>
+                        <!-- /.modal-dialog -->
+                </div>
+                </ol>
 
-                        </div>
-                        <div class="form-group">
-                        </div>
-                        <!-- /.card body -->
+                <div class="col-sm-4">
+                    <!--cinta de home y el nombre de la pagina -->
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="<?php echo $pageLink; ?>">
+                                <?php echo $pageName; ?>
+                            </a></li>
+                        <li class="breadcrumb-item active">
+                            <?php echo nameProject; ?>
+                        </li>
+                    </ol>
+                    <!-- /.col -->
+                </div>
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+    </section>
+    <!-- Termina la cinta del nav -->
+
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary card-outline card-tabs">
+                    <div class="card-header">
+                        <h3 class="card-title">Formulario para Añadir <?php echo $pageName; ?> </h3>
                     </div>
-                    <!-- /.form-->
-                </form>
-                <!-- /.card card-primary card-outline -->
+                    <!-- form start -->
+                    <form role="form" action="" method="POST" name="formInsertCMP" id="formInsertCMP" class="form-horizontal" enctype="multipart/form-data">
+                        <div class="card-body">
+                            <label class="form-check-label" style="padding-bottom: 5px;"> A continuación se le pedirá que <b> Ingrese</b> los siguientes datos:</label>
+
+                            <!-- Input ocultos  -->
+                            <input type="hidden" class="form-control" id="todayDate" name="todayDate" placeholder="<?php echo $todayDate ?>">
+                            <input type="hidden" class="form-control" id="accion" name="accion" placeholder="">
+                            <div class="row" style="padding-top:10px; padding-bottom:10px;">
+                                <!-- Fecha de Compra -->
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label>Fecha de Compra:</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control datepicker-input" name="acquisitionDate" id="acquisitionDate">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- MARCA -->
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label>Marca: </label>
+                                        <?php
+                                        #Se procede a llamar al procedimiento almacenado que se llama sp_manufacturer_select,con la variable que almancena "cnn" la base de datos 
+                                        $resultado = mysqli_query($conn, "CALL sp_manufacturer_select()"); ?>
+                                        <select class="form-control" id="manufacturerSelect" name="select_manufacturer" onchange="filtrarModelos()">
+                                            <?php while ($row = mysqli_fetch_array($resultado)) { ?>
+                                                <option value="<?php echo $row['MFC_idTbl_Manufacturer']; ?>"><?php echo $row['MFC_Description']; ?></option>
+                                            <?php }
+                                            #NOTA
+                                            #CADA QUE QUIERA HACER UNA NUEVA CONSULTA CON PROCEDIMIENTOS ALMACENADOS ESTOS EL RESULTADO SE CIERRA Y LA VARIABLE DE LA CONECCION SE PREPARA PARA EL NUEVO RESULTADO
+                                            # QUE TENDRA ABAJO
+                                            $resultado->close();
+                                            $conn->next_result();
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!-- MODELOS  -->
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>Modelo : </label>
+                                        <input type="text" id="lookModels" placeholder="Buscar modelo en especifico" class="form-control">
+                                        <?php $resultado = mysqli_query($conn, "CALL sp_model_select()"); ?>
+                                        <select class="form-control" id="modelSelect" name="select_model">
+                                            <?php while ($row = mysqli_fetch_array($resultado)) { ?>
+                                                <option value="<?php echo $row['MDL_idTbl_Model']; ?>" data-manufacturer="<?php echo $row['MFC_idTbl_Manufacturer']; ?>"><?php echo $row['MDL_Description']; ?></option>
+                                            <?php }
+                                            #NOTA
+                                            #CADA QUE QUIERA HACER UNA NUEVA CONSULTA CON PROCEDIMIENTOS ALMACENADOS ESTOS EL RESULTADO SE CIERRA Y LA VARIABLE DE LA CONECCION SE PREPARA PARA EL NUEVO RESULTADO
+                                            # QUE TENDRA ABAJO
+                                            $resultado->close();
+                                            $conn->next_result();
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!-- TIPO DE COMPUTADORA -->
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>Tipo de Computadora : </label>
+                                        <?php $resultado = mysqli_query($conn, "CALL sp_computerType_select()"); ?>
+                                        <select class="form-control" id="computerTypes" name="select_computerType">
+                                            <?php while ($row = mysqli_fetch_array($resultado)) { ?>
+                                                <option value="<?php echo $row['CT_idTbl_Computer_Type']; ?>"><?php echo $row['CT_Description']; ?></option>
+                                            <?php }
+                                            #NOTA
+                                            #CADA QUE QUIERA HACER UNA NUEVA CONSULTA CON PROCEDIMIENTOS ALMACENADOS ESTOS EL RESULTADO SE CIERRA Y LA VARIABLE DE LA CONECCION SE PREPARA PARA EL NUEVO RESULTADO
+                                            # QUE TENDRA ABAJO
+                                            $resultado->close();
+                                            $conn->next_result();
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Comienzo fila 2 -->
+                            <div class="row" style="padding-bottom:10px;">
+                                <!-- Nombre Tecnico-->
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>Nombre Técnico:</label>
+                                        <input type="text" class="form-control" name="txt_nombre" id="nombre" maxlength="45" value="<?php echo (isset($nombres) ? $nombres : ""); ?>" placeholder="ASSET2023-0#">
+                                    </div>
+                                </div>
+                                <!-- Servitag-->
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label>Servitag: </label>
+                                        <input type="text" class="form-control" name="txt_servitag" id="servitag" maxlength="45" value="<?php echo (isset($servitags) ? $servitags : ""); ?>" placeholder="FKCX???">
+                                    </div>
+                                </div>
+                                <!-- Fecha limite garantia -->
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label>Fecha Límite Garantía:</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control datepicker-input" name="warrantyExpiration" id="warrantyExpiration" onchange="actualizarAnio()">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Anho limite garantia -->
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>Año Limite Garantía: </label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" min="2000" max="2050" name="yearExpiration" id="yearExpiration" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Comienzo fila 3 -->
+                            <div class="row" style="padding-bottom:10px;">
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>Tipo de Garantia: </label>
+                                        <?php
+                                        #Se procede a llamar al procedimiento almacenado que se llama sp_manufacturer_select,con la variable que almancena "cnn" la base de datos 
+                                        $resultado = mysqli_query($conn, "CALL sp_typeGuarantee_select()"); ?>
+                                        <select class="form-control" id="typeGuarantee" name="select_typeGuarantee">
+                                            <?php while ($row = mysqli_fetch_array($resultado)) { ?>
+                                                <option value="<?php echo $row['TG_idtbl_Type_Guarantee']; ?>"><?php echo $row['TG_Description']; ?></option>
+                                            <?php }
+                                            #NOTA
+                                            #CADA QUE QUIERA HACER UNA NUEVA CONSULTA CON PROCEDIMIENTOS ALMACENADOS ESTOS EL RESULTADO SE CIERRA Y LA VARIABLE DE LA CONECCION SE PREPARA PARA EL NUEVO RESULTADO
+                                            # QUE TENDRA ABAJO
+                                            $resultado->close();
+                                            $conn->next_result();
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!-- Lincencia -->
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>Licencia: </label>
+                                        <input type="text" class="form-control" name="txt_licence" id="licence" maxlength="60" value="<?php echo (isset($licenses) ? $licenses : ""); ?>" placeholder="CMCDN-?????-?????-?????-?????">
+                                    </div>
+                                </div>
+                                <!-- Tarjeta Madre -->
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>Tarjeta Madre: </label>
+                                        <input type="text" class="form-control" name="txt_motherboard" id="motherboard" maxlength="60" value="<?php echo (isset($motherboards) ? $motherboards : ""); ?>" placeholder="0W3XW5-A00">
+                                    </div>
+                                </div>
+                                <!-- Estado de la computadora  -->
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>Estado del Computador: </label>
+                                        <?php $resultado = mysqli_query($conn, "CALL sp_status_select()"); ?>
+                                        <select class="form-control" id="status" name="select_statu">
+                                            <?php while ($row = mysqli_fetch_array($resultado)) { ?>
+                                                <option value="<?php echo $row['STS_idTbl_Status']; ?>"><?php echo $row['STS_Description']; ?></option>
+                                            <?php }
+                                            #NOTA
+                                            #CADA QUE QUIERA HACER UNA NUEVA CONSULTA CON PROCEDIMIENTOS ALMACENADOS ESTOS EL RESULTADO SE CIERRA Y LA VARIABLE DE LA CONECCION SE PREPARA PARA EL NUEVO RESULTADO
+                                            # QUE TENDRA ABAJO
+                                            $resultado->close();
+                                            $conn->next_result();
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- Comienzo fila 4 -->
+                            <div class="row">
+                                <!-- Localizacion -->
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>Localizacion del Computador : </label>
+                                        <?php $resultado = mysqli_query($conn, "CALL sp_location_select"); ?>
+                                        <select class="form-control" id="locations" name="select_location">
+                                            <?php while ($row = mysqli_fetch_array($resultado)) { ?>
+                                                <option value="<?php echo $row['LCT_idTbl_Location']; ?>"><?php echo $row['LCT_Description']; ?></option>
+                                            <?php }
+                                            #NOTA
+                                            #CADA QUE QUIERA HACER UNA NUEVA CONSULTA CON PROCEDIMIENTOS ALMACENADOS ESTOS EL RESULTADO SE CIERRA Y LA VARIABLE DE LA CONECCION SE PREPARA PARA EL NUEVO RESULTADO
+                                            # QUE TENDRA ABAJO
+                                            $resultado->close();
+                                            $conn->next_result();
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!-- IMAGEN -->
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label>Imagen: </label>
+                                        <div class="input-group">
+                                            <input type="file" name="archivo">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Observaciones -->
+                                <div class="col-sm-5">
+                                    <div class="form-group">
+                                        <label>Observaciones: </label>
+                                        <textarea type="text" class="form-control" name="txt_observation" id="observation" maxlength="100" value="<?php echo (isset($observations) ? $observations : ""); ?>"> </textarea>
+                                    </div>
+                                </div>
+                                <!-- Boton guardar -->
+                                <div class="col-sm-2" style="padding-top:40px;">
+                                    <button type="button" class="btn btn-block btn-info" id="buttonInsert" name="buttonInsert" onclick='return validate_data();'>Guardar</button>
+                                </div>
+
+                            </div>
+                            <div class="form-group">
+                            </div>
+                            <!-- /.card body -->
+                        </div>
+                        <!-- /.form-->
+                    </form>
+                    <!-- /.card card-primary card-outline -->
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
+</div>
 <script>
     function filtrarModelos() {
         // Obtener el valor seleccionado en el primer select

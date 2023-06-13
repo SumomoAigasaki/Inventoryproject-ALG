@@ -139,7 +139,7 @@ require_once "nav.php";
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="../views/view_user.php" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Usuario</p>
                             </a>

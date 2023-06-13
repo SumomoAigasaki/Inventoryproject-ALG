@@ -1,6 +1,4 @@
-</div><!-- /.content-wrapper -->
 
-</section>
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->

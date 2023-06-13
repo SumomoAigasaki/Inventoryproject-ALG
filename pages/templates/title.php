@@ -1,5 +1,20 @@
 <?php
 require_once "menu.php";
+
+//validaremos si tiene el permiso de SFT para agg al formulario de software
+$arrayAdd = array();
+$arrayUpdate = array();
+
+if (isset($privilegios["User"])) {
+    $arrayAdd[] = "../views/insert_user.php";
+    $arrayUpdate = "../views/update_user.php";
+} else if (isset($privilegios["CMP"])) {
+    $arrayAdd = "../views/insert_computer.php";
+    $arrayUpdate = "../views/update_computer.php";
+}
+
+
+
 ?>
 <div class="content-wrapper">
 
@@ -15,75 +30,47 @@ require_once "menu.php";
                     <ol class="breadcrumb float-sm-right">
                         <div class="btn-group" class="col-sm-3">
                             <!--botones  de agregar  -->
-                            <button type="button" class="btn btn-success dropdown-toggle" data-toggle="modal" data-target=".bd-example-modal-lg" title="Agegar Nuevos (as)">
-                                <span class="fa fa-plus"></span>
+                            <?php
+                            if (isset($privilegios["User"])) {
+                                // Buscar el índice del valor "../views/insert_user.php" en $arrayAdd
+                                $indice = array_search("../views/insert_user.php", $arrayAdd);
+
+                                // Crear el botón si se encuentra en $arrayAdd
+                                if ($indice !== false) {
+                                    $ruta = $arrayAdd[$indice];
+                                    echo "<a href=\"$ruta\"><button>Añadir usuario</button></a>";
+                                }
+                            }
+                            ?>
                             </button>
                         </div>
                         <!--  -->
-                <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h4 class="modal-title" style="text-align:center">Crear Nuevos</h4>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
 
-                            <div class="modal-body">
-                                <!-- pages/views/computer.php -->
-                                <a class="btn btn-app" href="../views/insert_computer.php">
-                                    <i class="fas fa-desktop"></i> Computadoras
-                                </a>
-
-                                <a class="btn btn-app" style="Margin:0px,0px,50px,50px;">
-                                    <i class="fab fa-uncharted"></i> Software
-                                </a>
-
-                                <a class="btn btn-app" href="../views/user.php">
-                                    <i class="fas fa-user-plus"></i> Usuario
-                                </a>
-
-                                <a class="btn btn-app" style="Margin:0px,0px,50px,50px;">
-                                    <i class="fas fa-laptop"></i> Asignar Pc
-                                </a>
-                                <a class="btn btn-app" style="Margin:0px,0px,50px,50px;">
-                                    <i class="fa fa-mouse"></i>Perifericos
-                                </a>
-
-                                <a class="btn btn-app" style="Margin:0px,0px,50px,50px;">
-                                    <i class="fas fa-certificate"></i> Garantia
-                                </a>
-                            </div>
-
-                        </div>
-                        <!-- /.modal-content -->
-                    </div>
-                    <!-- /.modal-dialog -->
+                        <!-- /.modal-dialog -->
                 </div>
-                    </ol>
-                </div>
-                
-                <!-- /.modal -->
-                <div class="col-sm-3">
-                    <!--cinta de home y el nombre de la pagina -->
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="<?php echo $pageLink; ?>">
-                                <?php echo $pageName; ?>
-                            </a></li>
-                        <li class="breadcrumb-item active">
-                            <?php echo nameProject; ?>
-                        </li>
-                    </ol>
-                    <!-- /.col -->
-                </div>
-                <!-- /.row -->
+                </ol>
             </div>
-            <!-- /.container-fluid -->
+
+            <!-- /.modal -->
+            <div class="col-sm-3">
+                <!--cinta de home y el nombre de la pagina -->
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="<?php echo $pageLink; ?>">
+                            <?php echo $pageName; ?>
+                        </a></li>
+                    <li class="breadcrumb-item active">
+                        <?php echo nameProject; ?>
+                    </li>
+                </ol>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
         </div>
-    </section>
+        <!-- /.container-fluid -->
+</div>
+</section>
 
 
-    <!-- Main content -->
-    <section class="content">
-        <div class="container-fluid">
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
