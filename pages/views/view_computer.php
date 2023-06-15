@@ -37,22 +37,29 @@ function dataTableComputer($stmt)
                 <td>" . $row['CMP_Observations'] . "</td>
                 <td>" . $row['CMP_Report'] . "</td>
                 <td>" . $row['User_Username'] . "</td>
-                <td align='center'>";
+                <td align='center'> <a href='../views/update_computer.php?p=" . $row['CMP_idTbl_Computer'] . "' class='btn btn-outline-primary btn-sm' title='Editar Registro'>
+                <i class='fas fa-pencil-alt'></i>
+              </a>
+              <button class='btn btn-outline-danger btn-sm btnDeleteCMP' title='Eliminar Registro' name='btnDeleteUSER' id='btnDeleteUSER' data-id='" . $row['CMP_idTbl_Computer'] . "'>
+                <i class='fas fa-trash-alt'></i>
+              </button>
+            </td>
+            </tr>";
 
-    // Verificamos si tiene permiso para actualizar
-    if (isset($_SESSION["U-CMP"]) && $_SESSION["U-CMP"]) {
-      echo '<a href="../views/update_computer.php?p=' . $row['CMP_idTbl_Computer'] . '" class="btn btn-outline-primary btn-sm" title="Editar Registro"><i class="fas fa-pencil-alt"></i></a>';
-    } else {
-      echo '';
-    }
+    // // Verificamos si tiene permiso para actualizar
+    // if (isset($privilegios["U-CMP"]) && $privilegios["U-CMP"]) {
+    //   echo '<a href="../views/update_computer.php?p=' . $row['CMP_idTbl_Computer'] . '" class="btn btn-outline-primary btn-sm" title="Editar Registro"><i class="fas fa-pencil-alt"></i></a>';
+    // } else {
+    //   echo '';
+    // }
 
-    if (isset($_SESSION["D-CMP"]) && $_SESSION["D-CMP"]) {
-      echo '<button class="btn btn-outline-danger btn-sm btnDeleteCMP"  title="Eliminar Registro" name="btnDeleteCMP" id="btnDeleteCMP" data-id="' . $row['CMP_idTbl_Computer'] . '"><i class="fas fa-trash-alt"></i></button> </td>';
-    } else {
-      echo '';
-    }
+    // if (isset($privilegios["D-CMP"]) && $privilegios["D-CMP"]) {
+    //   echo '<button class="btn btn-outline-danger btn-sm btnDeleteCMP"  title="Eliminar Registro" name="btnDeleteCMP" id="btnDeleteCMP" data-id="' . $row['CMP_idTbl_Computer'] . '"><i class="fas fa-trash-alt"></i></button> </td>';
+    // } else {
+    //   echo '';
+    // }
 
-    echo "</tr>";
+    // echo "</tr>";
   }
 }
 
@@ -155,10 +162,10 @@ function dataTableComputer($stmt)
                 //valido el rol que tiene el usuario 
 
                 // Validar permiso VR-CMP
-                $permisoVRCMP = isset($_SESSION["VR-CMP"]) && $_SESSION["VR-CMP"];
+                $permisoVRCMP = isset($privilegios["VR-CMP"]) && $privilegios["VR-CMP"];
 
                 // Validar permiso VA-CMP
-                $permisoVACMP = isset($_SESSION["VA-CMP"]) && $_SESSION["VA-CMP"];
+                $permisoVACMP = isset($privilegios["VA-CMP"]) && $privilegios["VA-CMP"];
 
                 //Valido si tiene el permiso de ver todos los registros 
                 if ($permisoVRCMP) {

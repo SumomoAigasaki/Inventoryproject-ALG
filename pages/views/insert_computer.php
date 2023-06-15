@@ -133,6 +133,10 @@ if (isset($_POST["accion"])) {
 
     // var_dump($_FILES['archivo']);
     $cmpImgComp = '/resources/Computer/' . $_FILES['archivo']['name'];
+
+
+    $anchoPorDefecto = 640; // Dimensiones por defecto
+    $altoPorDefecto = 480; 
     // Obtener la ruta completa de la imagen
     $uploads_dir = '../../resources/Computer/';  // Ruta de la carpeta de destino para los archivos
 
@@ -142,8 +146,9 @@ if (isset($_POST["accion"])) {
     date_default_timezone_set('America/Mexico_City');
     $todayDate = date("Y-m-d");
 
+    $idUser=$_SESSION["User_idTbl_User"];
     //la opcion 1 es para guardar y el C-CMP valida que tenga el permiso C-reateE en (CMP)computer
-    if ($accion == "1" && $_SESSION["C-CMP"]) {
+    if ($accion == "1" && $privilegios["C-CMP"]) {
 
         //Caso contrario Guardara
         $stmt = $conn->prepare("CALL sp_insertComputer(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
@@ -166,15 +171,15 @@ if (isset($_POST["accion"])) {
 
         if ($answerExistsComp > 0) {
             echo '<script > toastr.success("Los datos de <b>' . $cmptName . '</b> se Guardaron de manera exitosa.", "¡¡Enhorabuena!!");
-            // setTimeout(function() {
-            //     window.location.href = "explorer.php";
-            // }, 2000); // 2000 milisegundos = 2 segundos de retraso             
+             setTimeout(function() {
+                 window.location.href = "explorer.php";
+            }, 2000); // 2000 milisegundos = 2 segundos de retraso             
             </script>';
             move_uploaded_file($_FILES['archivo']['tmp_name'], $uploads_dir . $_FILES['archivo']['name']);
         } else {
             echo '<script > toastr.error(" No se pudo guardar recuerda que tiene que tener un Servitag unico. ' . $cmpServitag . '","¡¡UPS!!");
                 setTimeout(function() {
-                    window.location.href = "computer.php"; 
+                    window.location.href = "view_computer.php"; 
                 }, 3000);     
             </script>';
             //  echo '<script>setTimeout(function() { location.reload(); }, 2000);</script>' 

@@ -205,9 +205,9 @@ if (isset($_POST["accion"])) {
   date_default_timezone_set('America/Mexico_City');
   $todayDate = date("Y-m-d");
 
-
+  $idUser=$_SESSION["User_idTbl_User"];
   //la opcion 2 es para actualizar y el C-CMP valida que tenga el permiso U-pdate en (CMP)computer
-  if ($accion == "2" && $_SESSION["U-CMP"]) {
+  if ($accion == "2" && $privilegios["U-CMP"]) {
     //llamamos el procedimiento almacemado de actualizar computadora 
     $stmt = $conn->prepare("CALL sp_updateComputer(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
     // Mandamos los parametros y los input que seran enviados al PA O SP
@@ -330,7 +330,7 @@ if (isset($_POST["accion"])) {
 
                     <?php if (!$primerImagenMostrada && !empty($imagen)) : ?>
                       <?php if (!empty($imagenes[0])) : ?>
-                        <a href="../..<?php echo $imagenes[0] ?>" data-toggle="lightbox" data-title="Imagen de Computadora: <?php echo $CMP_Technical_Name; ?>" data-gallery="gallery">
+                        <a href="../..<?php echo $imagenes[0] ?>" data-toggle="lightbox"  data-title="Imagen de Computadora: <?php echo $CMP_Technical_Name; ?>" data-gallery="gallery">
                           <img src="../..<?php echo $imagenes[0] ?>" class="img-fluid" alt="Imagen de Computadora: <?php echo $CMP_Technical_Name; ?>" width="300" height="400" />
                         </a>
                       <?php endif; ?>
