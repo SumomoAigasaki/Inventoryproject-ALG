@@ -49,7 +49,7 @@ function dataTableUser($stmt)
         <div class="col-sm-4">
           <h1><?php echo $pageName; ?></h1>
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-4">
           <!--cinta de home y el nombre de la pagina -->
           <ol class="breadcrumb float-sm-right">
             <div class="btn-group" class="col-sm-4">
@@ -61,7 +61,7 @@ function dataTableUser($stmt)
                 $arrayAdd[] = $ruta;
 
                 // Crear el botón con la ruta almacenada en la variable
-                echo "<a href=\"$ruta\"><button button type='button' class='btn btn-success'><span class='fa fa-plus'> Agregar</button></span></a>";
+                echo "<a href=\"$ruta\"><button button type='button' class='btn btn-success'><span class='fa fa-plus'></span> Agregar</button></a>";
               }
               ?>
               </button>

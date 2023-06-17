@@ -209,7 +209,7 @@ if (isset($_POST["accion"])) {
                                 $arrayAdd[] = $ruta;
 
                                 // Crear el botón con la ruta almacenada en la variable
-                                echo "<a href=\"$ruta\"><button button type='button' class='btn btn-primary'></i><span class='fas fa-arrow-circle-left'>   Volver</button></span></a>";
+                                echo "<a href=\"$ruta\"><button button type='button' class='btn btn-primary'></i><span class='fas fa-arrow-circle-left'></span>   Volver</button></a>";
                             }
                             ?>
                             </button>

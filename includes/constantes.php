@@ -49,6 +49,9 @@ if ($actualPage == 'index.php') {
   elseif($actualPage == 'view_user.php'){
     $pageName = 'Lista de Usuarios';
     $pageLink = "view_user.php";
+  }elseif($actualPage == 'insert_user.php'){
+    $pageName = 'Usuarios';
+    $pageLink = "insert_user.php";
   }
     elseif($actualPage == 'prueba.php'){
       $pageName = 'prueba';

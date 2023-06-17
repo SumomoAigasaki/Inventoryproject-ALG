@@ -87,7 +87,7 @@ function dataTableComputer($stmt)
                 $arrayAdd[] = $ruta;
 
                 // Crear el botón con la ruta almacenada en la variable
-                echo "<a href=\"$ruta\"><button button type='button' class='btn btn-success'><span class='fa fa-plus'> Agregar</button></span></a>";
+                echo "<a href=\"$ruta\"><button button type='button' class='btn btn-success'><span class='fa fa-plus'></span> Agregar</button></a>";
               }
               ?>
               </button>
