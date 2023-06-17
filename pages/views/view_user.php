@@ -1,5 +1,6 @@
 <?php
-include "../templates/menu.php";
+require_once "../templates/nav.php";
+require_once "../templates/menu.php";
 
 
 $permisoSFT = isset($privilegios["USER"]) && $privilegios["USER"];
@@ -19,7 +20,7 @@ function dataTableUser($stmt)
     } else {
       echo "<li class='list-inline-item'>
                       <img alt='Avatar' width='50' height='50' class='table-avatar img-circle' src='../.." . $row['User_img'] . "'>
-                    </li> " . $row['User_Username'];
+                    </li>   " . $row['User_Username'];
     }
     echo "</td>";
     echo "<td>" . $row['User_Email'] . "</td>";
@@ -43,7 +44,7 @@ function dataTableUser($stmt)
 <div class="content-wrapper">
 
   <!-- Content Header (Page header) -->
-  <section class="content-header">
+  <div class="content-header">
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-4">
@@ -68,9 +69,8 @@ function dataTableUser($stmt)
             </div>
             <!--  -->
 
-            <!-- /.modal-dialog -->
+          </ol> <!-- /.modal-dialog -->
         </div>
-        </ol>
 
         <div class="col-sm-4">
           <!--cinta de home y el nombre de la pagina -->
@@ -88,14 +88,13 @@ function dataTableUser($stmt)
       <!-- /.row -->
     </div>
     <!-- /.container-fluid -->
-  </section>
+  </div>
 
 
 
   <!-- Main content -->
-  <div class="container-fluid">
-
-    <section class="content">
+  <section class="content">
+    <div class="container-fluid">
       <div class="row">
         <div class="col-12">
           <div class="card">
@@ -125,10 +124,6 @@ function dataTableUser($stmt)
                 <tbody>
 
                   <?php
-
-
-
-
                   //Valido EL ROLL administrador y el permiso de software
                   if ($idRol == 1 && $permisoSFT) {
                     $stmt = $conn->query("CALL sp_selectAllUser()");
@@ -170,101 +165,100 @@ function dataTableUser($stmt)
           </div>
         </div>
       </div>
-      <!-- /.card -->
-    </section>
+    </div>
+    <!-- /.card -->
+  </section>
 
-  </div>
+</div>
+<?php
+include "../templates/footer.php";
+?>
+</div>
 
 
+<?php
+function deleteUser()
+{
+  global $conn; // Utilizar la variable $conn en el ámbito de la función
 
+  if (isset($_POST['id'])) {
+    $id = $_POST["id"];
 
-  <?php
-  function deleteUser()
-  {
-    global $conn; // Utilizar la variable $conn en el ámbito de la función
+    $stmt = $conn->prepare("CALL sp_deleteUser(?)");
+    // Mandamos los parametros y los input que seran enviados al PA O SP
+    $stmt->bind_param("s", $id); // Ejecutar el procedimiento almacenado
 
-    if (isset($_POST['id'])) {
-      $id = $_POST["id"];
+    $stmt->execute();
+    // $query = "CALL sp_deleteComputer('$id')";
+    // echo $query;
+    // echo '<pre>';
 
-      $stmt = $conn->prepare("CALL sp_deleteUser(?)");
-      // Mandamos los parametros y los input que seran enviados al PA O SP
-      $stmt->bind_param("s", $id); // Ejecutar el procedimiento almacenado
+    if ($stmt->error) {
+      error_log("Error en la ejecución del procedimiento almacenado: " . $stmt->error);
+    }
+    // Obtener el número de filas afectadas por el insert
+    $stmt->bind_result($idU);
+    $stmt->fetch();
+    // Cerrar el statement
+    $stmt->close();
+    // Avanzar al siguiente conjunto de resultados si hay varios
+    $conn->next_result();
 
-      $stmt->execute();
-      // $query = "CALL sp_deleteComputer('$id')";
-      // echo $query;
-      // echo '<pre>';
-
-      if ($stmt->error) {
-        error_log("Error en la ejecución del procedimiento almacenado: " . $stmt->error);
-      }
-      // Obtener el número de filas afectadas por el insert
-      $stmt->bind_result($idU);
-      $stmt->fetch();
-      // Cerrar el statement
-      $stmt->close();
-      // Avanzar al siguiente conjunto de resultados si hay varios
-      $conn->next_result();
-
-      if ($idU > 0) {
-        echo '<script>
+    if ($idU > 0) {
+      echo '<script>
           setTimeout(function() {
             window.location.href = "view_computer.php";
           }, 10000);
         </script>';
-      }
     }
   }
+}
 
-  // Llamar a la función deleteComputer
-  deleteUser();
-  ?>
-  <script>
-    $(function() {
-      var table = $("#example1").DataTable({
-        "stateSave": true,
-        "responsive": true,
-        "searching": true,
-        "lengthChange": false,
-        "autoWidth": false
-      });
+// Llamar a la función deleteComputer
+deleteUser();
+?>
+<script>
+  $(function() {
+    var table = $("#example1").DataTable({
+      "stateSave": true,
+      "responsive": true,
+      "searching": true,
+      "lengthChange": false,
+      "autoWidth": false
+    });
+  });
+
+  $('#example1').on('click', 'button.btnDeleteCMP', function() {
+    var id = $(this).data('id');
+
+    // Mostrar Sweet Alert
+    Swal.fire({
+      title: "Eliminar registro",
+      text: "¿Estás seguro de eliminar este registro N: " + id + "?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, Quiero Elimnarlo!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $('#deleteId').val(id);
+
+        $.ajax({
+          type: "POST",
+          url: window.location.href, // URL actual de la página
+          data: {
+            id: id
+          }, // Datos a enviar al servidor
+          success: function(response) {
+            Swal.fire("Registro eliminado", "El registro ha sido eliminado correctamente", "success").then(() => {
+              // Redireccionar después de mostrar el SweetAlert
+              window.location.href = "view_user.php";
+            });
+          }
+        });
+      }
     });
 
-    $('#example1').on('click', 'button.btnDeleteCMP', function() {
-      var id = $(this).data('id');
-
-      // Mostrar Sweet Alert
-      Swal.fire({
-        title: "Eliminar registro",
-        text: "¿Estás seguro de eliminar este registro N: " + id + "?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Si, Quiero Elimnarlo!'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          $('#deleteId').val(id);
-
-          $.ajax({
-            type: "POST",
-            url: window.location.href, // URL actual de la página
-            data: {
-              id: id
-            }, // Datos a enviar al servidor
-            success: function(response) {
-              Swal.fire("Registro eliminado", "El registro ha sido eliminado correctamente", "success").then(() => {
-                // Redireccionar después de mostrar el SweetAlert
-                window.location.href = "view_user.php";
-              });
-            }
-          });
-        }
-      });
-
-    });
-  </script>
-
-  <?php
-  include "../templates/footer.php";
-  ?>
+  });
+</script>

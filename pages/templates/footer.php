@@ -1,6 +1,5 @@
 
-    <!-- /.content -->
-  </div>
+
   <!-- /.content-wrapper -->
   <footer class="main-footer">
     <div class="float-right d-none d-sm-block">
@@ -13,8 +12,7 @@
   <aside class="control-sidebar control-sidebar-dark">
     <!-- Control sidebar content goes here -->
   </aside>
-  <!-- /.div WRAPPER-->
-</div>
+
 
 <!-- SWEETALERT -->
 <script src='../../public/js/sweetalert2/sweetalert2.min.js'></script>
