@@ -86,92 +86,16 @@ $permisoUSR = isset($privilegios["USER"]) && $privilegios["USER"];
                 accionInput.value = "1";
 
             }
-            document.getElementById("formInsertCMP").submit();
+            document.getElementById("formInsertUSR").submit();
 
         }
         return false;
-    }
-    // Función para actualizar el valor del campo de entrada del año
-    function actualizarAnio() {
-        var warrantyExpirationInput = document.getElementById('warrantyExpiration');
-        var yearExpirationInput = document.getElementById('yearExpiration');
-
-        // Obtener el año a partir de la fecha
-        var fecha = new Date(warrantyExpirationInput.value);
-        var anio = fecha.getFullYear();
-
-        // Actualizar el valor del campo de entrada del año
-        yearExpirationInput.value = anio;
     }
 </script>
 
 <?php
 
 if (isset($_POST["accion"])) {
-    $accion = $_POST["accion"];
-    $cmpAcquisitionDate = $_POST["acquisitionDate"];
-    $cmpIdManufacturer = $_POST['select_manufacturer'];
-    $cmpIdModel = $_POST['select_model'];
-    $cmpCompType = $_POST['select_computerType'];
-    $cmptName = $_POST['txt_nombre'];
-    $cmpServitag = $_POST['txt_servitag'];
-    $cmpWarrantyExpiration = $_POST['warrantyExpiration'];
-    //$cmpYearExpiration = date("Y", strtotime($cmpWarrantyExpiration));
-    $cmpYearExpiration = $_POST['yearExpiration'];
-    $cmpLicence = $_POST['txt_licence'];
-    $cmpMotherboard = $_POST['txt_motherboard'];
-    $cmpIdStatu = $_POST['select_statu'];
-    $cmpIdLocation = $_POST['select_location'];
-
-    // var_dump($_FILES['archivo']);
-    $cmpImgComp = '/resources/Computer/' . $_FILES['archivo']['name'];
-    // Obtener la ruta completa de la imagen
-    $uploads_dir = '../../resources/Computer/';  // Ruta de la carpeta de destino para los archivos
-
-    $cmpObservation = $_POST['txt_observation'];
-    $cmpIdGuarantee = $_POST['select_typeGuarantee'];
-    //$cmpImgCompReport = "";
-    date_default_timezone_set('America/Mexico_City');
-    $todayDate = date("Y-m-d");
-
-    //la opcion 1 es para guardar y el C-CMP valida que tenga el permiso C-reateE en (CMP)computer
-    if ($accion == "1" && $_SESSION["C-CMP"]) {
-
-        //Caso contrario Guardara
-        $stmt = $conn->prepare("CALL sp_insertComputer(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-
-        // Mandamos los parametros y los input que seran enviados al PA O SP
-        $stmt->bind_param("sssssssssssssssss", $todayDate, $cmpIdManufacturer, $cmpImgComp, $cmptName, $cmpIdModel, $cmpCompType, $cmpServitag, $cmpLicence, $cmpMotherboard, $cmpAcquisitionDate, $cmpWarrantyExpiration, $cmpYearExpiration, $cmpIdLocation, $cmpIdStatu, $cmpObservation, $idUser, $cmpIdGuarantee);
-        // $query = "CALL sp_insertComputer('$todayDate', '$cmpIdManufacturer', '$cmpImgComp', '$cmptName', '$cmpIdModel', '$cmpCompType', '$cmpServitag', '$cmpLicence', '$cmpMotherboard', '$cmpAcquisitionDate', '$cmpWarrantyExpiration', '$cmpYearExpiration', '$cmpIdLocation', '$cmpIdStatu', '$cmpObservation', '$idUser','$cmpIdGuarantee');";
-        // echo $query;
-
-        // Ejecutar el procedimiento almacenado
-        $stmt->execute();
-        if ($stmt->error) {
-            error_log("Error en la ejecución del procedimiento almacenado: " . $stmt->error);
-        }
-        // Obtener el valor de la variable de salida
-        $stmt->bind_result($answerExistsComp);
-        $stmt->fetch();
-        $stmt->close();
-        $conn->next_result();
-
-        if ($answerExistsComp > 0) {
-            echo '<script > toastr.success("Los datos de <b>' . $cmptName . '</b> se Guardaron de manera exitosa.", "¡¡Enhorabuena!!");
-            // setTimeout(function() {
-            //     window.location.href = "explorer.php";
-            // }, 2000); // 2000 milisegundos = 2 segundos de retraso             
-            </script>';
-            move_uploaded_file($_FILES['archivo']['tmp_name'], $uploads_dir . $_FILES['archivo']['name']);
-        } else {
-            echo '<script > toastr.error(" No se pudo guardar recuerda que tiene que tener un Servitag unico. ' . $cmpServitag . '","¡¡UPS!!");
-                setTimeout(function() {
-                    window.location.href = "computer.php"; 
-                }, 3000);     
-            </script>';
-            //  echo '<script>setTimeout(function() { location.reload(); }, 2000);</script>' 
-        }
-    }
 }
 
 ?>
@@ -244,16 +168,15 @@ if (isset($_POST["accion"])) {
                                 <input type="hidden" class="form-control" id="accion" name="accion" placeholder="">
 
                                 <div class="row" style="padding-top:10px; padding-bottom:10px;">
-                                    <!-- MARCA -->
-                                    <div class="col-sm-2">
+                                    <!-- Colaborador-->
+                                    <div class="col-sm-3">
                                         <div class="form-group">
-                                            <label>Marca: </label>
-                                            <?php
-                                            #Se procede a llamar al procedimiento almacenado que se llama sp_manufacturer_select,con la variable que almancena "cnn" la base de datos 
-                                            $resultado = mysqli_query($conn, "CALL sp_manufacturer_select()"); ?>
-                                            <select class="form-control" id="manufacturerSelect" name="select_manufacturer" onchange="filtrarModelos()">
+                                            <label>Colaborador:</label>
+                                            <input type="text" class="form-control" id="txt_busqueda" name="txt_busqueda" placeholder="Buscar Colaborador">
+                                            <?php $resultado = mysqli_query($conn, "CALL sp_selectCollaborators()"); ?>
+                                            <select class="form-control" id="selectColaboratos" name="selectColaboratos">
                                                 <?php while ($row = mysqli_fetch_array($resultado)) { ?>
-                                                    <option value="<?php echo $row['MFC_idTbl_Manufacturer']; ?>"><?php echo $row['MFC_Description']; ?></option>
+                                                    <option value="<?php echo $row['CBT_idTbl_Collaborator']; ?>"><?php echo $row['InformacionGeneral']; ?></option>
                                                 <?php }
                                                 #NOTA
                                                 #CADA QUE QUIERA HACER UNA NUEVA CONSULTA CON PROCEDIMIENTOS ALMACENADOS ESTOS EL RESULTADO SE CIERRA Y LA VARIABLE DE LA CONECCION SE PREPARA PARA EL NUEVO RESULTADO
@@ -264,72 +187,41 @@ if (isset($_POST["accion"])) {
                                             </select>
                                         </div>
                                     </div>
-                                    <!-- MODELOS  -->
+                                    <!-- UserName -->
                                     <div class="col-sm-3">
                                         <div class="form-group">
-                                            <label>Modelo : </label>
-                                            <input type="text" id="lookModels" placeholder="Buscar modelo en especifico" class="form-control">
-                                            <?php $resultado = mysqli_query($conn, "CALL sp_model_select()"); ?>
-                                            <select class="form-control" id="modelSelect" name="select_model">
-                                                <?php while ($row = mysqli_fetch_array($resultado)) { ?>
-                                                    <option value="<?php echo $row['MDL_idTbl_Model']; ?>" data-manufacturer="<?php echo $row['MFC_idTbl_Manufacturer']; ?>"><?php echo $row['MDL_Description']; ?></option>
-                                                <?php }
-                                                #NOTA
-                                                #CADA QUE QUIERA HACER UNA NUEVA CONSULTA CON PROCEDIMIENTOS ALMACENADOS ESTOS EL RESULTADO SE CIERRA Y LA VARIABLE DE LA CONECCION SE PREPARA PARA EL NUEVO RESULTADO
-                                                # QUE TENDRA ABAJO
-                                                $resultado->close();
-                                                $conn->next_result();
-                                                ?>
-                                            </select>
+                                            <label>Username:</label>
+                                            <input type="text" class="form-control" name="txt_username" id="txt_username" maxlength="16" placeholder="fcalderon">
                                         </div>
                                     </div>
-                                    <!-- TIPO DE COMPUTADORA -->
+                                    <!-- Password -->
                                     <div class="col-sm-3">
                                         <div class="form-group">
-                                            <label>Tipo de Computadora : </label>
-                                            <?php $resultado = mysqli_query($conn, "CALL sp_computerType_select()"); ?>
-                                            <select class="form-control" id="computerTypes" name="select_computerType">
-                                                <?php while ($row = mysqli_fetch_array($resultado)) { ?>
-                                                    <option value="<?php echo $row['CT_idTbl_Computer_Type']; ?>"><?php echo $row['CT_Description']; ?></option>
-                                                <?php }
-                                                #NOTA
-                                                #CADA QUE QUIERA HACER UNA NUEVA CONSULTA CON PROCEDIMIENTOS ALMACENADOS ESTOS EL RESULTADO SE CIERRA Y LA VARIABLE DE LA CONECCION SE PREPARA PARA EL NUEVO RESULTADO
-                                                # QUE TENDRA ABAJO
-                                                $resultado->close();
-                                                $conn->next_result();
-                                                ?>
-                                            </select>
+                                            <label>Password:</label>
+                                            <input type="password" class="form-control" name="txt_password" id="txt_password" maxlength="32">
                                         </div>
                                     </div>
-                                </div>
-                                <!-- Comienzo fila 2 -->
-                                <div class="row" style="padding-bottom:10px;">
-                                    <!-- Nombre Tecnico-->
+
+                                    <!-- Password -->
                                     <div class="col-sm-3">
                                         <div class="form-group">
-                                            <label>Nombre Técnico:</label>
-                                            <input type="text" class="form-control" name="txt_nombre" id="nombre" maxlength="45" value="<?php echo (isset($nombres) ? $nombres : ""); ?>" placeholder="ASSET2023-0#">
-                                        </div>
-                                    </div>
-                                    <!-- Servitag-->
-                                    <div class="col-sm-2">
-                                        <div class="form-group">
-                                            <label>Servitag: </label>
-                                            <input type="text" class="form-control" name="txt_servitag" id="servitag" maxlength="45" value="<?php echo (isset($servitags) ? $servitags : ""); ?>" placeholder="FKCX???">
+                                            <label>Confirmar Password:</label>
+                                            <input type="password" class="form-control" name="txt_confirmPassword" id="txt_confirmPassword" maxlength="32">
                                         </div>
                                     </div>
 
 
-                                </div>
-                                <!-- Comienzo fila 3 -->
+                                </div><!-- Comienzo fila 2 -->
 
                                 <div class="row">
                                     <!-- IMAGEN -->
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-6">
                                         <div class="form-group">
                                             <label>Imagen: </label>
+
                                             <div class="input-group">
-                                                <input type="file" name="archivo">
+                                                <img class="img-fluid" src="../../resources/User/default.png" width="150" height="150" style="margin: 10px;" id="imgPerfil">
+                                                <input type="file" id="imgUser" name="imgUser" accept="image/png,image/jpeg" style="padding-left:15px; padding-top:75px;">
                                             </div>
                                         </div>
                                     </div>
@@ -352,11 +244,32 @@ if (isset($_POST["accion"])) {
                                         </div>
                                     </div>
 
-                                    <!-- Boton guardar -->
-                                    <div class="col-sm-2" style="padding-top:40px;">
-                                        <button type="button" class="btn btn-block btn-info" id="buttonInsert" name="buttonInsert" onclick='return validate_data();'>Guardar</button>
+                                    <!-- Estado de la computadora  -->
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label>Rol Usuario: </label>
+                                            <?php $resultado = mysqli_query($conn, "CALL sp_rolesSelect()"); ?>
+                                            <select class="form-control" id="select_roles" name="select_roles">
+                                                <?php while ($row = mysqli_fetch_array($resultado)) { ?>
+                                                    <option value="<?php echo $row['RLS_idTbl_Roles']; ?>"><?php echo $row['RLS_Description']; ?></option>
+                                                <?php }
+                                                #NOTA
+                                                #CADA QUE QUIERA HACER UNA NUEVA CONSULTA CON PROCEDIMIENTOS ALMACENADOS ESTOS EL RESULTADO SE CIERRA Y LA VARIABLE DE LA CONECCION SE PREPARA PARA EL NUEVO RESULTADO
+                                                # QUE TENDRA ABAJO
+                                                $resultado->close();
+                                                $conn->next_result();
+                                                ?>
+                                            </select>
+                                        </div>
                                     </div>
 
+
+                                </div>
+
+                                <div class="row justify-content-center" style="padding-bottom:10px;">
+                                    <div class="col-mb-3">
+                                        <button type="button" class="btn btn-block btn-info" id="buttonInsert" name="buttonInsert" onclick='return validate_data();'>Guardar</button>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                 </div>
@@ -372,33 +285,48 @@ if (isset($_POST["accion"])) {
     </section>
 
 </div>
+<?php
+
+?>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script>
-    function filtrarModelos() {
-        // Obtener el valor seleccionado en el primer select
-        var manufacturerSeleccionado = document.getElementById("manufacturerSelect").value;
+    // Funcion para cargar la previsualizacion de imagen 
 
-        // Obtener todos los options del segundo select
-        var opcionesModelos = document.getElementById("modelSelect").options;
-
-        // Obtenr el texto del segundo seletc
-        var contenidoModelo = document.getElementsByTagName("option");
-
-        // Recorrer todas las opciones y ocultar las que no pertenecen al fabricante seleccionado
-        for (var i = 1; i < opcionesModelos.length; i++) {
-            var modelo = opcionesModelos[i];
-            if (modelo.getAttribute("data-manufacturer") == manufacturerSeleccionado || manufacturerSeleccionado == "") {
-                modelo.style.display = "";
-            } else {
-                modelo.style.display = "none";
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                // Asignamos el atributo src a la tag de imagen
+                $('#imgPerfil').attr('src', e.target.result);
             }
-        }
-
-        // Si no hay modelos disponibles para el fabricante seleccionado, mostrar un mensaje en el segundo select
-        if (document.querySelectorAll("#modelSelect option[style='display: none;']").length === opcionesModelos.length - 1) {
-            document.getElementById("modelSelect").innerHTML = "<option value=''>No hay modelos disponibles para este fabricante</option>";
+            reader.readAsDataURL(input.files[0]);
         }
     }
 
+    // El listener va asignado al input
+    $("#imgUser").change(function() {
+        readURL(this);
+    });
+
+    // Vincula el input de búsqueda con el select ded models 
+  
+    $(document).ready(function() {
+        $('#txt_busqueda').on('keyup', function() {
+            var texto = $(this).val().toLowerCase();
+
+            $('#selectColaboratos option').each(function() {
+                var opcion = $(this).text().toLowerCase();
+                var mostrar = opcion.indexOf(texto) > -1;
+                $(this).toggle(mostrar);
+            });
+
+            // Si no hay opciones visibles, selecciona la opción 1
+            var opcionesVisibles = $('#selectColaboratos option:visible');
+            if (opcionesVisibles.length === 0) {
+                $('#selectColaboratos').val('1');
+            }
+        });
+    });
 
     document.addEventListener('DOMContentLoaded', function() {
         const formInsert = document.getElementById('formInsertUSR');

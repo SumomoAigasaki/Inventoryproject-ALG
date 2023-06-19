@@ -254,7 +254,7 @@ require_once "../templates/menu.php"; ?>
                                         <div class="form-group">
                                             <label>Imagen: </label>
                                             <div class="input-group">
-                                                <input type="file" name="archivo">
+                                                <input type="file" name="archivo" accept="image/png,image/jpeg">
                                             </div>
                                         </div>
                                     </div>
@@ -414,13 +414,12 @@ require_once "../templates/menu.php"; ?>
         $cmpIdLocation = $_POST['select_location'];
 
         // var_dump($_FILES['archivo']);
-        $cmpImgComp = '/resources/Computer/' . $_FILES['archivo']['name'];
-
-
-        $anchoPorDefecto = 640; // Dimensiones por defecto
-        $altoPorDefecto = 480;
-        // Obtener la ruta completa de la imagen
-        $uploads_dir = '../../resources/Computer/';  // Ruta de la carpeta de destino para los archivos
+        $cmpImgComp = $_POST['archivo'];
+        if($cmpImgComp==""){
+            $cmpImgComp= '/resources/Computer/default.jpg';
+        }else {
+            $cmpImgComp = '/resources/Computer/' . $_FILES['archivo']['name'];
+        }
 
         $cmpObservation = $_POST['txt_observation'];
         $cmpIdGuarantee = $_POST['select_typeGuarantee'];
@@ -454,15 +453,13 @@ require_once "../templates/menu.php"; ?>
             if ($answerExistsComp > 0) {
                 echo '<script > toastr.success("Los datos de <b>' . $cmptName . '</b> se Guardaron de manera exitosa.", "¡¡Enhorabuena!!");
              setTimeout(function() {
-                 window.location.href = "explorer.php";
+                 window.location.href = "view_computer.php";
             }, 2000); // 2000 milisegundos = 2 segundos de retraso             
             </script>';
                 move_uploaded_file($_FILES['archivo']['tmp_name'], $uploads_dir . $_FILES['archivo']['name']);
             } else {
                 echo '<script > toastr.error(" No se pudo guardar recuerda que tiene que tener un Servitag unico. ' . $cmpServitag . '","¡¡UPS!!");
-                setTimeout(function() {
-                    window.location.href = "view_computer.php"; 
-                }, 3000);     
+                   
             </script>';
                 //  echo '<script>setTimeout(function() { location.reload(); }, 2000);</script>' 
             }
