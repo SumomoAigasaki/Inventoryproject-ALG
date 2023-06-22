@@ -2,9 +2,11 @@
 require_once "../templates/nav.php";
 require_once "../templates/menu.php";
 
+// echo('<pre>');
+// var_dump($privilegios);
+// echo('</pre>');
 
-$permisoSFT = isset($privilegios["USER"]) && $privilegios["USER"];
-
+$permisoUSER = isset($privilegios["USER"]) && $privilegios["USER"];
 
 function dataTableUser($stmt)
 {
@@ -56,7 +58,7 @@ function dataTableUser($stmt)
             <div class="btn-group" class="col-sm-4">
               <!--botones  de agregar  -->
               <?php
-              if ($permisoSFT) {
+              if ($permisoUSER) {
                 // Agregar la ruta al array $arrayAdd
                 $ruta = "../views/insert_user.php";
                 $arrayAdd[] = $ruta;
@@ -124,28 +126,45 @@ function dataTableUser($stmt)
                 <tbody>
 
                   <?php
-                  //Valido EL ROLL administrador y el permiso de software
-                  if ($idRol == 1 && $permisoSFT) {
-                    $stmt = $conn->query("CALL sp_selectAllUser()");
-                    // Ejecutar el procedimiento almacenado
-                    // Obtener todos los resultados
-                    dataTableUser($stmt);
-                    $stmt->close();
-                    $conn->next_result();
+                  $usuario=$_SESSION["RLS_idTbl_Roles"] ;
+                  $permisoUSER = isset($privilegios["USER"]) && $privilegios["USER"];
+                  // Verificar si el usuario tiene el rol 2 (administrador) y el permiso de SFT
+                  function validar_permisos($usuario,$permisoUSER) {
+                    if ($usuario == "2" && $permisoUSER) {
+                        return true;
+                    } else {
+                        return false;
+                    }
                   }
-                  //Registros solo Activos 
-                  else if ($idRol = !1 && $permisoSFT) {
-                    $stmt = $conn->query("CALL sp_selectActiveUser()");
-                    // Ejecutar el procedimiento almacenado
-                    // Obtener todos los resultados
-                    dataTableUser($stmt);
-                    $stmt->close();
-                    $conn->next_result();
+                  
+                  
+                  function obtener_registros($conn,$usuario,$permisoUSER) {
+                    include "../../includes/conecta.php";
+
+                    if (validar_permisos($usuario,$permisoUSER)) {
+                      
+                        // Realizar consulta para obtener todos los registros
+                        $stmt = $conn->query("CALL sp_selectAllUser()");
+                        // $query= "CALL sp_selectAllUser()";
+                        // echo $query;
+                          // Ejecutar el procedimiento almacenado
+                          // Obtener todos los resultados
+                          dataTableUser($stmt);
+                          $stmt->close();
+                          $conn->next_result();
+                    } else {
+                        // Realizar consulta para obtener solo registros activos
+                        $stmt = $conn->query("CALL sp_selectActiveUser()");
+                        // $query= "CALL CALL sp_selectActiveUser()";
+                        // echo $query;
+                        // Ejecutar el procedimiento almacenado
+                        // Obtener todos los resultados
+                        dataTableUser($stmt);
+                        $stmt->close();
+                        $conn->next_result();
+                    }
                   }
-                  //si no tiene ninguno
-                  else {
-                    // Al menos uno de los permisos no está activo;
-                  }
+                  obtener_registros($conn,$usuario, $permisoUSER);
                   ?>
                 </tbody>
                 <tfoot>

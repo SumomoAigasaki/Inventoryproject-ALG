@@ -156,52 +156,48 @@ function dataTableComputer($stmt)
                   </tr>
                 </thead>
                 <tbody>
-
-                  <?php
-
-                  //valido el rol que tiene el usuario 
-
-                  // Validar permiso VR-CMP
-                  $permisoVRCMP = isset($privilegios["VR-CMP"]) && $privilegios["VR-CMP"];
-
-                  // Validar permiso VA-CMP
-                  $permisoVACMP = isset($privilegios["VA-CMP"]) && $privilegios["VA-CMP"];
-
-                  //Valido si tiene el permiso de ver todos los registros 
-                  if ($permisoVRCMP) {
-                    $stmt = $conn->query("CALL sp_selectAllComputers()");
-                    // Ejecutar el procedimiento almacenado
-                    // Obtener todos los resultados
-                    dataTableComputer($stmt);
-                    $stmt->close();
-                    $conn->next_result();
+                <?php
+                  $usuario=$_SESSION["RLS_idTbl_Roles"] ;
+                  $permisoCMP = isset($privilegios["CMP"]) && $privilegios["CMP"];
+                  // Verificar si el usuario tiene el rol 2 (administrador) y el permiso de SFT
+                  function validar_permisos($usuario,$permisoCMP) {
+                    if ($usuario == "2" && $permisoCMP) {
+                        return true;
+                    } else {
+                        return false;
+                    }
                   }
-                  //Registros solo Activos 
-                  else if ($permisoVACMP) {
-                    $stmt = $conn->query("CALL sp_selectActiveComputers()");
-                    // Ejecutar el procedimiento almacenado
-                    // Obtener todos los resultados
-                    dataTableComputer($stmt);
-                    $stmt->close();
-                    $conn->next_result();
-                  }
-                  //si tiene ambos permisos
+                  
+                  
+                  function obtener_registros($conn,$usuario,$permisoCMP) {
+                    include "../../includes/conecta.php";
 
-
-                  else if ($permisoVRCMP && $permisoVACMP) {
-                    $stmt = $conn->query("CALL sp_selectAllComputers()");
-                    // Ejecutar el procedimiento almacenado
-                    // Obtener todos los resultados
-                    dataTableComputer($stmt);
-
-                    $stmt->close();
-                    $conn->next_result();
+                    if (validar_permisos($usuario,$permisoCMP)) {
+                      
+                        // Realizar consulta para obtener todos los registros
+                        $stmt = $conn->query("CALL sp_selectAllComputers()");
+                        // $query= "CALL sp_selectAllUser()";
+                        // echo $query;
+                          // Ejecutar el procedimiento almacenado
+                          // Obtener todos los resultados
+                          dataTableComputer($stmt);
+                          $stmt->close();
+                          $conn->next_result();
+                    } else {
+                        // Realizar consulta para obtener solo registros activos
+                        $stmt = $conn->query("CALL sp_selectAllComputers()");
+                        // $query= "CALL CALL sp_selectActiveUser()";
+                        // echo $query;
+                        // Ejecutar el procedimiento almacenado
+                        // Obtener todos los resultados
+                        dataTableComputer($stmt);
+                        $stmt->close();
+                        $conn->next_result();
+                    }
                   }
-                  //si no tiene ninguno
-                  else {
-                    // Al menos uno de los permisos no está activo;
-                  }
+                  obtener_registros($conn,$usuario, $permisoCMP);
                   ?>
+               
                 </tbody>
                 <tfoot>
                   <tr>

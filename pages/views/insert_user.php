@@ -31,66 +31,52 @@ $permisoUSR = isset($privilegios["USER"]) && $privilegios["USER"];
 
     // Función para validar los datos ingresados en el formulario
     function validate_data() {
-        var accionInput = document.getElementById('accion');
-        var acquisitionFecha = document.getElementById('acquisitionDate');
-        var manufacturerSelect = document.getElementById('manufacturerSelect');
-        var modelSelect = document.getElementById('modelSelect');
-        var computerTypesSelect = document.getElementById('computerTypes');
-        var nombreInput = document.getElementById('nombre');
-        var servitagInput = document.getElementById('servitag');
-        var warrantyExpirationInput = document.getElementById('warrantyExpiration');
-        var licenceInput = document.getElementById('licence');
-        var statusSelect = document.getElementById('status');
-        var locationsSelect = document.getElementById('locations');
-        var guaranteeSelect = document.getElementById('typeGuarantee');
-        var todayDateInput = document.getElementById('todayDate');
+        let accionInput = document.getElementById('accion');
+        let colaboradorSelect = document.getElementById('selectColaborador');
+        let usernametxt = document.getElementById('txt_username');
+        let emailtxt = document.getElementById('txt_email');
+        let passwordtxt = document.getElementById('txt_password');
+        let confirmPasswordtxt = document.getElementById('txt_confirmPassword');
+        let statusSelect = document.getElementById('selectStatus');
+        let rolesSelect = document.getElementById('selectRoles');
 
-
-        if (acquisitionFecha.value.trim() === "") {
-            toastr.warning("La <b>Fecha de Compra</b> esta vacio(a).<br>Por favor Ingrese una fecha valida");
-            acquisitionFecha.focus();
-        } else if (manufacturerSelect.selectedIndex == 0) {
-            toastr.warning('La <b>Marca</b> esta vacio(a).<br>Por favor Ingrese una Marca valida');
-            manufacturerSelect.focus();
-        } else if (modelSelect.value == 1) {
-            toastr.warning('El <b>Modelo</b> esta vacio(a).<br>Por favor Ingrese un Modelo valida');
-            modelSelect.focus();
-        } else if (computerTypesSelect.selectedIndex == 0) {
-            toastr.warning('El <b>Tipo de computadora</b> esta vacio(a).<br>Por favor Ingrese un tipo de computadora valido');
-            computerTypesSelect.focus();
-        } else if (nombreInput.value.trim() === "") {
-            toastr.warning('El <b>Nombre técnico</b> esta vacio(a).<br>Por favor Ingrese un Nombre valido');
-            nombreInput.focus();
-        } else if (servitagInput.value.trim() === "") {
-            toastr.warning('El <b>Servitag</b> esta vacio(a).<br>Por favor Ingrese una servitag valido');
-            servitagInput.focus();
-        } else if (warrantyExpirationInput.value.trim() === "") {
-            toastr.warning('La <b>Fecha Límite Garantía</b> esta vacio(a).<br>Por favor Ingrese una Fecha Límite Garantía valida');
-            warrantyExpirationInput.focus();
-        } else if (licenceInput.value.trim() === "") {
-            toastr.warning('La <b>Lincencia</b> esta vacio(a).<br>Por favor Ingrese una Lincensia valida');
-            licenceInput.focus();
+        if (usernametxt.value.trim() === "") {
+            toastr.warning("El <b>Usuario</b> esta vacio(a).<br>Por favor Ingrese un Usuario valida");
+            usernametxt.focus();
+        } else if (colaboradorSelect.selectedIndex == 0) {
+            toastr.warning('El <b>Colaborador</b> esta vacio(a).<br>Por favor Ingrese una Colaborador valida');
+            colaboradorSelect.focus();
+        } else if (emailtxt.value.trim() === "") {
+            toastr.warning('El <b>Email</b> esta vacio(a).<br>Por favor Ingrese un Email valido');
+            emailtxt.focus();
+        } else if (passwordtxt.value.trim() === "") {
+            toastr.warning('La <b>Contraseña</b> esta vacio(a).<br>Por favor Ingrese una Contraseña valido');
+            passwordtxt.focus();
+        } else if (confirmPasswordtxt.value.trim() === "") {
+            toastr.warning('La <b>Confirmacion de Contraseña</b> esta vacio(a).<br>Por favor Ingrese una Confirmacion de Contraseñavalida');
+            confirmPasswordtxt.focus();
         } else if (statusSelect.selectedIndex == 0) {
             toastr.warning('El <b>Estado del Computador</b> esta vacio(a).<br>Por favor Ingrese una Estado del Computador valida');
             statusSelect.focus();
-        } else if (locationsSelect.selectedIndex == 0) {
-            toastr.warning('La <b>Localizacion del Computador</b> esta vacio(a).<br>Por favor Ingrese una Localizacion del Computador valida');
-            locationsSelect.focus();
-        } else if (guaranteeSelect.selectedIndex == 0) {
-            toastr.warning('El <b>Tipo de Garantia </b> esta vacio(a).<br>Por favorTipo de Garantia del Computador valida');
-            guaranteeSelect.focus();
-        } else {
+        } else if (rolesSelect.selectedIndex == 0) {
+            toastr.warning('El <b>Rol del Usuario</b> esta vacio(a).<br>Por favor Ingrese una Rol del Usuario valida');
+            rolesSelect.focus();
+        } else if(passwordtxt.value != confirmPasswordtxt.value){
+            toastr.info('Las contraseña no coinciden, coloque una que si coincida ' );
+            passwordtxt.focus();
+            confirmPasswordtxt.focus();
+            
+        }else{
             // Si no hay errores, procesa los datos enviados
-            //$opcion = $_POST['opciones'];
             if (accionInput.value.trim() === "") {
                 accionInput.value = "1";
-
             }
             document.getElementById("formInsertUSR").submit();
 
         }
         return false;
     }
+
 </script>
 
 <?php
@@ -167,14 +153,14 @@ if (isset($_POST["accion"])) {
                                 <input type="hidden" class="form-control" id="todayDate" name="todayDate" placeholder="<?php echo $todayDate ?>">
                                 <input type="hidden" class="form-control" id="accion" name="accion" placeholder="">
 
-                                <div class="row" style="padding-top:10px; padding-bottom:10px;">
+                                <div  class="row justify-content-center" style="padding-top:10px; padding-bottom:10px;" >
                                     <!-- Colaborador-->
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-6">
                                         <div class="form-group">
                                             <label>Colaborador:</label>
                                             <input type="text" class="form-control" id="txt_busqueda" name="txt_busqueda" placeholder="Buscar Colaborador">
                                             <?php $resultado = mysqli_query($conn, "CALL sp_selectCollaborators()"); ?>
-                                            <select class="form-control" id="selectColaboratos" name="selectColaboratos">
+                                            <select class="form-control" id="selectColaborador" name="selectColaborador">
                                                 <?php while ($row = mysqli_fetch_array($resultado)) { ?>
                                                     <option value="<?php echo $row['CBT_idTbl_Collaborator']; ?>"><?php echo $row['InformacionGeneral']; ?></option>
                                                 <?php }
@@ -187,11 +173,35 @@ if (isset($_POST["accion"])) {
                                             </select>
                                         </div>
                                     </div>
+                                    <!-- IMAGEN -->
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Imagen: </label>
+
+                                            <div class="input-group">
+                                                <img class="img-fluid" src="../../resources/User/default.png" width="150" height="150" style="margin: 10px;" id="imgPerfil">
+                                                <input type="file" id="imgUser" name="imgUser" accept="image/png,image/jpeg" style="padding-left:15px; padding-top:75px;">
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                </div><!-- Comienzo fila 2 -->
+
+                                <div class="row">
                                     <!-- UserName -->
                                     <div class="col-sm-3">
                                         <div class="form-group">
                                             <label>Username:</label>
                                             <input type="text" class="form-control" name="txt_username" id="txt_username" maxlength="16" placeholder="fcalderon">
+                                        </div>
+                                    </div>
+                                    <!-- email -->
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label>Email:</label>
+                                            <input type="email" class="form-control" name="txt_email" id="txt_email" placeholder="juanjose@alg.com" maxlength="100" required>
                                         </div>
                                     </div>
                                     <!-- Password -->
@@ -210,27 +220,14 @@ if (isset($_POST["accion"])) {
                                         </div>
                                     </div>
 
-
-                                </div><!-- Comienzo fila 2 -->
-
-                                <div class="row">
-                                    <!-- IMAGEN -->
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label>Imagen: </label>
-
-                                            <div class="input-group">
-                                                <img class="img-fluid" src="../../resources/User/default.png" width="150" height="150" style="margin: 10px;" id="imgPerfil">
-                                                <input type="file" id="imgUser" name="imgUser" accept="image/png,image/jpeg" style="padding-left:15px; padding-top:75px;">
-                                            </div>
-                                        </div>
-                                    </div>
+                                </div>
+                                <div  class="row justify-content-center" >
                                     <!-- Estado de la computadora  -->
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-3" >
                                         <div class="form-group">
                                             <label>Estado del Usuario: </label>
                                             <?php $resultado = mysqli_query($conn, "CALL sp_status_select()"); ?>
-                                            <select class="form-control" id="status" name="select_statu">
+                                            <select class="form-control" id="selectStatus" name="selectStatus">
                                                 <?php while ($row = mysqli_fetch_array($resultado)) { ?>
                                                     <option value="<?php echo $row['STS_idTbl_Status']; ?>"><?php echo $row['STS_Description']; ?></option>
                                                 <?php }
@@ -249,7 +246,7 @@ if (isset($_POST["accion"])) {
                                         <div class="form-group">
                                             <label>Rol Usuario: </label>
                                             <?php $resultado = mysqli_query($conn, "CALL sp_rolesSelect()"); ?>
-                                            <select class="form-control" id="select_roles" name="select_roles">
+                                            <select class="form-control" id="selectRoles" name="selectRoles">
                                                 <?php while ($row = mysqli_fetch_array($resultado)) { ?>
                                                     <option value="<?php echo $row['RLS_idTbl_Roles']; ?>"><?php echo $row['RLS_Description']; ?></option>
                                                 <?php }
@@ -262,8 +259,6 @@ if (isset($_POST["accion"])) {
                                             </select>
                                         </div>
                                     </div>
-
-
                                 </div>
 
                                 <div class="row justify-content-center" style="padding-bottom:10px;">
@@ -309,7 +304,6 @@ if (isset($_POST["accion"])) {
     });
 
     // Vincula el input de búsqueda con el select ded models 
-  
     $(document).ready(function() {
         $('#txt_busqueda').on('keyup', function() {
             var texto = $(this).val().toLowerCase();
@@ -325,14 +319,6 @@ if (isset($_POST["accion"])) {
             if (opcionesVisibles.length === 0) {
                 $('#selectColaboratos').val('1');
             }
-        });
-    });
-
-    document.addEventListener('DOMContentLoaded', function() {
-        const formInsert = document.getElementById('formInsertUSR');
-        const btnInsert = document.getElementById('buttonInsert');
-        btnInsert.addEventListener('click', function() {
-            formInsert.reset();
         });
     });
 </script>
