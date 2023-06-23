@@ -2,14 +2,13 @@
 require_once "../templates/nav.php";
 require_once "../templates/menu.php";
 $permisoUSR = isset($privilegios["USER"]) && $privilegios["USER"];
+
 ?>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
 <script src="../../public/jquery/jquery.min.js"></script>
-<script src="../../public/js/toastr.min.js"></script>
-
-<script type="text/javascript">
-    toastr.options = {
+<script src="../../public/js/toastr.min.js">
+      toastr.options = {
         closeButton: true,
         debug: true,
         progressBar: true,
@@ -27,6 +26,12 @@ $permisoUSR = isset($privilegios["USER"]) && $privilegios["USER"];
         showMethod: 'fadeIn',
         hideMethod: 'fadeOut'
     }
+</script>
+
+
+
+<script type="text/javascript">
+  
 
 
     // Función para validar los datos ingresados en el formulario
@@ -39,52 +44,114 @@ $permisoUSR = isset($privilegios["USER"]) && $privilegios["USER"];
         let confirmPasswordtxt = document.getElementById('txt_confirmPassword');
         let statusSelect = document.getElementById('selectStatus');
         let rolesSelect = document.getElementById('selectRoles');
-
-        if (usernametxt.value.trim() === "") {
-            toastr.warning("El <b>Usuario</b> esta vacio(a).<br>Por favor Ingrese un Usuario valida");
-            usernametxt.focus();
-        } else if (colaboradorSelect.selectedIndex == 0) {
+        
+        if (colaboradorSelect.selectedIndex === 0) {
             toastr.warning('El <b>Colaborador</b> esta vacio(a).<br>Por favor Ingrese una Colaborador valida');
             colaboradorSelect.focus();
+            return false;
+        } else if (usernametxt.value.trim() === "") {
+            toastr.warning("El <b>Usuario</b> esta vacio(a).<br>Por favor Ingrese un Usuario valida");
+            usernametxt.focus();
+            return false;
         } else if (emailtxt.value.trim() === "") {
             toastr.warning('El <b>Email</b> esta vacio(a).<br>Por favor Ingrese un Email valido');
             emailtxt.focus();
+            return false;
         } else if (passwordtxt.value.trim() === "") {
             toastr.warning('La <b>Contraseña</b> esta vacio(a).<br>Por favor Ingrese una Contraseña valido');
             passwordtxt.focus();
         } else if (confirmPasswordtxt.value.trim() === "") {
             toastr.warning('La <b>Confirmacion de Contraseña</b> esta vacio(a).<br>Por favor Ingrese una Confirmacion de Contraseñavalida');
             confirmPasswordtxt.focus();
-        } else if (statusSelect.selectedIndex == 0) {
+            return false;
+        }else if (statusSelect.selectedIndex === 0) {
             toastr.warning('El <b>Estado del Computador</b> esta vacio(a).<br>Por favor Ingrese una Estado del Computador valida');
             statusSelect.focus();
-        } else if (rolesSelect.selectedIndex == 0) {
+            return false;
+        } else if (rolesSelect.selectedIndex === 0) {
             toastr.warning('El <b>Rol del Usuario</b> esta vacio(a).<br>Por favor Ingrese una Rol del Usuario valida');
             rolesSelect.focus();
-        } else if(passwordtxt.value != confirmPasswordtxt.value){
+            return false;
+        }  else if(passwordtxt.value != confirmPasswordtxt.value){
             toastr.info('Las contraseña no coinciden, coloque una que si coincida ' );
-            passwordtxt.focus();
-            confirmPasswordtxt.focus();
-            
+            confirmPasswordtxt.focus(); 
+            return false;           
         }else{
             // Si no hay errores, procesa los datos enviados
             if (accionInput.value.trim() === "") {
                 accionInput.value = "1";
+               
             }
             document.getElementById("formInsertUSR").submit();
 
         }
-        return false;
+        
     }
 
+    // window.onload= function(){
+    //     document.getElementById("buttonInsertUser").onclick= validate_data;
+    // }
 </script>
 
-<?php
+<?php 
+//validar que exista el boton enviar
+if (isset($_POST["buttonInsertUser"]) ) {
+   
+    date_default_timezone_set('America/Mexico_City');
+    $todayDateInput = date("Y-m-d");
+    $colaboratorSelect = $_POST["selectColaborador"];
+     // var_dump($_FILES['archivo']);
+    $imagenUserField = $_POST["archivo"];
+        if($imagenUserField==""){
+            $imagenUserField= '/resources/User/default.png';
+        }else {
+            $imagenUserField = '/resources/User/' . $_FILES['imgUser']['name'];
+        }
+    $usernameInput = $_POST["txt_username"];
+    $emailInput = $_POST["txt_email"];
+    $passwordInput = $_POST["txt_password"];
+    $statuSelect = $_POST["selectStatus"];
+    $roleSelect = $_POST["selectRoles"];
 
-if (isset($_POST["accion"])) {
+    $permisoUSR = isset($privilegios["USER"]) && $privilegios["USER"];
+    if ($permisoUSR) {
+        //Caso contrario Guardara
+        $stmt = $conn->prepare("CALL sp_insertUser(?,?,?,?,?,?,?,?)");
+
+        // Mandamos los parametros y los input que seran enviados al PA O SP
+        $stmt->bind_param("ssssssss", $todayDateInput, $usernameInput,$emailInput, $passwordInput,$colaboratorSelect, $statuSelect, $imagenUserField, $roleSelect);
+        // $query = "CALL sp_insertUser('$todayDateInput', '$usernameInput', '$emailInput', '$passwordInput', '$colaboratorSelect', '$statuSelect', '$imagenUserField', '$roleSelect');";
+        // echo $query;
+
+        // Ejecutar el procedimiento almacenado
+        $stmt->execute();
+        if ($stmt->error) {
+            error_log("Error en la ejecución del procedimiento almacenado: " . $stmt->error);
+        }
+        // Obtener el valor de la variable de salida
+        $stmt->bind_result($answerExistsComp);
+        $stmt->fetch();
+        $stmt->close();
+        $conn->next_result();
+
+        if ($answerExistsComp > 0) {
+            echo '<script > toastr.success("Los datos de <b>' . $usernameInput . '</b> se Guardaron de manera exitosa.", "¡¡Enhorabuena!!");
+         setTimeout(function() {
+             window.location.href = "view_user.php";
+        }, 2000); // 2000 milisegundos = 2 segundos de retraso             
+        </script>';
+            move_uploaded_file($_FILES['archivo']['tmp_name'], $uploads_dir . $_FILES['archivo']['name']);
+        } else {
+            echo '<script > toastr.error(" No se pudo guardar recuerda que tiene que tener un Username unico. ' . $usernameInput . '","¡¡UPS!!");
+               
+        </script>';
+            //  echo '<script>setTimeout(function() { location.reload(); }, 2000);</script>' 
+        }
+    }
+    
 }
-
 ?>
+
 
 <div class="content-wrapper">
 
@@ -145,7 +212,7 @@ if (isset($_POST["accion"])) {
                             <h3 class="card-title">Formulario para Añadir <?php echo $pageName; ?> </h3>
                         </div>
                         <!-- form start -->
-                        <form role="form" action="" method="POST" name="formInsertUSR" id="formInsertUSR" class="form-horizontal" enctype="multipart/form-data">
+                        <form role="form" action="" method="post" name="formInsertUSR" id="formInsertUSR" class="form-horizontal" enctype="multipart/form-data">
                             <div class="card-body">
                                 <label class="form-check-label" style="padding-bottom: 5px;"> A continuación se le pedirá que <b> Ingrese</b> los siguientes datos:</label>
 
@@ -180,7 +247,7 @@ if (isset($_POST["accion"])) {
 
                                             <div class="input-group">
                                                 <img class="img-fluid" src="../../resources/User/default.png" width="150" height="150" style="margin: 10px;" id="imgPerfil">
-                                                <input type="file" id="imgUser" name="imgUser" accept="image/png,image/jpeg" style="padding-left:15px; padding-top:75px;">
+                                                <input type="file" name="archivo" accept="image/png,image/jpeg" style="padding-left:15px; padding-top:75px;">
                                             </div>
                                         </div>
                                     </div>
@@ -194,7 +261,7 @@ if (isset($_POST["accion"])) {
                                     <div class="col-sm-3">
                                         <div class="form-group">
                                             <label>Username:</label>
-                                            <input type="text" class="form-control" name="txt_username" id="txt_username" maxlength="16" placeholder="fcalderon">
+                                            <input type="text" class="form-control" name="txt_username" id="txt_username" maxlength="16" placeholder="fcalderon" required>
                                         </div>
                                     </div>
                                     <!-- email -->
@@ -208,7 +275,7 @@ if (isset($_POST["accion"])) {
                                     <div class="col-sm-3">
                                         <div class="form-group">
                                             <label>Password:</label>
-                                            <input type="password" class="form-control" name="txt_password" id="txt_password" maxlength="32">
+                                            <input type="password" class="form-control" name="txt_password" id="txt_password" maxlength="32" required>
                                         </div>
                                     </div>
 
@@ -216,7 +283,7 @@ if (isset($_POST["accion"])) {
                                     <div class="col-sm-3">
                                         <div class="form-group">
                                             <label>Confirmar Password:</label>
-                                            <input type="password" class="form-control" name="txt_confirmPassword" id="txt_confirmPassword" maxlength="32">
+                                            <input type="password" class="form-control" name="txt_confirmPassword" id="txt_confirmPassword" maxlength="32" required>
                                         </div>
                                     </div>
 
@@ -263,7 +330,7 @@ if (isset($_POST["accion"])) {
 
                                 <div class="row justify-content-center" style="padding-bottom:10px;">
                                     <div class="col-mb-3">
-                                        <button type="button" class="btn btn-block btn-info" id="buttonInsert" name="buttonInsert" onclick='return validate_data();'>Guardar</button>
+                                        <button type="submit" class="btn btn-block btn-info" id="buttonInsertUser" name="buttonInsertUser" onclick='return validate_data();'>Guardar</button>
                                     </div>
                                 </div>
                                 <div class="form-group">
