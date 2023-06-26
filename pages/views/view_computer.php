@@ -12,17 +12,13 @@ function dataTableComputer($stmt)
                 <td>" . $row['CMP_Inventory_Date'] . "</td>
                 <td>" . $row['MFC_Description'] . "</td>
                 ";
-    if (empty($row['CMP_Image'])) {
-      echo "<td> <li class='list-inline-item'>
-                  <img alt='Avatar' width='50' height='50'  class='table-avatar  img-circle' src='../../resources/Computer/default.jpg ' >         
+    if (empty($row['CMP_Image']) || $row['CMP_Image'] == "/resources/Computer/") {
+      echo "<td><li class='list-inline-item'>
+                      <img alt='Avatar' width='50' height='50' class='table-avatar img-circle' src='../../resources/Computer/default.jpg'>         
                   </li></td>";
-    }else if($row['CMP_Image']== "../../resources/Computer/  ") {
-      echo "<td> <li class='list-inline-item'>
-      <img alt='Avatar' width='50' height='50'  class='table-avatar  img-circle' src='../../resources/Computer/default.jpg ' >          
-                  </li></td>";
-    } else if($row['CMP_Image']!="../../resources/Computer/ ") {
-      echo "<td> <li class='list-inline-item'>
-                  <img alt='Avatar' width='50' height='50'  class='table-avatar  img-circle' src='../.." . $row['CMP_Image'] . " ' >         
+    } else {
+      echo "<td><li class='list-inline-item'>
+                      <img alt='Avatar' width='50' height='50' class='table-avatar img-circle' src='../.." . $row['CMP_Image'] . "'>         
                   </li></td>";
     }
     echo "
@@ -160,48 +156,50 @@ function dataTableComputer($stmt)
                   </tr>
                 </thead>
                 <tbody>
-                <?php
-                  $usuario=$_SESSION["RLS_idTbl_Roles"] ;
+                  <?php
+                  $usuario = $_SESSION["RLS_idTbl_Roles"];
                   $permisoCMP = isset($privilegios["CMP"]) && $privilegios["CMP"];
                   // Verificar si el usuario tiene el rol 2 (administrador) y el permiso de SFT
-                  function validar_permisos($usuario,$permisoCMP) {
+                  function validar_permisos($usuario, $permisoCMP)
+                  {
                     if ($usuario == "2" && $permisoCMP) {
-                        return true;
+                      return true;
                     } else {
-                        return false;
+                      return false;
                     }
                   }
-                  
-                  
-                  function obtener_registros($conn,$usuario,$permisoCMP) {
+
+
+                  function obtener_registros($conn, $usuario, $permisoCMP)
+                  {
                     include "../../includes/conecta.php";
 
-                    if (validar_permisos($usuario,$permisoCMP)) {
-                      
-                        // Realizar consulta para obtener todos los registros
-                        $stmt = $conn->query("CALL sp_selectAllComputers()");
-                        // $query= "CALL sp_selectAllUser()";
-                        // echo $query;
-                          // Ejecutar el procedimiento almacenado
-                          // Obtener todos los resultados
-                          dataTableComputer($stmt);
-                          $stmt->close();
-                          $conn->next_result();
+                    if (validar_permisos($usuario, $permisoCMP)) {
+
+                      // Realizar consulta para obtener todos los registros
+                      $stmt = $conn->query("CALL sp_selectAllComputers()");
+                      // $query= "CALL sp_selectAllUser()";
+                      // echo $query;
+                      // Ejecutar el procedimiento almacenado
+                      // Obtener todos los resultados
+                      dataTableComputer($stmt);
+                      $stmt->close();
+                      $conn->next_result();
                     } else {
-                        // Realizar consulta para obtener solo registros activos
-                        $stmt = $conn->query("CALL sp_selectAllComputers()");
-                        // $query= "CALL CALL sp_selectActiveUser()";
-                        // echo $query;
-                        // Ejecutar el procedimiento almacenado
-                        // Obtener todos los resultados
-                        dataTableComputer($stmt);
-                        $stmt->close();
-                        $conn->next_result();
+                      // Realizar consulta para obtener solo registros activos
+                      $stmt = $conn->query("CALL sp_selectAllComputers()");
+                      // $query= "CALL CALL sp_selectActiveUser()";
+                      // echo $query;
+                      // Ejecutar el procedimiento almacenado
+                      // Obtener todos los resultados
+                      dataTableComputer($stmt);
+                      $stmt->close();
+                      $conn->next_result();
                     }
                   }
-                  obtener_registros($conn,$usuario, $permisoCMP);
+                  obtener_registros($conn, $usuario, $permisoCMP);
                   ?>
-               
+
                 </tbody>
                 <tfoot>
                   <tr>
@@ -353,5 +351,5 @@ function deleteComputer()
 deleteComputer();
 ?>
 <?php
-    require_once "../templates/footer.php";
-    ?>
+require_once "../templates/footer.php";
+?>

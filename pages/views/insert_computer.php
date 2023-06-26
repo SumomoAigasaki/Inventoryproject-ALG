@@ -416,10 +416,11 @@ if (isset($_POST["buttonInsert"])) {
 
     var_dump($_FILES['archivo']);
     $cmpImgComp = $_POST['archivo'];
-    if (isset($cmpImgComp)) {
+    
+    if (empty($cmpImgComp)) {
         $cmpImgComp = '/resources/Computer/default.jpg';
     } else {
-        $cmpImgComp = '/resources/Computer/'. $_FILES['archivo']['name'];
+        $cmpImgComp = '/resources/Computer/' . $_FILES['archivo']['name'];
     }
     $cmpObservation = $_POST['txt_observation'];
     $cmpIdGuarantee = $_POST['select_typeGuarantee'];
@@ -475,7 +476,7 @@ if (isset($_POST["buttonInsert"])) {
             echo 'document.getElementById("formInsertCMP").reset(); ';
             echo '</script>';
 
-            if (file_exists($cmp_dir . $_FILES['archivo']['name'])) {
+            if (file_exists($cmp_dir . $_FILES['archivo']['name'])!='/resources/Computer/default.jpg') {
                 echo '<script > toastr.info("La imagen ya existe '.$cmpImgComp.'")</script>;';
                 $uploadOk = 0; //si existe lanza un valor en 0 
             } else {  
