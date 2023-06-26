@@ -16,7 +16,11 @@ function dataTableComputer($stmt)
       echo "<td> <li class='list-inline-item'>
                   <img alt='Avatar' width='50' height='50'  class='table-avatar  img-circle' src='../../resources/Computer/default.jpg ' >         
                   </li></td>";
-    } else {
+    }else if($row['CMP_Image']== "../../resources/Computer/  ") {
+      echo "<td> <li class='list-inline-item'>
+      <img alt='Avatar' width='50' height='50'  class='table-avatar  img-circle' src='../../resources/Computer/default.jpg ' >          
+                  </li></td>";
+    } else if($row['CMP_Image']!="../../resources/Computer/ ") {
       echo "<td> <li class='list-inline-item'>
                   <img alt='Avatar' width='50' height='50'  class='table-avatar  img-circle' src='../.." . $row['CMP_Image'] . " ' >         
                   </li></td>";

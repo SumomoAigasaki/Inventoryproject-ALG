@@ -105,7 +105,7 @@ function dataTableUser($stmt)
             </form>
             <!-- contenido para la el datatable 1-->
             <div class="card-header">
-              <h3 class="card-title">Listado General de Computadoras del sistema <?php echo nameProject; ?> </h3>
+              <h3 class="card-title">Listado General de Usuario del sistema <?php echo nameProject; ?> </h3>
             </div>
 
             <div class="card-body">
