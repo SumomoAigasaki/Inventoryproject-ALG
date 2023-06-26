@@ -29,7 +29,7 @@ function dataTableUser($stmt)
     echo "<td>" . $row['STS_Description'] . "</td>";
     echo "<td>" . $row['RLS_Description'] . "</td>";
     echo "<td align='center'> 
-            <a href='../views/update_computer.php?p=" . $row['User_idTbl_User'] . "' class='btn btn-outline-primary btn-sm' title='Editar Registro'>
+            <a href='../views/update_user.php?p=" . $row['User_idTbl_User'] . "' class='btn btn-outline-primary btn-sm' title='Editar Registro'>
               <i class='fas fa-pencil-alt'></i>
             </a>
             <button class='btn btn-outline-danger btn-sm btnDeleteCMP' title='Eliminar Registro' name='btnDeleteUSER' id='btnDeleteUSER' data-id='" . $row['User_idTbl_User'] . "'>

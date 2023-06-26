@@ -25,35 +25,39 @@ if ($actualPage == 'index.php') {
   }elseif ($actualPage == 'user.php') {
     $pageName = 'Usuario';
     $pageLink = "user.php";
-  }elseif ($actualPage == 'insert_computer.php') {
-    $pageName = 'Computadoras';
-    $pageLink = "insert_computer.php";
-    $imagepath = "resources/Computer/";
   }elseif($actualPage == 'readComputer.php'){
     $pageName = 'Lista de Computadoras';
     $pageLink = "readComputer.php";
-  }elseif($actualPage == 'update_computer.php'){
-    $pageName = 'Computadoras';
-    $pageLink = "update_Computer.php"; 
-    $imagepath = "resources/Computer/";
   }elseif($actualPage == 'what_is.php'){
     $pageName = 'Que es';
     $pageLink = "what_is.php";
   }elseif($actualPage == 'explorer.php'){
     $pageName = 'Explorar';
     $pageLink = "explorer.php";
+    //COMPUTADORA
   }elseif($actualPage == 'view_computer.php'){
     $pageName = 'Lista de Computadoras';
     $pageLink = "view_computer.php";
+  }elseif($actualPage == 'update_computer.php'){
+    $pageName = 'Computadora';
+    $pageLink = "update_Computer.php"; 
+    $imagepath = "resources/Computer/";
+  }elseif ($actualPage == 'insert_computer.php') {
+    $pageName = 'Computadoras';
+    $pageLink = "insert_computer.php";
+    $imagepath = "resources/Computer/";
   }
+  // USUARIO
   elseif($actualPage == 'view_user.php'){
     $pageName = 'Lista de Usuarios';
     $pageLink = "view_user.php";
   }elseif($actualPage == 'insert_user.php'){
     $pageName = 'Usuarios';
     $pageLink = "insert_user.php";
-  }
-    elseif($actualPage == 'prueba.php'){
+  } elseif($actualPage == 'update_user.php'){
+    $pageName = 'Usuario';
+    $pageLink = "update_user.php";
+  }elseif($actualPage == 'prueba.php'){
       $pageName = 'prueba';
       $pageLink = "prueba.php";}
 

@@ -352,7 +352,7 @@ if (isset($_POST["accion"])) {
                       <?php endif; ?>
                     <?php endif; ?>
                   </div>
-
+                  <!-- 1ERA COLUMAN DE LA ROW 1 -->
                   <div class="col-sm-3">
                     <!-- FECHA DE INVENTARIO -->
                     <div class="form-group">
@@ -386,7 +386,7 @@ if (isset($_POST["accion"])) {
                     </div>
                   </div>
 
-
+                  <!-- 2DA COLUMAN DE LA ROW 1 -->
                   <div class="col-sm-3">
                     <div class="form-group">
                       <!-- Fecha de Compra -->
@@ -594,9 +594,7 @@ if (isset($_POST["accion"])) {
                   <div class="col-mb-3">
                     <button type="button" class="btn btn-block bg-olive" onclick='return validate_data();'>Actualizar</button>
                   </div>
-                  <!-- <div class="col-mb-3" style="margin-left: 5px;">
-                <button type="button" class="btn btn-block btn-primary" onclick="window.location.href = 'view_computer.php';">Atras</button>
-              </div> -->
+
                 </div>
               </div>
 
@@ -609,71 +607,71 @@ if (isset($_POST["accion"])) {
     </div>
   </section>
 </div>
-  <!-- Ekko Lightbox -->
-  <?php
-  require_once "../templates/footer.php";
-  ?>
-  <script>
-    var checkbox = document.getElementById('checkReport');
-    var opcionFotos = document.getElementById('imgReport');
+<!-- Ekko Lightbox -->
+<?php
+require_once "../templates/footer.php";
+?>
+<script>
+  var checkbox = document.getElementById('checkReport');
+  var opcionFotos = document.getElementById('imgReport');
 
-    checkbox.addEventListener('change', function() {
-      if (checkbox.checked) {
-        opcionFotos.style.display = 'block';
+  checkbox.addEventListener('change', function() {
+    if (checkbox.checked) {
+      opcionFotos.style.display = 'block';
+    } else {
+      opcionFotos.style.display = 'none';
+    }
+  });
+
+  function filtrarModelos() {
+    // Obtener el valor seleccionado en el primer select
+    var manufacturerSeleccionado = document.getElementById("manufacturerSelect").value;
+
+    // Obtener todos los options del segundo select
+    var opcionesModelos = document.getElementById("modelSelect").options;
+
+    // Obtenr el texto del segundo seletc
+    var contenidoModelo = document.getElementsByTagName("option");
+
+    // Recorrer todas las opciones y ocultar las que no pertenecen al fabricante seleccionado
+    for (var i = 1; i < opcionesModelos.length; i++) {
+      var modelo = opcionesModelos[i];
+      if (modelo.getAttribute("data-manufacturer") == manufacturerSeleccionado || manufacturerSeleccionado == "") {
+        modelo.style.display = "";
       } else {
-        opcionFotos.style.display = 'none';
+        modelo.style.display = "none";
       }
-    });
-
-    function filtrarModelos() {
-      // Obtener el valor seleccionado en el primer select
-      var manufacturerSeleccionado = document.getElementById("manufacturerSelect").value;
-
-      // Obtener todos los options del segundo select
-      var opcionesModelos = document.getElementById("modelSelect").options;
-
-      // Obtenr el texto del segundo seletc
-      var contenidoModelo = document.getElementsByTagName("option");
-
-      // Recorrer todas las opciones y ocultar las que no pertenecen al fabricante seleccionado
-      for (var i = 1; i < opcionesModelos.length; i++) {
-        var modelo = opcionesModelos[i];
-        if (modelo.getAttribute("data-manufacturer") == manufacturerSeleccionado || manufacturerSeleccionado == "") {
-          modelo.style.display = "";
-        } else {
-          modelo.style.display = "none";
-        }
-      }
-
-      // Si no hay modelos disponibles para el fabricante seleccionado, mostrar un mensaje en el segundo select
-      if (document.querySelectorAll("#modelSelect option[style='display: none;']").length === opcionesModelos.length - 1) {
-        document.getElementById("modelSelect").innerHTML = "<option value=''>No hay modelos disponibles para este fabricante</option>";
-      }
-
     }
 
-    $(function() {
-      $(".datepicker-input").datepicker({
-        dateFormat: "yy-mm-dd"
-      });
-    });
+    // Si no hay modelos disponibles para el fabricante seleccionado, mostrar un mensaje en el segundo select
+    if (document.querySelectorAll("#modelSelect option[style='display: none;']").length === opcionesModelos.length - 1) {
+      document.getElementById("modelSelect").innerHTML = "<option value=''>No hay modelos disponibles para este fabricante</option>";
+    }
 
-    // Vincula el input de búsqueda con el select ded models 
-    $(document).ready(function() {
-      $('#lookModels').on('keyup', function() {
-        var texto = $(this).val().toLowerCase();
-        $('#modelSelect option').filter(function() {
-          return $(this).text().toLowerCase().indexOf(texto) > -1;
-        }).prop('selected', true);
-      });
-    });
+  }
 
-    $(function() {
-      $(document).on('click', '[data-toggle="lightbox"]', function(event) {
-        event.preventDefault();
-        $(this).ekkoLightbox({
-          alwaysShowClose: true
-        });
+  $(function() {
+    $(".datepicker-input").datepicker({
+      dateFormat: "yy-mm-dd"
+    });
+  });
+
+  // Vincula el input de búsqueda con el select ded models 
+  $(document).ready(function() {
+    $('#lookModels').on('keyup', function() {
+      var texto = $(this).val().toLowerCase();
+      $('#modelSelect option').filter(function() {
+        return $(this).text().toLowerCase().indexOf(texto) > -1;
+      }).prop('selected', true);
+    });
+  });
+
+  $(function() {
+    $(document).on('click', '[data-toggle="lightbox"]', function(event) {
+      event.preventDefault();
+      $(this).ekkoLightbox({
+        alwaysShowClose: true
       });
     });
-  </script>
+  });
+</script>
