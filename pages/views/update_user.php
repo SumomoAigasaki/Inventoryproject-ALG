@@ -103,23 +103,23 @@ $conn->next_result();
 
                                 <!--  Primer Row DE LA IZQUIERDA-->
                                 <div class="row" style="padding-top:10px; padding-bottom:10px;">
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-6">
                                         <!-- Image -->
-                                        <div class="form-group">
+                                        <div class="form-group" style="padding-left:15px;" >
                                             <label>Imagen de perfil</label>
-                                            <div class="input-group">
+                                            <div class="input-group" style="flex-direction: column; padding-left:15px; display: flex; justify-content: center; align-items: center;">
                                                 <img class="img-fluid img-circle" src="../..<?php echo $User_img ?>" width="150" height="150" style="margin: 10px;" id="imgPerfil">
-                                                <input type="file" name="imgUser" id="imgUser" accept="image/png,image/jpeg" style="padding-left:15px; padding-top:75px;">
+                                                <input type="file" name="imgUser" id="imgUser" accept="image/png,image/jpeg" style="padding-left:15px; padding-top:2.5px;">
                                             </div>
                                         </div>
                                         <!-- USERNAME -->
-                                        <div class="form-group">
+                                        <div class="form-group" style="padding-left:15px;">
                                             <label ACRONYM title="Nombre de Usuario">Nomb. Usuario: </label>
                                             <input type="text" class="form-control" id="txtNombreUsuario" name="txtNombreUsuario" maxlength="45" value="<?php echo $User_Username; ?>" placeholder="Nickname">
                                         </div>
 
                                         <!-- Fecha de registro -->
-                                        <div class="form-group">
+                                        <div class="form-group" style="padding-left:15px;">
                                             <label ACRONYM title="Fecha que fue ingresado">Fec. Ingreso:</label>
                                             <div class="input-group">
                                                 <input type="text" class="form-control datepicker-input " id="txtFechaIngresado" name="txtFechaIngresado" value="<?php echo $User_DataRegister; ?>">
@@ -127,10 +127,10 @@ $conn->next_result();
                                         </div>
                                     </div>
                                     <!--  Segunda Row -->
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-6">
 
                                         <!-- USERNAME -->
-                                        <div class="form-group">
+                                        <div class="form-group"  style="padding-left:15px; padding-top:2.5px;">
                                             <label ACRONYM title="Nombre de Colaborador">Nomb. Colaborador: </label>
                                             <input type="text" class="form-control" id="txt_busqueda" name="txt_busqueda" placeholder="Buscar Colaborador">
                                             <?php $resultado = mysqli_query($conn, "CALL sp_selectCollaborators()"); ?>
@@ -150,12 +150,12 @@ $conn->next_result();
                                             </select>
                                         </div>
                                         <!-- Correo -->
-                                        <div class="form-group">
+                                        <div class="form-group" style="padding-left:15px; padding-top:2.5px;">
                                             <label ACRONYM title="Correo Electronico">Email </label>
                                             <input type="emai" class="form-control" id="txtEmail" name="txtEmail" maxlength="45" value="<?php echo $User_Email; ?>" placeholder="Nickname">
                                         </div>
                                         <!-- Estado -->
-                                        <div class="form-group">
+                                        <div class="form-group" style="padding-left:15px; padding-top:2.5px;">
                                             <label>Estado del Usuario: </label>
                                             <?php $resultado = mysqli_query($conn, "CALL sp_status_select()"); ?>
                                             <select class="form-control" id="sltStatus" name="sltStatus">
@@ -172,11 +172,8 @@ $conn->next_result();
                                                 ?>
                                             </select>
                                         </div>
-
-                                    </div>
-                                    <div class="col-sm-4">
                                         <!-- ROL DE USUARIO -->
-                                        <div class="form-group">
+                                        <div class="form-group" style="padding-left:15px; padding-top:2.5px;">
                                             <label>Rol de Usuario: </label>
                                             <?php $resultado = mysqli_query($conn, "CALL sp_rolesSelect()"); ?>
                                             <select class="form-control" id="selectRoles" name="selectRoles">
@@ -192,18 +189,22 @@ $conn->next_result();
                                                 ?>
                                             </select>
                                         </div>
-                                        <!-- Password -->
+
+                                    </div>
+                                    <div class="col-sm-4">
+                                        
+                                        <!-- Password
                                         <div class="form-group">
                                             <label>Password:</label>
-                                            <input type="password" class="form-control" name="txt_password" id="txt_password" maxlength="32" required>
+                                            <input type="password" class="form-control" name="txt_password" id="txt_password" maxlength="32" required >
                                         </div>
 
 
-                                        <!-- Password -->
+                                         Password 
                                         <div class="form-group">
                                             <label>Confirmar Password:</label>
                                             <input type="password" class="form-control" name="txt_confirmPassword" id="txt_confirmPassword" maxlength="32" required>
-                                        </div>
+                                        </div> -->
                                     </div>
                                     
                                 </div>

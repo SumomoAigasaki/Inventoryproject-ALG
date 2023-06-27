@@ -231,9 +231,9 @@ $permisoUSR = isset($privilegios["USER"]) && $privilegios["USER"];
     // Función para validar los datos ingresados en el formulario
     function validate_data() {
         let accionInput = document.getElementById('accion');
-        let colaboradorSelect = document.getElementById('selectColaborador');
-        let usernametxt = document.getElementById('txt_username');
-        let emailtxt = document.getElementById('txt_email');
+        var colaboradorSelect = document.getElementById('selectColaborador');
+        var usernametxt = document.getElementById('txt_username');
+        var emailtxt = document.getElementById('txt_email');
         let passwordtxt = document.getElementById('txt_password');
         let confirmPasswordtxt = document.getElementById('txt_confirmPassword');
         let statusSelect = document.getElementById('selectStatus');
@@ -281,10 +281,6 @@ $permisoUSR = isset($privilegios["USER"]) && $privilegios["USER"];
         }
 
     }
-
-    // window.onload= function(){
-    //     document.getElementById("buttonInsertUser").onclick= validate_data;
-    // }
 </script>
 
 <?php
@@ -296,7 +292,7 @@ if (isset($_POST["buttonInsertUser"])) {
     $colaboratorSelect = $_POST["selectColaborador"];
     var_dump($_FILES['imgUser']);
     $imagenUserField = $_POST["imgUser"];
-    if ($imagenUserField === "") {
+    if (empty($imagenUserField)) {
         $imagenUserField = '/resources/User/default.png';
     } else {
         $imagenUserField = '/resources/User/' . $_FILES['imgUser']['name'];
@@ -308,9 +304,10 @@ if (isset($_POST["buttonInsertUser"])) {
     $roleSelect = $_POST["selectRoles"];
 
     $uploads_dir = '../../resources/User/';  // Ruta de la carpeta de destino para los archivos
+
     $permisoUSR = isset($privilegios["USER"]) && $privilegios["USER"];
     if ($permisoUSR) {
-        //Caso contrario Guardara
+        //preparamos el insert 
         $stmt = $conn->prepare("CALL sp_insertUser(?,?,?,?,?,?,?,?)");
 
         // Mandamos los parametros y los input que seran enviados al PA O SP
@@ -324,31 +321,54 @@ if (isset($_POST["buttonInsertUser"])) {
             error_log("Error en la ejecución del procedimiento almacenado: " . $stmt->error);
         }
         // Obtener el valor de la variable de salida
-        $stmt->bind_result($answerExistsComp);
+        $stmt->bind_result($answerExistsComp, $msgErrorInsert);
         $stmt->fetch();
         $stmt->close();
         $conn->next_result();
-
-        if ($answerExistsComp > 0) {
+        // se extraen los valores qu     nos devuelve el procedimiento almacenado y enviamos el error
+        if ($answerExistsComp > 0 && $msgErrorInsert == 0) {
             echo '<script > toastr.success("Los datos de <b>' . $usernameInput . '</b> se Guardaron de manera exitosa.", "¡¡Enhorabuena!!"); ';
             echo 'setTimeout(function() {';
             echo '  window.location.href = "view_user.php";';
             echo ' }, 2000); // 2000 milisegundos = 2 segundos de retraso ';
             echo 'document.getElementById("formInsertCMP").reset(); ';
             echo '</script>';
-              // Comprobar si el archivo ya existe
-              if (file_exists($uploads_dir . $_FILES['imgUser']['name'])) {
+            // Comprobar si el archivo ya existe
+            if (file_exists($uploads_dir . $_FILES['imgUser']['name'])!='/resources/User/default.png') {
                 echo '<script > toastr.info("La imagen ya existe")</script>;';
                 $uploadOk = 0; //si existe lanza un valor en 0
             } else {
-                move_uploaded_file($_FILES['imgUser']['tmp_name'], $uploads_dir. $_FILES['imgUser']['name']);
-                
+                move_uploaded_file($_FILES['imgUser']['tmp_name'], $uploads_dir . $_FILES['imgUser']['name']);
             }
-           
-        } else {
-            echo '<script > toastr.error(" No se pudo guardar recuerda que tiene que tener un Username unico. ' . $usernameInput . '","¡¡UPS!!");
-        </script>';
-            //  echo '<script>setTimeout(function() { location.reload(); }, 2000);</script>' 
+        } else if ($answerExistsComp == "" && $msgErrorInsert == 1) {
+            echo '<script > toastr.error("No se pudo guardar <br>Ya existe un registro con este el Username: <b>' . $usernameInput . '</b>","¡¡UPS!!  Advertencia: 1");';
+            echo'var usernametxt = document.getElementById("txt_username");';
+            echo ' usernametxt.focus();';
+            echo '</script>';
+        } else if ($answerExistsComp == "" && $msgErrorInsert == 2) {
+            echo '<script > toastr.error(" No se pudo guardar<br> Ya existe un registro con este Colaborador (ID):  <b> ' . $colaboratorSelect . ' </b>","¡¡UPS!!  Advertencia: 2");';
+            echo ' colaboradorSelect.focus();';
+            echo '</script>';
+        } else if ($answerExistsComp == "" && $msgErrorInsert == 3) {
+            echo '<script > toastr.error(" No se pudo guardar<br> Ya existe un Registro guardado con este Email<b> ' . $emailInput . ' </b>","¡¡UPS!!  Advertencia: 3");';
+            echo 'emailtxt.focus();';
+            echo '</script>'; 
+        }else if ($answerExistsComp == "" && $msgErrorInsert == 4) {
+            echo '<script>';
+            echo 'toastr.error("No se pudo guardar.<br>Ya existe un registro con estos registros<br> Colaborador(ID): <b>' . $colaboratorSelect . '</b>, Email: <b>' . $emailInput . '</b>, Username: <b>' . $usernameInput . '</b>", "¡¡UPS!! Advertencia: 4");';
+            echo '</script>';
+        }else if ($answerExistsComp == "" && $msgErrorInsert == 5) {
+            echo '<script>';
+            echo 'toastr.error(" No se pudo guardar<br> No existe un registro para el <b>Username: ' . $usernameInput . ' </b><br> pero si existen un Registro con Colaborador: <b> ' . $colaboratorSelect . '</b> y  Email <b> ' . $emailInput . '</b>.","¡¡UPS!!  Advertencia: 5");';
+            echo '</script>'; 
+        }else if ($answerExistsComp == "" && $msgErrorInsert == 6) {
+            echo '<script>';
+            echo 'toastr.error(" No se pudo guardar<br> No existe un registro para el <b>Colaborador(ID): ' . $colaboratorSelect . '</b><br> pero si existen un Registro con Username: <b> ' . $usernameInput . ' </b> y  Email <b> ' . $emailInput . '</b> . ","¡¡UPS!!  Advertencia: 6");';
+            echo '</script>'; 
+        }else if ($answerExistsComp == "" && $msgErrorInsert == 7) {
+            echo '<script>';
+            echo 'toastr.error(" No se pudo guardar <br> No existe un registro para Email: <b>' . $emailInput . '</b><br> pero si existen un Registro con Username: <b> ' . $usernameInput . ' </b> y  Colaborador (ID): <b> ' . $colaboratorSelect . '</b>" ,"¡¡UPS!!  Advertencia: 7");';
+            echo '</script>'; 
         }
     }
 }

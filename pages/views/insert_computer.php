@@ -430,8 +430,9 @@ if (isset($_POST["buttonInsert"])) {
 
     $cmp_dir = '../../resources/Computer/';  // Ruta de la carpeta de destino para los archivos
     $idUser = $_SESSION["User_idTbl_User"];
-    //la opcion 1 es para guardar y el C-CMP valida que tenga el permiso C-reateE en (CMP)computer
-    if ($accion == "1" && $privilegios["C-CMP"]) {
+    //validamos si tiene permiso de hacer un insert 
+    $permisoCMP = isset($privilegios["CMP"]) && $privilegios["CMP"];
+     if ($permisoCMP) {
       
         //Caso contrario Guardara
         $stmt = $conn->prepare("CALL sp_insertComputer(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
@@ -453,18 +454,19 @@ if (isset($_POST["buttonInsert"])) {
         $stmt->close();
         $conn->next_result();
 
+        // se extraen los valores qu     nos devuelve el procedimiento almacenado y enviamos el error
         if ($answerExistsComp=="" && $msgErrorInsert == 1 ){
-            echo '<script > toastr.error("No se pudo guardar recuerda que tiene que tener una Licencia unica. <b>' . $cmpLicence . '</b>","¡¡UPS!!");'; 
+            echo '<script > toastr.error("No se pudo guardar<br>Ya existe un Registro con esta Licencia  <b>' . $cmpLicence . '</b>","¡¡UPS!! Advertencia N:1");'; 
             echo'var licenceInput = document.getElementById("licence");';
             echo 'licenceInput.focus();';
             echo '</script>';
         }else if($answerExistsComp=="" && $msgErrorInsert == 2 ){
-            echo '<script > toastr.error(" No se pudo guardar recuerda que tiene que tener un Servitag unico. <b> ' . $cmpServitag . ' </b>","¡¡UPS!!");';;   
+            echo '<script > toastr.error(" No se pudo guardar<br>Ya existe un Registro con este Servitag  <b> ' . $cmpServitag . ' </b>","¡¡UPS!! Advertencia N:2");';
             echo'var servitagInput = document.getElementById("servitag");';
             echo 'servitagInput.focus();';  
             echo '</script>';
         }else if($answerExistsComp=="" && $msgErrorInsert == 3){
-            echo '<script > toastr.error("No se pudo guardar los siguientes campos ya existen, cambialos o rectifica . <b> Servitag: ' . $cmpServitag . '</b><b> Licencia: ' . $cmpLicence . ' </b>","¡¡UPS!!");';   
+            echo '<script > toastr.error("No se pudo guardar<br>Ya existe un Registro con estos datos. <b> Servitag: ' . $cmpServitag . '</b><b> Licencia: ' . $cmpLicence . ' </b>","¡¡UPS!! Advertencia N:3");';   
             echo '</script>';
         //  echo '<script>setTimeout(function() { location.reload(); }, 2000);</script>' 
         }
