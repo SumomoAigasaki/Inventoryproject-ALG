@@ -99,13 +99,14 @@ $conn->next_result();
                             <div class="card-body">
                                 <label class="form-check-label" style="padding-bottom: 5px;"> A continuación se le mostrara el formulario con información tenga <b> cuidado</b> al momento de presionar el boton:</label>
                                 <!-- Input ocultos  -->
-                                <input type="hidden" class="form-control" id="cmpId" name="cmpId" value="<?php echo $CMP_idTbl_Computer ?>">
+                                <input type="hidden" class="form-control" id="userId" name="userId" value="<?php echo $User_idTbl_User ?>">
+                                <input type="hidden" class="form-control" id="txtAction" name="txtAction" >
 
                                 <!--  Primer Row DE LA IZQUIERDA-->
                                 <div class="row" style="padding-top:10px; padding-bottom:10px;">
                                     <div class="col-sm-6">
                                         <!-- Image -->
-                                        <div class="form-group" style="padding-left:15px;" >
+                                        <div class="form-group" style="padding-left:15px;">
                                             <label>Imagen de perfil</label>
                                             <div class="input-group" style="flex-direction: column; padding-left:15px; display: flex; justify-content: center; align-items: center;">
                                                 <img class="img-fluid img-circle" src="../..<?php echo $User_img ?>" width="150" height="150" style="margin: 10px;" id="imgPerfil">
@@ -129,8 +130,8 @@ $conn->next_result();
                                     <!--  Segunda Row -->
                                     <div class="col-sm-6">
 
-                                        <!-- USERNAME -->
-                                        <div class="form-group"  style="padding-left:15px; padding-top:2.5px;">
+                                        <!-- COLABORADOR -->
+                                        <div class="form-group" style="padding-left:15px; padding-top:2.5px;">
                                             <label ACRONYM title="Nombre de Colaborador">Nomb. Colaborador: </label>
                                             <input type="text" class="form-control" id="txt_busqueda" name="txt_busqueda" placeholder="Buscar Colaborador">
                                             <?php $resultado = mysqli_query($conn, "CALL sp_selectCollaborators()"); ?>
@@ -158,7 +159,7 @@ $conn->next_result();
                                         <div class="form-group" style="padding-left:15px; padding-top:2.5px;">
                                             <label>Estado del Usuario: </label>
                                             <?php $resultado = mysqli_query($conn, "CALL sp_status_select()"); ?>
-                                            <select class="form-control" id="sltStatus" name="sltStatus">
+                                            <select class="form-control" id="selectStatus" name="selectStatus">
                                                 <?php while ($row = mysqli_fetch_array($resultado)) {
                                                     $select = ($STS_idTbl_Status == $row['STS_idTbl_Status']) ? "selected=selected" : "";
                                                 ?>
@@ -192,7 +193,7 @@ $conn->next_result();
 
                                     </div>
                                     <div class="col-sm-4">
-                                        
+
                                         <!-- Password
                                         <div class="form-group">
                                             <label>Password:</label>
@@ -206,15 +207,15 @@ $conn->next_result();
                                             <input type="password" class="form-control" name="txt_confirmPassword" id="txt_confirmPassword" maxlength="32" required>
                                         </div> -->
                                     </div>
-                                    
+
                                 </div>
                                 <!-- Comienzo fila 5 -->
                                 <div class="row justify-content-center" style="padding-bottom:10px;">
-                                        <div class="col-mb-12">
-                                            <button type="button" class="btn btn-block bg-olive" onclick='return validate_data();'>Actualizar</button>
-                                        </div>
-
+                                    <div class="col-mb-12">
+                                        <button type="submit" id="buttonUpdateUser" name="buttonUpdateUser" class="btn btn-block bg-olive" onclick='return validateData();'>Actualizar</button>
                                     </div>
+
+                                </div>
                             </div>
 
 
@@ -234,6 +235,170 @@ $conn->next_result();
 require_once "../templates/footer.php";
 ?>
 
+
+<?php
+//validacion si preciona el boton  
+
+# En caso de que haya sido el de guardar, no agregamos más campos
+if (isset($_POST["buttonUpdateUser"])) {
+    
+    # Quieren guardar
+    #valido si tiene el permiso de usuario 
+    $permisoUSR = isset($privilegios["USER"]) && $privilegios["USER"];
+    date_default_timezone_set('America/Mexico_City');
+    $idUserHidde = $_POST["userId"];
+    $action= $_POST["txtAction"];
+    $dataRegisterInput = $_POST["txtFechaIngresado"];
+    $usernameInput = $_POST["txtNombreUsuario"];
+    $emailInput = $_POST["txtEmail"];
+    $colaboratorSelect = $_POST["selectColaborador"];
+    $statuSelect = $_POST["selectStatus"];
+    #var_dump($_FILES['imgUser']);
+    // valido si el campo esta vacio y  mango el antiguo valor
+    if (empty($_FILES['imgUser']['name'])) {
+        $imagenUserField = $User_img;
+    } else {
+        $imagenUserField = '/resources/User/' . $_FILES['imgUser']['name'];
+    }
+    $roleSelect = $_POST["selectRoles"];
+
+    $uploads_dir = '../../resources/User/';  // Ruta de la carpeta de destino para los archivos
+    
+    if ($permisoUSR && $action=="true") {
+       
+        //preparamos el insert 
+        $stmt = $conn->prepare("CALL sp_updateUser(?,?,?,?,?,?,?,?)");
+
+        // Mandamos los parametros y los input que seran enviados al PA O SP
+        $stmt->bind_param("ssssssss", $idUserHidde, $dataRegisterInput, $usernameInput, $emailInput, $colaboratorSelect, $statuSelect, $imagenUserField, $roleSelect);
+        // $query = "CALL sp_updateUser('$idUserHidde','$dataRegisterInput', '$usernameInput', '$emailInput', '$colaboratorSelect', '$statuSelect', '$imagenUserField', '$roleSelect');";
+        // echo $query;
+
+        // Ejecutar el procedimiento almacenado
+        $stmt->execute();
+        if ($stmt->error) {
+            error_log("Error en la ejecución del procedimiento almacenado: " . $stmt->error);
+        }
+        // Obtener el valor de la variable de salida
+        $stmt->bind_result($answerExistsComp, $msgErrorInsert);
+        $stmt->fetch();
+        $stmt->close();
+        $conn->next_result();
+
+        
+        // se extraen los valores qu     nos devuelve el procedimiento almacenado y enviamos el error
+        if ($answerExistsComp > 0 && $msgErrorInsert == 0) {
+            echo '<script > toastr.success("Los datos de <b>' . $usernameInput . '</b> se Actualizaron de manera exitosa.", "¡¡Enhorabuena!!"); ';
+            echo 'setTimeout(function() {';
+            echo '  window.location.href = "view_user.php";';
+            echo ' }, 2000); // 2000 milisegundos = 2 segundos de retraso ';
+            echo 'document.getElementById("formInsertCMP").reset(); ';
+            echo '</script>';
+            // Comprobar si el archivo ya existe
+            if (file_exists($uploads_dir . $_FILES['imgUser']['name']) != '/resources/User/default.png') {
+                echo '<script > toastr.info("La imagen ya existe")</script>;';
+                $uploadOk = 0; //si existe lanza un valor en 0
+            } else {
+                move_uploaded_file($_FILES['imgUser']['tmp_name'], $uploads_dir . $_FILES['imgUser']['name']);
+            }
+        } else if ($answerExistsComp == "" && $msgErrorInsert == 1) {
+            echo '<script > toastr.error("No se pudo guardar <br>Ya existe un registro con este el Username: <b>' . $usernameInput . '</b>","¡¡UPS!!  Advertencia: 1");';
+            echo 'var usernametxt = document.getElementById("txt_username");';
+            echo 'usernametxt.focus();';
+            echo '</script>';
+        } else if ($answerExistsComp == "" && $msgErrorInsert == 2) {
+            echo '<script > toastr.error(" No se pudo guardar<br> Ya existe un registro con este Colaborador (ID):  <b> ' . $colaboratorSelect . ' </b>","¡¡UPS!!  Advertencia: 2");';
+            echo ' colaboradorSelect.focus();';
+            echo '</script>';
+        } else if ($answerExistsComp == "" && $msgErrorInsert == 3) {
+            echo '<script > toastr.error(" No se pudo guardar<br> Ya existe un Registro guardado con este Email<b> ' . $emailInput . ' </b>","¡¡UPS!!  Advertencia: 3");';
+            echo 'emailtxt.focus();';
+            echo '</script>';
+        } else if ($answerExistsComp == "" && $msgErrorInsert == 5) {
+            echo '<script>';
+            echo 'toastr.error(" No se pudo guardar<br> No existe un registro para el <b>Username: ' . $usernameInput . ' </b><br> pero si existen un Registro con Colaborador: <b> ' . $colaboratorSelect . '</b> y  Email <b> ' . $emailInput . '</b>.","¡¡UPS!!  Advertencia: 5");';
+            echo '</script>';
+        } else if ($answerExistsComp == "" && $msgErrorInsert == 6) {
+            echo '<script>';
+            echo 'toastr.error(" No se pudo guardar<br> No existe un registro para el <b>Colaborador(ID): ' . $colaboratorSelect . '</b><br> pero si existen un Registro con Username: <b> ' . $usernameInput . ' </b> y  Email <b> ' . $emailInput . '</b> . ","¡¡UPS!!  Advertencia: 6");';
+            echo '</script>';
+        } else if ($answerExistsComp == "" && $msgErrorInsert == 7) {
+            echo '<script>';
+            echo 'toastr.error(" No se pudo guardar <br> No existe un registro para Email: <b>' . $emailInput . '</b><br> pero si existen un Registro con Username: <b> ' . $usernameInput . ' </b> y  Colaborador (ID): <b> ' . $colaboratorSelect . '</b>" ,"¡¡UPS!!  Advertencia: 7");';
+            echo '</script>';
+        }
+        exit;
+    }
+    
+}
+?>
+
+
+
+<script type="text/javascript">
+    // funcion para validar los datos ingresados en el formulario
+
+    function validateData() {
+        let dataRegisterInput = document.getElementById('txtFechaIngresado');
+        let usernameInput = document.getElementById('txtNombreUsuario');
+        let emalInput = document.getElementById('txtEmail');
+        let colaboradorSelect = document.getElementById('selectColaborador');
+        let statusSelect = document.getElementById('selectStatus');
+        let rolSelect = document.getElementById('selectRoles');
+        let Action = document.getElementById('txtAction');
+
+        if (dataRegisterInput.value.trim() === "") {
+            toastr.warning('La <b>Fecha de Registro</b> esta vacio(a).<br>Por favor, rellene este campo');
+            dataRegisterInput.focus();
+            return false;
+        } else if (usernameInput.value.trim() === "") {
+            toastr.warning('La <b>Nombre de Usuario</b> esta vacio(a).<br>Por favor, rellene este campo');
+            usernameInput.focus();
+            return false;
+        } else if (emalInput.value.trim() === "") {
+            toastr.warning('La <b>Email</b> esta vacio(a).<br>Por favor, rellene este campo');
+            emalInput.focus();
+            return false;
+        } else if (colaboradorSelect.selectedIndex === 0) {
+            toastr.warning('El <b>Colaborador</b> seleccionado no es valido(a).<br>Por favor,seleccione un campo valido');
+            colaboradorSelect.focus();
+            return false;
+        } else if (statusSelect.selectedIndex === 0) {
+            toastr.warning('El <b>Estado</b> seleccionado no es valido(a).<br>Por favor,seleccione un campo valido');
+            statusSelect.focus();
+            return false;
+        } else if (rolSelect.selectedIndex === 0) {
+            toastr.warning('El <b>Rol</b> seleccionado no es valido(a).<br>Por favor,seleccione un campo valido');
+            rolSelect.focus();
+            return false;
+        } else {
+            Action.value="true";
+            // Si no hay errores, procesa los datos enviados
+            document.getElementById("formUpdateUSER").submit();
+        }
+
+
+    }
+    //Funcion General de las configuraciones de los toastr que aparecen al costado de la derecha superior
+
+    toastr.options = {
+        closeButton: true,
+        debug: true,
+        newestOnTop: false,
+        progressBar: true,
+        positionClass: "toast-top-right",
+        preventDuplicates: true,
+        onclick: null,
+        showDuration: "200",
+        hideDuration: "1000",
+        timeOut: "5000",
+        extendedTimeOut: "1000",
+        showEasing: "swing",
+        hideEasing: "linear",
+        showMethod: "fadeIn",
+        hideMethod: "fadeOut"
+    };
+</script>
 
 <script>
     $(function() {

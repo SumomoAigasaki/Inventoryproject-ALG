@@ -437,8 +437,8 @@ if (isset($_POST["buttonInsert"])) {
         //Caso contrario Guardara
         $stmt = $conn->prepare("CALL sp_insertComputer(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
-        // $query = "CALL sp_insertComputer('$todayDate', '$cmpIdManufacturer', '$cmpImgComp', '$cmptName', '$cmpIdModel', '$cmpCompType', '$cmpServitag', '$cmpLicence', '$cmpMotherboard', '$cmpAcquisitionDate', '$cmpWarrantyExpiration', '$cmpYearExpiration', '$cmpIdLocation', '$cmpIdStatu', '$cmpObservation', '$idUser','$cmpIdGuarantee');";
-        // echo $query;
+        $query = "CALL sp_insertComputer('$todayDate', '$cmpIdManufacturer', '$cmpImgComp', '$cmptName', '$cmpIdModel', '$cmpCompType', '$cmpServitag', '$cmpLicence', '$cmpMotherboard', '$cmpAcquisitionDate', '$cmpWarrantyExpiration', '$cmpYearExpiration', '$cmpIdLocation', '$cmpIdStatu', '$cmpObservation', '$idUser','$cmpIdGuarantee');";
+        echo $query;
         // Mandamos los parametros y los input que seran enviados al PA O SP
         $stmt->bind_param("sssssssssssssssss", $todayDate, $cmpIdManufacturer, $cmpImgComp, $cmptName, $cmpIdModel, $cmpCompType, $cmpServitag, $cmpLicence, $cmpMotherboard, $cmpAcquisitionDate, $cmpWarrantyExpiration, $cmpYearExpiration, $cmpIdLocation, $cmpIdStatu, $cmpObservation, $idUser, $cmpIdGuarantee);
        
@@ -455,22 +455,7 @@ if (isset($_POST["buttonInsert"])) {
         $conn->next_result();
 
         // se extraen los valores qu     nos devuelve el procedimiento almacenado y enviamos el error
-        if ($answerExistsComp=="" && $msgErrorInsert == 1 ){
-            echo '<script > toastr.error("No se pudo guardar<br>Ya existe un Registro con esta Licencia  <b>' . $cmpLicence . '</b>","¡¡UPS!! Advertencia N:1");'; 
-            echo'var licenceInput = document.getElementById("licence");';
-            echo 'licenceInput.focus();';
-            echo '</script>';
-        }else if($answerExistsComp=="" && $msgErrorInsert == 2 ){
-            echo '<script > toastr.error(" No se pudo guardar<br>Ya existe un Registro con este Servitag  <b> ' . $cmpServitag . ' </b>","¡¡UPS!! Advertencia N:2");';
-            echo'var servitagInput = document.getElementById("servitag");';
-            echo 'servitagInput.focus();';  
-            echo '</script>';
-        }else if($answerExistsComp=="" && $msgErrorInsert == 3){
-            echo '<script > toastr.error("No se pudo guardar<br>Ya existe un Registro con estos datos. <b> Servitag: ' . $cmpServitag . '</b><b> Licencia: ' . $cmpLicence . ' </b>","¡¡UPS!! Advertencia N:3");';   
-            echo '</script>';
-        //  echo '<script>setTimeout(function() { location.reload(); }, 2000);</script>' 
-        }
-        else if ( $answerExistsComp > 0 && $msgErrorInsert == 0) {
+        if ( $answerExistsComp > 0 && $msgErrorInsert == 0) {
             echo '<script > toastr.success("Los datos de <b>' . $cmptName . '</b> se Guardaron de manera exitosa.", "¡¡Enhorabuena!!"); ';
             echo 'setTimeout(function() {';
             echo '  window.location.href = "view_computer.php";';
@@ -485,7 +470,40 @@ if (isset($_POST["buttonInsert"])) {
                
                 move_uploaded_file($_FILES['archivo']['tmp_name'], $cmp_dir. $_FILES['archivo']['name']);
             }
-        } 
+        }else if ($answerExistsComp=="" && $msgErrorInsert == 1 ){
+            echo '<script > toastr.error("No se pudo guardar<br>Ya existe un Registro con esta Licencia  <b>' . $cmpLicence . '</b>","¡¡UPS!! Advertencia N:1");'; 
+            echo'var licenceInput = document.getElementById("licence");';
+            echo 'licenceInput.focus();';
+            echo '</script>';
+        }else if($answerExistsComp=="" && $msgErrorInsert == 2 ){
+            echo '<script > toastr.error(" No se pudo guardar<br>Ya existe un Registro con este Servitag  <b> ' . $cmpServitag . ' </b>","¡¡UPS!! Advertencia N:2");';
+            echo'var servitagInput = document.getElementById("servitag");';
+            echo 'servitagInput.focus();';  
+            echo '</script>';
+        }else if($answerExistsComp=="" && $msgErrorInsert == 3 ){
+            echo '<script > toastr.error(" No se pudo guardar<br>Ya existe un Registro con este Nombre tecnico  <b> ' . $cmptName . ' </b>","¡¡UPS!! Advertencia N:3");';
+            echo'var servitagInput = document.getElementById("servitag");';
+            echo 'servitagInput.focus();';  
+            echo '</script>';
+        }else if($answerExistsComp=="" && $msgErrorInsert == 4){
+            echo '<script > toastr.error("No se pudo guardar<br>Ya existe un Registro con estos datos. <b> Servitag: ' . $cmpServitag . '</b><b> Licencia: ' . $cmpLicence . ' </b> <b>Nombre de Usuario: ' . $cmptName . ' </b>","¡¡UPS!! Advertencia N:4");';   
+            echo '</script>';
+         }else if ($answerExistsComp == "" && $msgErrorInsert == 5) {
+            echo '<script>';
+            echo 'toastr.error(" No se pudo guardar<br> No existe un registro para el <b>Licencia: ' . $cmpLicence . ' </b><br> pero si existen un Registro con Servitag: <b> ' . $cmpServitag . '</b> y  Nombre Tecnico <b> ' . $cmptName . '</b>.","¡¡UPS!!  Advertencia: 5");';
+            echo '</script>'; 
+        }else if ($answerExistsComp == "" && $msgErrorInsert == 6) {
+            echo '<script>';
+            echo 'toastr.error(" No se pudo guardar<br> No existe un registro para el <b>Servitag: ' . $cmpServitag . ' </b><br> pero si existen un Registro con Licenica: <b> ' . $cmpLicence . '</b> y  Nombre Tecnico <b> ' . $cmptName . '</b>.","¡¡UPS!!  Advertencia: 6");';
+            echo '</script>'; 
+        }
+        else if ($answerExistsComp == "" && $msgErrorInsert == 7) {
+            echo '<script>';
+            echo 'toastr.error(" No se pudo guardar<br> No existe un registro para el <b>Nombre tecnico: ' . $cmptName . ' </b><br> pero si existen un Registro con Servitag: <b> ' . $cmpServitag . '</b> y  Licencia <b> ' . $cmpLicence . '</b>.","¡¡UPS!!  Advertencia: 7");';
+            echo '</script>'; 
+        }
+        
+        
             
     }
 }
