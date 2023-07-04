@@ -290,8 +290,8 @@ if (isset($_POST["buttonInsertUser"])) {
     date_default_timezone_set('America/Mexico_City');
     $todayDateInput = date("Y-m-d");
     $colaboratorSelect = $_POST["selectColaborador"];
-    var_dump($_FILES['imgUser']);
-    $imagenUserField = $_POST["imgUser"];
+    //var_dump($_FILES['imgUser']);
+    $imagenUserField = $_FILES['imgUser']['name'];
     if (empty($imagenUserField)) {
         $imagenUserField = '/resources/User/default.png';
     } else {
@@ -334,12 +334,14 @@ if (isset($_POST["buttonInsertUser"])) {
             echo 'document.getElementById("formInsertCMP").reset(); ';
             echo '</script>';
             // Comprobar si el archivo ya existe
-            if (file_exists($uploads_dir . $_FILES['imgUser']['name'])!='/resources/User/default.png') {
-                echo '<script > toastr.info("La imagen ya existe")</script>;';
-                $uploadOk = 0; //si existe lanza un valor en 0
-            } else {
+
+            if ($_FILES['imgUser']['name'] != 'default.png' ) {
                 move_uploaded_file($_FILES['imgUser']['tmp_name'], $uploads_dir . $_FILES['imgUser']['name']);
-            }
+            } else if (file_exists($uploads_dir . $_FILES['imgUser']['name'])) { 
+                echo '<script > toastr.info("La imagen ya existe '.$cmpImgComp.'")</script>;';
+                $uploadOk = 0; //si existe lanza un valor en 0            
+            } 
+            exit;
         } else if ($answerExistsComp == "" && $msgErrorInsert == 1) {
             echo '<script > toastr.error("No se pudo guardar <br>Ya existe un registro con este el Username: <b>' . $usernameInput . '</b>","¡¡UPS!!  Advertencia: 1");';
             echo'var usernametxt = document.getElementById("txt_username");';
