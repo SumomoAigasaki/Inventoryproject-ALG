@@ -154,7 +154,7 @@ $permisoUSR = isset($privilegios["USER"]) && $privilegios["USER"];
                                     <!-- Password -->
                                     <div class="col-sm-3">
                                         <div class="form-group">
-                                            <label>Password:</label>
+                                            <label>Contraseña:</label>
                                             <input type="password" class="form-control" name="txt_password" id="txt_password" maxlength="32" required>
                                         </div>
                                     </div>
@@ -162,7 +162,7 @@ $permisoUSR = isset($privilegios["USER"]) && $privilegios["USER"];
                                     <!-- Password -->
                                     <div class="col-sm-3">
                                         <div class="form-group">
-                                            <label>Confirmar Password:</label>
+                                            <label>Confirmar Contraseña:</label>
                                             <input type="password" class="form-control" name="txt_confirmPassword" id="txt_confirmPassword" maxlength="32" required>
                                         </div>
                                     </div>

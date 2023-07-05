@@ -17,7 +17,6 @@ if (isset($_SESSION["username"])) {
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><?php echo  $pageName;
           echo nameWeb; ?></title>
-
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
@@ -28,11 +27,7 @@ if (isset($_SESSION["username"])) {
   <link rel="stylesheet" href="../public/css/base/adminlte.min.css">
   <!-- SweetAlert2 -->
   <link rel="stylesheet" href="../public/css/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
-
 </head>
-
-<!--CODIGO PARA VALIDAR LOS CAMPOS VACIOS
-JAVASCRIP -->
 <script>
   function validate() {
     var usuario = document.getElementById("username");
@@ -46,8 +41,6 @@ JAVASCRIP -->
     return false;
   }
 </script>
-
-
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   // Recuperar los valores del formulario
@@ -76,77 +69,78 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   }
 }
 ?>
-
 <!-- /.login-logo -->
-<div class="card card-outline card-primary">
-  <div class="card-header text-center">
-    <a href="what_is.php" class="h1"><b>INFRAG</b></a>
-  </div>
-  <script src='../public/js/sweetalert2/sweetalert2.min.js'></script>
 
-  <body class="hold-transition login-page">
-    <script>
-      <?php
-      if (isset($_SESSION["error_message"])) {
-        $errorMessage = $_SESSION["error_message"];
-        unset($_SESSION["error_message"]);
-      ?>
-        Swal.fire({
-          icon: 'error',
-          title: 'Credenciales erróneas',
-          text: '<?php echo $errorMessage; ?>',
-          confirmButtonText: 'Aceptar'
-        });
-      <?php
-      }
-      ?>
-    </script>
+<body class="hold-transition login-page">
+  <div class="login-box">
+    <div class="card card-outline card-primary">
+      <div class="card-header text-center">
+        <a href="what_is.php" class="h1"><b>INFRAG</b></a>
+      </div>
+      <script src='../public/js/sweetalert2/sweetalert2.min.js'></script>
+      <script>
+        <?php
+        if (isset($_SESSION["error_message"])) {
+          $errorMessage = $_SESSION["error_message"];
+          unset($_SESSION["error_message"]);
+        ?>
+          Swal.fire({
+            icon: 'error',
+            title: 'Credenciales erróneas',
+            text: '<?php echo $errorMessage; ?>',
+            confirmButtonText: 'Aceptar'
+          });
+        <?php
+        }
+        ?>
+      </script>
 
 
-    <div class="card-body">
-      <p class="login-box-msg">Ingresa tu usuario para Iniciar sesion</p>
+      <div class="card-body">
+        <p class="login-box-msg">Ingresa tu correo para Iniciar sesion</p>
 
-      <form action="" method="POST" name="formLogin" id="formLogin">
+        <form action="" method="POST" name="formLogin" id="formLogin">
 
-        <div class="input-group mb-3">
-          <input type="email" class="form-control" name="username" id="username" placeholder="Usuario" required>
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-user"></span>
+          <div class="input-group mb-3">
+            <input type="email" class="form-control" name="username" id="username" placeholder="Usuario" required autocomplete="current-password">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-user"></span>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="input-group mb-3">
-          <input type="password" class="form-control" name="password" id="pass" placeholder="Contraseña" required>
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-lock"></span>
+          <div class="input-group mb-3">
+            <input type="password" class="form-control" name="password" id="pass" placeholder="Contraseña" required autocomplete="current-password">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-lock"></span>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="row" style="display: flex; justify-content: center;">
+          <div class="row" style="display: flex; justify-content: center;">
 
-          <!-- /.col -->
-          <div class="col-6">
-            <button type="submit" class="btn btn-primary btn-block" onclick='validate()'>Iniciar Sesion</button>
+            <!-- /.col -->
+            <div class="col-6">
+              <button type="submit" class="btn btn-primary btn-block" onclick='validate()'>Iniciar Sesion</button>
+            </div>
+            <!-- /.col -->
           </div>
-          <!-- /.col -->
-        </div>
 
-      </form>
+        </form>
 
-      <!-- /.social-auth-links -->
+        <!-- /.social-auth-links -->
+      </div>
+      <!-- /.card-body -->
     </div>
-    <!-- /.card-body -->
-</div>
-<!-- /.login-box -->
-<!-- jQuery -->
-<script src="../public/js/jquery.min.js"></script>
-<!-- Bootstrap 4 -->
-<script src="../public/js/bootstrap.bundle.min.js"></script>
-<!-- AdminLTE App -->
-<script src="../public/js/adminlte.min.js"></script>
+  </div>
+  <!-- /.login-box -->
+  <!-- jQuery -->
+  <script src="../public/js/jquery.min.js"></script>
+  <!-- Bootstrap 4 -->
+  <script src="../public/js/bootstrap.bundle.min.js"></script>
+  <!-- AdminLTE App -->
+  <script src="../public/js/adminlte.min.js"></script>
 </body>
 
 </html>

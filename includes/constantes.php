@@ -57,7 +57,12 @@ if ($actualPage == 'index.php') {
   } elseif($actualPage == 'update_user.php'){
     $pageName = 'Usuario';
     $pageLink = "update_user.php";
-  }elseif($actualPage == 'prueba.php'){
+  }elseif($actualPage == 'update_password.php'){
+    $pageName = 'UpdateContra';
+    $pageLink = "update_password.php.php";
+  }
+  
+  elseif($actualPage == 'prueba.php'){
       $pageName = 'prueba';
       $pageLink = "prueba.php";}
 
@@ -66,10 +71,10 @@ else {
 }
 
 
-date_default_timezone_set('America/Mexico_City');
-//variables globales 
-$todayDate = date("Y-m-d");
+// date_default_timezone_set('America/Mexico_City');
+// //variables globales 
+// $todayDate = date("Y-m-d");
 
-echo '<script>';
-echo 'var todayDate = ' . json_encode($todayDate) . ';'; // Convertir la variable en JSON y asignarla a la variable de JavaScript
-echo '</script>';
+// echo '<script>';
+// echo 'var todayDate = ' . json_encode($todayDate) . ';'; // Convertir la variable en JSON y asignarla a la variable de JavaScript
+// echo '</script>';
