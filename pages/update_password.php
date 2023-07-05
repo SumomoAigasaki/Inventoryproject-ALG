@@ -31,32 +31,31 @@ require_once "../includes/constantes.php";
       <div class="card-body">
         <p class="login-box-msg">Estás a un paso de tu nueva contraseña, recupera tu contraseña ahora.</p>
         <form action="" method="POST">
-
-          <!-- Antigua Contrase;a -->
+          <!-- Antigua Contraseña -->
           <div class="input-group mb-3">
-            <input type="password" class="form-control" id="txtOldPassword" name="txtOldPassword" placeholder="Antigua Contraseña" autocomplete="current-password">
+            <input type="password" class="form-control" id="txtOldPassword" name="txtOldPassword" placeholder="Antigua Contraseña" autocomplete="current-password" />
             <div class="input-group-append">
-              <div class="input-group-text">
-                <span class="fas fa-lock"></span>
-              </div>
+              <button class="btn btn-primary" type="button" onclick="mostrarPassword('txtOldPassword', this)">
+                <i class="fa fa-eye-slash icon"></i>
+              </button>
             </div>
           </div>
-          <!-- Nueva Contrase;a -->
+          <!-- Nueva Contraseña -->
           <div class="input-group mb-3">
             <input type="password" class="form-control" id="txtNewPassword" name="txtNewPassword" placeholder="Nueva Contraseña" autocomplete="current-password">
             <div class="input-group-append">
-              <div class="input-group-text">
-                <span class="fas fa-lock"></span>
-              </div>
+              <button class="btn btn-primary" type="button" onclick="mostrarPassword('txtNewPassword', this)">
+                <i class="fa fa-eye-slash icon"></i>
+              </button>
             </div>
           </div>
-          <!-- Confirmar Nueva Contrase;a -->
+          <!-- Confirmar Nueva Contraseña -->
           <div class="input-group mb-3">
             <input type="password" class="form-control" id="txtConfirmNewPass" name="txtConfirmNewPass" placeholder="Confirmar Nueva Contraseña" autocomplete="current-password">
             <div class="input-group-append">
-              <div class="input-group-text">
-                <span class="fas fa-lock"></span>
-              </div>
+              <button class="btn btn-primary" type="button" onclick="mostrarPassword('txtConfirmNewPass', this)">
+                <i class="fa fa-eye-slash icon"></i>
+              </button>
             </div>
           </div>
           <div class="row">
@@ -82,6 +81,20 @@ require_once "../includes/constantes.php";
   <script src="../public/js/bootstrap.bundle.min.js"></script>
   <!-- AdminLTE App -->
   <script src="../public/js/adminlte.min.js"></script>
+
+
+  <script type="text/javascript">
+    function mostrarPassword(passwordId, button) {
+      var cambio = document.getElementById(passwordId);
+      if (cambio.type == "password") {
+        cambio.type = "text";
+        button.innerHTML = '<i class="fa fa-eye icon"></i>';
+      } else {
+        cambio.type = "password";
+        button.innerHTML = '<i class="fa fa-eye-slash icon"></i>';
+      }
+    }
+  </script>
 </body>
 
 </html>
