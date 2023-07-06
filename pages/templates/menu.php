@@ -143,7 +143,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="../update_password.php" class="nav-link">
+                                <a href="../update_password.php?p=<?php echo $_SESSION["User_idTbl_User"];?>" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Cambiar Contraseña</p>
                                 </a>

@@ -33,7 +33,7 @@ require_once "../includes/constantes.php";
         <form action="" method="POST">
           <!-- Antigua Contraseña -->
           <div class="input-group mb-3">
-            <input type="password" class="form-control" id="txtOldPassword" name="txtOldPassword" placeholder="Antigua Contraseña" autocomplete="current-password" />
+            <input type="password" class="form-control" id="txtOldPassword" name="txtOldPassword" placeholder="Antigua Contraseña" autocomplete="current-password" required>
             <div class="input-group-append">
               <button class="btn btn-primary" type="button" onclick="mostrarPassword('txtOldPassword', this)">
                 <i class="fa fa-eye-slash icon"></i>
@@ -42,7 +42,7 @@ require_once "../includes/constantes.php";
           </div>
           <!-- Nueva Contraseña -->
           <div class="input-group mb-3">
-            <input type="password" class="form-control" id="txtNewPassword" name="txtNewPassword" placeholder="Nueva Contraseña" autocomplete="current-password">
+            <input type="password" class="form-control" id="txtNewPassword" name="txtNewPassword" placeholder="Nueva Contraseña" autocomplete="current-password" required>
             <div class="input-group-append">
               <button class="btn btn-primary" type="button" onclick="mostrarPassword('txtNewPassword', this)">
                 <i class="fa fa-eye-slash icon"></i>
@@ -51,7 +51,7 @@ require_once "../includes/constantes.php";
           </div>
           <!-- Confirmar Nueva Contraseña -->
           <div class="input-group mb-3">
-            <input type="password" class="form-control" id="txtConfirmNewPass" name="txtConfirmNewPass" placeholder="Confirmar Nueva Contraseña" autocomplete="current-password">
+            <input type="password" class="form-control" id="txtConfirmNewPass" name="txtConfirmNewPass" placeholder="Confirmar Nueva Contraseña" autocomplete="current-password" required>
             <div class="input-group-append">
               <button class="btn btn-primary" type="button" onclick="mostrarPassword('txtConfirmNewPass', this)">
                 <i class="fa fa-eye-slash icon"></i>
@@ -68,6 +68,7 @@ require_once "../includes/constantes.php";
 
         <p class="mt-3 mb-1">
           <a href="../pages/templates/SignOff.php">Login</a>
+          <a href="../pages/templates/index.php" style="margin-left:30px ;">Atras</a>
         </p>
       </div>
       <!-- /.login-card-body -->
