@@ -97,7 +97,7 @@ $permisoUSR = isset($privilegios["USER"]) && $privilegios["USER"];
                                 <label class="form-check-label" style="padding-bottom: 5px;"> A continuación se le pedirá que <b> Ingrese</b> los siguientes datos:</label>
 
                                 <!-- Input ocultos  -->
-                                <input type="hidden" class="form-control" id="todayDate" name="todayDate" placeholder="<?php echo $todayDate ?>">
+                                <input type="hidden" class="form-control" id="todayDate" name="todayDate" placeholder="<?php echo $todayDate; ?>">
                                 <input type="hidden" class="form-control" id="accion" name="accion" placeholder="">
 
                                 <div class="row justify-content-center" style="padding-top:10px; padding-bottom:10px;">
