@@ -217,8 +217,8 @@ $username = $_GET['usuario'];
 
     // Mandamos los parametros y los input que seran enviados al PA O SP
     $stmt->bind_param("ssss", $txtUserid, $txtUserName, $txtOldPass, $txtNewPass);
-    $query = "CALL spUpdatePassUser('$txtUserid','$txtUserName','$txtOldPass','$txtNewPass');";
-    echo $query;
+    // $query = "CALL spUpdatePassUser('$txtUserid','$txtUserName','$txtOldPass','$txtNewPass');";
+    // echo $query;
 
     // Ejecutar el procedimiento almacenado
     $stmt->execute();
