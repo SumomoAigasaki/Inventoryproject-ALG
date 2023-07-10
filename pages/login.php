@@ -53,17 +53,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $resultado = $conn->query("SELECT @resultado")->fetch_assoc()["@resultado"];
 
   // Verificar el resultado del procedimiento almacenado 
-  if ($resultado == 1) {
+  if ($resultado == 3) {
     // Usuario y contraseña son correctos, redirigir a la página de bienvenida
     session_start();
     $_SESSION['username'] = $username;
 
     header("Location:../pages/templates/index.php");
     exit();
-  } else {
+  } else if ($resultado == 0) {
     // Usuario y/o contraseña son incorrectos, mostrar un mensaje de error
     session_start();
+    $_SESSION["icon"] = "error";
+    $_SESSION["title"] = "Credenciales erróneas";
     $_SESSION["error_message"] = "Contraseña y/o usuario inválido. Ingrese credenciales correctas.";
+    header("Location: login.php");
+    exit();
+  }else if ($resultado == 2) {
+    // Usuario y/o contraseña son incorrectos, mostrar un mensaje de error
+    session_start();
+    $_SESSION["icon"] = "info";
+    $_SESSION["title"] = "Correo Inactivo";
+    $_SESSION["error_message"] = "El correo esta inactivo y/o deshabilitado comuníquese con el administrador .";
+    header("Location: login.php");
+    exit();
+  }else if ($resultado == 1) {
+    // Usuario y/o contraseña son incorrectos, mostrar un mensaje de error
+    session_start();
+    $_SESSION["icon"] = "warning";
+    $_SESSION["title"] = "Correo inexistente";
+    $_SESSION["error_message"] = "El correo no existe, ingrese uno que si exista..";
     header("Location: login.php");
     exit();
   }
@@ -72,21 +90,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <!-- /.login-logo -->
 
 <body class="hold-transition login-page">
-  <div class="login-box">
-    <div class="card card-outline card-primary">
-      <div class="card-header text-center">
-        <a href="what_is.php" class="h1"><b>INFRAG</b></a>
-      </div>
-      <script src='../public/js/sweetalert2/sweetalert2.min.js'></script>
+<script src='../public/js/sweetalert2/sweetalert2.min.js'></script>
       <script>
         <?php
-        if (isset($_SESSION["error_message"])) {
+        if (isset($_SESSION["error_message"]) && isset($_SESSION["icon"]) && isset($_SESSION["title"])) {
+          $icon = $_SESSION["icon"];
+          $title = $_SESSION["title"];
           $errorMessage = $_SESSION["error_message"];
-          unset($_SESSION["error_message"]);
+          unset($_SESSION["error_message"], $_SESSION["icon"]);
         ?>
           Swal.fire({
-            icon: 'error',
-            title: 'Credenciales erróneas',
+            icon: '<?php echo $icon; ?>',
+            title: '<?php echo $title; ?>',
             text: '<?php echo $errorMessage; ?>',
             confirmButtonText: 'Aceptar'
           });
@@ -94,6 +109,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         ?>
       </script>
+  <div class="login-box">
+    <div class="card card-outline card-primary">
+      <div class="card-header text-center">
+        <a href="what_is.php" class="h1"><b>INFRAG</b></a>
+      </div>
+      
 
 
       <div class="card-body">
