@@ -2,6 +2,11 @@
 require_once "../../includes/conecta.php";
 require_once "../../includes/constantes.php";
 include "../models/user_search.php";
+// Verificar si el usuario está autenticado
+if (empty($_SESSION["username"])) {
+    header("Location: ../templates/SignOff.php");
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
