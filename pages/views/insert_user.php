@@ -1,7 +1,6 @@
 <?php
 require_once "../templates/nav.php";
 require_once "../templates/menu.php";
-$permisoUSR = isset($privilegios["USER"]) && $privilegios["USER"];
 
 ?>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -48,7 +47,7 @@ $permisoUSR = isset($privilegios["USER"]) && $privilegios["USER"];
                         <div class="btn-group" class="col-sm-4">
                             <!--botones  de agregar  -->
                             <?php
-                            if ($permisoUSR) {
+                            if ($PermisoUSER) {
                                 // Agregar la ruta al array $arrayAdd
                                 $ruta = "../views/view_user.php";
                                 $arrayAdd[] = $ruta;
@@ -305,8 +304,8 @@ if (isset($_POST["buttonInsertUser"])) {
 
     $uploads_dir = '../../resources/User/';  // Ruta de la carpeta de destino para los archivos
 
-    $permisoUSR = isset($privilegios["USER"]) && $privilegios["USER"];
-    if ($permisoUSR) {
+    
+    if ($PermisoUSER) {
         //preparamos el insert 
         $stmt = $conn->prepare("CALL sp_insertUser(?,?,?,?,?,?,?,?)");
 

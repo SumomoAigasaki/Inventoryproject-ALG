@@ -420,8 +420,8 @@ if (isset($_POST["buttonInsertCMP"])) {
     $cmp_dir = '../../resources/Computer/';
     $idUser = $_SESSION["User_idTbl_User"];
     //validamos si tiene permiso de hacer un insert 
-    $permisoCMP = isset($privilegios["CMP"]) && $privilegios["CMP"];
-    if ($permisoCMP) {
+   
+    if ($PermisoCMP) {
 
         //Caso contrario Guardara
         $stmt = $conn->prepare("CALL sp_insertComputer(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");

@@ -2,7 +2,6 @@
 require_once "../templates/nav.php";
 require_once "../templates/menu.php";
 
-$permisoCMP = isset($privilegios["CMP"]) && $privilegios["CMP"];
 function dataTableComputer($stmt)
 {
   while ($row = $stmt->fetch_assoc()) {
@@ -80,7 +79,7 @@ function dataTableComputer($stmt)
             <div class="btn-group" class="col-sm-4">
               <!--botones  de agregar  -->
               <?php
-              if ($permisoCMP) {
+              if ($PermisoCMP) {
                 // Agregar la ruta al array $arrayAdd
                 $ruta = "../views/insert_computer.php";
                 $arrayAdd[] = $ruta;
@@ -157,12 +156,11 @@ function dataTableComputer($stmt)
                 </thead>
                 <tbody>
                   <?php
-                  $usuario = $_SESSION["RLS_idTbl_Roles"];
-                  $permisoCMP = isset($privilegios["CMP"]) && $privilegios["CMP"];
-                  // Verificar si el usuario tiene el rol 2 (administrador) y el permiso de SFT
-                  function validar_permisos($usuario, $permisoCMP)
+                  $rol = $_SESSION["RLS_idTbl_Roles"];
+                  // Verificar si el rol tiene el rol 2 (administrador) y el permiso de SFT
+                  function validar_permisos($rol, $PermisoCMP)
                   {
-                    if ($usuario == "2" && $permisoCMP) {
+                    if ($rol == "2" && $PermisoCMP) {
                       return true;
                     } else {
                       return false;
@@ -170,11 +168,11 @@ function dataTableComputer($stmt)
                   }
 
 
-                  function obtener_registros($conn, $usuario, $permisoCMP)
+                  function obtener_registros($conn, $rol, $PermisoCMP)
                   {
                     include "../../includes/conecta.php";
 
-                    if (validar_permisos($usuario, $permisoCMP)) {
+                    if (validar_permisos($rol, $PermisoCMP)) {
 
                       // Realizar consulta para obtener todos los registros
                       $stmt = $conn->query("CALL sp_selectAllComputers()");
@@ -188,7 +186,7 @@ function dataTableComputer($stmt)
                     } else {
                       // Realizar consulta para obtener solo registros activos
                       $stmt = $conn->query("CALL sp_selectAllComputers()");
-                      // $query= "CALL CALL sp_selectActiveUser()";
+                      // $query= "CALL CALL sp_selectAllComputers()";
                       // echo $query;
                       // Ejecutar el procedimiento almacenado
                       // Obtener todos los resultados
@@ -197,7 +195,7 @@ function dataTableComputer($stmt)
                       $conn->next_result();
                     }
                   }
-                  obtener_registros($conn, $usuario, $permisoCMP);
+                  obtener_registros($conn, $rol, $PermisoCMP);
                   ?>
 
                 </tbody>

@@ -103,7 +103,7 @@
                     <ul class="nav nav-treeview">
                         <?php
                         // Verificar si el usuario tiene el permiso de "USER"
-                        if (isset($privilegios["CMP"])) {
+                        if ($PermisoCMP) {
                             // Mostrar la opción del menú para el usuario
                             echo '<li class="nav-item">';
                             echo '<a href="../views/view_computer.php" class="nav-link">';
@@ -143,7 +143,7 @@
                         </li>
                         <?php
                         // Verificar si el usuario tiene el permiso de "USER"
-                        if (isset($privilegios["USER"])) {
+                        if ($PermisoUSER) {
                             // Mostrar la opción del menú para el usuario
                             echo '<li class="nav-item">';
                             echo ' <a href="../views/view_user.php" class="nav-link">';

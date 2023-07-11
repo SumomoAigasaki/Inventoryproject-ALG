@@ -1,7 +1,6 @@
 <?php
 require_once "../templates/nav.php";
 require_once "../templates/menu.php";
-$permisoCMP = isset($privilegios["CMP"]) && $privilegios["CMP"];
 
 //obtendremos lA VARIABLE QUE PASAMOS POR METODO get 
 $idComp = $_GET['p'];
@@ -73,7 +72,7 @@ $conn->next_result();
             <div class="btn-group" class="col-sm-4">
               <!--botones  de agregar  -->
               <?php
-              if ($permisoCMP) {
+              if ($PermisoCMP) {
                 // Agregar la ruta al array $arrayAdd
                 $ruta = "../views/view_computer.php";
                 $arrayAdd[] = $ruta;
@@ -422,7 +421,6 @@ $uploads_dir = '../../resources/Computer/';  // Ruta de la carpeta de destino pa
 if (isset($_POST["buttonUpdateComputer"])) {
   $accion = $_POST["txtAccion"];
   #valido si tiene el permiso de usuario 
-  $permisoCMP = isset($privilegios["CMP"]) && $privilegios["CMP"];
   $cmpId = $_POST["txtId"];
   $cmpAcquisitionDate = $_POST["txtAcquisitionDate"];
   $cmpIdManufacturer = $_POST['selectManufacturerSelect'];
@@ -461,7 +459,7 @@ if (isset($_POST["buttonUpdateComputer"])) {
   $idUser = $_SESSION["User_idTbl_User"];
 
   //validamos si tiene el permiso de CMP
-  if ($permisoCMP) {
+  if ($PermisoCMP) {
     //llamamos el procedimiento almacemado de actualizar computadora 
     $stmt = $conn->prepare("CALL sp_updateComputer(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
     // Mandamos los parametros y los input que seran enviados al PA O SP

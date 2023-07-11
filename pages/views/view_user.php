@@ -6,8 +6,6 @@ require_once "../templates/menu.php";
 // var_dump($privilegios);
 // echo('</pre>');
 
-$permisoUSER = isset($privilegios["USER"]) && $privilegios["USER"];
-
 function dataTableUser($stmt)
 {
   while ($row = $stmt->fetch_assoc()) {
@@ -58,7 +56,7 @@ function dataTableUser($stmt)
             <div class="btn-group" class="col-sm-4">
               <!--botones  de agregar  -->
               <?php
-              if ($permisoUSER) {
+              if ($PermisoUSER) {
                 // Agregar la ruta al array $arrayAdd
                 $ruta = "../views/insert_user.php";
                 $arrayAdd[] = $ruta;
@@ -126,11 +124,10 @@ function dataTableUser($stmt)
                 <tbody>
 
                   <?php
-                  $usuario=$_SESSION["RLS_idTbl_Roles"] ;
-                  $permisoUSER = isset($privilegios["USER"]) && $privilegios["USER"];
-                  // Verificar si el usuario tiene el rol 2 (administrador) y el permiso de SFT
-                  function validar_permisos($usuario,$permisoUSER) {
-                    if ($usuario == "2" && $permisoUSER) {
+                  $rol=$_SESSION["RLS_idTbl_Roles"] ;
+                  // Verificar si el rol tiene el rol 2 (administrador) y el permiso de SFT
+                  function validar_permisos($rol,$PermisoUSER) {
+                    if ($rol == "2" && $PermisoUSER) {
                         return true;
                     } else {
                         return false;
@@ -138,10 +135,10 @@ function dataTableUser($stmt)
                   }
                   
                   
-                  function obtener_registros($conn,$usuario,$permisoUSER) {
+                  function obtener_registros($conn,$rol,$PermisoUSER) {
                     include "../../includes/conecta.php";
 
-                    if (validar_permisos($usuario,$permisoUSER)) {
+                    if (validar_permisos($rol,$PermisoUSER)) {
                       
                         // Realizar consulta para obtener todos los registros
                         $stmt = $conn->query("CALL sp_selectAllUser()");
@@ -164,7 +161,7 @@ function dataTableUser($stmt)
                         $conn->next_result();
                     }
                   }
-                  obtener_registros($conn,$usuario, $permisoUSER);
+                  obtener_registros($conn,$rol, $PermisoUSER);
                   ?>
                 </tbody>
                 <tfoot>

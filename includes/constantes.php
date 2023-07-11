@@ -7,38 +7,6 @@ const nameProject = "INFRAG";
 const companyName = "Azucarera la Grecia S.A de C.V ";
 
 
-#COMPUTADORA
-if (!isset($privilegios["CMP"])) {
-  // Obtener la URL actual
-  $currentPage = $_SERVER['PHP_SELF'];
-
-  // Verificar si la URL corresponde a insert_computer.php, view_computer.php o update.php
-  if (
-    strpos($currentPage, 'insert_computer.php') !== false ||
-    strpos($currentPage, 'view_computer.php') !== false ||
-    strpos($currentPage, 'update_computer.php') !== false
-  ) {
-    // Redirigir a una página de error o mostrar un mensaje de acceso denegado
-    header("Location: ../templates/404.php");
-    exit();
-  }
-} 
-#USUARIO
-else if (!isset($privilegios["USER"])) {
-  // Obtener la URL actual
-  $currentPage = $_SERVER['PHP_SELF'];
-
-  // Verificar si la URL corresponde a insert_computer.php, view_computer.php o update.php
-  if (
-    strpos($currentPage, 'insert_user.php') !== false ||
-    strpos($currentPage, 'view_user.php') !== false ||
-    strpos($currentPage, 'update_user.php') !== false
-  ) {
-    // Redirigir a una página de error o mostrar un mensaje de acceso denegado
-    echo "Acceso denegado. No tienes permiso para acceder a esta página.";
-    exit();
-  }
-}
 // voy a validar el nombre de las paginas PHP para guardar la informacion en una variable
 //actualPage sirve para determinar en que pagina estamos actualmente
 $actualPage = basename($_SERVER['PHP_SELF']);

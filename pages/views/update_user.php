@@ -1,7 +1,6 @@
 <?php
 require_once "../templates/nav.php";
 require_once "../templates/menu.php";
-$permisoUSER = isset($privilegios["USER"]) && $privilegios["USER"];
 
 
 //obtendremos lA VARIABLE QUE PASAMOS POR METODO get 
@@ -51,7 +50,7 @@ $conn->next_result();
                         <div class="btn-group" class="col-sm-4">
                             <!--botones  de agregar  -->
                             <?php
-                            if ($permisoUSER) {
+                            if ($PermisoUSER) {
                                 // Agregar la ruta al array $arrayAdd
                                 $ruta = "../views/view_user.php";
                                 $arrayAdd[] = $ruta;
@@ -244,7 +243,6 @@ if (isset($_POST["buttonUpdateUser"])) {
     
     # Quieren guardar
     #valido si tiene el permiso de usuario 
-    $permisoUSR = isset($privilegios["USER"]) && $privilegios["USER"];
     date_default_timezone_set('America/Mexico_City');
     $idUserHidde = $_POST["userId"];
     $action= $_POST["txtAction"];
@@ -264,7 +262,7 @@ if (isset($_POST["buttonUpdateUser"])) {
 
     $uploads_dir = '../../resources/User/';  // Ruta de la carpeta de destino para los archivos
     
-    if ($permisoUSR && $action=="true") {
+    if ($PermisoUSER && $action=="true") {
        
         //preparamos el insert 
         $stmt = $conn->prepare("CALL sp_updateUser(?,?,?,?,?,?,?,?)");
