@@ -67,7 +67,11 @@ elseif ($actualPage == 'view_user.php') {
 } else if ($actualPage == '404.php') {
   $pageName = '¡Ups! Página no encontrada';
   $pageLink = "404.php";
-}
+} else if ($actualPage == 'HTTP/1.0 404 Not Found') {
+  header("Location: ../templates/404.php");
+  $pageName = '¡Ups! Página no encontrada';
+  $pageLink = "404.php";
+} 
 
 // date_default_timezone_set('America/Mexico_City');
 // //variables globales 

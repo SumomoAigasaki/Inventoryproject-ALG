@@ -99,7 +99,7 @@ $conn->next_result();
                                 <label class="form-check-label" style="padding-bottom: 5px;"> A continuación se le mostrara el formulario con información tenga <b> cuidado</b> al momento de presionar el boton:</label>
                                 <!-- Input ocultos  -->
                                 <input type="hidden" class="form-control" id="userId" name="userId" value="<?php echo $User_idTbl_User ?>">
-                                <input type="hidden" class="form-control" id="txtAction" name="txtAction" >
+                                <input type="hidden" class="form-control" id="txtAction" name="txtAction">
 
                                 <!--  Primer Row DE LA IZQUIERDA-->
                                 <div class="row" style="padding-top:10px; padding-bottom:10px;">
@@ -240,12 +240,12 @@ require_once "../templates/footer.php";
 
 # En caso de que haya sido el de guardar, no agregamos más campos
 if (isset($_POST["buttonUpdateUser"])) {
-    
+
     # Quieren guardar
     #valido si tiene el permiso de usuario 
     date_default_timezone_set('America/Mexico_City');
     $idUserHidde = $_POST["userId"];
-    $action= $_POST["txtAction"];
+    $action = $_POST["txtAction"];
     $dataRegisterInput = $_POST["txtFechaIngresado"];
     $usernameInput = $_POST["txtNombreUsuario"];
     $emailInput = $_POST["txtEmail"];
@@ -261,9 +261,9 @@ if (isset($_POST["buttonUpdateUser"])) {
     $roleSelect = $_POST["selectRoles"];
 
     $uploads_dir = '../../resources/User/';  // Ruta de la carpeta de destino para los archivos
-    
-    if ($PermisoUSER && $action=="true") {
-       
+
+    if ($PermisoUSER && $action == "true") {
+
         //preparamos el insert 
         $stmt = $conn->prepare("CALL sp_updateUser(?,?,?,?,?,?,?,?)");
 
@@ -283,7 +283,7 @@ if (isset($_POST["buttonUpdateUser"])) {
         $stmt->close();
         $conn->next_result();
 
-        
+
         // se extraen los valores qu     nos devuelve el procedimiento almacenado y enviamos el error
         if ($answerExistsComp > 0 && $msgErrorInsert == 0) {
             echo '<script > toastr.success("Los datos de <b>' . $usernameInput . '</b> se Actualizaron de manera exitosa.", "¡¡Enhorabuena!!"); ';
@@ -327,7 +327,6 @@ if (isset($_POST["buttonUpdateUser"])) {
         }
         exit;
     }
-    
 }
 ?>
 
@@ -370,7 +369,7 @@ if (isset($_POST["buttonUpdateUser"])) {
             rolSelect.focus();
             return false;
         } else {
-            Action.value="true";
+            Action.value = "true";
             // Si no hay errores, procesa los datos enviados
             document.getElementById("formUpdateUSER").submit();
         }
@@ -402,6 +401,52 @@ if (isset($_POST["buttonUpdateUser"])) {
     $(function() {
         $(".datepicker-input").datepicker({
             dateFormat: "yy-mm-dd"
+        });
+    });
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                // Asignamos el atributo src a la tag de imagen
+                $('#imgPerfil').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    // El listener va asignado al input
+    $("#imgUser").change(function() {
+        readURL(this);
+    });
+
+    // Vincula el campo de búsqueda con el elemento select de colaboradores
+    $(document).ready(function() {
+        $('#txt_busqueda').on('keyup', function() {
+            var texto = $(this).val().toLowerCase();
+            var opcionesVisibles = [];
+
+            // Filtra las opciones del select basándose en el texto ingresado en el campo de búsqueda
+            $('#selectColaborador option').each(function() {
+                var opcion = $(this).text().toLowerCase();
+                var mostrar = opcion.indexOf(texto) > -1;
+                $(this).toggle(mostrar);
+
+                // Almacena las opciones visibles en el array opcionesVisibles
+                if (mostrar) {
+                    opcionesVisibles.push($(this));
+                }
+            });
+
+            // Si no hay opciones visibles, selecciona la opción por defecto ('1')
+            if (opcionesVisibles.length === 0) {
+                $('#selectColaborador').val('1');
+            } else {
+                // Validación adicional: Si hay opciones visibles, selecciona automáticamente la primera opción
+                if (!opcionesVisibles.includes($('#selectColaborador').find(':selected'))) {
+                    opcionesVisibles[0].prop('selected', true);
+                }
+            }
         });
     });
 </script>

@@ -1,3 +1,34 @@
+<?php
+//validaciones para los modulos
+#dashboard
+if (in_array('Dashboard', array_column($privilegios, 'modulo'))) {
+    $PermisoDashboard = true;
+} else {
+    $PermisoDashboard = false;
+}
+#masterdata
+if (in_array('MasterData', array_column($privilegios, 'modulo'))) {
+    $PermisoMasterData = true;
+} else {
+    $PermisoMasterData = false;
+}
+#transaction
+if (in_array('Transaction', array_column($privilegios, 'modulo'))) {
+    $PermisoTransaction = true;
+} else {
+    $PermisoTransaction = false;
+}
+#Seguridad
+if (in_array('Security', array_column($privilegios, 'modulo'))) {
+    $PermisoSecurity = true;
+} else {
+    $PermisoSecurity = false;
+}
+
+
+
+?>
+
 <!-- Main Sidebar Container (MENU) -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
@@ -42,6 +73,8 @@
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <li class="nav-header">Opciones del sistema</li>
+                <!-- dashboard -->
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-chart-pie"></i>
@@ -69,6 +102,7 @@
                     </ul>
                 </li>
 
+                <!-- Masterdata -->
                 <li class="nav-item">
                     <a href="../views/explorer.php" class="nav-link">
                         <i class="nav-icon fas fa-folder-open"></i>
@@ -95,6 +129,8 @@
                         </li>
                     </ul>
                 </li>
+
+                <!-- Transaction -->
                 <li class="nav-item">
                     <a href="../views/explorer.php" class="nav-link">
                         <i class="nav-icon fa fa-database"></i>
@@ -129,39 +165,51 @@
                 </li>
 
 
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon  fa fa-shield-alt"></i>
-                        <p>Security </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Roles</p>
-                            </a>
-                        </li>
-                        <?php
-                        // Verificar si el usuario tiene el permiso de "USER"
-                        if ($PermisoUSER) {
-                            // Mostrar la opción del menú para el usuario
-                            echo '<li class="nav-item">';
-                            echo ' <a href="../views/view_user.php" class="nav-link">';
-                            echo '<i class="far fa-circle nav-icon"></i>';
-                            echo '<p>Usuario</p>';
-                            echo '</a>';
-                            echo '</li>';
-                        }
-                        ?>
-                        <li class="nav-item">
-                            <a href="../update_password.php?p=<?php echo $_SESSION["User_idTbl_User"]; ?>&usuario=<?php echo  $_SESSION["User_Username"] ?>" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Cambiar Contraseña</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+                <!-- Security -->
+                <?php
 
+                
+
+                if ($PermisoSecurity) {
+                    echo '<li class="nav-item">';
+                    echo ' <a href="#" class="nav-link">';
+                    echo ' <i class="nav-icon  fa fa-shield-alt"></i>';
+                    echo '<p>Security </p>';
+                    echo '</a>';
+                    echo ' <ul class="nav nav-treeview">';
+                     // Verificar si el usuario tiene el permiso de "ROLES"
+                    if ($PermisoRLS) {
+                       
+                        echo '   <li class="nav-item">';
+                        echo '  <a href="#" class="nav-link">';
+                        echo '  <i class="far fa-circle nav-icon"></i>';
+                        echo '  <p>Roles</p>';
+                        echo ' </a>';
+                        echo '</li>';
+                    }
+
+                    // Verificar si el usuario tiene el permiso de "USER"
+                    if ($PermisoUSER) {
+                        // Mostrar la opción del menú para el usuario
+                        echo '<li class="nav-item">';
+                        echo ' <a href="../views/view_user.php" class="nav-link">';
+                        echo '<i class="far fa-circle nav-icon"></i>';
+                        echo '<p>Usuario</p>';
+                        echo '</a>';
+                        echo '</li>';
+                    }
+                    echo ' </ul>';
+                    echo '</li>';
+                }
+                ?>
+
+                <li class="nav-header">Opciones Generales</li>
+                <li class="nav-item">
+                    <a href="../update_password.php?p=<?php echo $_SESSION["User_idTbl_User"]; ?>&usuario=<?php echo  $_SESSION["User_Username"] ?>" class="nav-link">
+                        <i class="nav-icon fas fa-sync-alt"></i>
+                        <p>Cambiar Contraseña</p>
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a href="../templates/SignOff.php" class="nav-link">
                         <i class="nav-icon   fas fa-arrow-right"></i>
@@ -169,6 +217,7 @@
                         <p>Cerrar Sesion </p>
                     </a>
                 </li>
+
                 <li class="nav-item">
                     <a href="../views/explorer.php" class="nav-link">
                         <i class="nav-icon fas fa-globe"></i>

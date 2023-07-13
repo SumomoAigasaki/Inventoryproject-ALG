@@ -124,9 +124,9 @@ require_once "../templates/menu.php";
                                         <div class="form-group">
                                             <label>Imagen: </label>
 
-                                            <div class="input-group">
-                                                <img class="img-fluid" src="../../resources/User/default.png" width="150" height="150" style="margin: 10px;" id="imgPerfil">
-                                                <input type="file" name="imgUser" id="imgUser" accept="image/png,image/jpeg" style="padding-left:15px; padding-top:75px;">
+                                            <div class="input-group" style=" display: flex;   justify-content: center;   align-items: center;   height: 200px;">
+                                                <img class="img-fluid" src="../../resources/User/default.png" width="150" height="150" id="imgPerfil">
+                                                <input type="file" name="imgUser" id="imgUser" accept="image/png,image/jpeg" style=" margin-left: 20px;text-align: center;">
                                             </div>
                                         </div>
                                     </div>
@@ -304,7 +304,7 @@ if (isset($_POST["buttonInsertUser"])) {
 
     $uploads_dir = '../../resources/User/';  // Ruta de la carpeta de destino para los archivos
 
-    
+
     if ($PermisoUSER) {
         //preparamos el insert 
         $stmt = $conn->prepare("CALL sp_insertUser(?,?,?,?,?,?,?,?)");
@@ -334,16 +334,16 @@ if (isset($_POST["buttonInsertUser"])) {
             echo '</script>';
             // Comprobar si el archivo ya existe
 
-            if ($_FILES['imgUser']['name'] != 'default.png' ) {
+            if ($_FILES['imgUser']['name'] != 'default.png') {
                 move_uploaded_file($_FILES['imgUser']['tmp_name'], $uploads_dir . $_FILES['imgUser']['name']);
-            } else if (file_exists($uploads_dir . $_FILES['imgUser']['name'])) { 
-                echo '<script > toastr.info("La imagen ya existe '.$cmpImgComp.'")</script>;';
+            } else if (file_exists($uploads_dir . $_FILES['imgUser']['name'])) {
+                echo '<script > toastr.info("La imagen ya existe ' . $cmpImgComp . '")</script>;';
                 $uploadOk = 0; //si existe lanza un valor en 0            
-            } 
+            }
             exit;
         } else if ($answerExistsComp == "" && $msgErrorInsert == 1) {
             echo '<script > toastr.error("No se pudo guardar <br>Ya existe un registro con este el Username: <b>' . $usernameInput . '</b>","¡¡UPS!!  Advertencia: 1");';
-            echo'var usernametxt = document.getElementById("txt_username");';
+            echo 'var usernametxt = document.getElementById("txt_username");';
             echo ' usernametxt.focus();';
             echo '</script>';
         } else if ($answerExistsComp == "" && $msgErrorInsert == 2) {
@@ -353,23 +353,23 @@ if (isset($_POST["buttonInsertUser"])) {
         } else if ($answerExistsComp == "" && $msgErrorInsert == 3) {
             echo '<script > toastr.error(" No se pudo guardar<br> Ya existe un Registro guardado con este Email<b> ' . $emailInput . ' </b>","¡¡UPS!!  Advertencia: 3");';
             echo 'emailtxt.focus();';
-            echo '</script>'; 
-        }else if ($answerExistsComp == "" && $msgErrorInsert == 4) {
+            echo '</script>';
+        } else if ($answerExistsComp == "" && $msgErrorInsert == 4) {
             echo '<script>';
             echo 'toastr.error("No se pudo guardar.<br>Ya existe un registro con estos registros<br> Colaborador(ID): <b>' . $colaboratorSelect . '</b>, Email: <b>' . $emailInput . '</b>, Username: <b>' . $usernameInput . '</b>", "¡¡UPS!! Advertencia: 4");';
             echo '</script>';
-        }else if ($answerExistsComp == "" && $msgErrorInsert == 5) {
+        } else if ($answerExistsComp == "" && $msgErrorInsert == 5) {
             echo '<script>';
             echo 'toastr.error(" No se pudo guardar<br> No existe un registro para el <b>Username: ' . $usernameInput . ' </b><br> pero si existen un Registro con Colaborador: <b> ' . $colaboratorSelect . '</b> y  Email <b> ' . $emailInput . '</b>.","¡¡UPS!!  Advertencia: 5");';
-            echo '</script>'; 
-        }else if ($answerExistsComp == "" && $msgErrorInsert == 6) {
+            echo '</script>';
+        } else if ($answerExistsComp == "" && $msgErrorInsert == 6) {
             echo '<script>';
             echo 'toastr.error(" No se pudo guardar<br> No existe un registro para el <b>Colaborador(ID): ' . $colaboratorSelect . '</b><br> pero si existen un Registro con Username: <b> ' . $usernameInput . ' </b> y  Email <b> ' . $emailInput . '</b> . ","¡¡UPS!!  Advertencia: 6");';
-            echo '</script>'; 
-        }else if ($answerExistsComp == "" && $msgErrorInsert == 7) {
+            echo '</script>';
+        } else if ($answerExistsComp == "" && $msgErrorInsert == 7) {
             echo '<script>';
             echo 'toastr.error(" No se pudo guardar <br> No existe un registro para Email: <b>' . $emailInput . '</b><br> pero si existen un Registro con Username: <b> ' . $usernameInput . ' </b> y  Colaborador (ID): <b> ' . $colaboratorSelect . '</b>" ,"¡¡UPS!!  Advertencia: 7");';
-            echo '</script>'; 
+            echo '</script>';
         }
     }
 }
@@ -395,21 +395,32 @@ if (isset($_POST["buttonInsertUser"])) {
         readURL(this);
     });
 
-    // Vincula el input de búsqueda con el select ded models 
+    // Vincula el campo de búsqueda con el elemento select de colaboradores
     $(document).ready(function() {
         $('#txt_busqueda').on('keyup', function() {
             var texto = $(this).val().toLowerCase();
+            var opcionesVisibles = [];
 
-            $('#selectColaboratos option').each(function() {
+            // Filtra las opciones del select basándose en el texto ingresado en el campo de búsqueda
+            $('#selectColaborador option').each(function() {
                 var opcion = $(this).text().toLowerCase();
                 var mostrar = opcion.indexOf(texto) > -1;
                 $(this).toggle(mostrar);
+
+                // Almacena las opciones visibles en el array opcionesVisibles
+                if (mostrar) {
+                    opcionesVisibles.push($(this));
+                }
             });
 
-            // Si no hay opciones visibles, selecciona la opción 1
-            var opcionesVisibles = $('#selectColaboratos option:visible');
+            // Si no hay opciones visibles, selecciona la opción por defecto ('1')
             if (opcionesVisibles.length === 0) {
-                $('#selectColaboratos').val('1');
+                $('#selectColaborador').val('1');
+            } else {
+                // Validación adicional: Si hay opciones visibles, selecciona automáticamente la primera opción
+                if (!opcionesVisibles.includes($('#selectColaborador').find(':selected'))) {
+                    opcionesVisibles[0].prop('selected', true);
+                }
             }
         });
     });
