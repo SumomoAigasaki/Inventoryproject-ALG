@@ -460,79 +460,83 @@ if (isset($_POST["buttonUpdateComputer"])) {
 
   //validamos si tiene el permiso de CMP
   if ($PermisoCMP) {
-    //llamamos el procedimiento almacemado de actualizar computadora 
-    $stmt = $conn->prepare("CALL sp_updateComputer(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-    // Mandamos los parametros y los input que seran enviados al PA O SP
-    $stmt->bind_param("sssssssssssssssssss", $cmpId, $todayDate, $cmpIdManufacturer, $cmpImgComp, $cmptName, $cmpIdModel, $cmpCompType, $cmpServitag, $cmpLicence, $cmpMotherboard, $cmpAcquisitionDate, $cmpWarrantyExpiration, $cmpYearExpiration, $cmpIdLocation, $cmpIdStatu, $cmpObservation, $cmpImgCompReport, $idUser, $cmpeIdGuarate);
-    // Ejecutar el procedimiento almacenado
 
-    $stmt->execute();
-    $query = "CALL sp_updateComputer('$cmpId', '$todayDate', '$cmpIdManufacturer', '$cmpImgComp', '$cmptName', '$cmpIdModel', '$cmpCompType', '$cmpServitag', '$cmpLicence', '$cmpMotherboard', '$cmpAcquisitionDate', '$cmpWarrantyExpiration', '$cmpYearExpiration', '$cmpIdLocation', '$cmpIdStatu', '$cmpObservation', '$cmpImgCompReport', '$idUser', '$cmpeIdGuarate');";
-    echo $query;
-    // echo '<pre>';
-    if ($stmt->error) {
-      error_log("Error en la ejecución del procedimiento almacenado: " . $stmt->error);
-    }
-    // Obtener el número de filas afectadas por el insert
-    $stmt->bind_result($answerExistsComp, $msgErrorInsert);
-    $stmt->fetch();
-    // echo $idC;
+    try {
+      //llamamos el procedimiento almacemado de actualizar computadora 
+      $stmt = $conn->prepare("CALL sp_updateComputer(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+      // Mandamos los parametros y los input que seran enviados al PA O SP
+      $stmt->bind_param("sssssssssssssssssss", $cmpId, $todayDate, $cmpIdManufacturer, $cmpImgComp, $cmptName, $cmpIdModel, $cmpCompType, $cmpServitag, $cmpLicence, $cmpMotherboard, $cmpAcquisitionDate, $cmpWarrantyExpiration, $cmpYearExpiration, $cmpIdLocation, $cmpIdStatu, $cmpObservation, $cmpImgCompReport, $idUser, $cmpeIdGuarate);
+      // Ejecutar el procedimiento almacenado
 
-    // Cerrar el statement
-    $stmt->close();
-    // Avanzar al siguiente conjunto de resultados si hay varios
-    $conn->next_result();
-
-    // se extraen los valores qu     nos devuelve el procedimiento almacenado y enviamos el error
-    if ($answerExistsComp > 0 && $msgErrorInsert == 0) {
-      echo '<script > toastr.success("Los datos de <b>' . $usernameInput . '</b> se Actualizaron de manera exitosa.", "¡¡Enhorabuena!!"); ';
-      echo 'setTimeout(function() {';
-      echo '  window.location.href = "view_computer.php";';
-      echo ' }, 2000); // 2000 milisegundos = 2 segundos de retraso ';
-      echo 'document.getElementById("formInsertCMP").reset(); ';
-      echo '</script>';
-      // Comprobar si el archivo ya existe
-      if ($_FILES['fileImg']['name'] != 'default.jpg' ) {
-        move_uploaded_file($_FILES['fileImg']['tmp_name'], $uploads_dir . $_FILES['fileImg']['name']); 
-      } else {
-        echo '<script > toastr.info("La imagen ya existe")</script>;';
-        $uploadOk = 0; //si existe lanza un valor en 0
+      $stmt->execute();
+      // $query = "CALL sp_updateComputer('$cmpId', '$todayDate', '$cmpIdManufacturer', '$cmpImgComp', '$cmptName', '$cmpIdModel', '$cmpCompType', '$cmpServitag', '$cmpLicence', '$cmpMotherboard', '$cmpAcquisitionDate', '$cmpWarrantyExpiration', '$cmpYearExpiration', '$cmpIdLocation', '$cmpIdStatu', '$cmpObservation', '$cmpImgCompReport', '$idUser', '$cmpeIdGuarate');";
+      // echo $query;
+      // echo '<pre>';
+      if ($stmt->error) {
+        error_log("Error en la ejecución del procedimiento almacenado: " . $stmt->error);
       }
-      // Comprobar si el archivo ya existe
-      if ($_FILES['fileReport']['name'] != $CMP_Report && $_FILES['fileReport']['name'] != "NULL"){
-        move_uploaded_file($_FILES['fileReport']['tmp_name'], $uploads_dir . $_FILES['fileReport']['name']);
+      // Obtener el número de filas afectadas por el insert
+      $stmt->bind_result($answerExistsComp);
+      $stmt->fetch();
+      // echo $idC;
+
+      // Cerrar el statement
+      $stmt->close();
+      // Avanzar al siguiente conjunto de resultados si hay varios
+      $conn->next_result();
+
+      // se extraen los valores qu     nos devuelve el procedimiento almacenado y enviamos el error
+      if ($answerExistsComp > 0) {
+        echo '<script > toastr.success("Los datos de <b>' . $usernameInput . '</b> se Actualizaron de manera exitosa.", "¡¡Enhorabuena!!"); ';
+        echo 'setTimeout(function() {';
+        echo '  window.location.href = "view_computer.php";';
+        echo ' }, 2000); // 2000 milisegundos = 2 segundos de retraso ';
+        echo 'document.getElementById("formInsertCMP").reset(); ';
+        echo '</script>';
+        // Comprobar si el archivo ya existe
+        if ($_FILES['fileImg']['name'] != 'default.jpg') {
+          move_uploaded_file($_FILES['fileImg']['tmp_name'], $uploads_dir . $_FILES['fileImg']['name']);
+        } else {
+          echo '<script > toastr.info("La imagen ya existe")</script>;';
+          $uploadOk = 0; //si existe lanza un valor en 0
+        }
+        // Comprobar si el archivo ya existe
+        if ($_FILES['fileReport']['name'] != $CMP_Report && $_FILES['fileReport']['name'] != "NULL") {
+          move_uploaded_file($_FILES['fileReport']['tmp_name'], $uploads_dir . $_FILES['fileReport']['name']);
+        } else {
+          echo '<script > toastr.info("La imagen del reporte ya existe")</script>;';
+        }
+        exit;
+      }
+    } catch (mysqli_sql_exception $e) {
+      if ($e->getCode() == 1062) {
+        // Check which specific unique field is causing the constraint violation
+        if (strpos($e->getMessage(), 'CMP_Technical_Name_UNIQUE') !== false) {
+          // echo "Error: ";
+          echo '<script > toastr.error("No se pudo guardar <br> El Nombre técnico  proporcionado ya está en uso. Por favor, elige un Nombre técnico  diferente.","¡¡UPS!!  Advertencia: 1");';
+          echo 'var nombretxt = document.getElementById("txtTechnicalName");';
+          echo 'nombretxt.focus();';
+          echo '</script>';
+        } elseif (strpos($e->getMessage(), 'CMP_Servitag_UNIQUE') !== false) {
+          echo '<script > toastr.error("No se pudo guardar <br> El Servitag proporcionado ya está en uso. Por favor, elige un Servitag diferente.","¡¡UPS!!  Advertencia: 2");';
+          echo 'var servitagtxt = document.getElementById("txtServitag");';
+          echo 'servitagtxt.focus();';
+          echo '</script>';
+        } elseif (strpos($e->getMessage(), 'CMP_License_UNIQUE') !== false) {
+          // Replace 'another_unique_field' with the actual name of the third unique field
+          echo '<script > toastr.error("No se pudo guardar <br>La Licencia del colaborador proporcionado ya está en uso. Por favor, elige una Licencia  diferente.","¡¡UPS!!  Advertencia: 3");';
+          echo 'var  licencetxt = document.getElementById("txtLicense");';
+          echo 'licencetxt.focus();';
+          echo '</script>';
+        } else {
+          // If none of the specific fields match, display a generic error message
+          echo "Error: Duplicate entry for one or more unique fields. Please provide different values.";
+        }
       } else {
-        echo '<script > toastr.info("La imagen del reporte ya existe")</script>;';
-      }  
-    }  else if ($answerExistsComp == "" && $msgErrorInsert == 1) {
-      echo '<script > toastr.error("No se pudo guardar <br>Ya existe un registro con esta Licensia: <b>' . $cmpLicence . '</b>","¡¡UPS!!  Advertencia: 1");';
-      echo 'var licenceInput = document.getElementById("txtLicense");';
-      echo 'licenceInput.focus();';
-      echo '</script>';
-  } else if ($answerExistsComp == "" && $msgErrorInsert == 2) {
-      echo '<script > toastr.error(" No se pudo guardar<br> Ya existe un registro con este Servitag :  <b> ' . $cmpServitag . ' </b>","¡¡UPS!!  Advertencia: 2");';
-      echo 'var servitagInput = document.getElementById("txtServitag");';
-      echo ' servitagInput.focus();';
-      echo '</script>';
-  } else if ($answerExistsComp == "" && $msgErrorInsert == 3) {
-      echo '<script > toastr.error(" No se pudo guardar<br> Ya existe un Registro guardado con este Nombre Tecnico: <b> ' . $cmptName . ' </b>","¡¡UPS!!  Advertencia: 3");';
-      echo 'var nombreInput = document.getElementById("txtTechnicalName");';
-      echo 'nombreInput.focus();';
-      echo '</script>';
-  } else if ($answerExistsComp == "" && $msgErrorInsert == 4) {
-      echo '<script>';
-      echo 'toastr.error(" No se pudo guardar<br> No existe un registro para el <b>Licensia: ' . $cmpLicence . ' </b><br> pero si existen un Registro con Servitag: : <b> ' . $cmpServitag . '</b> y   Nombre Tecnico <b> ' . $cmptName . '</b>.","¡¡UPS!!  Advertencia: 5");';
-      echo '</script>';
-  } else if ($answerExistsComp == "" && $msgErrorInsert == 5) {
-      echo '<script>';
-      echo 'toastr.error(" No se pudo guardar<br> No existe un registro para el <b>Servitag: ' . $cmpServitag . '</b><br> pero si existen un Registro con Licensia: <b> ' . $cmpLicence . ' </b> y  Nombre Tecnico <b> ' . $cmptName. '</b> . ","¡¡UPS!!  Advertencia: 6");';
-      echo '</script>';
-  } else if ($answerExistsComp == "" && $msgErrorInsert == 6) {
-      echo '<script>';
-      echo 'toastr.error(" No se pudo guardar <br> No existe un registro para Nombre Tecnico: <b>' . $cmptName . '</b><br> pero si existen un Registro con Servitag: <b> ' . $cmpServitag . ' </b> y  Licensia: <b> ' . $cmpLicence . '</b>" ,"¡¡UPS!!  Advertencia: 7");';
-      echo '</script>';
-  }
-  exit;
+        // Handle other types of database-related errors
+        echo "Error código: " . $e->getCode() . " - " . $e->getMessage();
+      }
+    }
   }
 }
 
@@ -665,8 +669,8 @@ require_once "../templates/footer.php";
     // Obtener todos los options del segundo select
     var opcionesModelos = document.getElementById("selectModel").options;
 
-     // Obtener todos los options del segundo select
-     var opcionesGarantia = document.getElementById("selectTypeGuarantee").options;
+    // Obtener todos los options del segundo select
+    var opcionesGarantia = document.getElementById("selectTypeGuarantee").options;
 
     // Obtenr el texto del segundo seletc
     var contenidoModelo = document.getElementsByTagName("option");

@@ -423,7 +423,8 @@ if (isset($_POST["buttonInsertCMP"])) {
    
     if ($PermisoCMP) {
 
-        //Caso contrario Guardara
+        try{
+           //Caso contrario Guardara
         $stmt = $conn->prepare("CALL sp_insertComputer(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
         // $query = "CALL sp_insertComputer('$todayDate', '$cmpIdManufacturer', '$cmpImgComp', '$cmptName', '$cmpIdModel', '$cmpCompType', '$cmpServitag', '$cmpLicence', '$cmpMotherboard', '$cmpAcquisitionDate', '$cmpWarrantyExpiration', '$cmpYearExpiration', '$cmpIdLocation', '$cmpIdStatu', '$cmpObservation', '$idUser','$cmpIdGuarantee');";
@@ -438,13 +439,13 @@ if (isset($_POST["buttonInsertCMP"])) {
             error_log("Error en la ejecución del procedimiento almacenado: " . $stmt->error);
         }
         // Obtener el valor de la variable de salida
-        $stmt->bind_result($answerExistsComp, $msgErrorInsert);
+        $stmt->bind_result($answerExistsComp);
         $stmt->fetch();
         $stmt->close();
         $conn->next_result();
 
         // se extraen los valores qu     nos devuelve el procedimiento almacenado y enviamos el error
-        if ($answerExistsComp > 0 && $msgErrorInsert == 0) {
+        if ($answerExistsComp > 0 ) {
             echo '<script > toastr.success("Los datos de <b>' . $cmptName . '</b> se Guardaron de manera exitosa.", "¡¡Enhorabuena!!"); ';
             echo 'setTimeout(function() {';
             echo '  window.location.href = "view_computer.php";';
@@ -460,36 +461,36 @@ if (isset($_POST["buttonInsertCMP"])) {
 
             }
             exit;
-        } else if ($answerExistsComp == "" && $msgErrorInsert == 1) {
-            echo '<script > toastr.error("No se pudo guardar<br>Ya existe un Registro con esta Licencia  <b>' . $cmpLicence . '</b>","¡¡UPS!! Advertencia N:1");';
-            echo 'var licenceInput = document.getElementById("txtLicense");';
-            echo 'licenceInput.focus();';
-            echo '</script>';
-        } else if ($answerExistsComp == "" && $msgErrorInsert == 2) {
-            echo '<script > toastr.error(" No se pudo guardar<br>Ya existe un Registro con este Servitag  <b> ' . $cmpServitag . ' </b>","¡¡UPS!! Advertencia N:2");';
-            echo 'var servitagInput = document.getElementById("txtServitag");';
-            echo 'servitagInput.focus();';
-            echo '</script>';
-        } else if ($answerExistsComp == "" && $msgErrorInsert == 3) {
-            echo '<script > toastr.error(" No se pudo guardar<br>Ya existe un Registro con este Nombre tecnico  <b> ' . $cmptName . ' </b>","¡¡UPS!! Advertencia N:3");';
-            echo 'var servitagInput = document.getElementById("txtServitag");';
-            echo 'servitagInput.focus();';
-            echo '</script>';
-        } else if ($answerExistsComp == "" && $msgErrorInsert == 4) {
-            echo '<script > toastr.error("No se pudo guardar<br>Ya existe un Registro con estos datos. <b> Servitag: ' . $cmpServitag . '</b><b> Licencia: ' . $cmpLicence . ' </b> <b>Nombre de Usuario: ' . $cmptName . ' </b>","¡¡UPS!! Advertencia N:4");';
-            echo '</script>';
-        } else if ($answerExistsComp == "" && $msgErrorInsert == 5) {
-            echo '<script>';
-            echo 'toastr.error(" No se pudo guardar<br> No existe un registro para el <b>Licencia: ' . $cmpLicence . ' </b><br> pero si existen un Registro con Servitag: <b> ' . $cmpServitag . '</b> y  Nombre Tecnico <b> ' . $cmptName . '</b>.","¡¡UPS!!  Advertencia: 5");';
-            echo '</script>';
-        } else if ($answerExistsComp == "" && $msgErrorInsert == 6) {
-            echo '<script>';
-            echo 'toastr.error(" No se pudo guardar<br> No existe un registro para el <b>Servitag: ' . $cmpServitag . ' </b><br> pero si existen un Registro con Licenica: <b> ' . $cmpLicence . '</b> y  Nombre Tecnico <b> ' . $cmptName . '</b>.","¡¡UPS!!  Advertencia: 6");';
-            echo '</script>';
-        } else if ($answerExistsComp == "" && $msgErrorInsert == 7) {
-            echo '<script>';
-            echo 'toastr.error(" No se pudo guardar<br> No existe un registro para el <b>Nombre tecnico: ' . $cmptName . ' </b><br> pero si existen un Registro con Servitag: <b> ' . $cmpServitag . '</b> y  Licencia <b> ' . $cmpLicence . '</b>.","¡¡UPS!!  Advertencia: 7");';
-            echo '</script>';
+        }  
+        }catch (mysqli_sql_exception $e) {
+            if ($e->getCode() == 1062) {
+                // Check which specific unique field is causing the constraint violation
+                if (strpos($e->getMessage(), 'CMP_Technical_Name_UNIQUE') !== false) {
+                    // echo "Error: ";
+                    echo '<script > toastr.error("No se pudo guardar <br> El Nombre técnico  proporcionado ya está en uso. Por favor, elige un Nombre técnico  diferente.","¡¡UPS!!  Advertencia: 1");';
+                    echo 'var nombretxt = document.getElementById("txtTechnicalName");';
+                    echo 'nombretxt.focus();';
+                    echo '</script>';
+                } elseif (strpos($e->getMessage(), 'CMP_Servitag_UNIQUE') !== false) {
+                    echo '<script > toastr.error("No se pudo guardar <br> El Servitag proporcionado ya está en uso. Por favor, elige un Servitag diferente.","¡¡UPS!!  Advertencia: 2");';
+                    echo 'var servitagtxt = document.getElementById("txtServitag");';
+                    echo 'servitagtxt.focus();';
+                    echo '</script>';
+                } elseif (strpos($e->getMessage(), 'CMP_License_UNIQUE') !== false) {
+                    // Replace 'another_unique_field' with the actual name of the third unique field
+                    echo '<script > toastr.error("No se pudo guardar <br>La Licencia del colaborador proporcionado ya está en uso. Por favor, elige una Licencia  diferente.","¡¡UPS!!  Advertencia: 3");';
+                    echo 'var  licencetxt = document.getElementById("txtLicense");';
+                    echo 'licencetxt.focus();';
+                    echo '</script>';
+                } else {
+                    // If none of the specific fields match, display a generic error message
+                    echo "Error: Duplicate entry for one or more unique fields. Please provide different values.";
+                }
+            } else {
+                // Handle other types of database-related errors
+                echo "Error código: " . $e->getCode() . " - " . $e->getMessage();
+            }
+
         }
     }
 }
