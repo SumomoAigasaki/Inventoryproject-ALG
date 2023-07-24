@@ -296,8 +296,8 @@ if (isset($_POST["buttonInsertUser"])) {
     } else {
         $imagenUserField = '/resources/User/' . $_FILES['imgUser']['name'];
     }
-    $usernameInput = $_POST["txt_username"];
-    $emailInput = $_POST["txt_email"];
+    $usernameInput = strtolower($_POST["txt_username"]);
+    $emailInput = strtolower($_POST["txt_email"]);
     $passwordInput = $_POST["txt_password"];
     $statuSelect = $_POST["selectStatus"];
     $roleSelect = $_POST["selectRoles"];
@@ -306,70 +306,73 @@ if (isset($_POST["buttonInsertUser"])) {
 
 
     if ($PermisoUSER) {
-        //preparamos el insert 
-        $stmt = $conn->prepare("CALL sp_insertUser(?,?,?,?,?,?,?,?)");
 
-        // Mandamos los parametros y los input que seran enviados al PA O SP
-        $stmt->bind_param("ssssssss", $todayDateInput, $usernameInput, $emailInput, $passwordInput, $colaboratorSelect, $statuSelect, $imagenUserField, $roleSelect);
-        // $query = "CALL sp_insertUser('$todayDateInput', '$usernameInput', '$emailInput', '$passwordInput', '$colaboratorSelect', '$statuSelect', '$imagenUserField', '$roleSelect');";
-        // echo $query;
+        try {
+            //preparamos el insert 
+            $stmt = $conn->prepare("CALL sp_insertUser(?,?,?,?,?,?,?,?)");
 
-        // Ejecutar el procedimiento almacenado
-        $stmt->execute();
-        if ($stmt->error) {
-            error_log("Error en la ejecución del procedimiento almacenado: " . $stmt->error);
-        }
-        // Obtener el valor de la variable de salida
-        $stmt->bind_result($answerExistsComp, $msgErrorInsert);
-        $stmt->fetch();
-        $stmt->close();
-        $conn->next_result();
-        // se extraen los valores qu     nos devuelve el procedimiento almacenado y enviamos el error
-        if ($answerExistsComp > 0 && $msgErrorInsert == 0) {
-            echo '<script > toastr.success("Los datos de <b>' . $usernameInput . '</b> se Guardaron de manera exitosa.", "¡¡Enhorabuena!!"); ';
-            echo 'setTimeout(function() {';
-            echo '  window.location.href = "view_user.php";';
-            echo ' }, 2000); // 2000 milisegundos = 2 segundos de retraso ';
-            echo 'document.getElementById("formInsertCMP").reset(); ';
-            echo '</script>';
-            // Comprobar si el archivo ya existe
+            // Mandamos los parametros y los input que seran enviados al PA O SP
+            $stmt->bind_param("ssssssss", $todayDateInput, $usernameInput, $emailInput, $passwordInput, $colaboratorSelect, $statuSelect, $imagenUserField, $roleSelect);
+            // $query = "CALL sp_insertUser('$todayDateInput', '$usernameInput', '$emailInput', '$passwordInput', '$colaboratorSelect', '$statuSelect', '$imagenUserField', '$roleSelect');";
+            // echo $query;
 
-            if ($_FILES['imgUser']['name'] != 'default.png') {
-                move_uploaded_file($_FILES['imgUser']['tmp_name'], $uploads_dir . $_FILES['imgUser']['name']);
-            } else if (file_exists($uploads_dir . $_FILES['imgUser']['name'])) {
-                echo '<script > toastr.info("La imagen ya existe ' . $cmpImgComp . '")</script>;';
-                $uploadOk = 0; //si existe lanza un valor en 0            
+            // Ejecutar el procedimiento almacenado
+            $stmt->execute();
+            if ($stmt->error) {
+                error_log("Error en la ejecución del procedimiento almacenado: " . $stmt->error);
             }
-            exit;
-        } else if ($answerExistsComp == "" && $msgErrorInsert == 1) {
-            echo '<script > toastr.error("No se pudo guardar <br>Ya existe un registro con este el Username: <b>' . $usernameInput . '</b>","¡¡UPS!!  Advertencia: 1");';
-            echo 'var usernametxt = document.getElementById("txt_username");';
-            echo ' usernametxt.focus();';
-            echo '</script>';
-        } else if ($answerExistsComp == "" && $msgErrorInsert == 2) {
-            echo '<script > toastr.error(" No se pudo guardar<br> Ya existe un registro con este Colaborador (ID):  <b> ' . $colaboratorSelect . ' </b>","¡¡UPS!!  Advertencia: 2");';
-            echo ' colaboradorSelect.focus();';
-            echo '</script>';
-        } else if ($answerExistsComp == "" && $msgErrorInsert == 3) {
-            echo '<script > toastr.error(" No se pudo guardar<br> Ya existe un Registro guardado con este Email<b> ' . $emailInput . ' </b>","¡¡UPS!!  Advertencia: 3");';
-            echo 'emailtxt.focus();';
-            echo '</script>';
-        } else if ($answerExistsComp == "" && $msgErrorInsert == 4) {
-            echo '<script>';
-            echo 'toastr.error("No se pudo guardar.<br>Ya existe un registro con estos registros<br> Colaborador(ID): <b>' . $colaboratorSelect . '</b>, Email: <b>' . $emailInput . '</b>, Username: <b>' . $usernameInput . '</b>", "¡¡UPS!! Advertencia: 4");';
-            echo '</script>';
-        } else if ($answerExistsComp == "" && $msgErrorInsert == 5) {
-            echo '<script>';
-            echo 'toastr.error(" No se pudo guardar<br> No existe un registro para el <b>Username: ' . $usernameInput . ' </b><br> pero si existen un Registro con Colaborador: <b> ' . $colaboratorSelect . '</b> y  Email <b> ' . $emailInput . '</b>.","¡¡UPS!!  Advertencia: 5");';
-            echo '</script>';
-        } else if ($answerExistsComp == "" && $msgErrorInsert == 6) {
-            echo '<script>';
-            echo 'toastr.error(" No se pudo guardar<br> No existe un registro para el <b>Colaborador(ID): ' . $colaboratorSelect . '</b><br> pero si existen un Registro con Username: <b> ' . $usernameInput . ' </b> y  Email <b> ' . $emailInput . '</b> . ","¡¡UPS!!  Advertencia: 6");';
-            echo '</script>';
-        } else if ($answerExistsComp == "" && $msgErrorInsert == 7) {
-            echo '<script>';
-            echo 'toastr.error(" No se pudo guardar <br> No existe un registro para Email: <b>' . $emailInput . '</b><br> pero si existen un Registro con Username: <b> ' . $usernameInput . ' </b> y  Colaborador (ID): <b> ' . $colaboratorSelect . '</b>" ,"¡¡UPS!!  Advertencia: 7");';
-            echo '</script>';
+            // Obtener el valor de la variable de salida
+            $stmt->bind_result($answerExistsUser);
+            $stmt->fetch();
+            $stmt->close();
+            $conn->next_result();
+            // se extraen los valores qu     nos devuelve el procedimiento almacenado y enviamos el error
+            if ($answerExistsUser > 0) {
+                echo '<script > toastr.success("Los datos de <b>' . $usernameInput . '</b> se Guardaron de manera exitosa.", "¡¡Enhorabuena!!"); ';
+                echo 'setTimeout(function() {';
+                echo '  window.location.href = "view_user.php";';
+                echo ' }, 2000); // 2000 milisegundos = 2 segundos de retraso ';
+                echo 'document.getElementById("formInsertCMP").reset(); ';
+                echo '</script>';
+                // Comprobar si el archivo ya existe
+
+                if ($_FILES['imgUser']['name'] != 'default.png') {
+                    move_uploaded_file($_FILES['imgUser']['tmp_name'], $uploads_dir . $_FILES['imgUser']['name']);
+                } else if (file_exists($uploads_dir . $_FILES['imgUser']['name'])) {
+                    echo '<script > toastr.info("La imagen ya existe ' . $cmpImgComp . '")</script>;';
+                    $uploadOk = 0; //si existe lanza un valor en 0            
+                }
+                exit;
+            }
+        } catch (mysqli_sql_exception $e) {
+            // Si ocurre una excepción, capturamos el código de error y lo imprimimos
+            if ($e->getCode() == 1062) {
+                // Check which specific unique field is causing the constraint violation
+                if (strpos($e->getMessage(), 'User_Username_UNIQUE') !== false) {
+                    // echo "Error: ";
+                    echo '<script > toastr.error("No se pudo guardar <br>El nombre de usuario proporcionado ya está en uso. Por favor, elige un nombre de usuario diferente.","¡¡UPS!!  Advertencia: 1");';
+                    echo 'var usernametxt = document.getElementById("txt_username");';
+                    echo 'usernametxt.focus();';
+                    echo '</script>';
+                } elseif (strpos($e->getMessage(), 'User_Email_UNIQUE') !== false) {
+                    echo '<script > toastr.error("No se pudo guardar <br>El correo para este usuario proporcionado ya está en uso. Por favor, elige un correo diferente.","¡¡UPS!!  Advertencia: 2");';
+                    echo 'var emailtxt = document.getElementById("txtEmail");';
+                    echo 'emailtxt.focus();';
+                    echo '</script>';
+                } elseif (strpos($e->getMessage(), 'CBT_idTbl_Collaborator_UNIQUE') !== false) {
+                    // Replace 'another_unique_field' with the actual name of the third unique field
+                    echo '<script > toastr.error("No se pudo guardar <br>El Codigo del colaborador proporcionado ya está en uso. Por favor, elige un Codigo de Colaborador diferente.","¡¡UPS!!  Advertencia: 3");';
+                    echo 'var  colaboradorSelect = document.getElementById("selectColaborador");';
+                    echo 'colaboradorSelect.focus();';
+                    echo '</script>';
+                } else {
+                    // If none of the specific fields match, display a generic error message
+                    echo "Error: Duplicate entry for one or more unique fields. Please provide different values.";
+                }
+            } else {
+                // Handle other types of database-related errors
+                echo "Error código: " . $e->getCode() . " - " . $e->getMessage();
+            }
         }
     }
 }
