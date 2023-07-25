@@ -109,12 +109,17 @@ if (in_array('Security', array_column($privilegios, 'modulo'))) {
                         <p>Master Data </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Software</p>
-                            </a>
-                        </li>
+                        <?php
+                        // Verificar si el usuario tiene el permiso de "Software"
+                        if ($PermisoSTF) {
+                            echo ' <li class="nav-item">';
+                            echo '<a href="../views/view_software.php" class="nav-link">';
+                            echo '<i class="far fa-circle nav-icon"></i>';
+                            echo ' <p>Software</p>';
+                            echo '</a>';
+                            echo '</li>';
+                        }
+                        ?>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
@@ -168,7 +173,7 @@ if (in_array('Security', array_column($privilegios, 'modulo'))) {
                 <!-- Security -->
                 <?php
 
-                
+
 
                 if ($PermisoSecurity) {
                     echo '<li class="nav-item">';
@@ -177,9 +182,9 @@ if (in_array('Security', array_column($privilegios, 'modulo'))) {
                     echo '<p>Security </p>';
                     echo '</a>';
                     echo ' <ul class="nav nav-treeview">';
-                     // Verificar si el usuario tiene el permiso de "ROLES"
+                    // Verificar si el usuario tiene el permiso de "ROLES"
                     if ($PermisoRLS) {
-                       
+
                         echo '   <li class="nav-item">';
                         echo '  <a href="#" class="nav-link">';
                         echo '  <i class="far fa-circle nav-icon"></i>';

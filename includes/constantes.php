@@ -58,6 +58,19 @@ elseif ($actualPage == 'view_user.php') {
 } elseif ($actualPage == 'update_user.php') {
   $pageName = 'Usuario';
   $pageLink = "update_user.php";
+}
+// Software
+elseif ($actualPage == 'view_software.php') {
+  $pageName = 'Lista de Software';
+  $pageLink = "view_software.php";
+} elseif ($actualPage == 'insert_software.php') {
+  $pageName = 'Software';
+  $pageLink = "insert_software.php";
+} elseif ($actualPage == 'update_software.php') {
+  $pageName = 'Software';
+  $pageLink = "update_software.php";
+
+  //EXTRAS
 } elseif ($actualPage == 'update_password.php') {
   $pageName = 'UpdateContra';
   $pageLink = "update_password.php.php";

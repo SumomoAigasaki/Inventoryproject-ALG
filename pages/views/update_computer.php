@@ -78,7 +78,7 @@ $conn->next_result();
                 $arrayAdd[] = $ruta;
 
                 // Crear el botón con la ruta almacenada en la variable
-                echo "<a href=\"$ruta\"><button button type='button' class='btn btn-block btn-primary'></i><span class='fas fa-arrow-circle-left'></span>   Volver</button></a>";
+                echo "<a href=\"$ruta\"><button button type='button' class='btn btn-block bg-olive'></i><span class='fas fa-arrow-circle-left'></span>   Volver</button></a>";
               }
               ?>
               </button>
@@ -110,7 +110,7 @@ $conn->next_result();
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-12">
-          <div class="card card-primary card-outline card-tabs">
+          <div class="card card-success card-outline card-tabs">
             <div class="card-header">
               <h3 class="card-title">Formulario para Actualizar <?php echo $pageName; ?> </h3>
             </div>

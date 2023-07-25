@@ -115,6 +115,25 @@ if (!in_array($pagina_actual, $linksDefault) && !$PermisoUSER && in_array($pagin
   exit();
 }
 
+// #SFT
+
+$linksUSER = array(
+  "insert_software.php",
+  "update_software.php",
+  "view_software.php"
+);
+
+if (in_array('SFT', array_column($privilegios, 'permiso'))) {
+  $PermisoSTF = true;
+} else {
+  $PermisoSTF = false;
+}
+
+if (!in_array($pagina_actual, $linksDefault) && !$PermisoSTF && in_array($pagina_actual, $linksUSER)) {
+  // Si la página actual no está en la lista de enlaces por defecto, el usuario no tiene el permiso "USER" y la página actual no está permitida
+  header("Location: ../templates/404.php");
+  exit();
+}
 
 
 

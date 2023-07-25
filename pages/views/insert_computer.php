@@ -1,7 +1,5 @@
 <?php
 require_once "../templates/nav.php";
-
-$permisoCMP = isset($privilegios["CMP"]) && $privilegios["CMP"];
 require_once "../templates/menu.php"; ?>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -119,13 +117,13 @@ require_once "../templates/menu.php"; ?>
                         <div class="btn-group" class="col-sm-4">
                             <!--botones  de agregar  -->
                             <?php
-                            if ($permisoCMP) {
+                            if ($PermisoCMP) {
                                 // Agregar la ruta al array $arrayAdd
                                 $ruta = "../views/view_computer.php";
                                 $arrayAdd[] = $ruta;
 
                                 // Crear el botón con la ruta almacenada en la variable
-                                echo "<a href=\"$ruta\"><button button type='button' class='btn btn-primary'></i><span class='fas fa-arrow-circle-left'></span>   Volver</button></a>";
+                                echo "<a href=\"$ruta\"><button button type='button' class='btn btn-block btn-info'></i><span class='fa fa-arrow-circle-left'></span>   Volver</button></a>";
                             }
                             ?>
                             </button>
@@ -420,49 +418,49 @@ if (isset($_POST["buttonInsertCMP"])) {
     $cmp_dir = '../../resources/Computer/';
     $idUser = $_SESSION["User_idTbl_User"];
     //validamos si tiene permiso de hacer un insert 
-   
+
     if ($PermisoCMP) {
 
-        try{
-           //Caso contrario Guardara
-        $stmt = $conn->prepare("CALL sp_insertComputer(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+        try {
+            //Caso contrario Guardara
+            $stmt = $conn->prepare("CALL sp_insertComputer(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
-        // $query = "CALL sp_insertComputer('$todayDate', '$cmpIdManufacturer', '$cmpImgComp', '$cmptName', '$cmpIdModel', '$cmpCompType', '$cmpServitag', '$cmpLicence', '$cmpMotherboard', '$cmpAcquisitionDate', '$cmpWarrantyExpiration', '$cmpYearExpiration', '$cmpIdLocation', '$cmpIdStatu', '$cmpObservation', '$idUser','$cmpIdGuarantee');";
-        // echo $query;
-        // Mandamos los parametros y los input que seran enviados al PA O SP
-        $stmt->bind_param("sssssssssssssssss", $todayDate, $cmpIdManufacturer, $cmpImgComp, $cmptName, $cmpIdModel, $cmpCompType, $cmpServitag, $cmpLicence, $cmpMotherboard, $cmpAcquisitionDate, $cmpWarrantyExpiration, $cmpYearExpiration, $cmpIdLocation, $cmpIdStatu, $cmpObservation, $idUser, $cmpIdGuarantee);
+            // $query = "CALL sp_insertComputer('$todayDate', '$cmpIdManufacturer', '$cmpImgComp', '$cmptName', '$cmpIdModel', '$cmpCompType', '$cmpServitag', '$cmpLicence', '$cmpMotherboard', '$cmpAcquisitionDate', '$cmpWarrantyExpiration', '$cmpYearExpiration', '$cmpIdLocation', '$cmpIdStatu', '$cmpObservation', '$idUser','$cmpIdGuarantee');";
+            // echo $query;
+            // Mandamos los parametros y los input que seran enviados al PA O SP
+            $stmt->bind_param("sssssssssssssssss", $todayDate, $cmpIdManufacturer, $cmpImgComp, $cmptName, $cmpIdModel, $cmpCompType, $cmpServitag, $cmpLicence, $cmpMotherboard, $cmpAcquisitionDate, $cmpWarrantyExpiration, $cmpYearExpiration, $cmpIdLocation, $cmpIdStatu, $cmpObservation, $idUser, $cmpIdGuarantee);
 
 
-        // Ejecutar el procedimiento almacenado
-        $stmt->execute();
-        if ($stmt->error) {
-            error_log("Error en la ejecución del procedimiento almacenado: " . $stmt->error);
-        }
-        // Obtener el valor de la variable de salida
-        $stmt->bind_result($answerExistsComp);
-        $stmt->fetch();
-        $stmt->close();
-        $conn->next_result();
-
-        // se extraen los valores qu     nos devuelve el procedimiento almacenado y enviamos el error
-        if ($answerExistsComp > 0 ) {
-            echo '<script > toastr.success("Los datos de <b>' . $cmptName . '</b> se Guardaron de manera exitosa.", "¡¡Enhorabuena!!"); ';
-            echo 'setTimeout(function() {';
-            echo '  window.location.href = "view_computer.php";';
-            echo ' }, 2000); // 2000 milisegundos = 2 segundos de retraso ';
-            echo 'document.getElementById("formInsertCMP").reset(); ';
-            echo '</script>';
-
-            if ($_FILES['fileImg']['name'] != 'default.jpg') {
-                move_uploaded_file($_FILES['fileImg']['tmp_name'], $cmp_dir . $_FILES['fileImg']['name']);
-            } else if (file_exists($cmp_dir . $_FILES['fileImg']['name'])) {
-                echo '<script > toastr.info("La imagen ya existe ' . $cmpImgComp . '")</script>;';
-                $uploadOk = 0; //si existe lanza un valor en 0                 
-
+            // Ejecutar el procedimiento almacenado
+            $stmt->execute();
+            if ($stmt->error) {
+                error_log("Error en la ejecución del procedimiento almacenado: " . $stmt->error);
             }
-            exit;
-        }  
-        }catch (mysqli_sql_exception $e) {
+            // Obtener el valor de la variable de salida
+            $stmt->bind_result($answerExistsComp);
+            $stmt->fetch();
+            $stmt->close();
+            $conn->next_result();
+
+            // se extraen los valores qu     nos devuelve el procedimiento almacenado y enviamos el error
+            if ($answerExistsComp > 0) {
+                echo '<script > toastr.success("Los datos de <b>' . $cmptName . '</b> se Guardaron de manera exitosa.", "¡¡Enhorabuena!!"); ';
+                echo 'setTimeout(function() {';
+                echo '  window.location.href = "view_computer.php";';
+                echo ' }, 2000); // 2000 milisegundos = 2 segundos de retraso ';
+                echo 'document.getElementById("formInsertCMP").reset(); ';
+                echo '</script>';
+
+                if ($_FILES['fileImg']['name'] != 'default.jpg') {
+                    move_uploaded_file($_FILES['fileImg']['tmp_name'], $cmp_dir . $_FILES['fileImg']['name']);
+                } else if (file_exists($cmp_dir . $_FILES['fileImg']['name'])) {
+                    echo '<script > toastr.info("La imagen ya existe ' . $cmpImgComp . '")</script>;';
+                    $uploadOk = 0; //si existe lanza un valor en 0                 
+
+                }
+                exit;
+            }
+        } catch (mysqli_sql_exception $e) {
             if ($e->getCode() == 1062) {
                 // Check which specific unique field is causing the constraint violation
                 if (strpos($e->getMessage(), 'CMP_Technical_Name_UNIQUE') !== false) {
@@ -490,7 +488,6 @@ if (isset($_POST["buttonInsertCMP"])) {
                 // Handle other types of database-related errors
                 echo "Error código: " . $e->getCode() . " - " . $e->getMessage();
             }
-
         }
     }
 }
