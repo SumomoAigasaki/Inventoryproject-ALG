@@ -202,9 +202,9 @@ require_once "../templates/menu.php"; ?>
                                     <div class="col-sm-3">
                                         <div class="form-group">
                                             <label>Modelo : </label>
-                                            <input type="text" id="lookModels" placeholder="Buscar modelo en especifico" class="form-control">
+                                            <!-- <input type="text" id="lookModels" placeholder="Buscar modelo en especifico" class="form-control"> -->
                                             <?php $resultado = mysqli_query($conn, "CALL sp_model_select()"); ?>
-                                            <select class="form-control" id="selectModel" name="selectModel">
+                                            <select class="form-control select2bs4" id="selectModel" name="selectModel">
                                                 <?php while ($row = mysqli_fetch_array($resultado)) { ?>
                                                     <option value="<?php echo $row['MDL_idTbl_Model']; ?>" data-manufacturer="<?php echo $row['MFC_idTbl_Manufacturer']; ?>"><?php echo $row['MDL_Description']; ?></option>
                                                 <?php }
@@ -253,7 +253,7 @@ require_once "../templates/menu.php"; ?>
                                         </div>
                                     </div>
                                     <!-- Fecha limite garantia -->
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-2">
                                         <div class="form-group">
                                             <label>Fecha Límite Garantía:</label>
                                             <div class="input-group">
@@ -262,7 +262,7 @@ require_once "../templates/menu.php"; ?>
                                         </div>
                                     </div>
                                     <!-- Anho limite garantia -->
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-2">
                                         <div class="form-group">
                                             <label>Año Limite Garantía: </label>
                                             <div class="input-group">
@@ -270,9 +270,7 @@ require_once "../templates/menu.php"; ?>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <!-- Comienzo fila 3 -->
-                                <div class="row" style="padding-bottom:10px;">
+
                                     <div class="col-sm-3">
                                         <div class="form-group">
                                             <label>Tipo de Garantia: </label>
@@ -292,6 +290,10 @@ require_once "../templates/menu.php"; ?>
                                             </select>
                                         </div>
                                     </div>
+                                </div>
+                                <!-- Comienzo fila 3 -->
+                                <div class="row justify-content-center" style="padding-bottom:10px;">
+                                    
                                     <!-- Lincencia -->
                                     <div class="col-sm-3">
                                         <div class="form-group">
@@ -307,7 +309,7 @@ require_once "../templates/menu.php"; ?>
                                         </div>
                                     </div>
                                     <!-- Estado de la computadora  -->
-                                    <div class="col-sm-3">
+                                    <!-- <div class="col-sm-3">
                                         <div class="form-group">
                                             <label>Estado del Computador: </label>
                                             <?php $resultado = mysqli_query($conn, "CALL sp_status_select()"); ?>
@@ -323,11 +325,8 @@ require_once "../templates/menu.php"; ?>
                                                 ?>
                                             </select>
                                         </div>
-                                    </div>
+                                    </div> -->
 
-                                </div>
-                                <!-- Comienzo fila 4 -->
-                                <div class="row">
                                     <!-- Localizacion -->
                                     <div class="col-sm-3">
                                         <div class="form-group">
@@ -346,27 +345,38 @@ require_once "../templates/menu.php"; ?>
                                             </select>
                                         </div>
                                     </div>
-                                    <!-- IMAGEN -->
-                                    <div class="col-sm-4">
-                                        <div class="form-group">
-                                            <label>Imagen: </label>
-                                            <div class="input-group">
-                                                <input type="file" name="fileImg" id="fileImg" accept="image/png,image/jpeg" style="padding-left:15px; padding-top:15px;">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Observaciones -->
-                                    <div class="col-sm-5">
+                                     <!-- Observaciones -->
+                                     <div class="col-sm-3">
                                         <div class="form-group">
                                             <label>Observaciones: </label>
                                             <textarea type="text" class="form-control" name="txtObservation" id="txtObservation" maxlength="100" value="<?php echo (isset($observations) ? $observations : ""); ?>"> </textarea>
                                         </div>
                                     </div>
+
+
+                                </div>
+                                <!-- Comienzo fila 4 -->
+                                <div class="row justify-content-center">
+
+                                    <!-- IMAGEN -->
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Imagen de Referencia Dispostivo: </label>
+                                            <div class="input-group" style=" display: flex;   justify-content: center;   align-items: center;   height: 200px;">
+                                                <img class="img-fluid" src="../../resources/Computer/default.jpg" width="250" height="250" id="imgPerfil">
+                                                <input type="file" name="fileImg" id="fileImg" accept="image/png,image/jpeg" style="margin-left: 20px;text-align: center;">
+                                            </div>
+                                        </div>
+                                    </div>
+                                   
+
+
+                                </div>
+                                <div class="row justify-content-center" style="padding-bottom:20px;">
                                     <!-- Boton guardar -->
                                     <div class="col-sm-2" style="padding-top:40px;">
                                         <button type="submit" class="btn btn-block btn-info" id="buttonInsertCMP" name="buttonInsertCMP" onclick='return validate_data();'>Guardar</button>
                                     </div>
-
                                 </div>
                                 <div class="form-group">
                                 </div>
@@ -396,7 +406,7 @@ if (isset($_POST["buttonInsertCMP"])) {
     $cmpYearExpiration = $_POST['txtYearExpiration'];
     $cmpLicence = $_POST['txtLicense'];
     $cmpMotherboard = $_POST['txtMotherboard'];
-    $cmpIdStatu = $_POST['selectStatus'];
+    $cmpIdStatu = 2;
     $cmpIdLocation = $_POST['selectLocation'];
 
 
@@ -497,6 +507,24 @@ if (isset($_POST["buttonInsertCMP"])) {
 require_once "../templates/footer.php";
 ?>
 <script>
+    // Funcion para cargar la previsualizacion de imagen 
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                // Asignamos el atributo src a la tag de imagen
+                $('#imgPerfil').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    // El listener va asignado al input
+    $("#fileImg").change(function() {
+        readURL(this);
+    });
+
+
     // Función para actualizar el valor del campo de entrada del año
     function actualizarAnio() {
         var warrantyExpirationInput = document.getElementById('txtWarrantyExpiration');
@@ -509,6 +537,14 @@ require_once "../templates/footer.php";
         // Actualizar el valor del campo de entrada del año
         yearExpirationInput.value = anio;
     }
+    $(function() {
+
+        //Initialize Select2 Elements
+        $('.select2bs4').select2({
+            theme: 'bootstrap4'
+        })
+    });
+
 
     function filtrarModelos() {
         // Obtener el valor seleccionado en el primer select
@@ -529,9 +565,9 @@ require_once "../templates/footer.php";
         for (var i = 1; i < opcionesModelos.length; i++) {
             var modelo = opcionesModelos[i];
             if (modelo.getAttribute("data-manufacturer") == manufacturerSeleccionado || manufacturerSeleccionado == "") {
-                modelo.style.display = "";
+                modelo.disabled = false; // No se deshabilita si pertenece al fabricante seleccionado o si no se seleccionó ningún fabricante
             } else {
-                modelo.style.display = "none";
+                modelo.disabled = true; // Se deshabilita si no pertenece al fabricante seleccionado
             }
         }
 
@@ -549,7 +585,7 @@ require_once "../templates/footer.php";
             }
         }
 
-        // Si no hay modelos disponibles para el fabricante seleccionado, mostrar un mensaje en el segundo select
+        // Si no hay Garantias disponibles para el fabricante seleccionado, mostrar un mensaje en el segundo select
         if (document.querySelectorAll("#selectTypeGuarantee option[style='display: none;']").length === opcionesGarantias.length - 1) {
             document.getElementById("selectTypeGuarantee").innerHTML = "<option value=''>No hay modelos disponibles para este fabricante</option>";
         }
@@ -562,13 +598,14 @@ require_once "../templates/footer.php";
         });
     });
 
+
     // Vincula el input de búsqueda con el select ded models 
-    $(document).ready(function() {
-        $('#lookModels').on('keyup', function() {
-            var texto = $(this).val().toLowerCase();
-            $('#selectModel option').filter(function() {
-                return $(this).text().toLowerCase().indexOf(texto) > -1;
-            }).prop('selected', true);
-        });
-    });
+    // $(document).ready(function() {
+    //     $('#lookModels').on('keyup', function() {
+    //         var texto = $(this).val().toLowerCase();
+    //         $('#selectModel option').filter(function() {
+    //             return $(this).text().toLowerCase().indexOf(texto) > -1;
+    //         }).prop('selected', true);
+    //     });
+    // });
 </script>

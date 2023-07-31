@@ -204,9 +204,9 @@ $conn->next_result();
                     <div>
                       <div class="form-group">
                         <label>Modelo : </label>
-                        <input type="text" id="lookModels" placeholder="Buscar modelo en especifico" class="form-control">
-                        <?php $resultado = mysqli_query($conn, "CALL sp_model_select()"); ?>
-                        <select class="form-control" id="selectModel" name="selectModel">
+                        <!-- <input type="text" id="lookModels" placeholder="Buscar modelo en especifico" class="form-control">
+                        <?php $resultado = mysqli_query($conn, "CALL sp_model_select()"); ?> -->
+                        <select class="form-control select2bs4" id="selectModel" name="selectModel">
                           <?php while ($row = mysqli_fetch_array($resultado)) {
                             $select = ($MDL_idTbl_Model == $row['MDL_idTbl_Model']) ? "selected=selected" : "";
                           ?>
@@ -501,10 +501,12 @@ if (isset($_POST["buttonUpdateComputer"])) {
           $uploadOk = 0; //si existe lanza un valor en 0
         }
         // Comprobar si el archivo ya existe
-        if ($_FILES['fileReport']['name'] != $CMP_Report && $_FILES['fileReport']['name'] != "NULL") {
+        if ($_FILES['fileReport']['name'] != 'denuncia.jpeg' ) {
+          //&& $_FILES['fileReport']['name'] != "NULL"
           move_uploaded_file($_FILES['fileReport']['tmp_name'], $uploads_dir . $_FILES['fileReport']['name']);
         } else {
           echo '<script > toastr.info("La imagen del reporte ya existe")</script>;';
+          $uploadOk = 0; //si existe lanza un valor en 0
         }
         exit;
       }
@@ -629,7 +631,13 @@ if (isset($_POST["buttonUpdateComputer"])) {
     showMethod: "fadeIn",
     hideMethod: "fadeOut"
   }
+  $(function() {
 
+    //Initialize Select2 Elements
+    $('.select2bs4').select2({
+      theme: 'bootstrap4'
+    })
+  });
   // Función para obtener el anho automaticamente
   function actualizarAnio() {
     var warrantyExpirationInput = document.getElementById('txtWarrantyExpiration');
