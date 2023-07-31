@@ -56,6 +56,8 @@
 <script src="../../public/js/adminlte.js"></script>
 <!-- Ekko Lightbox -->
 <script src="../../public/css/ekko-lightbox/ekko-lightbox.min.js"></script>
+<!-- Select2 -->
+<script src="../../public/css/select2/js/select2.full.min.js"></script>
 
 </body>
 
