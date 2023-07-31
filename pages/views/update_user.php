@@ -132,9 +132,9 @@ $conn->next_result();
                                         <!-- COLABORADOR -->
                                         <div class="form-group" style="padding-left:15px; padding-top:2.5px;">
                                             <label ACRONYM title="Nombre de Colaborador">Nomb. Colaborador: </label>
-                                            <input type="text" class="form-control" id="txt_busqueda" name="txt_busqueda" placeholder="Buscar Colaborador">
+                                            <!-- <input type="text" class="form-control" id="txt_busqueda" name="txt_busqueda" placeholder="Buscar Colaborador"> -->
                                             <?php $resultado = mysqli_query($conn, "CALL sp_selectCollaborators()"); ?>
-                                            <select class="form-control" id="selectColaborador" name="selectColaborador">
+                                            <select class="form-control select2bs4" id="selectColaborador" name="selectColaborador">
                                                 <?php while ($row = mysqli_fetch_array($resultado)) {
                                                     $select = ($CBT_idTbl_Collaborator == $row['CBT_idTbl_Collaborator']) ? "selected=selected" : "";
 
@@ -393,6 +393,16 @@ if (isset($_POST["buttonUpdateUser"])) {
 </script>
 
 <script>
+     $(function() {
+        //Initialize Select2 Elements
+        $('.select2').select2()
+
+        //Initialize Select2 Elements
+        $('.select2bs4').select2({
+            theme: 'bootstrap4'
+        })
+    });
+    
     $(function() {
         $(".datepicker-input").datepicker({
             dateFormat: "yy-mm-dd"
@@ -416,32 +426,32 @@ if (isset($_POST["buttonUpdateUser"])) {
     });
 
     // Vincula el campo de búsqueda con el elemento select de colaboradores
-    $(document).ready(function() {
-        $('#txt_busqueda').on('keyup', function() {
-            var texto = $(this).val().toLowerCase();
-            var opcionesVisibles = [];
+    // $(document).ready(function() {
+    //     $('#txt_busqueda').on('keyup', function() {
+    //         var texto = $(this).val().toLowerCase();
+    //         var opcionesVisibles = [];
 
-            // Filtra las opciones del select basándose en el texto ingresado en el campo de búsqueda
-            $('#selectColaborador option').each(function() {
-                var opcion = $(this).text().toLowerCase();
-                var mostrar = opcion.indexOf(texto) > -1;
-                $(this).toggle(mostrar);
+    //         // Filtra las opciones del select basándose en el texto ingresado en el campo de búsqueda
+    //         $('#selectColaborador option').each(function() {
+    //             var opcion = $(this).text().toLowerCase();
+    //             var mostrar = opcion.indexOf(texto) > -1;
+    //             $(this).toggle(mostrar);
 
-                // Almacena las opciones visibles en el array opcionesVisibles
-                if (mostrar) {
-                    opcionesVisibles.push($(this));
-                }
-            });
+    //             // Almacena las opciones visibles en el array opcionesVisibles
+    //             if (mostrar) {
+    //                 opcionesVisibles.push($(this));
+    //             }
+    //         });
 
-            // Si no hay opciones visibles, selecciona la opción por defecto ('1')
-            if (opcionesVisibles.length === 0) {
-                $('#selectColaborador').val('1');
-            } else {
-                // Validación adicional: Si hay opciones visibles, selecciona automáticamente la primera opción
-                if (!opcionesVisibles.includes($('#selectColaborador').find(':selected'))) {
-                    opcionesVisibles[0].prop('selected', true);
-                }
-            }
-        });
-    });
+    //         // Si no hay opciones visibles, selecciona la opción por defecto ('1')
+    //         if (opcionesVisibles.length === 0) {
+    //             $('#selectColaborador').val('1');
+    //         } else {
+    //             // Validación adicional: Si hay opciones visibles, selecciona automáticamente la primera opción
+    //             if (!opcionesVisibles.includes($('#selectColaborador').find(':selected'))) {
+    //                 opcionesVisibles[0].prop('selected', true);
+    //             }
+    //         }
+    //     });
+    // });
 </script>

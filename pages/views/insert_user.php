@@ -100,13 +100,25 @@ require_once "../templates/menu.php";
                                 <input type="hidden" class="form-control" id="accion" name="accion" placeholder="">
 
                                 <div class="row justify-content-center" style="padding-top:10px; padding-bottom:10px;">
-                                    <!-- Colaborador-->
-                                    <div class="col-sm-6">
+                                    <!-- IMAGEN -->
+                                    <div class="col-sm-4">
                                         <div class="form-group">
+                                            <label>Imagen: </label>
+
+                                            <div class="input-group" style=" display: flex;   justify-content: center;   align-items: center;   height: 200px;">
+                                                <img class="img-fluid" src="../../resources/User/default.png" width="150" height="150" id="imgPerfil">
+                                                <input type="file" name="imgUser" id="imgUser" accept="image/png,image/jpeg" style=" margin-left: 20px;text-align: center;">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Colaborador-->
+                                    <div class="col-sm-4">
+                                        <div class="form-group" style="padding-top: 70px;">
                                             <label>Colaborador:</label>
-                                            <input type="text" class="form-control" id="txt_busqueda" name="txt_busqueda" placeholder="Buscar Colaborador">
-                                            <?php $resultado = mysqli_query($conn, "CALL sp_selectCollaborators()"); ?>
-                                            <select class="form-control" id="selectColaborador" name="selectColaborador">
+                                            <!-- <input type="text" class="form-control" id="txt_busqueda" name="txt_busqueda" placeholder="Buscar Colaborador">
+                                            <?php $resultado = mysqli_query($conn, "CALL sp_selectCollaborators()"); ?> -->
+                                            <select class="form-control select2bs4" id="selectColaborador" name="selectColaborador">
                                                 <?php while ($row = mysqli_fetch_array($resultado)) { ?>
                                                     <option value="<?php echo $row['CBT_idTbl_Collaborator']; ?>"><?php echo $row['InformacionGeneral']; ?></option>
                                                 <?php }
@@ -119,30 +131,20 @@ require_once "../templates/menu.php";
                                             </select>
                                         </div>
                                     </div>
-                                    <!-- IMAGEN -->
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label>Imagen: </label>
 
-                                            <div class="input-group" style=" display: flex;   justify-content: center;   align-items: center;   height: 200px;">
-                                                <img class="img-fluid" src="../../resources/User/default.png" width="150" height="150" id="imgPerfil">
-                                                <input type="file" name="imgUser" id="imgUser" accept="image/png,image/jpeg" style=" margin-left: 20px;text-align: center;">
-                                            </div>
+                                    <!-- UserName -->
+                                    <div class="col-sm-4">
+                                        <div class="form-group" style="padding-top: 70px;">
+                                            <label>Username:</label>
+                                            <input type="text" class="form-control" name="txt_username" id="txt_username" maxlength="16" placeholder="fcalderon" required>
                                         </div>
                                     </div>
-
 
 
                                 </div><!-- Comienzo fila 2 -->
 
                                 <div class="row">
-                                    <!-- UserName -->
-                                    <div class="col-sm-3">
-                                        <div class="form-group">
-                                            <label>Username:</label>
-                                            <input type="text" class="form-control" name="txt_username" id="txt_username" maxlength="16" placeholder="fcalderon" required>
-                                        </div>
-                                    </div>
+
                                     <!-- email -->
                                     <div class="col-sm-3">
                                         <div class="form-group">
@@ -150,44 +152,7 @@ require_once "../templates/menu.php";
                                             <input type="email" class="form-control" name="txt_email" id="txt_email" placeholder="juanjose@alg.com" maxlength="100" required>
                                         </div>
                                     </div>
-                                    <!-- Password -->
-                                    <div class="col-sm-3">
-                                        <div class="form-group">
-                                            <label>Contraseña:</label>
-                                            <input type="password" class="form-control" name="txt_password" id="txt_password" maxlength="32" required>
-                                        </div>
-                                    </div>
-
-                                    <!-- Password -->
-                                    <div class="col-sm-3">
-                                        <div class="form-group">
-                                            <label>Confirmar Contraseña:</label>
-                                            <input type="password" class="form-control" name="txt_confirmPassword" id="txt_confirmPassword" maxlength="32" required>
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="row justify-content-center">
-                                    <!-- Estado de la computadora  -->
-                                    <div class="col-sm-3">
-                                        <div class="form-group">
-                                            <label>Estado del Usuario: </label>
-                                            <?php $resultado = mysqli_query($conn, "CALL sp_status_select()"); ?>
-                                            <select class="form-control" id="selectStatus" name="selectStatus">
-                                                <?php while ($row = mysqli_fetch_array($resultado)) { ?>
-                                                    <option value="<?php echo $row['STS_idTbl_Status']; ?>"><?php echo $row['STS_Description']; ?></option>
-                                                <?php }
-                                                #NOTA
-                                                #CADA QUE QUIERA HACER UNA NUEVA CONSULTA CON PROCEDIMIENTOS ALMACENADOS ESTOS EL RESULTADO SE CIERRA Y LA VARIABLE DE LA CONECCION SE PREPARA PARA EL NUEVO RESULTADO
-                                                # QUE TENDRA ABAJO
-                                                $resultado->close();
-                                                $conn->next_result();
-                                                ?>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <!-- Estado de la computadora  -->
+                                    <!-- Rol Usuario  -->
                                     <div class="col-sm-3">
                                         <div class="form-group">
                                             <label>Rol Usuario: </label>
@@ -205,6 +170,45 @@ require_once "../templates/menu.php";
                                             </select>
                                         </div>
                                     </div>
+                                    <!-- Password -->
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label>Contraseña:</label>
+                                            <input type="password" class="form-control" name="txt_password" id="txt_password" maxlength="32" required>
+                                        </div>
+                                    </div>
+
+                                    <!-- Password -->
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label>Confirmar Contraseña:</label>
+                                            <input type="password" class="form-control" name="txt_confirmPassword" id="txt_confirmPassword" maxlength="32" required>
+                                        </div>
+                                    </div>
+                                    
+
+                                </div>
+                                <div class="row justify-content-center">
+                                    <!-- Estado de la computadora  -->
+                                    <!-- <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label>Estado del Usuario: </label>
+                                            <?php $resultado = mysqli_query($conn, "CALL sp_status_select()"); ?>
+                                            <select class="form-control" id="selectStatus" name="selectStatus">
+                                                <?php while ($row = mysqli_fetch_array($resultado)) { ?>
+                                                    <option value="<?php echo $row['STS_idTbl_Status']; ?>"><?php echo $row['STS_Description']; ?></option>
+                                                <?php }
+                                                #NOTA
+                                                #CADA QUE QUIERA HACER UNA NUEVA CONSULTA CON PROCEDIMIENTOS ALMACENADOS ESTOS EL RESULTADO SE CIERRA Y LA VARIABLE DE LA CONECCION SE PREPARA PARA EL NUEVO RESULTADO
+                                                # QUE TENDRA ABAJO
+                                                $resultado->close();
+                                                $conn->next_result();
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div> -->
+
+
                                 </div>
 
                                 <div class="row justify-content-center" style="padding-bottom:10px;">
@@ -299,7 +303,7 @@ if (isset($_POST["buttonInsertUser"])) {
     $usernameInput = strtolower($_POST["txt_username"]);
     $emailInput = strtolower($_POST["txt_email"]);
     $passwordInput = $_POST["txt_password"];
-    $statuSelect = $_POST["selectStatus"];
+    $statuSelect = '2';
     $roleSelect = $_POST["selectRoles"];
 
     $uploads_dir = '../../resources/User/';  // Ruta de la carpeta de destino para los archivos
@@ -380,8 +384,17 @@ if (isset($_POST["buttonInsertUser"])) {
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script>
-    // Funcion para cargar la previsualizacion de imagen 
+    $(function() {
+        //Initialize Select2 Elements
+        $('.select2').select2()
 
+        //Initialize Select2 Elements
+        $('.select2bs4').select2({
+            theme: 'bootstrap4'
+        })
+    });
+
+    // Funcion para cargar la previsualizacion de imagen 
     function readURL(input) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
@@ -399,34 +412,34 @@ if (isset($_POST["buttonInsertUser"])) {
     });
 
     // Vincula el campo de búsqueda con el elemento select de colaboradores
-    $(document).ready(function() {
-        $('#txt_busqueda').on('keyup', function() {
-            var texto = $(this).val().toLowerCase();
-            var opcionesVisibles = [];
+    // $(document).ready(function() {
+    //     $('#txt_busqueda').on('keyup', function() {
+    //         var texto = $(this).val().toLowerCase();
+    //         var opcionesVisibles = [];
 
-            // Filtra las opciones del select basándose en el texto ingresado en el campo de búsqueda
-            $('#selectColaborador option').each(function() {
-                var opcion = $(this).text().toLowerCase();
-                var mostrar = opcion.indexOf(texto) > -1;
-                $(this).toggle(mostrar);
+    //         // Filtra las opciones del select basándose en el texto ingresado en el campo de búsqueda
+    //         $('#selectColaborador option').each(function() {
+    //             var opcion = $(this).text().toLowerCase();
+    //             var mostrar = opcion.indexOf(texto) > -1;
+    //             $(this).toggle(mostrar);
 
-                // Almacena las opciones visibles en el array opcionesVisibles
-                if (mostrar) {
-                    opcionesVisibles.push($(this));
-                }
-            });
+    //             // Almacena las opciones visibles en el array opcionesVisibles
+    //             if (mostrar) {
+    //                 opcionesVisibles.push($(this));
+    //             }
+    //         });
 
-            // Si no hay opciones visibles, selecciona la opción por defecto ('1')
-            if (opcionesVisibles.length === 0) {
-                $('#selectColaborador').val('1');
-            } else {
-                // Validación adicional: Si hay opciones visibles, selecciona automáticamente la primera opción
-                if (!opcionesVisibles.includes($('#selectColaborador').find(':selected'))) {
-                    opcionesVisibles[0].prop('selected', true);
-                }
-            }
-        });
-    });
+    //         // Si no hay opciones visibles, selecciona la opción por defecto ('1')
+    //         if (opcionesVisibles.length === 0) {
+    //             $('#selectColaborador').val('1');
+    //         } else {
+    //             // Validación adicional: Si hay opciones visibles, selecciona automáticamente la primera opción
+    //             if (!opcionesVisibles.includes($('#selectColaborador').find(':selected'))) {
+    //                 opcionesVisibles[0].prop('selected', true);
+    //             }
+    //         }
+    //     });
+    // });
 </script>
 
 <?php
