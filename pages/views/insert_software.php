@@ -13,7 +13,7 @@ require_once "../templates/menu.php";
         positionClass: 'toast-top-right',
         preventDuplicates: true,
         onclick: function() {
-            window.location.href = '<?php echo BASE_URL ?>pages/views/explorer.php';
+            window.location.href = '<?php echo BASE_URL ?>pages/views/view_software.php';
         },
         showDuration: '300',
         hideDuration: '1000',
@@ -23,11 +23,6 @@ require_once "../templates/menu.php";
         hideEasing: 'linear',
         showMethod: 'fadeIn',
         hideMethod: 'fadeOut'
-    }
-
-    function validate_data() {
-        let nameInput = document.getElementById('txt_nameSft').value;
-        let
     }
 </script>
 
@@ -122,7 +117,7 @@ require_once "../templates/menu.php";
                                     <div class="col-sm-2">
                                         <div class="form-group" style="padding-top: 70px;">
                                             <label>Versión Software:</label>
-                                            <input type="text" class="form-control" name="txt_VersionSft" id="txt_VersionSft" maxlength="25" required>
+                                            <input type="text" class="form-control" name="txt_versionSft" id="txt_versionSft" maxlength="25" required>
                                         </div>
                                     </div>
 
@@ -188,7 +183,7 @@ require_once "../templates/menu.php";
                                     <div class="col-sm-3">
                                         <div class="form-group" style="padding-top: 20px;">
                                             <label>Licencia / Serial:</label>
-                                            <input type="text" class="form-control" name="txt_licenciaSft" id="txt_licenciaSft" maxlength="45" required>
+                                            <input type="text" class="form-control" name="txt_licenciaSft" id="txt_licenciaSft" maxlength="45">
                                         </div>
                                     </div>
 
@@ -241,7 +236,7 @@ require_once "../templates/menu.php";
 
                                 <div class="row justify-content-center" style="padding-bottom:20px;">
                                     <div class="col-mb-3">
-                                        <button type="submit" class="btn btn-block btn-info" id="buttonInsertSFT" name="buttonInsertSFT">Guardar</button>
+                                        <button type="submit" class="btn btn-block btn-info" id="buttonInsertSFT" name="buttonInsertSFT" onclick='return validate_data();'>Guardar</button>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -259,6 +254,167 @@ require_once "../templates/menu.php";
 </section>
 </div>
 
+
+<script>
+    function validate_data() {
+        let nameInput = document.getElementById('txt_nameSft');
+        let manufacturerSelect = document.getElementById('slct_manufacturerSftType');
+        let versionInput = document.getElementById('txt_versionSft');
+        let typeSftSelect = document.getElementById('slct_SftType');
+        let licenceClasifSelect = document.getElementById('slct_licenceClasification');
+        let categoriSftSelect = document.getElementById('slct_category');
+
+
+        if (nameInput.value.trim() === "") {
+            toastr.warning("El <b>Nombre de Software</b> esta vacio(a).<br>Por favor Ingrese un Nombre de Software valida");
+            nameInput.focus();
+            return false;
+        } else if (versionInput.value.trim() === "") {
+            toastr.warning("La <b>Version</b> esta vacio(a).<br>Por favor Ingrese una Version valida");
+            versionInput.focus();
+            return false;
+        } else if (typeSftSelect.selectedIndex === 0) {
+            toastr.warning("El <b>Tipo de Software</b> esta vacio(a).<br>Por favor Ingrese un Tipo de Software valido");
+            typeSftSelect.focus();
+            return false;
+        } else if (manufacturerSelect.selectedIndex === 0) {
+            toastr.warning('El <b>Fabricante</b> esta vacio(a).<br>Por favor Ingrese una Fabricante valida');
+            manufacturerSelect.focus();
+            return false;
+        } else if (licenceClasifSelect.selectedIndex === 0) {
+            toastr.warning("El <b>Tipo de Licencia</b> esta vacio(a).<br>Por favor Ingrese un Tipo de Licencia valido");
+            licenceClasifSelect.focus();
+            return false;
+        } else if (categoriSftSelect.selectedIndex === 0) {
+            toastr.warning("La <b>Categoria </b> esta vacio(a).<br>Por favor Ingrese una Categoria valida");
+            categoriSftSelect.focus();
+            return false;
+        } else {
+            // Si no hay errores, procesa los datos enviados
+            if (accionInput.value.trim() === "") {
+                accionInput.value = "1";
+
+            }
+            document.getElementById("formInsertSFT").submit();
+
+        }
+    }
+
+    // Funcion para cargar la previsualizacion de imagen 
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                // Asignamos el atributo src a la tag de imagen
+                $('#imgPerfil').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    // El listener va asignado al input
+    $("#imgSFT").change(function() {
+        readURL(this);
+    });
+</script>
+
+<?php
+if (isset($_POST["buttonInsertSFT"])) {
+    $imageSft = $_FILES['imgSFT']['name'];
+    if (empty($imageSft)) {
+        $imageSft = '/resources/Software/default.jpg';
+    } else {
+        $imageSft = '/resources/Software/' . $_FILES['imgSFT']['name'];
+    }
+    $nameSft = $_POST['txt_nameSft'];
+    $manufacturerSft = $_POST['slct_manufacturerSftType'];
+    $versionSft = $_POST['txt_versionSft'];
+    $serialSft = $_POST['txt_licenciaSft'];
+
+    if (empty($serialSft)){
+        $serialSft= NULL;
+    }
+    $typeSft = $_POST['slct_SftType'];
+    $clasificationLicenceSft = $_POST['slct_licenceClasification'];
+    $todayDate = date("Y-m-d");
+    $observationsSft=$_POST['txt_observation'];
+    $category= $_POST['slct_category'];
+    $user= $_SESSION["User_idTbl_User"];
+    $status='2';
+
+    # Ruta de la carpeta de destino para los archivos
+    $urlSFT = '../../resources/Software/';
+
+    if ($PermisoSTF) {
+        try{
+            //Caso contrario Guardara
+            $stmt = $conn->prepare("CALL  sp_insertSoftware(?,?,?,?,?,?,?,?,?,?,?,?)");
+
+            // $query = "CALL sp_insertSoftware('$imageSft', '$nameSft', '$manufacturerSft', '$versionSft', '$serialSft', '$typeSft', '$clasificationLicenceSft', '$todayDate', '$observationsSft', '$category', '$user', '$status');";
+            // echo $query;
+            // Mandamos los parametros y los input que seran enviados al PA O SP
+            $stmt->bind_param("ssssssssssss", $imageSft, $nameSft, $manufacturerSft, $versionSft, $serialSft, $typeSft, $clasificationLicenceSft, $todayDate, $observationsSft, $category, $user, $status);
+
+
+            // Ejecutar el procedimiento almacenado
+            $stmt->execute();
+            if ($stmt->error) {
+                error_log("Error en la ejecución del procedimiento almacenado: " . $stmt->error);
+            }
+            // Obtener el valor de la variable de salida
+            $stmt->bind_result($answerExistsSoft);
+            $stmt->fetch();
+            $stmt->close();
+            $conn->next_result();
+             // se extraen los valores qu     nos devuelve el procedimiento almacenado y enviamos el error
+             if ($answerExistsSoft > 0) {
+                echo '<script > toastr.success("Los datos de <b>' . $nameSft . '</b> se Guardaron de manera exitosa.", "¡¡Enhorabuena!!"); ';
+                echo 'setTimeout(function() {';
+                echo '  window.location.href = "view_software.php";';
+                echo ' }, 2000); // 2000 milisegundos = 2 segundos de retraso ';
+                echo 'document.getElementById("formInsertSFT").reset(); ';
+                echo '</script>';
+
+                if ($_FILES['imgSFT']['name'] != 'default.jpg') {
+                    move_uploaded_file($_FILES['imgSFT']['tmp_name'], $urlSFT . $_FILES['imgSFT']['name']);
+                } else if (file_exists($urlSFT . $_FILES['imgSFT']['name'])) {
+                    echo '<script > toastr.info("La imagen ya existe ' . $imageSft . '")</script>;';
+                    $uploadOk = 0; //si existe lanza un valor en 0                 
+
+                }
+                exit;
+            }
+
+        }
+        catch (mysqli_sql_exception $e) {
+            if ($e->getCode() == 1062) {
+                // Check which specific unique field is causing the constraint violation
+                if ($e->getCode() == 1062) {
+                    // Check which specific unique field is causing the constraint violation
+                    if (strpos($e->getMessage(), 'SFT_Software_Name_UNIQUE') !== false) {
+                        // echo "Error: ";
+                        echo '<script > toastr.error("No se pudo guardar <br> El Nombre del Software proporcionado ya está en uso. Por favor, elige un Nombre de Software diferente.","¡¡UPS!!  Advertencia: 1");';
+                        echo 'var nameInput = document.getElementById("txt_nameSft");';
+                        echo 'nameInput.focus();';
+                        echo '</script>';
+                    } elseif (strpos($e->getMessage(), 'SFT_Serial_UNIQUE') !== false) {
+                        echo '<script > toastr.error("No se pudo guardar <br> La Licencia y/o Serial proporcionado ya está en uso. Por favor, elige una Licencia y/o Serial diferente.","¡¡UPS!!  Advertencia: 2");';
+                        echo 'var serialInput = document.getElementById("txt_licenciaSft");';
+                        echo 'serialInput.focus();';
+                        echo '</script>';
+                    } 
+                    } else {
+                        // If none of the specific fields match, display a generic error message
+                        echo "Error: Duplicate entry for one or more unique fields. Please provide different values.";
+                    }
+                } else {
+                    // Handle other types of database-related errors
+                    echo "Error código: " . $e->getCode() . " - " . $e->getMessage();
+                }
+            }
+        
+    }
+}
+?>
 <?php
 require_once "../templates/footer.php";
 ?>
