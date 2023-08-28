@@ -21,7 +21,7 @@ require_once "../templates/menu.php";
         extendedTimeOut: '1000',
         showEasing: 'swing',
         hideEasing: 'linear',
-        showMethod: 'fadeIn',
+        showMethod: 'fadeIn',                      
         hideMethod: 'fadeOut'
     }
 </script>
