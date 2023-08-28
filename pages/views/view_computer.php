@@ -185,7 +185,7 @@ function dataTableComputer($stmt)
                       $conn->next_result();
                     } else {
                       // Realizar consulta para obtener solo registros activos
-                      $stmt = $conn->query("CALL sp_selectAllComputers()");
+                      $stmt = $conn->query("CALL sp_selectActiveComputers()");
                       // $query= "CALL CALL sp_selectAllComputers()";
                       // echo $query;
                       // Ejecutar el procedimiento almacenado
