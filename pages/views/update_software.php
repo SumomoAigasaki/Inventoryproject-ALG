@@ -24,7 +24,7 @@ while ($row = $stmt->fetch_assoc()) {
     $LC_idTbl_License_Clasification = $row['LC_idTbl_License_Clasification'];
     $CTG_idTbl_Category = $row['CTG_idTbl_Category'];
     $SFT_Inventory_Date = $row['SFT_Inventory_Date'];
-    $SFT_Observations     = $row['SFT_Observations'];
+    $SFT_Observations = $row['SFT_Observations'];
     $STS_idTbl_Status = $row['STS_idTbl_Status'];
 }
 $stmt->close();
