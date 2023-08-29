@@ -282,12 +282,21 @@ if (isset($_POST["buttonUpdateUser"])) {
                 echo 'document.getElementById("formInsertCMP").reset(); ';
                 echo '</script>';
                 // Comprobar si el archivo ya existe
-                if (file_exists($uploads_dir . $_FILES['imgUser']['name']) != '/resources/User/default.png') {
-                    echo '<script > toastr.info("La imagen ya existe")</script>;';
-                    $uploadOk = 0; //si existe lanza un valor en 0
-                } else {
-                    move_uploaded_file($_FILES['imgUser']['tmp_name'], $uploads_dir . $_FILES['imgUser']['name']);
-                }
+                  $targetFilePath = $uploads_dir . $_FILES['imgUser']['name'];
+
+                  // Verificar si el archivo ya existe en la ruta de destino
+                  if (file_exists($targetFilePath)) {
+                      echo '<script>toastr.info("La imagen ya existe");</script>';
+                      $uploadOk = 0; // Marcar la subida como no exitosa
+                  } else {
+                      // Si el archivo no existe, intentar moverlo a la ruta de destino
+                      if (move_uploaded_file($_FILES['imgUser']['tmp_name'], $targetFilePath)) {
+                          // El archivo se movió con éxito, aquí podrías realizar más acciones si es necesario
+                      } else {
+                          // Si hubo un error al mover el archivo, mostrar una notificación de error
+                          echo '<script>toastr.error("Error al mover la imagen.");</script>';
+                      }
+                  }
             }
         } catch (mysqli_sql_exception $e) {
             // Si ocurre una excepción, capturamos el código de error y lo imprimimos

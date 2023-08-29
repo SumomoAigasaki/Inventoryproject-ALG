@@ -124,7 +124,7 @@ function dataTableUser($stmt)
                     <th>Imagen</th>
                     <th>Nombre Software </th>
                     <th>Fabricante del Software</th>
-                    <th>Version</th>
+                    <th>Version Instalada</th>
                     <th>Serial</th>
                     <th>Tipo de Software</th>
                     <th>Clasificacion de Licencia</th>
@@ -142,8 +142,8 @@ function dataTableUser($stmt)
                   <?php
                   $rol=$_SESSION["RLS_idTbl_Roles"] ;
                   // Verificar si el rol tiene el rol 2 (administrador) y el permiso de SFT
-                  function validar_permisos($rol,$PermisoUSER) {
-                    if ($rol == "2" && $PermisoUSER) {
+                  function validar_permisos($rol,$PermisoSTF) {
+                    if ($rol == "2" && $PermisoSTF) {
                         return true;
                     } else {
                         return false;
@@ -151,10 +151,10 @@ function dataTableUser($stmt)
                   }
                   
                   
-                  function obtener_registros($conn,$rol,$PermisoUSER) {
+                  function obtener_registros($conn,$rol,$PermisoSTF) {
                     include "../../includes/conecta.php";
 
-                    if (validar_permisos($rol,$PermisoUSER)) {
+                    if (validar_permisos($rol,$PermisoSTF)) {
                       
                         // Realizar consulta para obtener todos los registros
                         $stmt = $conn->query("CALL sp_selectAllSoftware()");
@@ -177,7 +177,7 @@ function dataTableUser($stmt)
                         $conn->next_result();
                     }
                   }
-                  obtener_registros($conn,$rol, $PermisoUSER);
+                  obtener_registros($conn,$rol, $PermisoSTF);
                   ?>
                 </tbody>
                 <tfoot>
@@ -186,7 +186,7 @@ function dataTableUser($stmt)
                     <th>Imagen</th>
                     <th>Nombre Software </th>
                     <th>Fabricante del Software</th>
-                    <th>Version</th>
+                    <th>Version Instalada</th>
                     <th>Serial</th>
                     <th>Tipo de Software</th>
                     <th>Clasificacion de Licencia</th>
