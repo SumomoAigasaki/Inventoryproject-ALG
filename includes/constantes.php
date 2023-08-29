@@ -38,11 +38,11 @@ if ($actualPage == 'index.php') {
   $pageName = 'Lista de Computadoras';
   $pageLink = "view_computer.php";
 } elseif ($actualPage == 'update_computer.php') {
-  $pageName = 'Computadora';
+  $pageName = 'Ingresar Computadora';
   $pageLink = "update_Computer.php";
   $imagepath = "resources/Computer/";
 } elseif ($actualPage == 'insert_computer.php') {
-  $pageName = 'Computadoras';
+  $pageName = 'Actualizar Computadoras';
   $pageLink = "insert_computer.php";
   $imagepath = "resources/Computer/";
 }
@@ -53,10 +53,10 @@ elseif ($actualPage == 'view_user.php') {
   $pageName = 'Lista de Usuarios';
   $pageLink = "view_user.php";
 } elseif ($actualPage == 'insert_user.php') {
-  $pageName = 'Usuarios';
+  $pageName = 'Ingresar Usuarios';
   $pageLink = "insert_user.php";
 } elseif ($actualPage == 'update_user.php') {
-  $pageName = 'Usuario';
+  $pageName = 'Actualizar Usuario';
   $pageLink = "update_user.php";
 }
 // Software
@@ -64,12 +64,24 @@ elseif ($actualPage == 'view_software.php') {
   $pageName = 'Lista de Software';
   $pageLink = "view_software.php";
 } elseif ($actualPage == 'insert_software.php') {
-  $pageName = 'Software';
+  $pageName = 'Ingresar Software';
   $pageLink = "insert_software.php";
 } elseif ($actualPage == 'update_software.php') {
-  $pageName = 'Software';
+  $pageName = 'Actualizar Software';
   $pageLink = "update_software.php";
+}
 
+  // perifericos
+elseif ($actualPage == 'view_peripherals.php') {
+  $pageName = 'Lista de Perifericos';
+  $pageLink = "view_peripherals.php";
+} elseif ($actualPage == 'insert_peripherals.php') {
+  $pageName = 'Ingresar Perifericos';
+  $pageLink = "insert_peripherals.php";
+} elseif ($actualPage == 'update_peripherals.php') {
+  $pageName = 'Actualizar Perifericos';
+  $pageLink = "update_peripherals.php";
+  
   //EXTRAS
 } elseif ($actualPage == 'update_password.php') {
   $pageName = 'UpdateContra';

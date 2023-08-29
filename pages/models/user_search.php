@@ -115,6 +115,7 @@ if (!in_array($pagina_actual, $linksDefault) && !$PermisoUSER && in_array($pagin
   exit();
 }
 
+//SOFTWARE
 // #SFT
 
 $linksUSER = array(
@@ -135,6 +136,26 @@ if (!in_array($pagina_actual, $linksDefault) && !$PermisoSTF && in_array($pagina
   exit();
 }
 
+//PERIFERICOS
+// #PRL
+
+$linksPRL = array(
+  "insert_peropherals.php",
+  "update_peropherals.php",
+  "view_peropherals.php"
+);
+
+if (in_array('PRL', array_column($privilegios, 'permiso'))) {
+  $PermisoPRL = true;
+} else {
+  $PermisoPRL = false;
+}
+
+if (!in_array($pagina_actual, $linksDefault) && !$PermisoPRL && in_array($pagina_actual, $linksPRL)) {
+  // Si la página actual no está en la lista de enlaces por defecto, el usuario no tiene el permiso "USER" y la página actual no está permitida
+  header("Location: ../templates/404.php");
+  exit();
+}
 
 
 #ROLES

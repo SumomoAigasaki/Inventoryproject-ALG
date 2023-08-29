@@ -119,13 +119,19 @@ if (in_array('Security', array_column($privilegios, 'modulo'))) {
                             echo '</a>';
                             echo '</li>';
                         }
-                        ?>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Perifericos</p>
-                            </a>
-                        </li>
+
+                        // Verificar si el usuario tiene el permiso de "Perifericos"
+                        if ($PermisoPRL) {
+                            echo'<li class="nav-item">';
+                            echo'<a href="../views/view_peripherals.php" class="nav-link">';
+                            echo'<i class="far fa-circle nav-icon"></i>';
+                            echo'<p>Perifericos</p>';
+                            echo'</a>';
+                            echo'</li>';
+                            
+                        }
+                        ?>                      
+                        
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
