@@ -40,7 +40,7 @@ require_once "../templates/menu.php";
                         <div class="btn-group" class="col-sm-4">
                             <!--botones  de agregar  -->
                             <?php
-                            if ($PermisoUSER) {
+                            if ($PermisoPRL) {
                                 // Agregar la ruta al array $arrayAdd
                                 $ruta = "../views/view_peripherals.php";
                                 $arrayAdd[] = $ruta;
@@ -272,7 +272,7 @@ if (isset($_POST["buttonInsertPRL"])) {
     $status = '2';
 
 
-    if ($PermisoSTF) {
+    if ($PermisoPRL) {
         try {
             //Caso contrario Guardara
             $stmt = $conn->prepare("CALL  sp_insertPeripherals(?,?,?,?,?,?,?,?,?,?)");

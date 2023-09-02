@@ -313,7 +313,6 @@ function deleteComputer()
   if (isset($_POST['id'])) {
     $id = $_POST["id"];
 
-    if ($_SESSION["U-CMP"]) {
       $stmt = $conn->prepare("CALL sp_deleteComputer(?)");
       // Mandamos los parametros y los input que seran enviados al PA O SP
       $stmt->bind_param("s", $id); // Ejecutar el procedimiento almacenado
@@ -343,7 +342,7 @@ function deleteComputer()
       }
     }
   }
-}
+
 
 // Llamar a la función deleteComputer
 deleteComputer();

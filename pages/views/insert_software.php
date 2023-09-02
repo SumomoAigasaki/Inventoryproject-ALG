@@ -41,9 +41,9 @@ require_once "../templates/menu.php";
                         <div class="btn-group" class="col-sm-4">
                             <!--botones  de agregar  -->
                             <?php
-                            if ($PermisoUSER) {
+                            if ($PermisoSTF) {
                                 // Agregar la ruta al array $arrayAdd
-                                $ruta = "../views/view_user.php";
+                                $ruta = "../views/view_software.php";
                                 $arrayAdd[] = $ruta;
 
                                 // Crear el botón con la ruta almacenada en la variable
