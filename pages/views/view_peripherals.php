@@ -55,7 +55,7 @@ function dataTableUser($stmt)
                             <?php
                             if ($PermisoPRL) {
                                 // Agregar la ruta al array $arrayAdd
-                                $ruta = "../views/insert_software.php";
+                                $ruta = "../views/insert_peripherals.php";
                                 $arrayAdd[] = $ruta;
 
                                 // Crear el botón con la ruta almacenada en la variable
