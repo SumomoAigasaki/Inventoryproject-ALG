@@ -38,11 +38,11 @@ if ($actualPage == 'index.php') {
   $pageName = 'Lista de Computadoras';
   $pageLink = "view_computer.php";
 } elseif ($actualPage == 'update_computer.php') {
-  $pageName = 'Ingresar Computadora';
+  $pageName = 'Actualizar Computadora';
   $pageLink = "update_Computer.php";
   $imagepath = "resources/Computer/";
 } elseif ($actualPage == 'insert_computer.php') {
-  $pageName = 'Actualizar Computadoras';
+  $pageName = 'Ingresar Computadoras';
   $pageLink = "insert_computer.php";
   $imagepath = "resources/Computer/";
 }
