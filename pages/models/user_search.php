@@ -157,6 +157,28 @@ if (!in_array($pagina_actual, $linksDefault) && !$PermisoPRL && in_array($pagina
   exit();
 }
 
+//COLABORADOR
+// #CBT
+
+$linksCBT = array(
+  "insert_collaborator.php",
+  "update_collaborator.php",
+  "view_collaborator.php"
+);
+
+if (in_array('CBT', array_column($privilegios, 'permiso'))) {
+  $PermisoCBT = true;
+} else {
+  $PermisoCBT = false;
+}
+
+if (!in_array($pagina_actual, $linksDefault) && !$PermisoCBT && in_array($pagina_actual, $linksCBT)) {
+  // Si la página actual no está en la lista de enlaces por defecto, el usuario no tiene el permiso "USER" y la página actual no está permitida
+  header("Location: ../templates/404.php");
+  exit();
+}
+
+
 
 #ROLES
 

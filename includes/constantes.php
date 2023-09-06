@@ -82,6 +82,18 @@ elseif ($actualPage == 'view_peripherals.php') {
   $pageName = 'Actualizar Perifericos';
   $pageLink = "update_peripherals.php";
   
+   // Colaborador
+}elseif ($actualPage == 'view_collaborator.php') {
+  $pageName = 'Lista de Colaborador(ar)';
+  $pageLink = "view_collaborator.php";
+} elseif ($actualPage == 'insert_collaborator.php') {
+  $pageName = 'Ingresar Colaborador(ar)';
+  $pageLink = "insert_collaborator.php";
+} elseif ($actualPage == 'update_collaborator.php') {
+  $pageName = 'Actualizar Colaborador(ar)';
+  $pageLink = "update_collaborator.php";
+  
+
   //EXTRAS
 } elseif ($actualPage == 'update_password.php') {
   $pageName = 'UpdateContra';
