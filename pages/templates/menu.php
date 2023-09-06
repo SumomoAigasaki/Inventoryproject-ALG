@@ -110,34 +110,37 @@ if (in_array('Security', array_column($privilegios, 'modulo'))) {
                     </a>
                     <ul class="nav nav-treeview">
                         <?php
-                        // Verificar si el usuario tiene el permiso de "Software"
-                        if ($PermisoSTF) {
-                            echo ' <li class="nav-item">';
-                            echo '<a href="../views/view_software.php" class="nav-link">';
-                            echo '<i class="far fa-circle nav-icon"></i>';
-                            echo ' <p>Software</p>';
-                            echo '</a>';
-                            echo '</li>';
-                        }
+                            // Verificar si el usuario tiene el permiso de "Software"
+                            if ($PermisoSTF) {
+                                echo ' <li class="nav-item">';
+                                echo '<a href="../views/view_software.php" class="nav-link">';
+                                echo '<i class="far fa-circle nav-icon"></i>';
+                                echo ' <p>Software</p>';
+                                echo '</a>';
+                                echo '</li>';
+                            }
 
-                        // Verificar si el usuario tiene el permiso de "Perifericos"
-                        if ($PermisoPRL) {
-                            echo'<li class="nav-item">';
-                            echo'<a href="../views/view_peripherals.php" class="nav-link">';
-                            echo'<i class="far fa-circle nav-icon"></i>';
-                            echo'<p>Perifericos</p>';
-                            echo'</a>';
-                            echo'</li>';
-                            
-                        }
-                        ?>                      
-                        
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Colaboradores</p>
-                            </a>
-                        </li>
+                            // Verificar si el usuario tiene el permiso de "Perifericos"
+                            if ($PermisoPRL) {
+                                echo'<li class="nav-item">';
+                                echo'<a href="../views/view_peripherals.php" class="nav-link">';
+                                echo'<i class="far fa-circle nav-icon"></i>';
+                                echo'<p>Perifericos</p>';
+                                echo'</a>';
+                                echo'</li>';
+                                
+                            }
+                                            
+                            // Verificar si el usuario tiene el permiso de "Colaboradores"
+                            if ($PermisoCBT) {
+                                echo '<li class="nav-item">';
+                                echo '<a href="../views/view_collaborator.php" class="nav-link">';
+                                echo '<i class="far fa-circle nav-icon"></i>';
+                                echo '<p>Colaboradores</p>';
+                                echo '</a>';
+                                echo '</li>';                            
+                            }
+                            ?>  
                     </ul>
                 </li>
 
