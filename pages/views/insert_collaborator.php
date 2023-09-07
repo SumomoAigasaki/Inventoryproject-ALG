@@ -45,7 +45,7 @@ require_once "../templates/menu.php"; ?>
                             <?php
                             if ($PermisoCMP) {
                                 // Agregar la ruta al array $arrayAdd
-                                $ruta = "../views/view_computer.php";
+                                $ruta = "../views/view_collaborator.php";
                                 $arrayAdd[] = $ruta;
 
                                 // Crear el botón con la ruta almacenada en la variable
