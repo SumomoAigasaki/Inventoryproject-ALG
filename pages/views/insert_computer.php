@@ -158,7 +158,7 @@ require_once "../templates/menu.php"; ?>
                 <div class="col-md-12">
                     <div class="card card-primary card-outline card-tabs">
                         <div class="card-header">
-                            <h3 class="card-title">Formulario para Añadir <?php echo $pageName; ?> </h3>
+                            <h3 class="card-title">Formulario para <?php echo $pageName; ?> </h3>
                         </div>
                         <!-- form start -->
                         <form role="form" action="" method="POST" name="formInsertCMP" id="formInsertCMP" class="form-horizontal" enctype="multipart/form-data">

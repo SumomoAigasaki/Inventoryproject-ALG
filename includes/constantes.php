@@ -42,7 +42,7 @@ if ($actualPage == 'index.php') {
   $pageLink = "update_Computer.php";
   $imagepath = "resources/Computer/";
 } elseif ($actualPage == 'insert_computer.php') {
-  $pageName = 'Ingresar Computadoras';
+  $pageName = 'Añadir Computadoras';
   $pageLink = "insert_computer.php";
   $imagepath = "resources/Computer/";
 }
@@ -53,7 +53,7 @@ elseif ($actualPage == 'view_user.php') {
   $pageName = 'Lista de Usuarios';
   $pageLink = "view_user.php";
 } elseif ($actualPage == 'insert_user.php') {
-  $pageName = 'Ingresar Usuarios';
+  $pageName = 'Añadir Usuarios';
   $pageLink = "insert_user.php";
 } elseif ($actualPage == 'update_user.php') {
   $pageName = 'Actualizar Usuario';
@@ -64,7 +64,7 @@ elseif ($actualPage == 'view_software.php') {
   $pageName = 'Lista de Software';
   $pageLink = "view_software.php";
 } elseif ($actualPage == 'insert_software.php') {
-  $pageName = 'Ingresar Software';
+  $pageName = 'Añadir Software';
   $pageLink = "insert_software.php";
 } elseif ($actualPage == 'update_software.php') {
   $pageName = 'Actualizar Software';
@@ -76,7 +76,7 @@ elseif ($actualPage == 'view_peripherals.php') {
   $pageName = 'Lista de Perifericos';
   $pageLink = "view_peripherals.php";
 } elseif ($actualPage == 'insert_peripherals.php') {
-  $pageName = 'Ingresar Perifericos';
+  $pageName = 'Añadir Perifericos';
   $pageLink = "insert_peripherals.php";
 } elseif ($actualPage == 'update_peripherals.php') {
   $pageName = 'Actualizar Perifericos';
@@ -84,13 +84,13 @@ elseif ($actualPage == 'view_peripherals.php') {
   
    // Colaborador
 }elseif ($actualPage == 'view_collaborator.php') {
-  $pageName = 'Lista de Colaborador(ar)';
+  $pageName = 'Lista de Colaboradores';
   $pageLink = "view_collaborator.php";
 } elseif ($actualPage == 'insert_collaborator.php') {
-  $pageName = 'Ingresar Colaborador(ar)';
+  $pageName = 'Añadir  Colaborador';
   $pageLink = "insert_collaborator.php";
 } elseif ($actualPage == 'update_collaborator.php') {
-  $pageName = 'Actualizar Colaborador(ar)';
+  $pageName = 'Actualizar Colaborador';
   $pageLink = "update_collaborator.php";
   
 
