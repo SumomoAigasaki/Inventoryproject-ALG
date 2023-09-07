@@ -223,7 +223,7 @@ function deleteUser()
     if ($idU > 0) {
       echo '<script>
           setTimeout(function() {
-            window.location.href = "view_computer.php";
+            window.location.href = "view_user.php";
           }, 10000);
         </script>';
     }
