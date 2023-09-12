@@ -92,10 +92,22 @@ elseif ($actualPage == 'view_peripherals.php') {
 } elseif ($actualPage == 'update_collaborator.php') {
   $pageName = 'Actualizar Colaborador';
   $pageLink = "update_collaborator.php";
-  
+}
+
+//Asignacion De PC
+  elseif ($actualPage == 'view_assignment_pc.php') {
+    $pageName = 'Lista Asignación PC';
+    $pageLink = "view_assignment_pc.php";
+  } elseif ($actualPage == 'insert_assignment_pc.php') {
+    $pageName = 'Asignación de PC';
+    $pageLink = "insert_assignment_pc.php";
+  } elseif ($actualPage == 'update_assignment_pc.php') {
+    $pageName = 'Actualizar Asignación de PC';
+    $pageLink = "update_assignment_pc.php";
+  }
 
   //EXTRAS
-} elseif ($actualPage == 'update_password.php') {
+ elseif ($actualPage == 'update_password.php') {
   $pageName = 'UpdateContra';
   $pageLink = "update_password.php.php";
 } elseif ($actualPage == 'prueba.php') {

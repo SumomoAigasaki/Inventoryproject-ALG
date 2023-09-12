@@ -178,6 +178,27 @@ if (!in_array($pagina_actual, $linksDefault) && !$PermisoCBT && in_array($pagina
   exit();
 }
 
+//Asignacion PC
+// #PCA
+
+$linksPCA = array(
+  "insert_assignment_pc.php",
+  "update_assignment_pc.php",
+  "view_assignment_pc.php"
+);
+
+if (in_array('PCA', array_column($privilegios, 'permiso'))) {
+  $PermisoPCA = true;
+} else {
+  $PermisoPCA = false;
+}
+
+if (!in_array($pagina_actual, $linksDefault) && !$PermisoPCA && in_array($pagina_actual, $linksPCA)) {
+  // Si la página actual no está en la lista de enlaces por defecto, el usuario no tiene el permiso "USER" y la página actual no está permitida
+  header("Location: ../templates/404.php");
+  exit();
+}
+
 
 
 #ROLES

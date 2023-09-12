@@ -162,13 +162,22 @@ if (in_array('Security', array_column($privilegios, 'modulo'))) {
                             echo '</a>';
                             echo '</li>';
                         }
+                        if ($PermisoPCA) {
+                            echo ' <li class="nav-item">';
+                            echo '<a href="view_assignment_pc.php" class="nav-link">';
+                            echo ' <i class="far fa-circle nav-icon"></i>';
+                            echo '  <p>Asignar PC</p>';
+                            echo ' </a>';
+                            echo ' </li>';
+                        }
+                            
+                       
+                            
+                               
+                              
+                           
+                       
                         ?>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Asignar PC</p>
-                            </a>
-                        </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
