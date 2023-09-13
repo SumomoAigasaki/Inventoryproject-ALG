@@ -537,7 +537,12 @@ if (isset($_POST["buttonUpdateCBT"])) {
             theme: 'bootstrap4'
         })
     });
-
+    
+    $(function() {
+        $(".datepicker-input").datepicker({
+            dateFormat: "yy-mm-dd"
+        });
+    });
     
       // Funcion para cargar la previsualizacion de imagen 
       function readURL(input) {

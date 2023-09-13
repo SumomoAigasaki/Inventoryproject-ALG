@@ -58,6 +58,8 @@
 <script src="../../public/css/ekko-lightbox/ekko-lightbox.min.js"></script>
 <!-- Select2 -->
 <script src="../../public/css/select2/js/select2.full.min.js"></script>
+<!-- Bootstrap4 Duallistbox -->
+<script src="../../public/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
 
 </body>
 

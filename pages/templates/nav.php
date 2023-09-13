@@ -52,11 +52,13 @@ if (empty($_SESSION["username"])) {
     <link rel="stylesheet" href="../../public/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="../../public/css/responsive.bootstrap4.min.css">
     <link rel="stylesheet" href="../../public/css/buttons.bootstrap4.min.css">
-     <!-- SweetAlert2 -->
-  <link rel="stylesheet" href="../../public/css/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
-  <!-- Select2 -->
-  <link rel="stylesheet" href="../../public/css/select2/css/select2.min.css">
-  <link rel="stylesheet" href="../../public/css/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="../../public/css/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="../../public/css/select2/css/select2.min.css">
+    <link rel="stylesheet" href="../../public/css/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+    <!-- Bootstrap4 Duallistbox -->
+    <link rel="stylesheet" href="../../public/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
 
 
 </head>
