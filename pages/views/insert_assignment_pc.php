@@ -91,6 +91,7 @@ require_once "../templates/menu.php"; ?>
                             <div class="card-body">
                                 <label class="form-check-label" style="padding-bottom: 5px;"> A continuación se le pedirá que <b> Ingrese</b> los siguientes datos:</label>
 
+                                <input type="hidden" class="form-control" id="TxtId" name="TxtId" placeholder="">
                                 <!-- Fila 1 -->
                                 <div class="row justify-content-center" style="padding-top:10px; padding-bottom:10px;">
 
@@ -183,8 +184,13 @@ require_once "../templates/menu.php"; ?>
                                     <div class="col-sm-4">
                                         <!-- Fecha de Retorno -->
                                         <div class="form-group">
+                                            <label> Meses de Contratación:</label>
+                                            <input type="number" class="form-control " name="txtmonth" id="txtmonth" onchange="calcularFechaRetorno()">
+                                        </div>
+                                        <!-- Fecha de Retorno -->
+                                        <div class="form-group">
                                             <label> Fecha de Retorno:</label>
-                                            <input type="text" class="form-control datepicker-input" name="txtReturnDate" id="txtReturnDate">
+                                            <input type="text" class="form-control datepicker-input" name="txtReturnDate" id="txtReturnDate" readonly>
                                         </div>
 
 
@@ -216,6 +222,41 @@ require_once "../templates/footer.php";
 ?>
 
 <script>
+      // Obtener los elementos del formulario
+      var deadlineTxtInput = document.getElementById("txtDeadline");
+        var txtmonthInput = document.getElementById("txtmonth");
+        var txtReturnDateInput = document.getElementById("txtReturnDate");
+
+        // Agregar eventos a los campos de fecha de entrega y meses de contratación
+        deadlineTxtInput.addEventListener("input", calcularFechaRetorno);
+        txtmonthInput.addEventListener("input", calcularFechaRetorno);
+
+        // Agregar evento blur al campo de meses de contratación
+        txtmonthInput.addEventListener("blur", function() {
+            calcularFechaRetorno();
+        });
+        // Función para calcular la fecha de retorno
+        function calcularFechaRetorno() {
+            var fechaEntrega = new Date(deadlineTxtInput.value);
+            var mesesContratacion = parseInt(txtmonthInput.value);
+
+            if (!isNaN(mesesContratacion)) {
+                var fechaRetorno = new Date(fechaEntrega);
+                fechaRetorno.setMonth(fechaRetorno.getMonth() + mesesContratacion);
+
+                // Formatear la fecha de retorno como "YYYY-MM-DD"
+                var yyyy = fechaRetorno.getFullYear();
+                var mm = String(fechaRetorno.getMonth() + 1).padStart(2, '0');
+                var dd = String(fechaRetorno.getDate() + 1).padStart(2, '0');
+                txtReturnDateInput.value = yyyy + '-' + mm + '-' + dd;
+            } else {
+                txtReturnDateInput.value = ""; // Borrar la fecha de retorno si no se ingresan meses válidos
+            }
+        }
+
+
+
+
     // Función para validar los datos ingresados en el formulario
     function validate_data() {
         let colaboradorSlct = document.getElementById('slctColaborador');
@@ -233,8 +274,7 @@ require_once "../templates/footer.php";
 
         let installeSoftwareTxt = document.getElementById('txtInstalleSoftware');
         let returnDateTxt = document.getElementById('txtReturnDate');
-        
-
+        let monthTxt = document.getElementById('txtmonth');
 
         if (colaboradorSlct.selectedIndex == 0) {
             toastr.warning("El <b>Colaborador</b> esta vacio(a).<br>Por favor Ingrese un Colaborador valida");
@@ -256,15 +296,27 @@ require_once "../templates/footer.php";
             toastr.warning('La <b>Fecha de Retorno</b> esta vacio(a).<br>Por favor Ingrese una Fecha de Retorno valida');
             returnDateTxt.focus();
             return false;
+        } else if (monthTxt.value.trim() === "") {
+            toastr.warning('El <b>Meses de Contratación</b> esta vacio(a).<br>Por favor Ingrese un(os) Meses de Contratación valida');
+            monthTxt.focus();
+            return false;
         } else {
             // Si no hay errores, procesa los datos enviados
             if (accionInput.value.trim() === "") {
                 accionInput.value = "1";
             }
-           
+
             document.getElementById("formInsertPCA").submit();
+            setTimeout(function() {
+                console.log("Después de 2 segundos");
+            }, 10000);
+
         }
     }
+
+
+
+
 
     $(function() {
         $(".datepicker-input").datepicker({
@@ -281,9 +333,176 @@ require_once "../templates/footer.php";
             theme: 'bootstrap4'
         })
     });
+
     //Bootstrap Duallistbox
     $('.duallistbox').bootstrapDualListbox()
 
+
+    $(document).ready(function() {
+        // Inicializa el componente Dual Listbox para el select #slctSoftware
+        var demo1 = $('select[name="slctSoftware"]').bootstrapDualListbox();
+
+        // Variable para almacenar los IDs seleccionados
+        var array = [];
+
+        // Función para actualizar el campo de texto
+        function actualizarCampoTexto() {
+            // Obtiene los elementos seleccionados en el Dual Listbox del select #slctSoftware
+            var selectedOptions = demo1.val();
+
+            if (selectedOptions.length > 0) {
+                // Reinicia el array en cada cambio para evitar duplicados
+                array = [];
+
+                // Recorre los valores seleccionados y agrega los IDs al array
+                selectedOptions.forEach(function(optionValue) {
+                    array.push(optionValue);
+                });
+
+                // Convierte el array a una cadena JSON
+                var arrayTexto = JSON.stringify(array);
+
+                // Actualiza el valor del campo de texto con la cadena JSON
+                $('#TxtId').val(arrayTexto);
+            } else {
+                // Si no hay opciones seleccionadas, borra el valor del campo de texto
+                $('#TxtId').val('');
+            }
+        }
+
+        // Agrega un manejador de evento para el cambio en el select #slctSoftware
+        $('#slctSoftware').on('change', function() {
+            // Llama a la función para actualizar el campo de texto
+            actualizarCampoTexto();
+        });
+
+        // Llama a la función al cargar la página para mostrar las opciones seleccionadas inicialmente
+        actualizarCampoTexto();
+    });
 </script>
 
+<?php
+if (isset($_POST["buttonInsertPCA"])) {
+    $colaboradorId = $_POST["slctColaborador"];
+    $computerId = $_POST["slctComputer"];
+    $deadlineTxt = $_POST["txtDeadline"];
+    $installeSoftwareTxt = $_POST["txtInstalleSoftware"];
+    $returnDateTxt = $_POST["txtReturnDate"];
+    $observationTxt = $_POST["txtObservation"];
+    $idsArrayTexto  = $_POST["TxtId"];
+    date_default_timezone_set('America/Mexico_City');
+    $todayDate = date("Y-m-d");
+    $user = $_SESSION["User_idTbl_User"];
+    $status = '2';
+    // Decodifica la cadena JSON en un array de PHP
+    $idsArray = json_decode($idsArrayTexto);
+
+    // PermisoPCA
+    if ($PermisoPCA) {
+        try {
+            //Caso contrario Guardara
+            $stmt = $conn->prepare("CALL sp_insertAssignmentPC(?,?,?,?,?,?,?,?)");
+
+            $query = "CALL sp_insertAssignmentPC( '$deadlineTxt', '$user', '$colaboradorId', '$computerId', '$returnDateTxt', '$status', '$observationTxt', '$todayDate');";
+            echo $query;
+            // Mandamos los parametros y los input que seran enviados al PA O SP
+            $stmt->bind_param("ssssssss", $deadlineTxt, $user, $colaboradorId, $computerId, $returnDateTxt, $status, $observationTxt, $todayDate);
+
+
+            // Ejecutar el procedimiento almacenado
+            $stmt->execute();
+            if ($stmt->error) {
+                error_log("Error en la ejecución del procedimiento almacenado: " . $stmt->error);
+            }
+            // Obtener el valor de la variable de salida
+            $stmt->bind_result($idPCA);
+            $stmt->fetch();
+            $stmt->close();
+            $conn->next_result();
+
+            if ($idPCA > 0) {
+                foreach ($idsArray as $id) {
+                    //Insert para mapping software 
+                    // detalle para software
+                    $stmt = $conn->prepare("CALL sp_insertMappingSoftware(?,?,?,?,?,?)");
+
+                    $query = "CALL sp_insertMappingSoftware( '$idPCA', '$id', '$user', '$status', '$installeSoftwareTxt', '$status', '$todayDate');";
+                    echo $query;
+                    // Mandamos los parametros y los input que seran enviados al PA O SP
+                    $stmt->bind_param("ssssss", $idPCA, $id, $user, $status, $installeSoftwareTxt, $todayDate);
+
+
+                    // Ejecutar el procedimiento almacenado
+                    $stmt->execute();
+                    if ($stmt->error) {
+                        error_log("Error en la ejecución del procedimiento almacenado: " . $stmt->error);
+                    }
+                    // Obtener el valor de la variable de salida
+                    $stmt->bind_result($answerExistsMS);
+                    $stmt->fetch();
+                    $stmt->close();
+                    $conn->next_result();
+
+                    // echo "Inserción exitosa para ID: " . $id . "<br>";
+                }
+            }
+
+            // se extraen los valores qu     nos devuelve el procedimiento almacenado y enviamos el error
+            if ($answerExistsMS > 0) {
+                //si se pudo guardar
+                //Asignacion de PC
+                //Mapeo de sofware
+
+                //Deshabilitamos la computadora 
+
+                $stmt = $conn->prepare("CALL sp_disablecomputer	(?)");
+
+                //  $query = "CALL sp_insertMappingSoftware( '$computerId');";
+                // echo $query;
+                // Mandamos los parametros y los input que seran enviados al PA O SP
+                $stmt->bind_param("s", $computerId);
+
+
+                // Ejecutar el procedimiento almacenado
+                $stmt->execute();
+                if ($stmt->error) {
+                    error_log("Error en la ejecución del procedimiento almacenado: " . $stmt->error);
+                }
+                // Obtener el valor de la variable de salida
+                $stmt->bind_result($answerExistsCMP);
+                $stmt->fetch();
+                $stmt->close();
+                $conn->next_result();
+
+                if ($answerExistsCMP > 0) {
+                    echo '<script > toastr.success("Los datos de <b>' . $colaboradorId . '</b> se Guardaron de manera exitosa.", "¡¡Enhorabuena!!"); ';
+                    echo 'setTimeout(function() {';
+                    echo '  window.location.href = "view_assignment_pc.php";';
+                    echo ' }, 2000); // 2000 milisegundos = 2 segundos de retraso ';
+                    echo 'document.getElementById("formInsertPRL").reset(); ';
+                    echo '</script>';
+                    exit;
+                }
+            }
+        } catch (mysqli_sql_exception $e) {
+            if ($e->getCode() == 1062) {
+                // Check which specific unique field is causing the constraint violation
+                if (strpos($e->getMessage(), 'CMP_idTbl_Computer_UNIQUE') !== false) {
+                    // echo "Error: ";
+                    echo '<script > toastr.error("No se pudo guardar <br> La Computadora proporcionado ya está en uso. Por favor, elige una Computadora diferente.","¡¡UPS!!  Advertencia: 1");';
+                    echo 'var computerId = document.getElementById("slctComputer");';
+                    echo 'computerId.focus();';
+                    echo '</script>';
+                } else {
+                    // If none of the specific fields match, display a generic error message
+                    echo "Error: Duplicate entry for one or more unique fields. Please provide different values.";
+                }
+            } else {
+                // Handle other types of database-related errors
+                echo "Error código: " . $e->getCode() . " - " . $e->getMessage();
+            }
+        }
+    }
+}
+?>
 <!-- slctSoftware_helper2 -->
