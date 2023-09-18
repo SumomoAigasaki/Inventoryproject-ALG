@@ -403,8 +403,8 @@ if (isset($_POST["buttonInsertPCA"])) {
             //Caso contrario Guardara
             $stmt = $conn->prepare("CALL sp_insertAssignmentPC(?,?,?,?,?,?,?,?)");
 
-            $query = "CALL sp_insertAssignmentPC( '$deadlineTxt', '$user', '$colaboradorId', '$computerId', '$returnDateTxt', '$status', '$observationTxt', '$todayDate');";
-            echo $query;
+            // $query = "CALL sp_insertAssignmentPC( '$deadlineTxt', '$user', '$colaboradorId', '$computerId', '$returnDateTxt', '$status', '$observationTxt', '$todayDate');";
+            // echo $query;
             // Mandamos los parametros y los input que seran enviados al PA O SP
             $stmt->bind_param("ssssssss", $deadlineTxt, $user, $colaboradorId, $computerId, $returnDateTxt, $status, $observationTxt, $todayDate);
 
@@ -424,12 +424,13 @@ if (isset($_POST["buttonInsertPCA"])) {
                 foreach ($idsArray as $id) {
                     //Insert para mapping software 
                     // detalle para software
+                    $statussft = '10';
                     $stmt = $conn->prepare("CALL sp_insertMappingSoftware(?,?,?,?,?,?)");
 
-                    $query = "CALL sp_insertMappingSoftware( '$idPCA', '$id', '$user', '$status', '$installeSoftwareTxt', '$status', '$todayDate');";
-                    echo $query;
+                    // $query = "CALL sp_insertMappingSoftware( '$idPCA', '$id', '$user', '$ststatussftatus', '$installeSoftwareTxt', '$status', '$todayDate');";
+                    // echo $query;
                     // Mandamos los parametros y los input que seran enviados al PA O SP
-                    $stmt->bind_param("ssssss", $idPCA, $id, $user, $status, $installeSoftwareTxt, $todayDate);
+                    $stmt->bind_param("ssssss", $idPCA, $id, $user, $statussft, $installeSoftwareTxt, $todayDate);
 
 
                     // Ejecutar el procedimiento almacenado

@@ -2,35 +2,44 @@
 require_once "../templates/nav.php";
 require_once "../templates/menu.php";
 
+
 function dataTableUser($stmt)
 {
   while ($row = $stmt->fetch_assoc()) {
+    //  echo '<pre>';
+    //  print_r($row);
+    //  echo '</pre>';
+    // $Computadora = $row['Computadora'];
     echo "<tr>";
-    echo "<td>" . $row['PCA_idTbl_PC_Assignment'] . "</td>";
-    echo "<td>" . $row['PCA_Date_Assignment'] . "</td>";
-    echo "<td>" . $row['colaborador'] . "</td>";
-    echo "<td>" . $row['Computadora'] . "</td>";
-    echo "<td>" . $row['PCA_Return_Date'] . "</td>";
-    echo "<td>" . $row['PCA_Observations'] . "</td>";
-    echo "<td>" . $row['PCA_Inventory_Date'] . "</td>";
-    echo "<td>" . $row['User_Username'] . "</td>";
+    echo "<td>" . $row['MS_idtbl_mapping_softwarecol'] . "</td>";
+    echo "<td>" . $row['MS_Inventory_Date'] . "</td>";
+    echo "<td>" . $row['Software'] . "</td>";
+    echo "<td>" . $row['MS_Instalation_date'] . "</td>";
     echo "<td>" . $row['STS_Description'] . "</td>";
+    echo "<td>" . $row['User_Username'] . "</td>";
 
-    echo "<td align='center'> 
-            <a href='../views/update_collaborator.php?p=" . $row['PCA_idTbl_PC_Assignment'] . "' class='btn btn-outline-primary btn-sm' title='Editar Registro'>
-              <i class='fas fa-pencil-alt'></i>
-            </a>
-            <a href='../views/view_mappingSoftware.php?p=" . $row['PCA_idTbl_PC_Assignment'] . "' class='btn btn-outline-info btn-sm' title='Más Información'>
-            <i class='fas fa-info'></i>
-            </a>
-            <button class='btn btn-outline-danger btn-sm btnDeleteCMP' title='Eliminar Registro' name='btnDeleteCBT' id='btnDeleteCBT' data-id='" . $row['PCA_idTbl_PC_Assignment'] . "'>
-              <i class='fas fa-trash-alt'></i>
-            </button>
-          </td>";
+    // echo "<td align='center'> 
+    //         <a href='../views/update_collaborator.php?p=" . $row['MS_idtbl_mapping_softwarecol'] . "' class='btn btn-outline-primary btn-sm' title='Editar Registro'>
+    //           <i class='fas fa-pencil-alt'></i>
+    //         </a>
+    //         <button class='btn btn-outline-danger btn-sm btnDeleteCMP' title='Eliminar Registro' name='btnDeleteCBT' id='btnDeleteCBT' data-id='" . $row['MS_idtbl_mapping_softwarecol'] . "'>
+    //           <i class='fas fa-trash-alt'></i>
+    //         </button>
+    //       </td>";
     echo "</tr>";
   }
 }
 
+//PARA OBTENEER EL VALOR DE COMPUTADORA
+$idMS = $_GET['p'];
+$stmt = $conn->query("CALL sp_selectActiveMappingSoftware($idMS)");
+while ($row = $stmt->fetch_assoc()) {
+  $computerid = $row['CMP_idTbl_Computer'];
+  $computername = $row['CMP_Technical_Name'];
+  $computadoraValue = $row['Datos'];
+}
+$stmt->close();
+$conn->next_result();
 ?>
 <div class="content-wrapper">
 
@@ -50,11 +59,11 @@ function dataTableUser($stmt)
               <?php
               if ($PermisoCBT) {
                 // Agregar la ruta al array $arrayAdd
-                $ruta = "../views/insert_assignment_pc.php";
+                $ruta = "../views/view_assignment_pc.php";
                 $arrayAdd[] = $ruta;
 
                 // Crear el botón con la ruta almacenada en la variable
-                echo "<a href=\"$ruta\"><button button type='button' class='btn btn-success'><span class='fa fa-plus'></span> Agregar</button></a>";
+                echo "<a href=\"$ruta\"><button button type='button' class='btn btn-block btn-info'></i><span class='fa fa-arrow-circle-left'></span>   Volver</button></a>";
               }
               ?>
               </button>
@@ -94,7 +103,7 @@ function dataTableUser($stmt)
             </form>
             <!-- contenido para la el datatable 1-->
             <div class="card-header">
-              <h3 class="card-title">Listado General de las PC Asignadas en el sistema <?php echo nameProject; ?> </h3>
+              <h3 class="card-title">Lista de los software del pc Registrado en el sistema <?php echo nameProject; ?> </h3>
             </div>
             <div class="card-body">
             </div>
@@ -103,24 +112,24 @@ function dataTableUser($stmt)
             <div class="card-body">
               <!-- Tabla 1 -->
               <table id="example1" class="table table-bordered table-striped">
+                <h3> Registro de dispostivo #: <b><?php echo $computerid ?></b> guardado como: <b><?php echo $computername ?></b> <?php echo $computadoraValue ?> </h3>
                 <thead>
                   <tr>
                     <th>#</th>
-                    <th>Fecha de Asignación</th>
-                    <th>Colaborador Asignado</th>
-                    <th>Computadora</th>
-                    <th>Fecha de Retorno</th>
-                    <th>Observaciones</th>
-                    <th>Fecha inventario</th>
-                    <th>Usuario</th>
+                    <th>Fecha de Inventario</th>
+                    <th>Software Instalado</th>
+                    <th>Fecha de Instalacion</th>
+                    </th>
                     <th>Estado</th>
-                    <th>Opciones</th>
+                    <th>Usuario</th>
+                    <!-- <th>Opciones</th> -->
 
                   </tr>
                 </thead>
                 <tbody>
 
                   <?php
+
                   $rol = $_SESSION["RLS_idTbl_Roles"];
                   // Verificar si el rol tiene el rol 2 (administrador) y el permiso de SFT
                   function validar_permisos($rol, $PermisoPCA)
@@ -138,9 +147,9 @@ function dataTableUser($stmt)
                     include "../../includes/conecta.php";
 
                     if (validar_permisos($rol, $PermisoPCA)) {
-
+                      $idMS = $_GET['p'];
                       // Realizar consulta para obtener todos los registros
-                      $stmt = $conn->query("CALL sp_selectAllPCAssignment()");
+                      $stmt = $conn->query("CALL sp_selectAllMappingSoftware($idMS)");
                       // $query= "CALL sp_selectAllUser()";
                       // echo $query;
                       // Ejecutar el procedimiento almacenado
@@ -149,8 +158,9 @@ function dataTableUser($stmt)
                       $stmt->close();
                       $conn->next_result();
                     } else {
+                      $idMS = $_GET['p'];
                       // Realizar consulta para obtener solo registros activos
-                      $stmt = $conn->query("CALL sp_selectActivePCAssignment()");
+                      $stmt = $conn->query("CALL sp_selectActiveMappingSoftware($idMS)");
                       // $query= "CALL CALL sp_selectActiveUser()";
                       // echo $query;
                       // Ejecutar el procedimiento almacenado
@@ -166,15 +176,14 @@ function dataTableUser($stmt)
                 <tfoot>
                   <tr>
                     <th>#</th>
-                    <th>Fecha de Asignación</th>
-                    <th>Colaborador Asignado</th>
-                    <th>Computadora</th>
-                    <th>Fecha de Retorno</th>
-                    <th>Observaciones</th>
-                    <th>Fecha inventario</th>
-                    <th>Usuario</th>
+                    <th>Fecha de Inventario</th>
+                    <th>Software Instalado</th>
+                    <th>Fecha de Instalacion</th>
+                    </th>
                     <th>Estado</th>
-                    <th>Opciones</th>
+                    <th>Usuario</th>
+                    <!-- <th>Opciones</th> -->
+
                   </tr>
                 </tfoot>
               </table>
@@ -202,8 +211,49 @@ include "../templates/footer.php";
 <?php
 require_once "../templates/footer.php";
 ?>
+<?php
+// function deleteUser()
+// {
+//   global $conn; // Utilizar la variable $conn en el ámbito de la función
 
+//   if (isset($_POST['id'])) {
+//     $id = $_POST["id"];
+
+//     $stmt = $conn->prepare("CALL sp_deleteMappingSoftware(?)");
+//     // Mandamos los parametros y los input que seran enviados al PA O SP
+//     $stmt->bind_param("s", $id); // Ejecutar el procedimiento almacenado
+
+//     $stmt->execute();
+//     // $query = "CALL sp_deleteComputer('$id')";
+//     // echo $query;
+//     // echo '<pre>';
+
+//     if ($stmt->error) {
+//       error_log("Error en la ejecución del procedimiento almacenado: " . $stmt->error);
+//     }
+//     // Obtener el número de filas afectadas por el insert
+//     $stmt->bind_result($idU);
+//     $stmt->fetch();
+//     // Cerrar el statement
+//     $stmt->close();
+//     // Avanzar al siguiente conjunto de resultados si hay varios
+//     $conn->next_result();
+
+//     if ($idU > 0) {
+//       echo '<script>
+//           setTimeout(function() {
+//             window.location.href = "view_assignment_pc.php";
+//           }, 10000);
+//         </script>';
+//     }
+//   }
+// }
+
+// // Llamar a la función deleteComputer
+// deleteUser();
+?>
 <script>
+  //funcion para barra de busqueda 
   $(function() {
     var table = $("#example1").DataTable({
       "stateSave": true,
@@ -213,4 +263,39 @@ require_once "../templates/footer.php";
       "autoWidth": false
     });
   });
+
+
+  // $('#example1').on('click', 'button.btnDeleteCMP', function() {
+  //   var id = $(this).data('id');
+
+  //   // Mostrar Sweet Alert
+  //   Swal.fire({
+  //     title: "Eliminar registro",
+  //     text: "¿Estás seguro de eliminar este registro N: " + id + "?",
+  //     icon: "warning",
+  //     showCancelButton: true,
+  //     confirmButtonColor: '#3085d6',
+  //     cancelButtonColor: '#d33',
+  //     confirmButtonText: 'Si, Quiero Elimnarlo!'
+  //   }).then((result) => {
+  //     if (result.isConfirmed) {
+  //       $('#deleteId').val(id);
+
+  //       $.ajax({
+  //         type: "POST",
+  //         url: window.location.href, // URL actual de la página
+  //         data: {
+  //           id: id
+  //         }, // Datos a enviar al servidor
+  //         success: function(response) {
+  //           Swal.fire("Registro eliminado", "El registro ha sido eliminado correctamente", "success").then(() => {
+  //             // Redireccionar después de mostrar el SweetAlert
+  //             window.location.href = "view_assignment_pc.php";
+  //           });
+  //         }
+  //       });
+  //     }
+  //   });
+
+  // });
 </script>
