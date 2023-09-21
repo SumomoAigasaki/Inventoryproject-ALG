@@ -157,17 +157,6 @@ $conn->next_result();
                       dataTableUser($stmt);
                       $stmt->close();
                       $conn->next_result();
-                    } else {
-                      $idMS = $_GET['p'];
-                      // Realizar consulta para obtener solo registros activos
-                      $stmt = $conn->query("CALL sp_selectActiveMappingSoftware($idMS)");
-                      // $query= "CALL CALL sp_selectActiveUser()";
-                      // echo $query;
-                      // Ejecutar el procedimiento almacenado
-                      // Obtener todos los resultados
-                      dataTableUser($stmt);
-                      $stmt->close();
-                      $conn->next_result();
                     }
                   }
                   obtener_registros($conn, $rol, $PermisoPCA);
