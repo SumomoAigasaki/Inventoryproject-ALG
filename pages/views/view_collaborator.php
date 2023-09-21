@@ -30,6 +30,7 @@ function dataTableUser($stmt)
     echo "<td>" . $row['CBT_Birth_Date'] . "</td>";
     echo "<td>" . $row['MNG_Description'] . "</td>";
     echo "<td>" . $row['PCS_Description'] . "</td>";
+    echo "<td>" . $row['CBT_employee_position'] . "</td>";
     echo "<td>" . $row['CBT_Inventory_Date'] . "</td>";
     echo "<td>" . $row['User_Username'] . "</td>";
     echo "<td>" . $row['STS_Description'] . "</td>";
@@ -129,6 +130,7 @@ function dataTableUser($stmt)
                     <th>Fecha de nacimiento</th>
                     <th>Gestión</th>
                     <th>Proceso</th>
+                    <th>Cargo</th>
                     <th>Fecha inventario</th>
                     <th>Usuario</th> 
                     <th>Estado</th> 
@@ -191,6 +193,7 @@ function dataTableUser($stmt)
                     <th>Fecha de nacimiento</th>
                     <th>Gestión</th>
                     <th>Proceso</th>
+                    <th>Cargo</th>
                     <th>Fecha inventario</th>
                     <th>Usuario</th> 
                     <th>Estado</th> 

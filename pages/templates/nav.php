@@ -59,6 +59,9 @@ if (empty($_SESSION["username"])) {
     <link rel="stylesheet" href="../../public/css/select2-bootstrap4-theme/select2-bootstrap4.min.css">
     <!-- Bootstrap4 Duallistbox -->
     <link rel="stylesheet" href="../../public/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
+     <!-- Agrega la biblioteca jsPDF en el encabezado -->
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous"></script> 
+
 
 
 </head>

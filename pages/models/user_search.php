@@ -21,6 +21,7 @@ while ($row = $result->fetch_assoc()) {
   $_SESSION["User_img"] =  $row["User_img"];
   $_SESSION["RLS_idTbl_Roles"] =  $row["RLS_idTbl_Roles"];
   $_SESSION["STS_idTbl_Status"] =  $row["STS_idTbl_Status"];
+  $_SESSION["NameUserlog"]= $row["NameUserlog"];
   $stmt->close();
   $conn->next_result();
 

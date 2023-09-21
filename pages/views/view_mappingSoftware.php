@@ -200,17 +200,7 @@ $conn->next_result();
 <?php
 include "../templates/footer.php";
 ?>
-</div>
-</div>
-</div>
-</div>
-</div>
-<!-- /.card -->
-</section>
-</div>
-<?php
-require_once "../templates/footer.php";
-?>
+
 <?php
 // function deleteUser()
 // {

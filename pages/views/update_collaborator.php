@@ -33,6 +33,7 @@ while ($row = $stmt->fetch_assoc()) {
     $CBT_Inventory_Date = $row['CBT_Inventory_Date'];
     $User_idTbl_User = $row['User_idTbl_User'];
     $STS_idTbl_Status = $row['STS_idTbl_Status'];
+    $CBT_employee_position = $row['CBT_employee_position'];
 }
 $stmt->close();
 $conn->next_result();
@@ -45,8 +46,8 @@ $conn->next_result();
 <script src="../../public/jquery/jquery.min.js"></script>
 <script src="../../public/js/toastr.min.js"></script>
 <script>
-     //Funcion General de las configuraciones de los toastr que aparecen al costado de la derecha superior
-     toastr.options = {
+    //Funcion General de las configuraciones de los toastr que aparecen al costado de la derecha superior
+    toastr.options = {
         closeButton: true,
         debug: true,
         newestOnTop: false,
@@ -341,6 +342,14 @@ $conn->next_result();
 
                                     <!--/. fila 4 -->
                                 </div>
+                                <div class="row justify-content-center" style="padding-bottom:20px;">
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label>Cargo a Desempeñar:</label>
+                                            <input type="text" class="form-control" name="txtposition" id="txtposition" maxlength="45" placeholder="Auxiliar " value="<?php echo $CBT_employee_position; ?>">
+                                        </div>
+                                    </div>
+                                </div>
                                 <!-- Comienzo fila 5 -->
                                 <div class="row justify-content-center" style="padding-bottom:10px;">
                                     <div class="col-mb-3">
@@ -383,6 +392,7 @@ if (isset($_POST["buttonUpdateCBT"])) {
     $addressCBT = $_POST['txtaddress'];
     $managementCBT = $_POST['slctManagement'];
     $processCBT = $_POST['slctProcess'];
+    $employeePositionCBT = $_POST["txtposition"];
 
     if (empty($_FILES['imgCBT']['name'])) {
         // El campo de imagen está vacío
@@ -396,9 +406,9 @@ if (isset($_POST["buttonUpdateCBT"])) {
 
         try {
             //llamamos el procedimiento almacemado de actualizar computadora 
-            $stmt = $conn->prepare("CALL sp_updateCollaborator(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            $stmt = $conn->prepare("CALL sp_updateCollaborator(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
             // Mandamos los parametros y los input que seran enviados al PA O SP
-            $stmt->bind_param("ssssssssssssssss", $idCBT, $CBTimage, $inventoryDateCBT, $nacionalityCBT, $employeeCodeCBT, $phoneNumberCBT, $firstNameCBT, $secondNameCBT, $firstSurnameCBT,$secondSurnameCBT, $genderCBT, $birthDateCBT, $addressCBT, $managementCBT, $processCBT, $statusCBT);
+            $stmt->bind_param("sssssssssssssssss", $idCBT, $CBTimage, $inventoryDateCBT, $nacionalityCBT, $employeeCodeCBT, $phoneNumberCBT, $firstNameCBT, $secondNameCBT, $firstSurnameCBT, $secondSurnameCBT, $genderCBT, $birthDateCBT, $addressCBT, $managementCBT, $processCBT, $statusCBT, $employeePositionCBT);
             // Ejecutar el procedimiento almacenado
 
             $stmt->execute();
@@ -476,6 +486,7 @@ if (isset($_POST["buttonUpdateCBT"])) {
         let processSlct = document.getElementById('slctProcess');
         let managementSlct = document.getElementById('slctManagement');
         let statusSlct = document.getElementById('slctStatus');
+        let positionTxt = document.getElementById('txtposition');
 
 
         if (employeeCodeTxt.value.trim() === "") {
@@ -518,6 +529,10 @@ if (isset($_POST["buttonUpdateCBT"])) {
             toastr.warning('El <b>Estado</b> esta vacio(a).<br>Por favor Ingrese un Estado valida');
             statusSlct.focus();
             return false;
+        } else if (positionTxt.value.trim() === "") {
+            toastr.warning("El <b>Cargo de Desempeño</b> esta vacio(a).<br>Por favor Ingrese un Cargo de Desempeño");
+            positionTxt.focus();
+            return false;
         } else {
             // Si no hay errores, procesa los datos enviados
             if (accionInput.value.trim() === "") {
@@ -529,7 +544,7 @@ if (isset($_POST["buttonUpdateCBT"])) {
         }
     }
 
-   
+
     $(function() {
 
         //Initialize Select2 Elements
@@ -537,15 +552,15 @@ if (isset($_POST["buttonUpdateCBT"])) {
             theme: 'bootstrap4'
         })
     });
-    
+
     $(function() {
         $(".datepicker-input").datepicker({
             dateFormat: "yy-mm-dd"
         });
     });
-    
-      // Funcion para cargar la previsualizacion de imagen 
-      function readURL(input) {
+
+    // Funcion para cargar la previsualizacion de imagen 
+    function readURL(input) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
             reader.onload = function(e) {
@@ -559,7 +574,6 @@ if (isset($_POST["buttonUpdateCBT"])) {
     $("#imgCBT").change(function() {
         readURL(this);
     });
-
 </script>
 
 

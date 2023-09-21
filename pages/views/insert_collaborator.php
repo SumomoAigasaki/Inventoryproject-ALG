@@ -224,8 +224,8 @@ require_once "../templates/menu.php"; ?>
                                         </div>
                                     </div>
 
-                                     <!-- Gerencia -->
-                                     <div class="col-sm-3">
+                                    <!-- Gerencia -->
+                                    <div class="col-sm-3">
                                         <div class="form-group">
                                             <label>Gestion: </label>
                                             <?php
@@ -265,7 +265,15 @@ require_once "../templates/menu.php"; ?>
                                             </select>
                                         </div>
                                     </div>
-                                   
+
+                                </div>
+                                <div class="row justify-content-center" style="padding-bottom:20px;">
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label>Cargo a Desempeñar:</label>
+                                            <input type="text" class="form-control" name="txtposition" id="txtposition" maxlength="45" placeholder="Auxiliar ">
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="row justify-content-center" style="padding-bottom:20px;">
                                     <!-- Boton guardar -->
@@ -300,7 +308,8 @@ require_once "../templates/footer.php";
         let phoneNumberTxt = document.getElementById('txtphoneNumber');
         let addressTxt = document.getElementById('txtaddress');
         let processSlct = document.getElementById('slctProcess');
-        let managementSlct = document.getElementById('slctManagement'); 
+        let managementSlct = document.getElementById('slctManagement');
+        let positionTxt = document.getElementById('txtposition');
 
         if (employeeCodeTxt.value.trim() === "") {
             toastr.warning("El <b>Codigo de Empleado</b> esta vacio(a).<br>Por favor Ingrese un Codigo de Empleado valida");
@@ -314,7 +323,7 @@ require_once "../templates/footer.php";
             toastr.warning("El <b>Primer Nombre</b> esta vacio(a).<br>Por favor Ingrese un Primer Nombre valida");
             firstNameTxt.focus();
             return false;
-        }else if (firstSurnameTxt.value.trim() === "") {
+        } else if (firstSurnameTxt.value.trim() === "") {
             toastr.warning("El <b>Primer Apellido</b> esta vacio(a).<br>Por favor Ingrese un Primer Apellido valida");
             firstSurnameTxt.focus();
             return false;
@@ -326,17 +335,21 @@ require_once "../templates/footer.php";
             toastr.warning("El <b>Número de teléfono</b> esta vacio(a).<br>Por favor Ingrese un Número de teléfono valida");
             phoneNumberTxt.focus();
             return false;
-        }else if (addressTxt.value.trim() === "") {
+        } else if (addressTxt.value.trim() === "") {
             toastr.warning("La <b>Dirección</b> esta vacio(a).<br>Por favor Ingrese una Dirección valida");
             addressTxt.focus();
             return false;
-        }else if (processSlct.selectedIndex == 0) {
+        } else if (processSlct.selectedIndex == 0) {
             toastr.warning('El <b>Proceso</b> esta vacio(a).<br>Por favor Ingrese una Proceso valida');
             processSlct.focus();
             return false;
         } else if (managementSlct.selectedIndex == 0) {
             toastr.warning('La <b>Gestión</b> esta vacio(a).<br>Por favor Ingrese una Gestión valida');
             managementSlct.focus();
+            return false;
+        } else if (positionTxt.value.trim() === "") {
+            toastr.warning("El <b>Cargo de Desempeño</b> esta vacio(a).<br>Por favor Ingrese un Cargo de Desempeño");
+            positionTxt.focus();
             return false;
         } else {
             // Si no hay errores, procesa los datos enviados
@@ -346,8 +359,8 @@ require_once "../templates/footer.php";
             }
             document.getElementById("formInsertCBT").submit();
 
-        }       
-        
+        }
+
     }
 
     $(function() {
@@ -366,8 +379,8 @@ require_once "../templates/footer.php";
         })
     });
 
-      // Funcion para cargar la previsualizacion de imagen 
-      function readURL(input) {
+    // Funcion para cargar la previsualizacion de imagen 
+    function readURL(input) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
             reader.onload = function(e) {
@@ -384,73 +397,73 @@ require_once "../templates/footer.php";
 </script>
 
 <?php
-if (isset($_POST["buttonInsertCBT"])){
-    $imgCBT=  $_FILES['fileImg']['name'];
-    $employeCodeCBT= $_POST["txtEmployeeCode"];
-    $nacionalityCBT= $_POST["slctNacionality"];
-    $firstNameCBT= $_POST["txtfirstName"];
-    $secondNameCBT= $_POST["txtsecondName"];
-    $firstSurnameCBT= $_POST["txtfirstSurname"];
-    $secondSurnameCBT= $_POST["txtsecondSurname"];
-    $genderCBT= $_POST["slctGender"];
-    $phoneNumberCBT= $_POST["txtphoneNumber"];
-    $birthDateCBT= $_POST["txtbirthDate"];
-    $addressCBT= $_POST["txtaddress"];
-    $processCBT= $_POST["slctProcess"];
-    $managementCBT= $_POST["slctManagement"];
+if (isset($_POST["buttonInsertCBT"])) {
+    $imgCBT =  $_FILES['fileImg']['name'];
+    $employeCodeCBT = $_POST["txtEmployeeCode"];
+    $nacionalityCBT = $_POST["slctNacionality"];
+    $firstNameCBT = $_POST["txtfirstName"];
+    $secondNameCBT = $_POST["txtsecondName"];
+    $firstSurnameCBT = $_POST["txtfirstSurname"];
+    $secondSurnameCBT = $_POST["txtsecondSurname"];
+    $genderCBT = $_POST["slctGender"];
+    $phoneNumberCBT = $_POST["txtphoneNumber"];
+    $birthDateCBT = $_POST["txtbirthDate"];
+    $addressCBT = $_POST["txtaddress"];
+    $processCBT = $_POST["slctProcess"];
+    $managementCBT = $_POST["slctManagement"];
+    $employeePositionCBT = $_POST["txtposition"];
     $todayDate = date("Y-m-d");
     $idUser = $_SESSION["User_idTbl_User"];
-    $status='2';
-    
+    $status = '2';
+
 
     if (empty($imgCBT)) {
         $imgCBT = '/resources/Collaborator/default.jpg';
     } else {
         $imgCBT = '/resources/Collaborator/' . $_FILES['fileImg']['name'];
     }
-       # Ruta de la carpeta de destino para los archivos
-       $urlCBT = '../../resources/Collaborator/';
-    if ($PermisoCBT){
-        try{
-             //Caso contrario Guardara
-             $stmt = $conn->prepare("CALL sp_insertCollaborator(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+    # Ruta de la carpeta de destino para los archivos
+    $urlCBT = '../../resources/Collaborator/';
+    if ($PermisoCBT) {
+        try {
+            //Caso contrario Guardara
+            $stmt = $conn->prepare("CALL sp_insertCollaborator(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
-             // $query = "CALL sp_insertCollaborator('$imgCBT', '$employeCodeCBT', '$nacionalityCBT', '$firstNameCBT', '$secondNameCBT', '$firstSurnameCBT', '$secondSurnameCBT', '$genderCBT', '$phoneNumberCBT', '$birthDateCBT', '$addressCBT', '$processCBT', '$managementCBT', '$todayDate', '$idUser','$status');";
-             // echo $query;
-             // Mandamos los parametros y los input que seran enviados al PA O SP
-             $stmt->bind_param("ssssssssssssssss", $imgCBT, $employeCodeCBT, $nacionalityCBT, $firstNameCBT, $secondNameCBT, $firstSurnameCBT, $secondSurnameCBT, $genderCBT, $phoneNumberCBT, $birthDateCBT, $addressCBT, $processCBT, $managementCBT, $todayDate, $idUser, $status);
- 
- 
-             // Ejecutar el procedimiento almacenado
-             $stmt->execute();
-             if ($stmt->error) {
-                 error_log("Error en la ejecución del procedimiento almacenado: " . $stmt->error);
-             }
-             // Obtener el valor de la variable de salida
-             $stmt->bind_result($answerExistsComp);
-             $stmt->fetch();
-             $stmt->close();
-             $conn->next_result();
- 
-             // se extraen los valores qu     nos devuelve el procedimiento almacenado y enviamos el error
-             if ($answerExistsComp > 0) {
-                 echo '<script > toastr.success("Los datos de <b>' . $employeCodeCBT . '</b> se Guardaron de manera exitosa.", "¡¡Enhorabuena!!"); ';
-                 echo 'setTimeout(function() {';
-                 echo '  window.location.href = "view_collaborator.php";';
-                 echo ' }, 2000); // 2000 milisegundos = 2 segundos de retraso ';
-                 echo 'document.getElementById("formInsertCBT").reset(); ';
-                 echo '</script>';
- 
-                 if ($_FILES['fileImg']['name'] != 'default.jpg') {
-                     move_uploaded_file($_FILES['fileImg']['tmp_name'], $urlCBT . $_FILES['fileImg']['name']);
-                 } else if (file_exists($urlCBT . $_FILES['fileImg']['name'])) {
-                     echo '<script > toastr.info("La imagen ya existe ' . $imgCBT . '")</script>;';
-                     $uploadOk = 0; //si existe lanza un valor en 0                 
- 
-                 }
-                 exit;
-             }
+            // $query = "CALL sp_insertCollaborator('$imgCBT', '$employeCodeCBT', '$nacionalityCBT', '$firstNameCBT', '$secondNameCBT', '$firstSurnameCBT', '$secondSurnameCBT', '$genderCBT', '$phoneNumberCBT', '$birthDateCBT', '$addressCBT', '$processCBT', '$managementCBT', '$todayDate', '$idUser','$status');";
+            // echo $query;
+            // Mandamos los parametros y los input que seran enviados al PA O SP
+            $stmt->bind_param("sssssssssssssssss", $imgCBT, $employeCodeCBT, $nacionalityCBT, $firstNameCBT, $secondNameCBT, $firstSurnameCBT, $secondSurnameCBT, $genderCBT, $phoneNumberCBT, $birthDateCBT, $addressCBT, $processCBT, $managementCBT, $todayDate, $idUser, $status, $employeePositionCBT);
 
+
+            // Ejecutar el procedimiento almacenado
+            $stmt->execute();
+            if ($stmt->error) {
+                error_log("Error en la ejecución del procedimiento almacenado: " . $stmt->error);
+            }
+            // Obtener el valor de la variable de salida
+            $stmt->bind_result($answerExistsComp);
+            $stmt->fetch();
+            $stmt->close();
+            $conn->next_result();
+
+            // se extraen los valores qu     nos devuelve el procedimiento almacenado y enviamos el error
+            if ($answerExistsComp > 0) {
+                echo '<script > toastr.success("Los datos de <b>' . $employeCodeCBT . '</b> se Guardaron de manera exitosa.", "¡¡Enhorabuena!!"); ';
+                echo 'setTimeout(function() {';
+                echo '  window.location.href = "view_collaborator.php";';
+                echo ' }, 2000); // 2000 milisegundos = 2 segundos de retraso ';
+                echo 'document.getElementById("formInsertCBT").reset(); ';
+                echo '</script>';
+
+                if ($_FILES['fileImg']['name'] != 'default.jpg') {
+                    move_uploaded_file($_FILES['fileImg']['tmp_name'], $urlCBT . $_FILES['fileImg']['name']);
+                } else if (file_exists($urlCBT . $_FILES['fileImg']['name'])) {
+                    echo '<script > toastr.info("La imagen ya existe ' . $imgCBT . '")</script>;';
+                    $uploadOk = 0; //si existe lanza un valor en 0                 
+
+                }
+                exit;
+            }
         } catch (mysqli_sql_exception $e) {
             if ($e->getCode() == 1062) {
                 // Check which specific unique field is causing the constraint violation
@@ -475,6 +488,5 @@ if (isset($_POST["buttonInsertCBT"])){
             }
         }
     }
-    
 }
 ?>
