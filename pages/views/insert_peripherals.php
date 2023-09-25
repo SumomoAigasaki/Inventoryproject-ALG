@@ -267,6 +267,7 @@ if (isset($_POST["buttonInsertPRL"])) {
     $brandPRL = $_POST['slct_brand'];
     $locationPRL = $_POST['slctLocation'];
     $observationsPRL = $_POST['txt_observation'];
+    date_default_timezone_set('America/Mexico_City');
     $todayDate = date("Y-m-d");
     $user = $_SESSION["User_idTbl_User"];
     $status = '2';

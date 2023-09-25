@@ -335,6 +335,7 @@ if (isset($_POST["buttonInsertSFT"])) {
     }
     $typeSft = $_POST['slct_SftType'];
     $clasificationLicenceSft = $_POST['slct_licenceClasification'];
+    date_default_timezone_set('America/Mexico_City');
     $todayDate = date("Y-m-d");
     $observationsSft=$_POST['txt_observation'];
     $category= $_POST['slct_category'];

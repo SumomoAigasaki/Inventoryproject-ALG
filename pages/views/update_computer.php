@@ -454,7 +454,7 @@ if (isset($_POST["buttonUpdateComputer"])) {
   $cmpObservation = $_POST['txtObservation'];
   $cmpeIdGuarate = $_POST['selectTypeGuarantee'];
   date_default_timezone_set('America/Mexico_City');
-  $todayDate = date("Y-m-d");
+  $todayDate = $_POST['todayDate'];
 
   $idUser = $_SESSION["User_idTbl_User"];
 

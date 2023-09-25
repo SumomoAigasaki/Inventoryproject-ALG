@@ -91,6 +91,7 @@ require_once "../templates/menu.php"; ?>
                             <div class="card-body">
                                 <label class="form-check-label" style="padding-bottom: 5px;"> A continuación se le pedirá que <b> Ingrese</b> los siguientes datos:</label>
 
+                                <!-- Input para guardar la lista de los software a guardar -->
                                 <input type="hidden" class="form-control" id="TxtId" name="TxtId" placeholder="">
                                 <!-- Fila 1 -->
                                 <div class="row justify-content-center" style="padding-top:10px; padding-bottom:10px;">
@@ -390,23 +391,26 @@ if (isset($_POST["buttonInsertPCA"])) {
     $returnDateTxt = $_POST["txtReturnDate"];
     $observationTxt = $_POST["txtObservation"];
     $idsArrayTexto  = $_POST["TxtId"];
+    $monthtxt =$_POST["txtmonth"];
     date_default_timezone_set('America/Mexico_City');
     $todayDate = date("Y-m-d");
     $user = $_SESSION["User_idTbl_User"];
     $status = '2';
     // Decodifica la cadena JSON en un array de PHP
+    //idsArray es la variable para la lista de codigos seleccionados
     $idsArray = json_decode($idsArrayTexto);
+
 
     // PermisoPCA
     if ($PermisoPCA) {
         try {
             //Caso contrario Guardara
-            $stmt = $conn->prepare("CALL sp_insertAssignmentPC(?,?,?,?,?,?,?,?)");
+            $stmt = $conn->prepare("CALL sp_insertAssignmentPC(?,?,?,?,?,?,?,?,?)");
 
             // $query = "CALL sp_insertAssignmentPC( '$deadlineTxt', '$user', '$colaboradorId', '$computerId', '$returnDateTxt', '$status', '$observationTxt', '$todayDate');";
             // echo $query;
             // Mandamos los parametros y los input que seran enviados al PA O SP
-            $stmt->bind_param("ssssssss", $deadlineTxt, $user, $colaboradorId, $computerId, $returnDateTxt, $status, $observationTxt, $todayDate);
+            $stmt->bind_param("sssssssss", $deadlineTxt, $user, $colaboradorId, $computerId, $returnDateTxt, $status, $observationTxt, $todayDate,$monthtxt);
 
 
             // Ejecutar el procedimiento almacenado

@@ -412,6 +412,7 @@ if (isset($_POST["buttonInsertCBT"])) {
     $processCBT = $_POST["slctProcess"];
     $managementCBT = $_POST["slctManagement"];
     $employeePositionCBT = $_POST["txtposition"];
+    date_default_timezone_set('America/Mexico_City');
     $todayDate = date("Y-m-d");
     $idUser = $_SESSION["User_idTbl_User"];
     $status = '2';

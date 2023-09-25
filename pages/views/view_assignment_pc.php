@@ -6,10 +6,10 @@ require('../../public/FPDF/fpdf.php');
 ?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous"></script>
 <script>
-  function generarPDF(name, user,codeuser,cargo,marca,modelo,serial, garantia) {
+  function generarPDF(name, user,codeuser,cargo,marca,modelo,serial, garantia,meses) {
     // Obtener el contenido del contrato
     console.log("Dentro del evento");
-    console.log("Valor de colaborador:", name, user, codeuser, cargo,marca,modelo,serial,garantia);
+    console.log("Valor de colaborador:", name, user, codeuser, cargo,marca,modelo,serial,garantia,meses);
     // Eliminar espacios en blanco al principio y al final del nombre
     name = name.trim();
     user = user.trim();
@@ -19,6 +19,7 @@ require('../../public/FPDF/fpdf.php');
     modelo=modelo.trim();
     serial= serial.trim();
     garantia= garantia.trim();
+    meses = meses.trim();
 
     // Obtener el contenido del contrato
     var contratoElement = document.getElementById('contrato');
@@ -42,10 +43,11 @@ require('../../public/FPDF/fpdf.php');
     var serialElement = document.querySelector('.serie');
     var garantiaElement = document.querySelector('.garantia');
     var firmacolaboradorElement = document.querySelector('.firmacolaborador');
+    var mesesElement = document.querySelector('.meses');
     
 
     // Verificar si se encontró el elemento
-    if (colaboradorElement && userElement && codeuserElement && cargoElement && marcaElement && modeloElement && serialElement && garantiaElement && firmacolaboradorElement ) {
+    if (colaboradorElement && userElement && codeuserElement && cargoElement && marcaElement && modeloElement && serialElement && garantiaElement && firmacolaboradorElement && mesesElement) {
       // Cambiar el contenido del elemento con el nuevo nombre
       colaboradorElement.textContent = name;
       userElement.textContent = user;
@@ -56,6 +58,7 @@ require('../../public/FPDF/fpdf.php');
       serialElement.textContent = serial; 
       garantiaElement.textContent = garantia;
       firmacolaboradorElement.textContent = name;
+      mesesElement.textContent = meses;
     }
 
     console.log("Contrato HTML después de sustituciones:", contratoHTML);
@@ -192,18 +195,18 @@ function dataTableUser($stmt)
       $Modelo =  $fila["Modelo"];
       $Serial = $fila["Serial"];
       $Garantia = $fila["Garantia"];
+      $Meses = $fila["Meses"];
     }
 
-
     echo "<td align='center'> 
-            <a href='../views/update_collaborator.php?p=" . $row['PCA_idTbl_PC_Assignment'] . "' class='btn btn-outline-primary btn-sm' title='Editar Registro'>
+            <a href='../views/update_assignment_pc.php?p=" . $row['PCA_idTbl_PC_Assignment'] . "' class='btn btn-outline-primary btn-sm' title='Editar Registro'>
               <i class='fas fa-pencil-alt'></i>
             </a>
             <a href='../views/view_mappingSoftware.php?p=" . $row['PCA_idTbl_PC_Assignment'] . "' class='btn btn-outline-info btn-sm' title='Más Información'>
             <i class='fas fa-info'></i>
             </a>
    
-    <button class='btn btn-outline-dark btn-sm imprimirContrato' title='Imprimir Contrato' name='imprimirContrato' id='imprimirContrato' onclick=\"return generarPDF('".$NameCollaborator."', '" .  $_SESSION["NameUserlog"] . "', '".$EmployeeCode."','".$EmployeePosition."','".$Marca."','".$Modelo."','".$Serial."','".$Garantia."');\">
+    <button class='btn btn-outline-dark btn-sm imprimirContrato' title='Imprimir Contrato' name='imprimirContrato' id='imprimirContrato' onclick=\"return generarPDF('".$NameCollaborator."', '" .  $_SESSION["NameUserlog"] . "', '".$EmployeeCode."','".$EmployeePosition."','".$Marca."','".$Modelo."','".$Serial."','".$Garantia."','".$Meses."');\">
             <i class='fa fa-file-contract'></i>
             </button>
   <div id='contrato' style='display: none;'>
@@ -244,7 +247,7 @@ function dataTableUser($stmt)
 <p>El Empleado se compromete a mantener la confidencialidad de la información almacenada en el equipo de cómputo y a no divulgar información confidencial de La Empresa. </p>
 
  <p><b>7. Duración del Contrato</b></p>
-<p>Este contrato de asignación de equipo de cómputo entrará en vigor a partir de la fecha de firma y tendrá una duración indefinida, sujeto a las condiciones de empleo del Empleado en La Empresa.</p>
+<p>Este contrato de asignación de equipo de cómputo entrará en vigor a partir de la fecha de firma y tendrá una duración de <p class='meses'>" . $Meses . "</p> mes(es), sujeto a las condiciones de empleo del Empleado en La Empresa.</p>
                  
 
 
