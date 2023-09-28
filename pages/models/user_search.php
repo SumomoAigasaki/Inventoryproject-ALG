@@ -141,9 +141,9 @@ if (!in_array($pagina_actual, $linksDefault) && !$PermisoSTF && in_array($pagina
 // #PRL
 
 $linksPRL = array(
-  "insert_peropherals.php",
-  "update_peropherals.php",
-  "view_peropherals.php"
+  "insert_peripherals.php",
+  "update_peripherals.php",
+  "view_peripherals.php"
 );
 
 if (in_array('PRL', array_column($privilegios, 'permiso'))) {

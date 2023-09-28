@@ -1,10 +1,27 @@
 <?php
 require_once "../templates/nav.php";
 require_once "../templates/menu.php";
+$opciones = false;
+
+//Parte de codigo se hace de manera extra para no tener que entrar al metodo o funcion y que se haca al cargar la pagina 
+//y esta misma tenga el conocimiento si tendra la columna de opciones o no desde el momento que esta se carga
+$idMS = $_GET['p'];
+// Realizar consulta para obtener todos los registros
+$stmt = $conn->query("CALL sp_selectAllMappingSoftware($idMS)");
+$existingOptions  = array(); // Aquí almacenaremos los datos de la segunda consulta
+
+while ($fila = $stmt->fetch_assoc()) {
+  if ($fila['STS_Description'] == "Desintalado") {
+    $opciones = true;
+  }
+}
+$stmt->close();
+$conn->next_result();
 
 
 function dataTableUser($stmt)
 {
+
   while ($row = $stmt->fetch_assoc()) {
     //  echo '<pre>';
     //  print_r($row);
@@ -17,22 +34,21 @@ function dataTableUser($stmt)
     echo "<td>" . $row['MS_Instalation_date'] . "</td>";
     echo "<td>" . $row['STS_Description'] . "</td>";
     echo "<td>" . $row['User_Username'] . "</td>";
+    if ($row['STS_Description'] == "Desintalado") {
+      echo "<td align='center'> 
+      <button class='btn btn-outline-success btn-sm btnDeleteCMP' title='Activar registro' name='btnDeleteCBT' id='btnDeleteCBT' data-id='" . $row['MS_idtbl_mapping_softwarecol'] . "'>
+      <i class='fas fa-toggle-on'></i>
+             </button>
+          </td>";
+    }
 
-    // echo "<td align='center'> 
-    //         <a href='../views/update_collaborator.php?p=" . $row['MS_idtbl_mapping_softwarecol'] . "' class='btn btn-outline-primary btn-sm' title='Editar Registro'>
-    //           <i class='fas fa-pencil-alt'></i>
-    //         </a>
-    //         <button class='btn btn-outline-danger btn-sm btnDeleteCMP' title='Eliminar Registro' name='btnDeleteCBT' id='btnDeleteCBT' data-id='" . $row['MS_idtbl_mapping_softwarecol'] . "'>
-    //           <i class='fas fa-trash-alt'></i>
-    //         </button>
-    //       </td>";
     echo "</tr>";
   }
 }
 
 //PARA OBTENEER EL VALOR DE COMPUTADORA
 $idMS = $_GET['p'];
-$stmt = $conn->query("CALL sp_selectActiveMappingSoftware($idMS)");
+$stmt = $conn->query("CALL sp_selectAllMappingSoftware($idMS)");
 while ($row = $stmt->fetch_assoc()) {
   $computerid = $row['CMP_idTbl_Computer'];
   $computername = $row['CMP_Technical_Name'];
@@ -119,9 +135,27 @@ $conn->next_result();
                     <th>Fecha de Inventario</th>
                     <th>Software Instalado</th>
                     <th>Fecha de Instalacion</th>
-                    </th>
+
                     <th>Estado</th>
                     <th>Usuario</th>
+                    <?php
+                    $rol = $_SESSION["RLS_idTbl_Roles"];
+                    // Verificar si el rol tiene el rol 2 (administrador) y el permiso de SFT
+                    function validar_permisos($rol, $PermisoPCA)
+                    {
+                      if ($rol == "2" && $PermisoPCA) {
+                        return true;
+                      } else {
+                        return false;
+                      }
+                    }
+
+                    if (validar_permisos($rol, $PermisoPCA)) {
+                      if ($opciones) {
+                        echo "<th>Opciones</th>";
+                      }
+                    }
+                    ?>
                     <!-- <th>Opciones</th> -->
 
                   </tr>
@@ -130,16 +164,6 @@ $conn->next_result();
 
                   <?php
 
-                  $rol = $_SESSION["RLS_idTbl_Roles"];
-                  // Verificar si el rol tiene el rol 2 (administrador) y el permiso de SFT
-                  function validar_permisos($rol, $PermisoPCA)
-                  {
-                    if ($rol == "2" && $PermisoPCA) {
-                      return true;
-                    } else {
-                      return false;
-                    }
-                  }
 
 
                   function obtener_registros($conn, $rol, $PermisoPCA)
@@ -168,9 +192,15 @@ $conn->next_result();
                     <th>Fecha de Inventario</th>
                     <th>Software Instalado</th>
                     <th>Fecha de Instalacion</th>
-                    </th>
                     <th>Estado</th>
                     <th>Usuario</th>
+                    <?php
+                    if (validar_permisos($rol, $PermisoPCA)) {
+                      if ($opciones) {
+                        echo "<th>Opciones</th>";
+                      }
+                    }
+                    ?>
                     <!-- <th>Opciones</th> -->
 
                   </tr>
@@ -191,48 +221,55 @@ include "../templates/footer.php";
 ?>
 
 <?php
-// function deleteUser()
-// {
-//   global $conn; // Utilizar la variable $conn en el ámbito de la función
+// Función para eliminar un usuario
+function deleteUser()
+{
+  global $conn; // Acceso a la variable de conexión global $conn
 
-//   if (isset($_POST['id'])) {
-//     $id = $_POST["id"];
+  if (isset($_POST['id'])) { // Verifica si se ha enviado un parámetro 'id' mediante POST
+    $id = $_POST["id"];
 
-//     $stmt = $conn->prepare("CALL sp_deleteMappingSoftware(?)");
-//     // Mandamos los parametros y los input que seran enviados al PA O SP
-//     $stmt->bind_param("s", $id); // Ejecutar el procedimiento almacenado
+    // Preparar una llamada a un procedimiento almacenado con un parámetro
+    $stmt = $conn->prepare("CALL sp_UpdateSelectMappingSoftware(?)");
+    $stmt->bind_param("s", $id); // Vincular el parámetro 'id' al procedimiento almacenado
 
-//     $stmt->execute();
-//     // $query = "CALL sp_deleteComputer('$id')";
-//     // echo $query;
-//     // echo '<pre>';
+    $stmt->execute(); // Ejecutar el procedimiento almacenado
 
-//     if ($stmt->error) {
-//       error_log("Error en la ejecución del procedimiento almacenado: " . $stmt->error);
-//     }
-//     // Obtener el número de filas afectadas por el insert
-//     $stmt->bind_result($idU);
-//     $stmt->fetch();
-//     // Cerrar el statement
-//     $stmt->close();
-//     // Avanzar al siguiente conjunto de resultados si hay varios
-//     $conn->next_result();
+    if ($stmt->error) { // Verificar errores en la ejecución
+      error_log("Error en la ejecución del procedimiento almacenado: " . $stmt->error);
+    }
 
-//     if ($idU > 0) {
-//       echo '<script>
-//           setTimeout(function() {
-//             window.location.href = "view_assignment_pc.php";
-//           }, 10000);
-//         </script>';
-//     }
-//   }
-// }
+    // Obtener el resultado del procedimiento almacenado
+    $stmt->bind_result($idU);
+    $stmt->fetch();
 
-// // Llamar a la función deleteComputer
-// deleteUser();
+    $stmt->close(); // Cerrar el statement
+    $conn->next_result(); // Avanzar al siguiente conjunto de resultados si los hay
+
+    if ($idU > 0) { // Si se realizó con éxito y se afectaron filas
+      // Mostrar un script JavaScript después de un retraso de 10 segundos
+      echo '<script>
+          setTimeout(function() {
+            var urlParams = new URLSearchParams(window.location.search);
+            var id = urlParams.get("p");
+
+            if (id !== null) {
+              // Redirigir a otra página con el parámetro "p"
+              window.location.href = "view_mappingSoftware.php?p="+ id;
+            }
+          }, 10000);
+        </script>';
+    }
+  }
+}
+
+// Llamar a la función deleteUser
+deleteUser();
 ?>
+
+
 <script>
-  //funcion para barra de busqueda 
+  // Inicializar DataTable
   $(function() {
     var table = $("#example1").DataTable({
       "stateSave": true,
@@ -243,38 +280,44 @@ include "../templates/footer.php";
     });
   });
 
+  // Manejar el clic en un botón con la clase 'btnDeleteCMP'
+  $('#example1').on('click', 'button.btnDeleteCMP', function() {
+    var id = $(this).data('id');
 
-  // $('#example1').on('click', 'button.btnDeleteCMP', function() {
-  //   var id = $(this).data('id');
+    // Mostrar un cuadro de diálogo de confirmación usando SweetAlert
+    Swal.fire({
+      title: "Actualizar registro",
+      text: "¿Estás seguro que deseas cambiar el estado a Instalado este registro N: " + id + "?",
+      icon: "info",
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, Quiero Instalarlo!'
+    }).then((result) => {
+      if (result.isConfirmed) { // Si el usuario confirma
+        $('#deleteId').val(id);
 
-  //   // Mostrar Sweet Alert
-  //   Swal.fire({
-  //     title: "Eliminar registro",
-  //     text: "¿Estás seguro de eliminar este registro N: " + id + "?",
-  //     icon: "warning",
-  //     showCancelButton: true,
-  //     confirmButtonColor: '#3085d6',
-  //     cancelButtonColor: '#d33',
-  //     confirmButtonText: 'Si, Quiero Elimnarlo!'
-  //   }).then((result) => {
-  //     if (result.isConfirmed) {
-  //       $('#deleteId').val(id);
+        // Realizar una solicitud AJAX para actualizar el registro
+        $.ajax({
+          type: "POST",
+          url: window.location.href, // URL actual de la página
+          data: {
+            id: id
+          }, // Datos a enviar al servidor
+          success: function(response) {
+            // Mostrar un cuadro de diálogo de éxito y redirigir después de confirmar
+            Swal.fire("Registro Instalado", "El registro ha sido actualizado correctamente", "success").then(() => {
+              // Redirigir a otra página con el parámetro 'p'
+              var urlParams = new URLSearchParams(window.location.search);
+              var id = urlParams.get("p");
 
-  //       $.ajax({
-  //         type: "POST",
-  //         url: window.location.href, // URL actual de la página
-  //         data: {
-  //           id: id
-  //         }, // Datos a enviar al servidor
-  //         success: function(response) {
-  //           Swal.fire("Registro eliminado", "El registro ha sido eliminado correctamente", "success").then(() => {
-  //             // Redireccionar después de mostrar el SweetAlert
-  //             window.location.href = "view_assignment_pc.php";
-  //           });
-  //         }
-  //       });
-  //     }
-  //   });
-
-  // });
+              if (id !== null) {
+                window.location.href = "view_mappingSoftware.php?p=" + id;
+              }
+            });
+          }
+        });
+      }
+    });
+  });
 </script>

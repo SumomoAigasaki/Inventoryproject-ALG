@@ -18,7 +18,7 @@ while ($row = $stmt->fetch_assoc()) {
     $PCA_Observations = $row['PCA_Observations'];
     $PCA_imgContrato = $row['PCA_imgContrato'];
     if (empty($PCA_imgContrato) || $PCA_imgContrato === null || $PCA_imgContrato == "/resources/AsignacionPC/") {
-        $PCA_imgContrato = "/resources/AsignacionPC/defaultPDF.jpg";
+        $PCA_imgContrato = "../../resources/AsignacionPC/defaultPDF.jpg";
     }
     $PCA_Inventory_Date = $row['PCA_Inventory_Date'];
     $MS_Instalation_date = $row['MS_Instalation_date'];
@@ -308,11 +308,24 @@ $conn->next_result();
 <?php
 require_once "../templates/footer.php";
 ?>
+<!-- script para colocar el pdf en el div y hacer una vista previa -->
 <script>
     const filePDF = document.getElementById('filePDF');
     const labelArchivoPDF = document.getElementById('labelArchivoPDF');
     const imgPerfil = document.getElementById('imgPerfil');
     const vistaPrevia = document.getElementById('vistaPrevia');
+
+    // Obtener la URL de la imagen del contrato desde PHP
+    const imgContratoURL = "<?php echo $PCA_imgContrato; ?>";
+
+    // Comprobar si hay una URL de imagen del contrato disponible y si no es la URL por defecto
+    if (imgContratoURL && imgContratoURL !== "/resources/AsignacionPC/defaultPDF.jpg") {
+        // Mostrar la imagen del contrato en un elemento embed
+        const embedTag = `<embed src="${imgContratoURL}"  type="application/pdf"  width="350" height="300">`;
+        vistaPrevia.innerHTML = embedTag;
+        vistaPrevia.style.display = 'block'; // Mostrar la previsualización del contrato
+        imgPerfil.style.display = 'none'; // Ocultar la imagen por defecto
+    }
 
     filePDF.addEventListener('change', function() {
         const archivo = filePDF.files[0];
@@ -331,15 +344,25 @@ require_once "../templates/footer.php";
 
             lector.readAsDataURL(archivo);
         } else {
-            // Mostrar la imagen por defecto
-            vistaPrevia.innerHTML = '';
-            vistaPrevia.style.display = 'none';
+            // Mostrar la imagen del contrato si está disponible
+            if (imgContratoURL && imgContratoURL !== "/resources/AsignacionPC/defaultPDF.jpg") {
+                // Mostrar la imagen del contrato en un elemento embed
+                const embedTag = `<embed src="${imgContratoURL}"  type="application/pdf"  width="350" height="300">`;
+                vistaPrevia.innerHTML = embedTag;
+                vistaPrevia.style.display = 'block'; // Mostrar la previsualización del contrato
+                imgPerfil.style.display = 'none'; // Ocultar la imagen por defecto
+            } else {
+                // Restaurar la previsualización del PDF si no hay imagen del contrato
+                vistaPrevia.innerHTML = '';
+                vistaPrevia.style.display = 'none';
 
-            // Restaurar la imagen por defecto
-            imgPerfil.style.display = 'block';
+                // Restaurar la imagen por defecto
+                imgPerfil.style.display = 'block';
+            }
         }
     });
 </script>
+
 
 <script>
     // Obtener los elementos del formulario
@@ -511,7 +534,12 @@ require_once "../templates/footer.php";
 </script>
 
 <?php
+// Ruta de la carpeta de destino para los archivos
+$uploads_dir = '../../resources/AsignacionPC/';
+
+// Verificar si se ha enviado un formulario con el botón "buttonUpdatePCA"
 if (isset($_POST["buttonUpdatePCA"])) {
+    // Recoger los datos enviados a través del formulario
     $colaboradorId = $_POST["slctColaborador"];
     $computerId = $_POST["slctComputer"];
     $deadlineTxt = $_POST["txtDeadline"];
@@ -523,168 +551,177 @@ if (isset($_POST["buttonUpdatePCA"])) {
     $todayDate = $_POST['txtDateInventory'];
     $user = $_SESSION["User_idTbl_User"];
     $status = $_POST["slctStatus"];
-    // Decodifica la cadena JSON en un array de PHP
+
+    // Decodificar la cadena JSON en un array de PHP
     $idsArray = json_decode($idsArrayTexto);
     $idPCA = $_POST['TxtIdPCAsignment'];
     $monthTxt = $_POST['txtmonth'];
-    // valido si el campo esta vacio y  mango el antiguo valor
+
+    // Validar si el campo de archivo 'filePDF' está vacío y mantener el valor anterior si es así
     if (empty($_FILES['filePDF']['name'])) {
         $imgContrato = $PCA_imgContrato;
     } else {
-        $imgContrato = '/resources/AsignacionPC/' . $_FILES['filePDF']['name'];
+        $imgContrato = '../../resources/AsignacionPC/' . $_FILES['filePDF']['name'];
     }
 
+    $todayDateInsert = date("Y-m-d");
 
-    // PermisoPCA
+    // Verificar el permiso para realizar la operación
     if ($PermisoPCA) {
         try {
-
-            //Caso contrario Guardara
+            // Preparar una llamada a un procedimiento almacenado
             $stmt = $conn->prepare("CALL sp_UpdateAssignmentePC(?,?,?,?,?,?,?,?,?,?)");
-            // Mandamos los parametros y los input que seran enviados al PA O SP
+
+            // Vincular los parámetros al procedimiento almacenado
             $stmt->bind_param("ssssssssss", $idPCA, $deadlineTxt, $colaboradorId, $computerId, $returnDateTxt, $status, $observationTxt, $imgContrato, $todayDate, $monthTxt);
+
             // Ejecutar el procedimiento almacenado
             $stmt->execute();
 
-            // $query = "CALL sp_UpdateAssignmentePC( '$idPCA', '$deadlineTxt', '$colaboradorId', '$computerId', '$returnDateTxt', '$status', '$observationTxt','$imgContrato','$todayDate','$monthTxt');";
-            // print $query;
+            // Verificar errores en la ejecución
             if ($stmt->error) {
                 error_log("Error en la ejecución del procedimiento almacenado: " . $stmt->error);
             }
 
-            // Obtener el valor de la variable de salida
-            $stmt->bind_result($answerExistsPCA);
+            // Obtener el resultado del procedimiento almacenado
+            $stmt->bind_result($idu);
             $stmt->fetch();
 
             $stmt->close();
             $conn->next_result();
 
-
-            // Imprimir el valor de $answerExistsPCA
-            // echo "El valor de answerExistsPCA es: " . $answerExistsPCA;
-
-            if ($answerExistsPCA > 0) {
-
+            // Comprobar si la operación tuvo éxito
+            if ($idu > 0) {
                 // Llama al procedimiento almacenado para obtener registros existentes
-                // echo "Previo a obtener los resultados seleccionados<br>";
                 $result = $conn->query("CALL sp_selectMappingSoftwares($idPCA)");
                 $existingOptions = array();
+
                 if ($result->num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {
-                        $existingOptions[] = $row['SFT_idTbl_Software'];
+                        $existingOptions[] = array(
+                            "SFT_idTbl_Software" => $row['SFT_idTbl_Software'],
+                            "STS_idTbl_Status" => $row['STS_idTbl_Status']
+                        );
                     }
 
-                    // Usar un bucle foreach para imprimir cada elemento del array
+                    // Iterar sobre las opciones existentes
                     foreach ($existingOptions as $option) {
-                        // echo  "Opciones antes del update: " . $option . "<br>";
+                        $idSoftware = $option["SFT_idTbl_Software"];
+                        $idStatus = $option["STS_idTbl_Status"];
                     }
-                }
 
-                $result->close();
-                $conn->next_result();
+                    $result->close();
+                    $conn->next_result();
 
+                    // Obtener los IDs de software existentes en un array
+                    $existingSoftwareIds = array();
+                    foreach ($existingOptions as $option) {
+                        $existingSoftwareIds[] = $option["SFT_idTbl_Software"];
+                    }
 
-                // echo "Fin a obtener resultados seleccionados<br>";
+                    // Actualizar registros según selecciones
+                    foreach ($idsArray as $optionValue) {
+                        if (!in_array($optionValue, $existingSoftwareIds)) {
+                            // Insertar un nuevo registro con estado "Instalado"
 
-                // echo "Obtenemos las opciones seleccioanadas <br>";
-                // echo "Seleccionado estado INSTALADO <br>";
-                // Actualiza registros según selecciones
-                foreach ($idsArray as $optionValue) {
-                   
+                            // Llama al procedimiento almacenado para realizar la inserción
+                            $statussft = '10';
+                            $stmt = $conn->prepare("CALL sp_insertMappingSoftwareUpdate(?,?,?,?,?,?)");
 
-                //    echo  "Opciones Luego del update: " . $optionValue . "<br>";
-                    if (in_array($optionValue, $existingOptions)) {
-                        // Llama al procedimiento almacenado para actualizar el estado a "Instalado"
+                            // Vincular los parámetros al procedimiento almacenado
+                            $stmt->bind_param("ssssss", $idPCA, $optionValue, $user, $statussft, $installeSoftwareTxt, $todayDateInsert);
 
-                        $conn->query("CALL sp_UpdateSelectMappingSoftware($optionValue)");
-                        $conn->next_result();
-                    } else {
-                        // Inserta un nuevo registro con estado "Instalado"
-                        // Llama al procedimiento almacenado para realizar la inserción
-                        // $conn->query("CALL sp_insertMappingSoftware	($optionValue)");
+                            // Ejecutar el procedimiento almacenado
+                            $stmt->execute();
 
-                        // echo "Seleccion nueva";
-                        // echo "Insert ->instalado";
-                        $statussft = '10';
-                        $stmt = $conn->prepare("CALL sp_insertMappingSoftware(?,?,?,?,?,?)");
+                            if ($stmt->error) {
+                                error_log("Error en la ejecución del procedimiento almacenado: " . $stmt->error);
+                            }
 
-                        // $query = "CALL sp_insertMappingSoftware( '$idPCA', '$optionValue', '$user', '$statussft', '$installeSoftwareTxt', '$status', '$todayDate');";
-                        // echo $query;
-                        // Mandamos los parametros y los input que seran enviados al PA O SP
-                        $stmt->bind_param("ssssss", $idPCA, $optionValue, $user, $statussft, $installeSoftwareTxt, $todayDate);
-
-                        // echo "FIN INSERT Actualizado de instalado";
-                        // Ejecutar el procedimiento almacenado
-                        $stmt->execute();
-                        if ($stmt->error) {
-                            error_log("Error en la ejecución del procedimiento almacenado: " . $stmt->error);
+                            // Obtener el valor de la variable de salida
+                            $stmt->bind_result($idu);
+                            $stmt->fetch();
+                            $stmt->close();
+                            $conn->next_result();
                         }
-                        // Obtener el valor de la variable de salida
-                        $stmt->bind_result($answerExistsMS);
-                        $stmt->fetch();
-                        $stmt->close();
-                        $conn->next_result();
                     }
-                }
 
-                // Identificar las opciones que se deseleccionaron (marcar como "Desinstaladas")
-                $optionsToMarkAsUninstalled = array_diff($existingOptions, $idsArray);
-                // echo  "Opciones desinstaladas : " . implode(", ", $optionsToMarkAsUninstalled) . "<br>";
+                    // Identificar las opciones que se deseleccionaron (marcar como "Desinstaladas")
+                    $optionsToMarkAsUninstalled = array_diff($existingSoftwareIds, $idsArray);
 
+                    if (!empty($optionsToMarkAsUninstalled)) {
+                        foreach ($optionsToMarkAsUninstalled as $optionValue) {
+                            // Llama al procedimiento almacenado para marcar como "Desinstalado"
+                            $stmt = $conn->prepare("CALL sp_UninstalledMappingSoftware(?,?)");
 
-                if (!empty($optionsToMarkAsUninstalled)) {
-                    foreach ($optionsToMarkAsUninstalled as $optionValue) {
-                        // Llama al procedimiento almacenado para marcar como "Desinstalado"
-                        $stmt = $conn->prepare("CALL sp_UninstalledMappingSoftware(?,?)");
-                        $query = "CALL sp_UninstalledMappingSoftware( '$optionValue','$idPCA');";
-                        // echo $query ."<br>";
-                        $stmt->bind_param("ss",$optionValue,$idPCA);
+                            // Vincular los parámetros al procedimiento almacenado
+                            $stmt->bind_param("ss", $optionValue, $idPCA);
 
-                        // Ejecutar el procedimiento almacenado
-                        $stmt->execute();
-                        if ($stmt->error) {
-                            error_log("Error en la ejecución del procedimiento almacenado: " . $stmt->error);
+                            // Ejecutar el procedimiento almacenado
+                            $stmt->execute();
+
+                            if ($stmt->error) {
+                                error_log("Error en la ejecución del procedimiento almacenado: " . $stmt->error);
+                            }
+
+                            $stmt->bind_result($idu);
+                            $stmt->fetch();
+                            $stmt->close();
+                            $conn->next_result();
                         }
-                        $stmt->bind_result($idu);
-                        // echo  "Sotwarew desintalado : " . $optionValue . "<br>";
-                        $stmt->fetch();
-                        $stmt->close();
-                        $conn->next_result();
                     }
-                    if ($idu > 0) {
-                        echo '<script > toastr.success("Los datos de <b>' . $colaboradorId . '</b> se Guardaron de manera exitosa.", "¡¡Enhorabuena!!"); ';
-                        echo 'setTimeout(function() {';
-                        echo '  window.location.href = "view_assignment_pc.php";';
-                        echo ' }, 2000); // 2000 milisegundos = 2 segundos de retraso ';
-                        echo 'document.getElementById("formInsertPRL").reset(); ';
-                        echo '</script>';
-                        exit;
-                    }
+
+                    // Cerrar la conexión a la base de datos
+                    $conn->close();
                 }
-
-
-                // Cierra la conexión a la base de datos
-                $conn->close();
             }
         } catch (mysqli_sql_exception $e) {
             if ($e->getCode() == 1062) {
-                // Check which specific unique field is causing the constraint violation
                 if (strpos($e->getMessage(), 'CMP_idTbl_Computer_UNIQUE') !== false) {
-                    // echo "Error: ";
+                    // Error de clave duplicada, específicamente para CMP_idTbl_Computer
                     echo '<script > toastr.error("No se pudo guardar <br> La Computadora proporcionado ya está en uso. Por favor, elige una Computadora diferente.","¡¡UPS!!  Advertencia: 1");';
                     echo 'var computerId = document.getElementById("slctComputer");';
                     echo 'computerId.focus();';
                     echo '</script>';
                 } else {
-                    // If none of the specific fields match, display a generic error message
-                    echo "Error: Duplicate entry for one or more unique fields. Please provide different values.";
+                    // Error de clave duplicada para otros campos únicos
+                    echo "Error: Entrada duplicada para uno o más campos únicos. Proporcione valores diferentes.";
                 }
             } else {
-                // Handle other types of database-related errors
+                // Manejar otros tipos de errores relacionados con la base de datos
                 echo "Error código: " . $e->getCode() . " - " . $e->getMessage();
             }
         }
+       
+         // Mover el archivo cargado a la carpeta de destino
+         if ($_FILES['filePDF']['name'] != 'defaultPDF.jpg') {
+            $destino = $uploads_dir . $_FILES['filePDF']['name'];
+            if (move_uploaded_file($_FILES['filePDF']['tmp_name'], $destino)) {
+                // La operación de movimiento fue exitosa
+                // Puedes mostrar un mensaje de éxito o realizar otras acciones aquí
+                move_uploaded_file($_FILES['filePDF']['tmp_name'], $destino);
+            } else {
+                // Ocurrió un error al mover el archivo
+                echo '<script > toastr.error("Error al subir el archivo ' . $_FILES['filePDF']['name'] . '")</script>;';
+                $uploadOk = 0; // Establecer en 0 para indicar que hubo un error
+                exit;
+            }
+        } else if (file_exists($uploads_dir . $_FILES['filePDF']['name'])) {
+            echo '<script > toastr.info("La imagen ya existe ' . $_FILES['filePDF']['name'] . '")</script>;';
+            $uploadOk = 0; // Si existe, establecer en 0 para indicar que ya existe
+        }
+        // Comprobar si la inserción tuvo éxito
+        if ($idu > 0) {
+            // Mostrar un mensaje de éxito y redirigir después de 2 segundos
+            echo '<script > toastr.success("Los datos de <b>' . $colaboradorId . '</b> se Guardaron de manera exitosa.", "¡¡Enhorabuena!!"); ';
+            echo 'setTimeout(function() {';
+            echo '  window.location.href = "view_assignment_pc.php";';
+            echo ' }, 2000); // 2000 milisegundos = 2 segundos de retraso ';
+            echo 'document.getElementById("formInsertPRL").reset(); ';
+            echo '</script>';
+            exit;
+        }
+       
     }
 }
 ?>
-<!-- slctSoftware_helper2 -->
