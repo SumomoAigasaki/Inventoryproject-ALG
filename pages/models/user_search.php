@@ -185,7 +185,8 @@ if (!in_array($pagina_actual, $linksDefault) && !$PermisoCBT && in_array($pagina
 $linksPCA = array(
   "insert_assignment_pc.php",
   "update_assignment_pc.php",
-  "view_assignment_pc.php"
+  "view_assignment_pc.php",
+  "view_mappingSoftware.php"
 );
 
 if (in_array('PCA', array_column($privilegios, 'permiso'))) {
