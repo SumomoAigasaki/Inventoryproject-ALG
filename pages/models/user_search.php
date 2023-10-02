@@ -201,6 +201,28 @@ if (!in_array($pagina_actual, $linksDefault) && !$PermisoPCA && in_array($pagina
   exit();
 }
 
+//Garantia -> Warranty
+// #WR
+
+$linksWR = array(
+  "insert_warranty.php",
+  "update_warranty.php",
+  "view_warranty.php"
+);
+
+if (in_array('WR', array_column($privilegios, 'permiso'))) {
+  $PermisoWR = true;
+} else {
+  $PermisoWR = false;
+}
+
+if (!in_array($pagina_actual, $linksDefault) && !$PermisoWR && in_array($pagina_actual, $linksWR)) {
+  // Si la página actual no está en la lista de enlaces por defecto, el usuario no tiene el permiso "USER" y la página actual no está permitida
+  header("Location: ../templates/404.php");
+  exit();
+}
+
+
 
 
 #ROLES

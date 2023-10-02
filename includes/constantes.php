@@ -110,6 +110,18 @@ elseif ($actualPage == 'view_peripherals.php') {
     $pageName = 'Lista de Software de Pc';
     $pageLink = "view_mappingSoftware.php";
   }
+  //Garantia
+  elseif ($actualPage == 'view_warranty.php') {
+    $pageName = 'Listado de reportes de Garantia ';
+    $pageLink = "view_warranty.php";
+  } elseif ($actualPage == 'insert_warranty.php') {
+    $pageName = 'Registro de Reporte Garantia';
+    $pageLink = "insert_warranty.php";
+  } elseif ($actualPage == 'update_warranty.php') {
+    $pageName = 'Actualizar Registro de Reporte de Garantia';
+    $pageLink = "update_warranty.php";
+  }
+
 
   //EXTRAS
  elseif ($actualPage == 'update_password.php') {
