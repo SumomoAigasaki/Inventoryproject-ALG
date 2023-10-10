@@ -88,7 +88,7 @@ require_once "../templates/menu.php";
                             <h3 class="card-title">Formulario para <?php echo $pageName; ?> </h3>
                         </div>
                         <!-- form start -->
-                        <form role="form" action="" method="POST" name="formInsertPCA" id="formInsertPCA" class="form-horizontal" enctype="multipart/form-data">
+                        <form role="form" action="" method="POST" name="formInsertWR" id="formInsertWR" class="form-horizontal" enctype="multipart/form-data">
                             <div class="card-body">
                                 <label class="form-check-label" style="padding-bottom: 5px;"> A continuación se le pedirá que <b> Ingrese</b> los siguientes datos:</label>
 
@@ -101,20 +101,21 @@ require_once "../templates/menu.php";
                                     <div class="col-sm-4" style="padding-top: 10px;">
                                         <div class="form-group">
                                             <!-- Fecha de Instalacion Software -->
-                                            <label ACRONYM title="Fecha en que se hizo el reporte"> Fecha de Reporte:</label>
+                                            <label ACRONYM title="Fecha en que se hizo el reporte"> <code> * </code> Fecha de Reporte:</label>
                                             <input type="text" class="form-control datepicker-input" name="txtDateAdmision" id="txtDateAdmision">
                                         </div>
                                     </div>
 
-                                  
+
 
                                     <!-- Computadora-->
                                     <div class="col-sm-4">
                                         <div class="form-group" style="padding-top: 10px;">
-                                            <label>Computadora:</label>
+                                            <label><code> * </code>Computadora:</label>
                                             <!-- <input type="text" class="form-control" id="txt_busqueda" name="txt_busqueda" placeholder="Buscar Colaborador">
-                                            <?php $resultado = mysqli_query($conn, "CALL sp_selectComputerActive()"); ?> -->
+                                            <?php $resultado = mysqli_query($conn, "CALL sp_selectComputerWarranty()"); ?> -->
                                             <select class="form-control select2bs4" id="slctComputer" name="slctComputer">
+                                                <option value="0">0.- Empty/Vacio</option>
                                                 <?php while ($row = mysqli_fetch_array($resultado)) { ?>
                                                     <option value="<?php echo $row['CMP_idTbl_Computer']; ?>"><?php echo $row['Info']; ?></option>
                                                 <?php }
@@ -128,71 +129,51 @@ require_once "../templates/menu.php";
                                         </div>
                                     </div>
 
-                                      <!-- Numero de Reporte-->
-                                      <div class="col-sm-4">
+                                    <!-- Numero de Reporte-->
+                                    <div class="col-sm-4">
                                         <div class="form-group" style="padding-top: 10px;">
-                                            <label>Numero de Reporte:</label>
-                                            <input type="text" class="form-control" name="txtNumberApplications" id="txtNumberApplications" maxlength="45" placeholder="ASSET2023-0#">
+                                            <label><code> * </code>Numero de Reporte:</label>
+                                            <input type="text" class="form-control" name="txtNumberApplications" id="txtNumberApplications" maxlength="45" placeholder="">
                                         </div>
                                     </div>
-                                    
+
 
                                 </div>
 
                                 <!-- Fila 2 -->
                                 <div class="row justify-content-center" style="padding-top:10px; padding-bottom:10px;">
 
-                                    <!-- Software-->
-                                    <div class="col-sm-5">
+                                    <!--Problema Principal-->
+                                    <div class="col-sm-3" style="padding-top: 10px;">
                                         <div class="form-group">
-                                            <label>Software:</label>
-                                            <?php $resultado = mysqli_query($conn, "CALL sp_selectSoftwareActive()"); ?>
-
-                                            <select class="duallistbox" multiple="multiple" id="slctSoftware" name="slctSoftware">
-                                                <?php while ($row = mysqli_fetch_array($resultado)) { ?>
-                                                    <option value="<?php echo $row['SFT_idTbl_Software']; ?>"><?php echo $row['Info']; ?></option>
-                                                <?php }
-                                                #NOTA
-                                                #CADA QUE QUIERA HACER UNA NUEVA CONSULTA CON PROCEDIMIENTOS ALMACENADOS ESTOS EL RESULTADO SE CIERRA Y LA VARIABLE DE LA CONECCION SE PREPARA PARA EL NUEVO RESULTADO
-                                                # QUE TENDRA ABAJO
-                                                $resultado->close();
-                                                $conn->next_result();
-                                                ?>
-                                            </select>
+                                            <label><code> * </code>Problema Principal: </label>
+                                            <textarea type="text" class="form-control" name="txtMainProblem" id="txtMainProblem" maxlength="255"> </textarea>
                                         </div>
                                     </div>
 
-                                    <div class="col-sm-3">
-
-
+                                    <!-- IMAGEN -->
+                                    <div class="col-sm-6">
                                         <div class="form-group">
-                                            <!-- Observaciones -->
-                                            <label>Observaciones: </label>
-                                            <textarea type="text" class="form-control" name="txtObservation" id="txtObservation" maxlength="100" value="<?php echo (isset($observations) ? $observations : ""); ?>"> </textarea>
+                                            <label>Imagen de Referencia del Problema: </label>
+                                            <div class="input-group" style=" display: flex;   justify-content: center;   align-items: center;   height: 200px;">
+                                                <img class="img-fluid" src="../../resources/Warranty/DefaultProblem.jpg" width="200" height="250" id="imgPerfil">
+                                                <input type="file" name="fileReferent" id="fileReferent" accept="image/png,image/jpeg" style="margin-left: 20px;text-align: center;">
+                                            </div>
                                         </div>
                                     </div>
 
-
-                                    <div class="col-sm-4">
-                                        <!-- Fecha de Retorno -->
+                                    <!-- Observaciones -->
+                                    <div class="col-sm-3" style="padding-top: 10px;">
                                         <div class="form-group">
-                                            <label> Meses de Contratación:</label>
-                                            <input type="number" class="form-control " name="txtmonth" id="txtmonth" onchange="calcularFechaRetorno()">
+                                            <label> Observaciones: </label>
+                                            <textarea type="text" class="form-control" name="txtObservation" id="txtObservation" maxlength="60"> </textarea>
                                         </div>
-                                        <!-- Fecha de Retorno -->
-                                        <div class="form-group">
-                                            <label> Fecha de Retorno:</label>
-                                            <input type="text" class="form-control datepicker-input" name="txtReturnDate" id="txtReturnDate" readonly>
-                                        </div>
-
-
                                     </div>
-
                                 </div>
                             </div>
                             <div class="row justify-content-center" style="padding-bottom:20px;">
                                 <div class="col-mb-3">
-                                    <button type="submit" class="btn btn-block btn-info" id="buttonInsertPCA" name="buttonInsertPCA" onclick='return validate_data();'>Guardar</button>
+                                    <button type="submit" class="btn btn-block btn-info" id="buttonInsertWR" name="buttonInsertWR" onclick='return validate_data();'>Guardar</button>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -213,9 +194,124 @@ require_once "../templates/menu.php";
 require_once "../templates/footer.php";
 ?>
 <script>
+    // Función para validar los datos ingresados en el formulario
+    function validate_data() {
+        let dateAdmisiontxt = document.getElementById('txtDateAdmision');
+        let computerSlct = document.getElementById('slctComputer');
+        let numberApplicationstxt = document.getElementById('txtNumberApplications');
+        let mainProblemtxt = document.getElementById('txtMainProblem');
+
+
+        if (dateAdmisiontxt.value.trim() === "") {
+            toastr.warning("La <b>Fecha de reporte</b> esta vacia(a).<br>Por favor Ingrese una Fecha de Reporte valida");
+            dateAdmisiontxt.focus();
+            return false;
+        } else if (computerSlct.selectedIndex == 0) {
+            toastr.warning('El campo de <b>Computadora</b> esta vacio(a).<br>Por favor Ingrese una Computadora valida');
+            computerSlct.focus();
+            return false;
+        } else if (numberApplicationstxt.value.trim() === "") {
+            toastr.warning('El <b>Numero de Reporte</b> esta vacio(a).<br>Por favor Ingrese un Numero de Reporte valido');
+            numberApplicationstxt.focus();
+            return false;
+        } else if (mainProblemtxt.value.trim() === "") {
+            toastr.warning('El <b>Problema Principal:</b> esta vacio(a).<br>Por favor Ingrese un Problema Principal: valida');
+            mainProblemtxt.focus();
+            return false;
+        } else {
+            // Si no hay errores, procesa los datos enviados
+            if (accionInput.value.trim() === "") {
+                accionInput.value = "1";
+            }
+
+            document.getElementById("formInsertWR").submit();
+            setTimeout(function() {
+                console.log("Después de 2 segundos");
+            }, 10000);
+
+        }
+    }
     $(function() {
         $(".datepicker-input").datepicker({
             dateFormat: "yy-mm-dd"
         });
     });
 </script>
+<?php
+
+if (isset($_POST["buttonInsertWR"])) {
+    $computerId = $_POST["slctComputer"];
+    $mainProblemtxt = $_POST["txtMainProblem"];
+    $dateAdmisiontxt = $_POST["txtDateAdmision"];
+    $numberApplicationstxt = $_POST["txtNumberApplications"];
+    $imgProblem =  $_FILES['fileReferent']['name'];
+        if (empty($imgProblem)) {
+            $imgProblem = '/resources/Warranty/default.jpg';
+        } else {
+            $imgProblem = '/resources/Warranty/' . $_FILES['fileReferent']['name'];
+        }
+    $observationstxt= $_POST["txtObservation"];
+    $user = $_SESSION["User_idTbl_User"];
+    // el estado en 4 porque es en espera 
+    $status = 4;
+    date_default_timezone_set('America/Mexico_City');
+    $todayDate = date("Y-m-d");
+
+    // Verificar el permiso para realizar la operación
+    if ($PermisoWR) {
+        try {
+            //Caso contrario Guardara
+            $stmt = $conn->prepare("CALL  sp_insertWarranty(?,?,?,?,?,?,?,?,?)");
+
+                                //  $query = "CALL sp_insertWarranty( '$computerId', '$dateAdmisiontxt', '$numberApplicationstxt', '$mainProblemtxt', '$imgProblem', '$observationstxt', '$todayDate', '$status', '$user');";
+                                // echo $query;
+            // Mandamos los parametros y los input que seran enviados al PA O SP
+            $stmt->bind_param("sssssssss", $computerId, $dateAdmisiontxt, $numberApplicationstxt, $mainProblemtxt, $imgProblem, $observationstxt, $todayDate, $status, $user);
+
+
+            // Ejecutar el procedimiento almacenado
+            $stmt->execute();
+            if ($stmt->error) {
+                error_log("Error en la ejecución del procedimiento almacenado: " . $stmt->error);
+            }
+            // Obtener el valor de la variable de salida
+            $stmt->bind_result($answerExistsPRL);
+            $stmt->fetch();
+            $stmt->close();
+            $conn->next_result();
+            // se extraen los valores qu     nos devuelve el procedimiento almacenado y enviamos el error
+            if ($answerExistsPRL > 0) {
+                echo '<script > toastr.success("Los datos de <b>' . $numberApplicationstxt . '</b> se Guardaron de manera exitosa.", "¡¡Enhorabuena!!"); ';
+                echo 'setTimeout(function() {';
+                echo '  window.location.href = "view_warranty.php";';
+                echo ' }, 2000); // 2000 milisegundos = 2 segundos de retraso ';
+                echo 'document.getElementById("formInsertWR").reset(); ';
+                echo '</script>';
+
+
+                exit;
+            }
+        } catch (mysqli_sql_exception $e) {
+            if ($e->getCode() == 1062) {
+                // Check which specific unique field is causing the constraint violation
+                if ($e->getCode() == 1062) {
+                    // Check which specific unique field is causing the constraint violation
+                    if (strpos($e->getMessage(), 'WR_Application_Number_UNIQUE') !== false) {
+                        // echo "Error: ";
+                        echo '<script > toastr.error("No se pudo guardar <br> El Numero de Reporte proporcionado ya está en uso. Por favor, elige un Numero de Reporte diferente.","¡¡UPS!!  Advertencia: 1");';
+                        echo 'var nameInput = document.getElementById("txtNumberApplications");';
+                        echo 'nameInput.focus();';
+                        echo '</script>';
+                    }
+                } else {
+                    // If none of the specific fields match, display a generic error message
+                    echo "Error: Duplicate entry for one or more unique fields. Please provide different values.";
+                }
+            } else {
+                // Handle other types of database-related errors
+                echo "Error código: " . $e->getCode() . " - " . $e->getMessage();
+            }
+        }
+    }
+}
+?>

@@ -580,7 +580,7 @@ if (isset($_POST["buttonUpdatePCA"])) {
 
             // Verificar errores en la ejecución
             if ($stmt->error) {
-                error_log("Error en la ejecución del procedimiento almacenado: " . $stmt->error);
+                error_log("Error en la ejecución del primer procedimiento almacenado : " . $stmt->error);
             }
 
             // Obtener el resultado del procedimiento almacenado
@@ -627,6 +627,8 @@ if (isset($_POST["buttonUpdatePCA"])) {
                             // Llama al procedimiento almacenado para realizar la inserción
                             $statussft = '10';
                             $stmt = $conn->prepare("CALL sp_insertMappingSoftwareUpdate(?,?,?,?,?,?)");
+                            // $query = "CALL sp_insertMappingSoftwareUpdate('$idPCA', '$optionValue', '$user', '$statussft', '$installeSoftwareTxt', '$todayDateInsert')";
+                            // echo $query;
 
                             // Vincular los parámetros al procedimiento almacenado
                             $stmt->bind_param("ssssss", $idPCA, $optionValue, $user, $statussft, $installeSoftwareTxt, $todayDateInsert);
@@ -635,7 +637,7 @@ if (isset($_POST["buttonUpdatePCA"])) {
                             $stmt->execute();
 
                             if ($stmt->error) {
-                                error_log("Error en la ejecución del procedimiento almacenado: " . $stmt->error);
+                                error_log("Error en la ejecución del segundo procedimiento almacenado: " . $stmt->error);
                             }
 
                             // Obtener el valor de la variable de salida
@@ -661,7 +663,7 @@ if (isset($_POST["buttonUpdatePCA"])) {
                             $stmt->execute();
 
                             if ($stmt->error) {
-                                error_log("Error en la ejecución del procedimiento almacenado: " . $stmt->error);
+                                error_log("Error en la ejecución del tercer procedimiento almacenado: " . $stmt->error);
                             }
 
                             $stmt->bind_result($idu);
@@ -692,24 +694,6 @@ if (isset($_POST["buttonUpdatePCA"])) {
                 echo "Error código: " . $e->getCode() . " - " . $e->getMessage();
             }
         }
-       
-         // Mover el archivo cargado a la carpeta de destino
-         if ($_FILES['filePDF']['name'] != 'defaultPDF.jpg') {
-            $destino = $uploads_dir . $_FILES['filePDF']['name'];
-            if (move_uploaded_file($_FILES['filePDF']['tmp_name'], $destino)) {
-                // La operación de movimiento fue exitosa
-                // Puedes mostrar un mensaje de éxito o realizar otras acciones aquí
-                move_uploaded_file($_FILES['filePDF']['tmp_name'], $destino);
-            } else {
-                // Ocurrió un error al mover el archivo
-                echo '<script > toastr.error("Error al subir el archivo ' . $_FILES['filePDF']['name'] . '")</script>;';
-                $uploadOk = 0; // Establecer en 0 para indicar que hubo un error
-                exit;
-            }
-        } else if (file_exists($uploads_dir . $_FILES['filePDF']['name'])) {
-            echo '<script > toastr.info("La imagen ya existe ' . $_FILES['filePDF']['name'] . '")</script>;';
-            $uploadOk = 0; // Si existe, establecer en 0 para indicar que ya existe
-        }
         // Comprobar si la inserción tuvo éxito
         if ($idu > 0) {
             // Mostrar un mensaje de éxito y redirigir después de 2 segundos
@@ -719,9 +703,27 @@ if (isset($_POST["buttonUpdatePCA"])) {
             echo ' }, 2000); // 2000 milisegundos = 2 segundos de retraso ';
             echo 'document.getElementById("formInsertPRL").reset(); ';
             echo '</script>';
+            // Mover el archivo cargado a la carpeta de destino
+            if ($_FILES['filePDF']['name'] != 'defaultPDF.jpg') {
+                $destino = $uploads_dir . $_FILES['filePDF']['name'];
+                if (move_uploaded_file($_FILES['filePDF']['tmp_name'], $destino)) {
+                    // La operación de movimiento fue exitosa
+                    // Puedes mostrar un mensaje de éxito o realizar otras acciones aquí
+                    move_uploaded_file($_FILES['filePDF']['tmp_name'], $destino);
+                }
+                //  else {
+                //     // Ocurrió un error al mover el archivo
+                //     echo '<script > toastr.error("Error al subir el archivo' . $_FILES['filePDF']['name'] . '")</script>;';
+                //     $uploadOk = 0; // Establecer en 0 para indicar que hubo un error
+                //     exit;
+                // }
+            } else if (file_exists($uploads_dir . $_FILES['filePDF']['name'])) {
+                echo '<script > toastr.info("La imagen ya existe ' . $_FILES['filePDF']['name'] . '")</script>;';
+                $uploadOk = 0; // Si existe, establecer en 0 para indicar que ya existe
+
+            }
             exit;
         }
-       
     }
 }
 ?>
