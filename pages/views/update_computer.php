@@ -25,7 +25,7 @@ while ($row = $stmt->fetch_assoc()) {
   $CT_idTbl_Computer_Type = $row['CT_idTbl_Computer_Type'];
   $CMP_Servitag = $row['CMP_Servitag'];
   $CMP_License = $row['CMP_License'];
-  $CMP_Motherboard = $row['CMP_Motherboard'];
+  $CMP_Serial = $row['CMP_Serial'];
   $CMP_Acquisition_Date = $row['CMP_Acquisition_Date'];
   $CMP_Warranty_Expiration = $row['CMP_Warranty_Expiration'];
   $CMP_Warranty_Year = $row['CMP_Warranty_Year'];
@@ -314,8 +314,8 @@ $conn->next_result();
                   <!-- Tarjeta Madre -->
                   <div class="col-sm-3">
                     <div class="form-group">
-                      <label>Tarjeta Madre: </label>
-                      <input type="text" class="form-control" name="txtMotherboard" id="txtMotherboard" maxlength="60" value="<?php echo $CMP_Motherboard; ?>" placeholder="0W3XW5-A00">
+                      <label>Serial: </label>
+                      <input type="text" class="form-control" name="txtSerial" id="txtSerial" maxlength="60" value="<?php echo $CMP_Serial; ?>" placeholder="0W3XW5-A00">
                     </div>
                   </div>
                   <!-- Estado de la computadora  -->
@@ -431,7 +431,7 @@ if (isset($_POST["buttonUpdateComputer"])) {
   $cmpWarrantyExpiration = $_POST['txtWarrantyExpiration'];
   $cmpYearExpiration = $_POST['txtyearExpiration'];
   $cmpLicence = $_POST['txtLicense'];
-  $cmpMotherboard = $_POST['txtMotherboard'];
+  $cmpMotherboard = $_POST['txtSerial'];
   $cmpIdStatu = $_POST['selectStatus'];
   $cmpIdLocation = $_POST['selectLocations'];
 

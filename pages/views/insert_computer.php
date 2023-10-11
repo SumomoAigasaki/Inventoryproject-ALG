@@ -43,7 +43,7 @@ require_once "../templates/menu.php"; ?>
         var locationsSelect = document.getElementById('selectLocation');
         var guaranteeSelect = document.getElementById('selectTypeGuarantee');
         var todayDateInput = document.getElementById('todayDate');
-
+        var serialTxt = document.getElementById('txtSerial');
 
         if (acquisitionFecha.value.trim() === "") {
             toastr.warning("La <b>Fecha de Compra</b> esta vacio(a).<br>Por favor Ingrese una fecha valida");
@@ -85,10 +85,14 @@ require_once "../templates/menu.php"; ?>
             locationsSelect.focus();
             return false;
         } else if (guaranteeSelect.selectedIndex == 0) {
-            toastr.warning('El <b>Tipo de Garantia </b> esta vacio(a).<br>Por favorTipo de Garantia del Computador valida');
+            toastr.warning('El <b>Tipo de Garantia </b> esta vacio(a).<br>Por favorIngrese Tipo de Garantia del Computador valida');
             guaranteeSelect.focus();
             return false;
-        } else {
+        } else if (serialTxt.value.trim() === "") {
+            toastr.warning('El <b>Serial</b> esta vacio(a).<br>Por favor Ingrese un Serial para el Computador valido');
+            serialTxt.focus();
+            return false;
+        }else {
             // Si no hay errores, procesa los datos enviados
             //$opcion = $_POST['opciones'];
             if (accionInput.value.trim() === "") {
@@ -304,8 +308,8 @@ require_once "../templates/menu.php"; ?>
                                     <!-- Tarjeta Madre -->
                                     <div class="col-sm-3">
                                         <div class="form-group">
-                                            <label>Tarjeta Madre: </label>
-                                            <input type="text" class="form-control" name="txtMotherboard" id="txtMotherboard" maxlength="60" placeholder="0W3XW5-A00">
+                                            <label>Serial: </label>
+                                            <input type="text" class="form-control" name="txtSerial" id="txtSerial" maxlength="60" placeholder="FKC---3">
                                         </div>
                                     </div>
                                     <!-- Estado de la computadora  -->
@@ -405,7 +409,7 @@ if (isset($_POST["buttonInsertCMP"])) {
     //$cmpYearExpiration = date("Y", strtotime($cmpWarrantyExpiration));
     $cmpYearExpiration = $_POST['txtYearExpiration'];
     $cmpLicence = $_POST['txtLicense'];
-    $cmpMotherboard = $_POST['txtMotherboard'];
+    $cmpMotherboard = $_POST['txtSerial'];
     $cmpIdStatu = 2;
     $cmpIdLocation = $_POST['selectLocation'];
 

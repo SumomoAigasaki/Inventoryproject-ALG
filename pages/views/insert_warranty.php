@@ -144,15 +144,33 @@ require_once "../templates/menu.php";
                                 <div class="row justify-content-center" style="padding-top:10px; padding-bottom:10px;">
 
                                     <!--Problema Principal-->
-                                    <div class="col-sm-3" style="padding-top: 10px;">
+                                    <div class="col-sm-4" style="padding-top: 10px;">
                                         <div class="form-group">
                                             <label><code> * </code>Problema Principal: </label>
-                                            <textarea type="text" class="form-control" name="txtMainProblem" id="txtMainProblem" maxlength="255"> </textarea>
+                                            <textarea type="text" class="form-control" name="txtMainProblem" id="txtMainProblem" maxlength="255" > </textarea>
                                         </div>
                                     </div>
 
-                                    <!-- IMAGEN -->
-                                    <div class="col-sm-6">
+                                   <!-- Observaciones -->
+                                   <div class="col-sm-4" style="padding-top: 10px;">
+                                        <div class="form-group">
+                                            <label> <code> * </code>Acciones Realizadas: </label>
+                                            <textarea type="text" class="form-control" name="txtActionDone" id="txtActionDone" maxlength="60"> </textarea>
+                                        </div>
+                                    </div>
+
+                                    <!-- Observaciones -->
+                                    <div class="col-sm-4" style="padding-top: 10px;">
+                                        <div class="form-group">
+                                            <label> Observaciones: </label>
+                                            <textarea type="text" class="form-control" name="txtObservation" id="txtObservation" maxlength="60"> </textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                 <!-- IMAGEN -->
+                                 <div class="col-sm-6">
                                         <div class="form-group">
                                             <label>Imagen de Referencia del Problema: </label>
                                             <div class="input-group" style=" display: flex;   justify-content: center;   align-items: center;   height: 200px;">
@@ -161,15 +179,6 @@ require_once "../templates/menu.php";
                                             </div>
                                         </div>
                                     </div>
-
-                                    <!-- Observaciones -->
-                                    <div class="col-sm-3" style="padding-top: 10px;">
-                                        <div class="form-group">
-                                            <label> Observaciones: </label>
-                                            <textarea type="text" class="form-control" name="txtObservation" id="txtObservation" maxlength="60"> </textarea>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                             <div class="row justify-content-center" style="padding-bottom:20px;">
                                 <div class="col-mb-3">
@@ -190,6 +199,31 @@ require_once "../templates/menu.php";
 </div>
 </section>
 </div>
+
+<script>
+  var textarea = document.getElementById("txtMainProblem");
+  
+  // Agregar el mensaje de ejemplo al cargar la página
+  textarea.value = "Descripción detallada de la problemática o defecto reportado por el usuario, incluyendo síntomas, mensajes de error, o cualquier información relevante";
+  textarea.classList.add("placeholder");
+
+  // Cuando el usuario hace clic en el textarea, eliminar el mensaje de ejemplo y el estilo CSS
+  textarea.addEventListener("focus", function() {
+    if (textarea.classList.contains("placeholder")) {
+      textarea.value = "";
+      textarea.classList.remove("placeholder");
+    }
+  });
+
+  // Cuando el usuario sale del textarea sin ingresar ningún texto, restaurar el mensaje de ejemplo
+  textarea.addEventListener("blur", function() {
+    if (textarea.value === "") {
+      textarea.value = "Descripción detallada de la problemática o defecto reportado por el usuario, incluyendo síntomas, mensajes de error, o cualquier información relevante";
+      textarea.classList.add("placeholder");
+    }
+  });
+</script>
+
 <?php
 require_once "../templates/footer.php";
 ?>
@@ -231,10 +265,27 @@ require_once "../templates/footer.php";
 
         }
     }
+
     $(function() {
         $(".datepicker-input").datepicker({
             dateFormat: "yy-mm-dd"
         });
+    });
+
+      // Funcion para cargar la previsualizacion de imagen 
+      function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                // Asignamos el atributo src a la tag de imagen
+                $('#imgPerfil').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    // El listener va asignado al input
+    $("#fileReferent").change(function() {
+        readURL(this);
     });
 </script>
 <?php
@@ -246,7 +297,7 @@ if (isset($_POST["buttonInsertWR"])) {
     $numberApplicationstxt = $_POST["txtNumberApplications"];
     $imgProblem =  $_FILES['fileReferent']['name'];
         if (empty($imgProblem)) {
-            $imgProblem = '/resources/Warranty/default.jpg';
+            $imgProblem = '/resources/Warranty/DefaultProblem.jpg';
         } else {
             $imgProblem = '/resources/Warranty/' . $_FILES['fileReferent']['name'];
         }
