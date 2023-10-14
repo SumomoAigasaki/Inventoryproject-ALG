@@ -10,14 +10,14 @@ require('../../public/FPDF/fpdf.php');
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous"></script>
 <script>
-  function generarPDF(technicalName, todayDate,nombreCompleto,employeeCode,serial,servitag,marca, modelo,mainproblem,actionsDone,Diagnosis,Solutions,acquisitionDate,garantia,warrantyExpiration,status) {
+  function generarPDF(technicalName, todayDate, nombreCompleto, employeeCode, serial, servitag, marca, modelo, mainproblem, actionsDone, Diagnosis, Solutions, acquisitionDate, garantia, warrantyExpiration, status) {
     // Obtener el contenido del reporte
     console.log("Dentro del evento");
-    console.log("Valor de Reporte de la Garantis:", technicalName, todayDate,nombreCompleto,employeeCode,serial,servitag,marca,modelo,mainproblem,actionsDone,Diagnosis,Solutions,acquisitionDate,garantia,warrantyExpiration,status);
+    console.log("Valor de Reporte de la Garantis:", technicalName, todayDate, nombreCompleto, employeeCode, serial, servitag, marca, modelo, mainproblem, actionsDone, Diagnosis, Solutions, acquisitionDate, garantia, warrantyExpiration, status);
     // Eliminar espacios en blanco al principio y al final del nombre
-    technicalName =  technicalName.trim();
+    technicalName = technicalName.trim();
     todayDate = todayDate.trim();
-    nombreCompleto =nombreCompleto.trim();
+    nombreCompleto = nombreCompleto.trim();
     employeeCode = employeeCode.trim();
     serial = serial.trim();
     servitag = servitag.trim();
@@ -30,7 +30,7 @@ require('../../public/FPDF/fpdf.php');
     acquisitionDate = acquisitionDate.trim();
     garantia = garantia.trim();
     warrantyExpiration = warrantyExpiration.trim();
-    status= status.trim();
+    status = status.trim();
 
     // Obtener el contenido del reporte
     var contratoElement = document.getElementById('reporte');
@@ -65,38 +65,38 @@ require('../../public/FPDF/fpdf.php');
     var statusElemnt = document.querySelector('.status');
 
     // Verificar si se encontró el elemento
-    if (technicalNameElement && todayDateElement && nombreCompletoElement && employeeCodeElement && serialElement && 
-    servitagElement && marcaElement && modeloElement && mainProblemElement && actionsDoneElement&&
-    DiagnosisElement&& SolutionElement && acquisitionDateElement && garantiaElement && warrantyExpirationElement && statusElemnt) {
+    if (technicalNameElement && todayDateElement && nombreCompletoElement && employeeCodeElement && serialElement &&
+      servitagElement && marcaElement && modeloElement && mainProblemElement && actionsDoneElement &&
+      DiagnosisElement && SolutionElement && acquisitionDateElement && garantiaElement && warrantyExpirationElement && statusElemnt) {
       // Cambiar el contenido del elemento con el nuevo nombre
       technicalNameElement.textContent = technicalName;
       todayDateElement.textContent = todayDate;
       nombreCompletoElement.textContent = nombreCompleto;
       employeeCodeElement.textContent = employeeCode;
-      serialElement.textContent = serial; 
+      serialElement.textContent = serial;
 
-      servitagElement.textContent = servitag; 
+      servitagElement.textContent = servitag;
       marcaElement.textContent = marca;
       modeloElement.textContent = modelo;
       mainProblemElement.textContent = mainproblem;
       actionsDoneElement.textContent = actionsDone;
 
-      DiagnosisElement.textContent = Diagnosis; 
+      DiagnosisElement.textContent = Diagnosis;
       SolutionElement.textContent = Solutions;
       acquisitionDateElement.textContent = acquisitionDate;
       garantiaElement.textContent = garantia;
       warrantyExpirationElement.textContent = warrantyExpiration;
-      
 
-      if (status == "Solucionado"){
+
+      if (status == "Solucionado") {
         statusElemnt.textContent = 'Problema resuelto de manera satisfactorio, se cumplieron los términos de la garantía.';
-      }else if(status =="Espera"){
-        statusElemnt.textContent='El problema está en proceso por lo tanto el folio está abierto todavía no se le ha dado solución por favor esperar a que los técnicos se acerquen para poder cerrar el caso.';
+      } else if (status == "Espera") {
+        statusElemnt.textContent = 'El problema está en proceso por lo tanto el folio está abierto todavía no se le ha dado solución por favor esperar a que los técnicos se acerquen para poder cerrar el caso.';
       } else if (status == "Sin Respuesta") {
         statusElemnt.textContent = "El problema no tuvo respuesta volver a hacer el reporte para dar seguimiento. ";
-      }else if (status == "Cancelado"){
+      } else if (status == "Cancelado") {
         statusElemnt.textContent = "El problema no se resolvió porque hubo problemas con la gestión por lo cual no se le pudo dar seguimiento. ";
-      }else if (status == "Deshabilitado"){
+      } else if (status == "Deshabilitado") {
         statusElemnt.textContent = "El Registro actualmente se encuentra Deshabilidato del Sistema, por lo tanto no es como que cuente con alguna cobertura conforme de la garantia.";
       }
 
@@ -121,6 +121,23 @@ require('../../public/FPDF/fpdf.php');
       marginBottom: 2.5 // Márgen inferior en centímetros
     });
 
+    //ENCABEZADO
+    // Agregar el encabezado personalizado
+
+    function addHeader() {
+      var logoUrl = '../../resources/Warranty/LogoALG.png'; // Ruta a la imagen local
+      var imgData = getBase64Image(logoUrl);
+      pdf.addImage(imgData, 'PNG', 2.5, 0.5, 4.5, 2); // Ajusta los parámetros según sea necesario (x, y, ancho, alto)
+      pdf.setFontSize(11);
+      pdf.text("Azucarera la Grecia S.A de C.V", 14, 1);
+      pdf.setFontSize(9);
+      pdf.text("Kilómetro 21, Carretera hacia Cedeño, Marcovia", 13, 1.5);
+      pdf.text("Marcovia, Choluteca, Honduras C.A", 14, 2);
+      pdf.text("Tel: 2705-3900 / Correo: info@azucareralagrecia.com", 12, 2.5);
+    }
+
+    
+
     // Cambiar el tipo de letra y tamaño de fuente
     pdf.setFont("helvetica"); // Cambia "helvetica" al nombre del tipo de letra deseado
     pdf.setFontSize(12); // Tamaño de fuente
@@ -129,7 +146,9 @@ require('../../public/FPDF/fpdf.php');
     var lines = pdf.splitTextToSize(contenidoLimpio, 16);
 
     // Agregar cada línea al PDF
-    var y = 2.5; // Posición vertical inicial
+    // Llamar a la función addHeader() antes de agregar el contenido
+
+    var y = 3; // Posición vertical inicial
     for (var i = 0; i < lines.length; i++) {
       pdf.setFontStyle('bold');
       pdf.text(2.5, 2.5, lines[0], {
@@ -146,10 +165,39 @@ require('../../public/FPDF/fpdf.php');
       y += 0.5; // Aumentar la posición vertical
     }
 
+    var totalPages = 1; // Establece el número total de páginas inicialmente en 1
+
+    // Agregar pie de página
+    function addFooter() {
+      pdf.setFontSize(10);
+      pdf.setTextColor(100);
+      pdf.text(
+        'Informe distribuido por el sistema INFRAG',
+        2.5,
+        pdf.internal.pageSize.getHeight() - 1
+      );
+      pdf.text(
+        'Página ' + i + ' de ' + totalPages,
+        pdf.internal.pageSize.getWidth() - 2.5,
+        pdf.internal.pageSize.getHeight() - 1, {
+        align: 'right'
+        }
+      );
+    }
+
+    // Al final, antes de generar el PDF, calcula el número total de páginas
+    totalPages = pdf.internal.getNumberOfPages();
+
+    for (var i = 1; i <= totalPages; i++) {
+      pdf.setPage(i);
+      addHeader();
+      addFooter();
+    }
     // Abre la vista previa de impresión del navegador
     pdf.output('dataurlnewwindow');
-    // Generar el PDF
-    console.log("PDF Generado");
+    // Genera el PDF
+    pdf.save('nombre_archivo.pdf');
+  
 
     var nombreCompletoElement = document.querySelector('.nombreCompleto');
 
@@ -160,32 +208,43 @@ require('../../public/FPDF/fpdf.php');
     console.log('Valor de colaborador:', colaborador);
   }
 
-
-//FECHA
+  // Función para convertir la imagen a base64
+  function getBase64Image(imgUrl) {
+    var img = new Image();
+    img.src = imgUrl;
+    var canvas = document.createElement("canvas");
+    canvas.width = img.width;
+    canvas.height = img.height;
+    var ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0);
+    var dataURL = canvas.toDataURL("image/png");
+    return dataURL;
+  }
+  //FECHA
   document.addEventListener("DOMContentLoaded", function() {
-            function obtenerFechaEnLetras() {
-                const meses = [
-                    "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
-                    "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
-                ];
+    function obtenerFechaEnLetras() {
+      const meses = [
+        "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+        "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+      ];
 
-                const fechaActual = new Date();
-                const dia = fechaActual.getDate();
-                const mes = meses[fechaActual.getMonth()];
-                const año = fechaActual.getFullYear();
+      const fechaActual = new Date();
+      const dia = fechaActual.getDate();
+      const mes = meses[fechaActual.getMonth()];
+      const año = fechaActual.getFullYear();
 
-                return `${dia} de ${mes} del ${año}`;
-            }
+      return `${dia} de ${mes} del ${año}`;
+    }
 
-            // Obtenemos la referencia a la etiqueta <p> por su id
-            const parrafoFecha = document.getElementById("fecha");
+    // Obtenemos la referencia a la etiqueta <p> por su id
+    const parrafoFecha = document.getElementById("fecha");
 
-            // Llamamos a la función para obtener la fecha en letras
-            const fechaEnLetras = obtenerFechaEnLetras();
+    // Llamamos a la función para obtener la fecha en letras
+    const fechaEnLetras = obtenerFechaEnLetras();
 
-            // Asignamos el valor al contenido de la etiqueta <p>
-            parrafoFecha.textContent = fechaEnLetras;
-        });
+    // Asignamos el valor al contenido de la etiqueta <p>
+    parrafoFecha.textContent = fechaEnLetras;
+  });
 </script>
 <?php
 function dataTableUser($stmt)
@@ -223,7 +282,7 @@ function dataTableUser($stmt)
     } elseif ($row['STS_Description'] == "Deshabilitado") {
       echo "<span class='text-maroon'><i class='fas fa-trash nav-icon'></i></span> ";
     }
-    echo"". $row['STS_Description']  . "</td>";
+    echo "" . $row['STS_Description']  . "</td>";
     echo "<td>" . $row['User_Username'] . "</td>";
 
     $WR_ActionsDone = $row['WR_ActionsDone'];
@@ -258,7 +317,7 @@ function dataTableUser($stmt)
       $WR_ActionsDonePDF = $fila["WR_ActionsDone"];
       $WR_DiagnosisPDF = $fila["WR_Diagnosis"];
       $WR_SolutionPDF = $fila["WR_Solution"];
-      $STS_DescriptionPDF =$fila["STS_Description"];
+      $STS_DescriptionPDF = $fila["STS_Description"];
     }
     date_default_timezone_set('America/Mexico_City');
     $todayDate = date("Y-m-d");
@@ -269,20 +328,12 @@ function dataTableUser($stmt)
             </a>
           
 
-            <button class='btn  btn-outline-info btn-sm ImprimirReporte' title='Imprimir Contrato' name='ImprimirReporte' id='ImprimirReporte' onclick=\"return generarPDF('".$CMP_Technical_Name."', '" .$todayDate. "', '".$NombreCompleto."','".$CBT_Employee_Code."','".$CMP_Serial."','".$CMP_Servitag."','".$MFC_Description."','".$MDL_Description."','".$WR_Main_ProblemPDF."','".$WR_ActionsDonePDF."','".$WR_DiagnosisPDF."','".$WR_SolutionPDF."','".$CMP_Acquisition_Date."','".$TG_Description."','".$CMP_Warranty_Expiration."', '".$STS_DescriptionPDF."');\">
+            <button class='btn  btn-outline-info btn-sm ImprimirReporte' title='Imprimir Contrato' name='ImprimirReporte' id='ImprimirReporte' onclick=\"return generarPDF('" . $CMP_Technical_Name . "', '" . $todayDate . "', '" . $NombreCompleto . "','" . $CBT_Employee_Code . "','" . $CMP_Serial . "','" . $CMP_Servitag . "','" . $MFC_Description . "','" . $MDL_Description . "','" . $WR_Main_ProblemPDF . "','" . $WR_ActionsDonePDF . "','" . $WR_DiagnosisPDF . "','" . $WR_SolutionPDF . "','" . $CMP_Acquisition_Date . "','" . $TG_Description . "','" . $CMP_Warranty_Expiration . "', '" . $STS_DescriptionPDF . "');\">
             <i class='fas fa-folder'></i>
             </button>
   <div id='reporte' style='display: none;'>              
-                   <h1>                   <b>REPORTE DE GARANTÍA DE EQUIPO </p> </h1>
+                   <h1>                   <b>Informe de Reporte Técnico en Garantía </p> </h1>
                                   
-<p>Azucarera la Grecia S.A de C.V</p>
-<p>Kilómetro 21, Carretera hacia Cedeño  </p>
-<p>Marcovia, Choluteca, Honduras C.A   </p>
-<p>Tel: 2705-3900. </p>
-<p>Email: info@azucareralagrecia.com </p>
-<p>Fecha de hoy:<p class='todayDate'>".$todayDate."</p></p>
-
-
 <p><b>.--INFORME DE GARANTÍA DEL PRODUCTO/EQUIPO</b> </p>
 <p>Para :<p class='nombreCompleto'>" . $NombreCompleto . "</p> .-Responsable de Hacer el reporte-. </p>
 <p>Área de IT Software de Azucarera la Grecia S.A de C.V</p>
@@ -293,32 +344,32 @@ function dataTableUser($stmt)
 <p><b>.--NUMERO DE GARANTÍA: <p class='serial'>" . $CMP_Serial . "</p></b></p>
 
 <p><b>.--DESCRIPCIÓN DEL PRODUCTO GARANTIZADO:</b> </p>
-<p> Nombre Tecnico del ordenador: <p class='technicalName'>". $CMP_Technical_Name ."</p> </p>
+<p> Nombre Tecnico del ordenador: <p class='technicalName'>" . $CMP_Technical_Name . "</p> </p>
 <p> Servitag :<p class='servitag'>" . $CMP_Servitag . "</p> </p>
 <p> Marca y Modelo: <p class='marca'>" . $MFC_Description . "</p>, <p class='modelo'>" . $MDL_Description . "</p>  </p>
 
 <p><b>.--DESCRIPCIÓN DEL PROBLEMA REPORTADO</b> </p>
-<p class='mainProblem'>".$WR_Main_ProblemPDF."</p>
+<p class='mainProblem'>" . $WR_Main_ProblemPDF . "</p>
 
 <p><b>.--ACCIONES REALIZADAS</b></p>
-<p class='actionsDone'>".$WR_ActionsDonePDF."</p>
+<p class='actionsDone'>" . $WR_ActionsDonePDF . "</p>
 
 <p><b>.--EVALUACIÓN DE GARANTÍA </b></p>
-<p>El producto fue adquirido <p class='acquisitionDate'> <b>".$CMP_Acquisition_Date."</b>.</p>
-<p>Con una tipo de garantía :<p class='garantia'> <b>".$TG_Description."</b>.</p> </p>
-<p>La cual expira en <p class='warrantyExpiration'> <b>".$CMP_Warranty_Expiration."</b></p></p>
-<p>fecha que estamos actualmente <p class='todayDate'><b>".$todayDate."</b></p> </p>
+<p>El producto fue adquirido <p class='acquisitionDate'> <b>" . $CMP_Acquisition_Date . "</b>.</p>
+<p>Con una tipo de garantía :<p class='garantia'> <b>" . $TG_Description . "</b>.</p> </p>
+<p>La cual expira en <p class='warrantyExpiration'> <b>" . $CMP_Warranty_Expiration . "</b></p></p>
+<p>fecha que estamos actualmente <p class='todayDate'><b>" . $todayDate . "</b></p> </p>
 
 
 <p><b>.--DIAGNOSTICOS Y REPARACIÓN. </b></p>
-<p class='Diagnosis'>".$WR_DiagnosisPDF."</p>
+<p class='Diagnosis'>" . $WR_DiagnosisPDF . "</p>
 
 <p><b>.--SOLUCIÓN DEL PROBLEMA.  </b></p>
-<p class='Solution'>".$WR_SolutionPDF."</p>
+<p class='Solution'>" . $WR_SolutionPDF . "</p>
 
 <p><b>.--CONCLUSION.</b></p>
 
-<p class='status'>".$STS_DescriptionPDF."</p>
+<p class='status'>" . $STS_DescriptionPDF . "</p>
 
 
 <p>Informe distribuido por el sistema INFRAG </p>

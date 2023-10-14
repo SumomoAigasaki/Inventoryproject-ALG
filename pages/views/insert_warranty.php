@@ -132,7 +132,7 @@ require_once "../templates/menu.php";
                                     <!-- Numero de Reporte-->
                                     <div class="col-sm-4">
                                         <div class="form-group" style="padding-top: 10px;">
-                                            <label><code> * </code>Numero de Reporte:</label>
+                                            <label><code> * </code>Numero de Reporte/Ticket:</label>
                                             <input type="text" class="form-control" name="txtNumberApplications" id="txtNumberApplications" maxlength="45" placeholder="">
                                         </div>
                                     </div>
