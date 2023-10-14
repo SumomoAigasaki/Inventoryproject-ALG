@@ -155,7 +155,7 @@ require_once "../templates/menu.php";
                                    <div class="col-sm-4" style="padding-top: 10px;">
                                         <div class="form-group">
                                             <label> <code> * </code>Acciones Realizadas: </label>
-                                            <textarea type="text" class="form-control" name="txtActionDone" id="txtActionDone" maxlength="60"> </textarea>
+                                            <textarea type="text" class="form-control" name="txtActionDone" id="txtActionDone" maxlength="255"> </textarea>
                                         </div>
                                     </div>
 
@@ -234,6 +234,7 @@ require_once "../templates/footer.php";
         let computerSlct = document.getElementById('slctComputer');
         let numberApplicationstxt = document.getElementById('txtNumberApplications');
         let mainProblemtxt = document.getElementById('txtMainProblem');
+        let actionDonetxt= document.getElementById('txtActionDone');
 
 
         if (dateAdmisiontxt.value.trim() === "") {
@@ -249,8 +250,12 @@ require_once "../templates/footer.php";
             numberApplicationstxt.focus();
             return false;
         } else if (mainProblemtxt.value.trim() === "") {
-            toastr.warning('El <b>Problema Principal:</b> esta vacio(a).<br>Por favor Ingrese un Problema Principal: valida');
+            toastr.warning('El <b>Problema Principal</b> esta vacio(a).<br>Por favor Ingrese un Problema Principal valida');
             mainProblemtxt.focus();
+            return false;
+        } else if (actionDonetxt.value.trim() === "") {
+            toastr.warning('Las <b>Acciones Realizadas</b> estan vacios(as).<br>Por favor Ingrese unas Acciones Realizadas valida');
+            actionDonetxt.focus();
             return false;
         } else {
             // Si no hay errores, procesa los datos enviados
@@ -295,6 +300,7 @@ if (isset($_POST["buttonInsertWR"])) {
     $mainProblemtxt = $_POST["txtMainProblem"];
     $dateAdmisiontxt = $_POST["txtDateAdmision"];
     $numberApplicationstxt = $_POST["txtNumberApplications"];
+    $actionDonetxt = $_POST["txtActionDone"];
     $imgProblem =  $_FILES['fileReferent']['name'];
         if (empty($imgProblem)) {
             $imgProblem = '/resources/Warranty/DefaultProblem.jpg';
@@ -307,17 +313,18 @@ if (isset($_POST["buttonInsertWR"])) {
     $status = 4;
     date_default_timezone_set('America/Mexico_City');
     $todayDate = date("Y-m-d");
+   
 
     // Verificar el permiso para realizar la operación
     if ($PermisoWR) {
         try {
             //Caso contrario Guardara
-            $stmt = $conn->prepare("CALL  sp_insertWarranty(?,?,?,?,?,?,?,?,?)");
+            $stmt = $conn->prepare("CALL  sp_insertWarranty(?,?,?,?,?,?,?,?,?,?)");
 
-                                //  $query = "CALL sp_insertWarranty( '$computerId', '$dateAdmisiontxt', '$numberApplicationstxt', '$mainProblemtxt', '$imgProblem', '$observationstxt', '$todayDate', '$status', '$user');";
-                                // echo $query;
+                                 $query = "CALL sp_insertWarranty( '$computerId', '$dateAdmisiontxt', '$numberApplicationstxt', '$mainProblemtxt', '$actionDonetxt','$imgProblem', '$observationstxt', '$todayDate', '$status', '$user');";
+                                echo $query;
             // Mandamos los parametros y los input que seran enviados al PA O SP
-            $stmt->bind_param("sssssssss", $computerId, $dateAdmisiontxt, $numberApplicationstxt, $mainProblemtxt, $imgProblem, $observationstxt, $todayDate, $status, $user);
+            $stmt->bind_param("ssssssssss", $computerId, $dateAdmisiontxt, $numberApplicationstxt, $mainProblemtxt,$actionDonetxt, $imgProblem, $observationstxt, $todayDate, $status, $user);
 
 
             // Ejecutar el procedimiento almacenado
