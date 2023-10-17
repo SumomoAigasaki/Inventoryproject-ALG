@@ -120,6 +120,9 @@ elseif ($actualPage == 'view_peripherals.php') {
   } elseif ($actualPage == 'update_warranty.php') {
     $pageName = 'Actualizar Registro de Reporte de Garantia';
     $pageLink = "update_warranty.php";
+  }elseif ($actualPage == 'warrantyReport.php') {
+    $pageName = 'Reporte de Garantia';
+    $pageLink = "update_warranty.php";
   }
 
 

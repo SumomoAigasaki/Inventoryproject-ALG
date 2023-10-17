@@ -104,7 +104,7 @@ if (in_array('Security', array_column($privilegios, 'modulo'))) {
 
                 <!-- Masterdata -->
                 <li class="nav-item">
-                    <a href="../views/explorer.php" class="nav-link">
+                    <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-folder-open"></i>
                         <p>Master Data </p>
                     </a>

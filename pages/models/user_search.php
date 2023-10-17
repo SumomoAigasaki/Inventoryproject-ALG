@@ -207,7 +207,8 @@ if (!in_array($pagina_actual, $linksDefault) && !$PermisoPCA && in_array($pagina
 $linksWR = array(
   "insert_warranty.php",
   "update_warranty.php",
-  "view_warranty.php"
+  "view_warranty.php", 
+  "warrantyReport.php"
 );
 
 if (in_array('WR', array_column($privilegios, 'permiso'))) {
