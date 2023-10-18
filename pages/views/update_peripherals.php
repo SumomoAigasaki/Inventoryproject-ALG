@@ -252,7 +252,7 @@ $conn->next_result();
                                     <div class=" col-sm-4">
                                         <div class="form-group" style="padding-top: 20px;">
                                             <label>Observaciones: </label>
-                                            <textarea type="text" class="form-control" name="txt_observation" id="txt_observation" maxlength="100" value="<?php echo $PRL_Observations; ?>"> </textarea>
+                                            <textarea type="text" class="form-control" name="txt_observation" id="txt_observation" maxlength="100"> <?php echo $PRL_Observations; ?></textarea>
                                         </div>
                                     </div>
                                 </div>

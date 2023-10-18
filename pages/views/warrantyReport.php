@@ -253,7 +253,7 @@ class PDF extends FPDF
                 $fill = !$fill;
                 $this->SetFont('times', 'B', 12);
                 $this->SetFont('');
-                $this->MultiCell(160, 9, "".$WR_ActionsDonePDF, 'LR', 'J', $fill);
+                $this->MultiCell(160, 9, utf8_decode("".$WR_ActionsDonePDF), 'LR', 'J', $fill);
                 $fill = false;
 
                 $fill = true;
@@ -264,7 +264,7 @@ class PDF extends FPDF
                 $fill = !$fill;
                 $this->SetFont('times', 'B', 12);
                 $this->SetFont('');
-                $this->MultiCell(160, 9, " ".$WR_DiagnosisPDF, 'LR', 'J', $fill);
+                $this->MultiCell(160, 9, utf8_decode("".$WR_DiagnosisPDF), 'LR', 'J', $fill);
                 $fill = false;
 
                 $fill = true;
@@ -275,7 +275,7 @@ class PDF extends FPDF
                 $fill = !$fill;
                 $this->SetFont('times', 'B', 12);
                 $this->SetFont('');
-                $this->MultiCell(160, 9, " ".$WR_SolutionPDF, 'LR', 'J', $fill);
+                $this->MultiCell(160, 9,utf8_decode( "".$WR_SolutionPDF), 'LR', 'J', $fill);
                 $fill = false;
 
                 $fill = true;

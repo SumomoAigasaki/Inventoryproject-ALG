@@ -238,7 +238,7 @@ $conn->next_result();
                                         <!-- Observaciones -->
                                         <div class="form-group" style="padding-left:15px; padding-top:2.5px;">
                                             <label>Observaciones: </label>
-                                            <textarea type="text" class="form-control" name="txtObservation" id="txtObservation" maxlength="60" value="<?php echo $SFT_Observations; ?>"> </textarea>
+                                            <textarea type="text" class="form-control" name="txtObservation" id="txtObservation" maxlength="60"> <?php echo $SFT_Observations; ?></textarea>
                                         </div>
 
                                     </div>

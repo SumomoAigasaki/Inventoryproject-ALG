@@ -380,7 +380,7 @@ $conn->next_result();
                   <div class="col-sm-5">
                     <div class="form-group  mb-3">
                       <label>Observaciones: </label>
-                      <textarea type="text" class="form-control" name="txtObservation" id="txtObservation" maxlength="100" value="<?php echo $CMP_Observations; ?>"> </textarea>
+                      <textarea type="text" class="form-control" name="txtObservation" id="txtObservation" maxlength="100"> <?php echo $CMP_Observations; ?></textarea>
                     </div>
                     <div class="form-group">
                       <div class="form-check">

@@ -258,7 +258,7 @@ $conn->next_result();
                                         <div class="form-group">
                                             <!-- Observaciones -->
                                             <label>Observaciones: </label>
-                                            <textarea type="text" class="form-control" name="txtObservation" id="txtObservation" maxlength="100" value="<?php echo $PCA_Observations ?>"> </textarea>
+                                            <textarea type="text" class="form-control" name="txtObservation" id="txtObservation" maxlength="100"></textarea> <?php echo $PCA_Observations ?></textarea>
                                         </div>
                                     </div>
 

@@ -59,7 +59,7 @@ function dataTableUser($stmt)
   
   
     echo "<td align='center'> 
-            <a href='../views/update_collaborator.php?p=" . $row['WR_idTbl_Warranty_Registration'] . "' class='btn btn-outline-primary btn-sm' title='Editar Registro'>
+            <a href='../views/update_warranty.php?p=" . $row['WR_idTbl_Warranty_Registration'] . "' class='btn btn-outline-primary btn-sm' title='Editar Registro'>
               <i class='fas fa-pencil-alt'></i>
             </a>
           

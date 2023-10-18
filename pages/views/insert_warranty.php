@@ -174,7 +174,7 @@ require_once "../templates/menu.php";
                                         <div class="form-group">
                                             <label>Imagen de Referencia del Problema: </label>
                                             <div class="input-group" style=" display: flex;   justify-content: center;   align-items: center;   height: 200px;">
-                                                <img class="img-fluid" src="../../resources/Warranty/DefaultProblem.jpg" width="200" height="250" id="imgPerfil">
+                                                <img class="img-fluid" src="../../resources/Warranty/computadoraMantenimiento.png" width="200" height="250" id="imgPerfil">
                                                 <input type="file" name="fileReferent" id="fileReferent" accept="image/png,image/jpeg" style="margin-left: 20px;text-align: center;">
                                             </div>
                                         </div>
@@ -292,9 +292,18 @@ require_once "../templates/footer.php";
     $("#fileReferent").change(function() {
         readURL(this);
     });
+    $(function() {
+        //Initialize Select2 Elements
+        $('.select2').select2()
+
+        //Initialize Select2 Elements
+        $('.select2bs4').select2({
+            theme: 'bootstrap4'
+        })
+    });
 </script>
 <?php
-
+$uploads_dir = '../../resources/Warranty/';
 if (isset($_POST["buttonInsertWR"])) {
     $computerId = $_POST["slctComputer"];
     $mainProblemtxt = $_POST["txtMainProblem"];
@@ -333,12 +342,12 @@ if (isset($_POST["buttonInsertWR"])) {
                 error_log("Error en la ejecución del procedimiento almacenado: " . $stmt->error);
             }
             // Obtener el valor de la variable de salida
-            $stmt->bind_result($answerExistsPRL);
+            $stmt->bind_result($answerExistsWarranty);
             $stmt->fetch();
             $stmt->close();
             $conn->next_result();
             // se extraen los valores qu     nos devuelve el procedimiento almacenado y enviamos el error
-            if ($answerExistsPRL > 0) {
+            if ($answerExistsWarranty > 0) {
                 echo '<script > toastr.success("Los datos de <b>' . $numberApplicationstxt . '</b> se Guardaron de manera exitosa.", "¡¡Enhorabuena!!"); ';
                 echo 'setTimeout(function() {';
                 echo '  window.location.href = "view_warranty.php";';
@@ -346,7 +355,12 @@ if (isset($_POST["buttonInsertWR"])) {
                 echo 'document.getElementById("formInsertWR").reset(); ';
                 echo '</script>';
 
-
+                if ($_FILES['fileReferent']['name'] != 'DefaultProblem.jpg') {
+                    move_uploaded_file($_FILES['fileReferent']['tmp_name'], $uploads_dir . $_FILES['fileReferent']['name']);
+                } else if (file_exists($uploads_dir . $_FILES['fileReferent']['name'])) {
+                    echo '<script > toastr.info("La imagen ya existe ' . $imgProblem . '")</script>;';
+                    $uploadOk = 0; //si existe lanza un valor en 0                 
+                }
                 exit;
             }
         } catch (mysqli_sql_exception $e) {
