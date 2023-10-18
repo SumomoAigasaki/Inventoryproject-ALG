@@ -67,7 +67,7 @@ function dataTableUser($stmt)
             <i class='fas fa-folder'></i>
             </a>
 
-            <button class='btn btn-outline-danger btn-sm btnDeleteCMP' title='Eliminar Registro' name='btnDeletWR' id='btnDeletWR' data-id='" . $row['WR_idTbl_Warranty_Registration'] . "'>
+            <button class='btn btn-outline-danger btn-sm btnDeleteWR' title='Eliminar Registro' name='btnDeletWR' id='btnDeletWR' data-id='" . $row['WR_idTbl_Warranty_Registration'] . "'>
               <i class='fas fa-trash-alt'></i>
             </button>
             
@@ -239,14 +239,14 @@ include "../templates/footer.php";
 
 
 <?php
-function deleteUser()
+function deleteRegister()
 {
   global $conn; // Utilizar la variable $conn en el ámbito de la función
 
   if (isset($_POST['id'])) {
     $id = $_POST["id"];
 
-    $stmt = $conn->prepare("CALL sp_deleteCollaborator(?)");
+    $stmt = $conn->prepare("CALL sp_deleteWarranty(?)");
     // Mandamos los parametros y los input que seran enviados al PA O SP
     $stmt->bind_param("s", $id); // Ejecutar el procedimiento almacenado
 
@@ -259,17 +259,17 @@ function deleteUser()
       error_log("Error en la ejecución del procedimiento almacenado: " . $stmt->error);
     }
     // Obtener el número de filas afectadas por el insert
-    $stmt->bind_result($idU);
+    $stmt->bind_result($idWR);
     $stmt->fetch();
     // Cerrar el statement
     $stmt->close();
     // Avanzar al siguiente conjunto de resultados si hay varios
     $conn->next_result();
 
-    if ($idU > 0) {
+    if ($idWR > 0) {
       echo '<script>
           setTimeout(function() {
-            window.location.href = "view_collaborator.php";
+            window.location.href = "view_warranty.php";
           }, 10000);
         </script>';
     }
@@ -277,7 +277,7 @@ function deleteUser()
 }
 
 // Llamar a la función deleteComputer
-deleteUser();
+deleteRegister();
 ?>
 <script>
   $(function() {
@@ -290,7 +290,7 @@ deleteUser();
     });
   });
 
-  $('#example1').on('click', 'button.btnDeleteCMP', function() {
+  $('#example1').on('click', 'button.btnDeleteWR', function() {
     var id = $(this).data('id');
 
     // Mostrar Sweet Alert
@@ -315,7 +315,7 @@ deleteUser();
           success: function(response) {
             Swal.fire("Registro eliminado", "El registro ha sido eliminado correctamente", "success").then(() => {
               // Redireccionar después de mostrar el SweetAlert
-              window.location.href = "view_collaborator.php";
+              window.location.href = "view_warranty.php";
             });
           }
         });
