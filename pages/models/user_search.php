@@ -186,7 +186,8 @@ $linksPCA = array(
   "insert_assignment_pc.php",
   "update_assignment_pc.php",
   "view_assignment_pc.php",
-  "view_mappingSoftware.php"
+  "view_mappingSoftware.php",
+  "PCassignmentcontract.php"
 );
 
 if (in_array('PCA', array_column($privilegios, 'permiso'))) {

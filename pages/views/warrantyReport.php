@@ -71,7 +71,7 @@ class PDF extends FPDF
         $this->Ln(3);
         $this->Cell(105);
         // se agrega utf8_decode para solucionar el problema con los acentos
-        $this->Cell(60, 6, utf8_decode("Kilómetro 21, Carretera hacia Cedeño, Marcovia"));
+        $this->Cell(60, 6, utf8_decode("Kilómetro 21, Carretera hacia Cedeño"));
         $this->Ln(3);
         $this->Cell(115);
         $this->Cell(60, 8, "Marcovia, Choluteca, Honduras C.A");
@@ -93,7 +93,11 @@ class PDF extends FPDF
         $this->SetFont('times', 'I', 10);
         //Número de página
         $this->Cell(70, 10, "Informe distribuido por el sistema INFRAG");
-        $this->Cell(180, 10, 'Pagina ' . $this->PageNo() . 'de {nb}', 0, 0, 'C');
+        $this->Ln(4);
+        $this->SetFont('times', 'IB', 10);
+        $this->Cell(70, 9, "Reporte Version: 0.1");
+
+        $this->Cell(180, 8, 'Pagina ' . $this->PageNo() . 'de {nb}', 0, 0, 'C');
     }
 
     function TablarReporte($header,$todayDate,$NombreCompleto,$PCS_Description,$CBT_employee_position,$CT_Description,$MFC_Description,$MDL_Description,$CMP_Serial,$CMP_Servitag,$ticket,$CMP_Technical_Name,$WR_Date_Admission,
@@ -343,4 +347,4 @@ $pdfPath = "" . $nombreArchivo; // Ruta completa con nombre de archivo
 
 $pdf->Output($pdfPath, 'I'); // Guarda el PDF con el nombre personalizado
 
-
+?>

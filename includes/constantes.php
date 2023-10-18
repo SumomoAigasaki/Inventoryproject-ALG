@@ -104,6 +104,9 @@ elseif ($actualPage == 'view_peripherals.php') {
   } elseif ($actualPage == 'update_assignment_pc.php') {
     $pageName = 'Actualizar Asignación de PC';
     $pageLink = "update_assignment_pc.php";
+  }  elseif ($actualPage == 'PCassignmentcontract.php') {
+    $pageName = 'Contrato de Asignación de PC';
+    $pageLink = "PCassignmentcontract.php";
   }
   //Asignacion De PC
   elseif ($actualPage == 'view_mappingSoftware.php') {
