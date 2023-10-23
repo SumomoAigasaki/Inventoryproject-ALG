@@ -113,7 +113,7 @@ class PDF extends FPDF
         $this->SetFillColor(202, 207, 210);
         $this->SetTextColor(28, 40, 51);
         $this->SetDrawColor(98, 101, 103);
-        $this->SetLineWidth(.3);
+        $this->SetLineWidth(.2);
         $this->SetFont('times', 'B', 12);
 
         //Centrar tabla
@@ -129,100 +129,94 @@ class PDF extends FPDF
             $this->Ln();
 
             //Restauración de colores y fuentes
-            $this->SetFillColor(242, 243, 244);
+            $this->SetFillColor(215, 219, 221 );
             $this->SetTextColor(0);
             $this->SetFont('');
             //Datos
             $fill = false;
             $this->SetFont('times', 'B', 12);
-            $this->Cell(80, 6, "Ubicacion/Fecha de Informe:", 'LR', 0, 'L', $fill);
+            $this->Cell(80, 7, "Ubicacion/Fecha de Informe:", 'LTRB', 0, 'L', 1);
             $this->SetFont('');
-            $this->Cell(80, 6, " Marcovia | ".$todayDate, 'LR', 1, 'L', $fill);
-            // Agregar una línea al final
-            $x = $this->GetX();
-            $y = $this->GetY();
-            $this->Line($x, $y, $x + 160, $y);
-            $this->Ln();
-            $this->Ln();
-            $this->Line($x, $y + 11.7, $x + 160, $y + 11.7);
+            $this->Cell(80, 7, " Marcovia | ".$todayDate, 'LTRB', 1, 'L', 0);
+            $this->Ln(8);
 
             $fill = !$fill;
             $this->SetFont('times', 'B', 12);
-            $this->Cell(80, 6, "Nombre de Colaborador: ", 'LR', 0, 'L', $fill);
+            $this->Cell(80, 7, "Nombre de Colaborador: ", 'LTRB', 0, 'L', 1);
             $this->SetFont('');
-            $this->Cell(80, 6, " ".$NombreCompleto, 'LR', 0, 'L', $fill);
+            $this->Cell(80, 7, " ".$NombreCompleto, 'LTRB', 0, 'L', 0);
             $fill = true;
             $this->Ln();
 
             $fill = !$fill;
             $this->SetFont('times', 'B', 12);
-            $this->Cell(80, 6, "Proceso/Area de Trabajo: ", 'LR', 0, 'L', $fill);
+            $this->Cell(80, 7, "Proceso/Area de Trabajo: ", 'LTRB', 0, 'L', 1);
             $this->SetFont('');
-            $this->Cell(80, 6," ". $PCS_Description ." | " .$CBT_employee_position, 'LR', 0, 'L', $fill);
+            $this->Cell(80, 7," ". $PCS_Description ." | " .$CBT_employee_position, 'LTRB', 0, 'L', 0);
             $fill = false;
             $this->Ln();
 
             $fill = !$fill;
             $this->SetFont('times', 'B', 12);
-            $this->Cell(80, 6, "Tipo de Equipo: ", 'LR', 0, 'L', $fill);
+            $this->Cell(80, 7, "Tipo de Equipo: ", 'LTRB', 0, 'L', 1);
             $this->SetFont('');
-            $this->Cell(80, 6, " ".$CT_Description, 'LR', 0, 'L', $fill);
+            $this->Cell(80, 7, " ".$CT_Description, 'LTRB', 0, 'L', 0);
             $fill = true;
             $this->Ln();
 
             $fill = !$fill;
             $this->SetFont('times', 'B', 12);
-            $this->Cell(80, 6, "Marca: ", 'LR', 0, 'L', $fill);
+            $this->Cell(80, 7, "Marca: ", 'LTRB', 0, 'L',1);
             $this->SetFont('');
-            $this->Cell(80, 6, " ".$MFC_Description , 'LR', 0, 'L', $fill);
+            $this->Cell(80, 7, " ".$MFC_Description , 'LTRB', 0, 'L', 0);
             $fill = false;
             $this->Ln();
 
             $fill = !$fill;
             $this->SetFont('times', 'B', 12);
-            $this->Cell(80, 6, "Modelo: ", 'LR', 0, 'L', $fill);
+            $this->Cell(80, 7, "Modelo: ", 'LTRB', 0, 'L', 1);
             $this->SetFont('');
-            $this->Cell(80, 6, " ". $MDL_Description, 'LR', 0, 'L', $fill);
+            $this->Cell(80, 7, " ". $MDL_Description, 'LTRB', 0, 'L', 0);
             $fill = true;
             $this->Ln();
 
             $fill = !$fill;
             $this->SetFont('times', 'B', 12);
-            $this->Cell(80, 6, "Numero de Serie: ", 'LR', 0, 'L', $fill);
+            $this->Cell(80, 7, "Numero de Serie: ", 'LTRB', 0, 'L', 1);
             $this->SetFont('');
-            $this->Cell(80, 6, " ".$CMP_Serial, 'LR', 0, 'L', $fill);
+            $this->Cell(80, 7, " ".$CMP_Serial, 'LTRB', 0, 'L', 0);
             $fill = false;
             $this->Ln();
 
             $fill = !$fill;
             $this->SetFont('times', 'B', 12);
-            $this->Cell(80, 6, "Numero de Servitag: ", 'LR', 0, 'L', $fill);
+            $this->Cell(80, 6, "Numero de Servitag: ", 'LTRB', 0, 'L', 1);
             $this->SetFont('');
-            $this->Cell(80, 6, " " .$CMP_Servitag, 'LR', 0, 'L', $fill);
+            $this->Cell(80, 6, " " .$CMP_Servitag, 'LTRB', 0, 'L', 0);
             $fill = true;
             $this->Ln();
 
             $fill = !$fill;
             $this->SetFont('times', 'B', 12);
-            $this->Cell(80, 6, "Numero de Orden de Trabajo: ", 'LR', 0, 'L', $fill);
+            $this->Cell(80, 6, "Numero de Orden de Trabajo: ", 'LTRB', 0, 'L', 1);
             $this->SetFont('');
-            $this->Cell(80, 6, " " .$ticket, 'LR', 0, 'L', $fill);
+            $this->Cell(80, 6, " " .$ticket, 'LTRB', 0, 'L', 0);
             $fill = false;
             $this->Ln();
             
             $fill = !$fill;
             $this->SetFont('times', 'B', 12);
-            $this->Cell(80, 6, "Nombre Tecnico del Pc: ", 'LR', 0, 'L', $fill);
+            $this->Cell(80, 7, "Nombre Tecnico del Pc: ", 'LTRB', 0, 'L', 1);
             $this->SetFont('');
-            $this->Cell(80, 6, " ".$CMP_Technical_Name, 'LR', 0, 'L', $fill);
+            $this->Cell(80, 7, " ".$CMP_Technical_Name, 'LTRB', 0, 'L', 0);
             $fill = true;
             $this->Ln();
 
             $fill = !$fill;
             $this->SetFont('times', 'B', 12);
-            $this->Cell(80, 6, "Fecha en que se creo el reporte: ", 'LR', 0, 'L', $fill);
+            $this->Cell(80, 7, "Fecha en que se creo el reporte: ", 'LTRB', 0, 'L', 1);
             $this->SetFont('');
-            $this->Cell(80, 6, " ".$WR_Date_Admission, 'LR', 0, 'L', $fill);
+            $this->Cell(80, 7, " ".$WR_Date_Admission, 'LTRB', 0, 'L', 0);
             $fill = false;
             $this->Ln();
             $this->Cell(160, 0, '', 'T');
@@ -238,68 +232,67 @@ class PDF extends FPDF
                 $this->SetFont('');
                 //Datos
                 $fill = true;
-                $this->Line($x, $y + 96.8, $x + 160, $y + 96.8);
                 $this->SetFont('times', 'B', 12);
-                $this->Cell(160, 6, "A. Descripcion del Fallo/Problema", 'LR', 0, 'L', $fill);
+                $this->Cell(160, 6, "A. Descripcion del Fallo/Problema", 'LTR', 0, 'L', $fill);
                 $this->Ln();
                 
                 $fill = !$fill;
                 $this->SetFont('times', 'B', 12);
                 $this->SetFont('');
-                $this->MultiCell(160, 9, utf8_decode( "".$WR_Main_ProblemPDF), 'LR', 'J', $fill);
+                $this->MultiCell(160, 9, utf8_decode( "".$WR_Main_ProblemPDF), 'LTR', 'J', $fill);
                 $fill = false;
 
                 $fill = true;
                 $this->SetFont('times', 'B', 12);
-                $this->Cell(160, 6, "B.Acciones Previas Realizadas ", 'LR', 0, 'L', $fill);
+                $this->Cell(160, 6, "B.Acciones Previas Realizadas ", 'LTR', 0, 'L', $fill);
                 $this->Ln();
                 
                 $fill = !$fill;
                 $this->SetFont('times', 'B', 12);
                 $this->SetFont('');
-                $this->MultiCell(160, 9, utf8_decode("".$WR_ActionsDonePDF), 'LR', 'J', $fill);
+                $this->MultiCell(160, 9, utf8_decode("".$WR_ActionsDonePDF), 'LTR', 'J', $fill);
                 $fill = false;
 
                 $fill = true;
                 $this->SetFont('times', 'B', 12);
-                $this->Cell(160, 6, "C.Evaluacion y Diagnostico ", 'LR', 0, 'L', $fill);
+                $this->Cell(160, 6, "C.Evaluacion y Diagnostico ", 'LTR', 0, 'L', $fill);
                 $this->Ln();
                 
                 $fill = !$fill;
                 $this->SetFont('times', 'B', 12);
                 $this->SetFont('');
-                $this->MultiCell(160, 9, utf8_decode("".$WR_DiagnosisPDF), 'LR', 'J', $fill);
+                $this->MultiCell(160, 9, utf8_decode("".$WR_DiagnosisPDF), 'LTR', 'J', $fill);
                 $fill = false;
 
                 $fill = true;
                 $this->SetFont('times', 'B', 12);
-                $this->Cell(160, 6, "D.Solucion al problema ", 'LR', 0, 'L', $fill);
+                $this->Cell(160, 6, "D.Solucion al problema ", 'LTR', 0, 'L', $fill);
                 $this->Ln();
                 
                 $fill = !$fill;
                 $this->SetFont('times', 'B', 12);
                 $this->SetFont('');
-                $this->MultiCell(160, 9,utf8_decode( "".$WR_SolutionPDF), 'LR', 'J', $fill);
+                $this->MultiCell(160, 9,utf8_decode( "".$WR_SolutionPDF), 'LTR', 'J', $fill);
                 $fill = false;
 
                 $fill = true;
                 $this->SetFont('times', 'B', 12);
-                $this->Cell(160, 6, "E.Conclusiones de conformidad ", 'LR', 0, 'L', $fill);
+                $this->Cell(160, 6, "E.Conclusiones de conformidad ", 'LTR', 0, 'L', $fill);
                 $this->Ln();
                
                 $fill = !$fill;
                 $this->SetFont('times', 'B', 12);
                 $this->SetFont('');
                 if ($STS_DescriptionPDF == "Solucionado") {
-                $this->MultiCell(160, 9, utf8_decode("Problema resuelto de manera satisfactorio, se cumplieron los términos de la garantía.") ,'LR', 'J', $fill);
+                $this->MultiCell(160, 9, utf8_decode("Problema resuelto de manera satisfactorio, se cumplieron los términos de la garantía.") ,'LTRB', 'J', $fill);
                   } else if ($STS_DescriptionPDF == "Espera") {
-                $this->MultiCell(160, 9,utf8_decode("El problema está en proceso por lo tanto el folio está abierto todavía no se le ha dado solución por favor esperar a que los técnicos se acerquen para poder cerrar el caso.") ,'LR', 'J', $fill);
+                $this->MultiCell(160, 9,utf8_decode("El problema está en proceso por lo tanto el folio está abierto todavía no se le ha dado solución por favor esperar a que los técnicos se acerquen para poder cerrar el caso.") ,'LTRB', 'J', $fill);
                   } else if ($STS_DescriptionPDF == "Sin Respuesta") {
-                    $this->MultiCell(160, 9,utf8_decode( "El problema no tuvo respuesta volver a hacer el reporte para dar seguimiento."),'LR', 'J', $fill);
+                    $this->MultiCell(160, 9,utf8_decode( "El problema no tuvo respuesta volver a hacer el reporte para dar seguimiento."),'LTRB', 'J', $fill);
                   } else if ($STS_DescriptionPDF == "Cancelado") {
-                    $this->MultiCell(160, 9,utf8_decode( "El problema no se resolvió porque hubo problemas con la gestión por lo cual no se le pudo dar seguimiento.") ,'LR', 'J', $fill);
+                    $this->MultiCell(160, 9,utf8_decode( "El problema no se resolvió porque hubo problemas con la gestión por lo cual no se le pudo dar seguimiento.") ,'LTRB', 'J', $fill);
                   } else if ($STS_DescriptionPDF == "Deshabilitado") {
-                    $this->MultiCell(160, 9,utf8_decode("El Registro actualmente se encuentra Deshabilidato del Sistema, por lo tanto no es como que cuente con alguna cobertura conforme de la garantia.") ,'LR', 'J', $fill);
+                    $this->MultiCell(160, 9,utf8_decode("El Registro actualmente se encuentra Deshabilidato del Sistema, por lo tanto no es como que cuente con alguna cobertura conforme de la garantia.") ,'LTRB', 'J', $fill);
                   }
                
                 $fill = false;

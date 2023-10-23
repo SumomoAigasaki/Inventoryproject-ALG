@@ -17,6 +17,11 @@ while ($fila = $stmt->fetch_assoc()) {
     $Serial = $fila["Serial"];
     $Garantia = $fila["Garantia"];
     $Meses = $fila["Meses"];
+    $CT_Description= $fila["CT_Description"];
+    $PCS_Description= $fila["PCS_Description"];
+    $Correlativo= $fila["Correlativo"];
+    $MNG_Description= $fila["MNG_Description"];
+    
 }
 
 $todayDate = date("Y-m-d");
@@ -89,7 +94,7 @@ class PDF extends FPDF
         $this->Cell(180, 8, 'Pagina ' . $this->PageNo() . 'de {nb}', 0, 0, 'C');
     }
 
-    function Body($nameUserlog, $NameCollaborator, $EmployeeCode, $EmployeePosition,$Marca,$Modelo,$Serial,$Garantia,$Meses,$todayDate)
+    function Body($nameUserlog, $NameCollaborator, $EmployeeCode, $EmployeePosition,$Marca,$Modelo,$Serial,$Garantia,$Meses,$todayDate,$CT_Description, $PCS_Description, $Correlativo, $MNG_Description)
     {
 
         //Posición: a 1,5 cm del final
@@ -232,6 +237,50 @@ class PDF extends FPDF
         $this->Cell(0, 9, "     Firma de ".$nameUserlog."                       Firma de ".$NameCollaborator, 0, 1, 'C');
 
 
+        $this->Ln(5);
+        $this->SetFont('times', 'B', 14);
+        //Número de página
+        $this->Cell(0, 10, utf8_decode("Formato de asignación de equipo Personal"), 0, 1, 'C');
+
+        $this->SetFont('times', 'B', 12);
+        $this->Ln(4);
+        $this->Cell(90, 14, utf8_decode("Tipo de equipo : ".$CT_Description) , 'LTR', 0, 'L', 0);
+        $this->MultiCell(90, 7, utf8_decode("Nombre del Empleado:  ").$NameCollaborator, 'LTR', 'L',0);
+        $this->Cell(90, 7, utf8_decode("Modelo :" . $Marca .", " .$Modelo ), 'LR', 0, 'L', 0);
+        $this->Cell(90, 7, utf8_decode("Cargo:  " . $EmployeePosition), 'LR', 1, 'L', 0);
+        $this->Cell(90, 7, utf8_decode("Serial : " . $Serial ), 'LR', 0, 'L', 0);
+        $this->Cell(90, 7, utf8_decode("Departamento: ".$PCS_Description ), 'LR', 1, 'L', 0);
+        $this->Cell(90, 7, utf8_decode("Etiqueta N° : ".$Correlativo  ), 'LRB', 0, 'L', 0);
+        $this->Cell(90, 7, utf8_decode("Gerencia:  ".$MNG_Description ), 'LRB', 1, 'L', 0);
+        $this->Ln(8);
+        
+        $this->SetFont('times', '', 12);
+        $this->MultiCell(0, 8, utf8_decode("Yo,".$NameCollaborator." como miembro perteneciente al personal de Azucacera La Grecia S.A de C.V- ALG, de ahora en adelante llamado como 'Empleado', con un contrato de duracion de ".$Meses." meses que dan inicio a apartir de la fecha de <<fecha>> , declaro por la presente que recibo el equipo mencionado anteriormente bajo las siguientes condiciones:"), 0, 'J', $fill);
+        $this->MultiCell(0, 8, utf8_decode("1. Entiendo que el equipo es propiedad de ALG y me fue asignado."), 0, 'J', $fill);
+        $this->MultiCell(0, 8, utf8_decode("2. El uso del equipo por parte de miembros de familia no está autorizado."), 0, 'J', $fill);
+        $this->MultiCell(0, 8, utf8_decode("3. Usaré el equipo apropiadamente para fines relacionados con la oficina."), 0, 'J', $fill);
+        $this->MultiCell(0, 8, utf8_decode("4. Cuidaré el equipo que me fue asignado y no lo dejaré sin supervisión en lugares inseguros."), 0, 'J', $fill);
+        $this->MultiCell(0, 8, utf8_decode("5. Seré responsable por todo el daño o pérdida del equipo, causado por negligencia o abuso."), 0, 'J', $fill);
+        $this->MultiCell(0, 8, utf8_decode("6. No prestaré el equipo a ningún otro individuo dentro o fuera de la empresa."), 0, 'J', $fill);
+        $this->MultiCell(0, 8, utf8_decode("7. Reportaré la pérdida, o la necesidad de reparación del equipo cuando sea necesario."), 0, 'J', $fill);
+        $this->MultiCell(0, 8, utf8_decode("8. No desarmaré el equipo ni cambiaré alguna de sus partes."), 0, 'J', $fill);
+        $this->MultiCell(0, 8, utf8_decode("9. No retiraré o alteraré la etiqueta que contiene el número serial del equipo."), 0, 'J', $fill);
+        $this->MultiCell(0, 8, utf8_decode("10. Entiendo que tanto el equipo como su contenido pueden ser inspeccionados en cualquier momento."), 0, 'J', $fill);
+        $this->MultiCell(0, 8, utf8_decode("11. Me comprometo a devolver el equipo, su maletín (si es el caso), cable de energía, y todos los otros elementos que este contenga y que me fueron asignados en óptimas condiciones antes de mi último día de trabajo en ALG."), 0, 'J', $fill);
+        $this->MultiCell(0, 8, utf8_decode("12. Pagaré a ALG cualquier multa que se me imponga causada por daño, desuso, negligencia o pérdida, incluyendo robo deducido por la póliza de seguro. En el caso de que no exista dicha póliza, el custodio será responsable por el costo total del equipo."), 0, 'J', $fill);
+        $this->MultiCell(0, 8, utf8_decode("13. El custodio del equipo podrá obtener el paz y salvo de Servicios Generales antes de la finalización de su contrato, realizando la entrega formal al Asistente Administrativo del Proyecto quien quedará como responsable y custodio del bien firmado un nuevo formato de asignación de equipo."), 0, 'J', $fill);
+        
+        $this->Ln();
+        $this->SetFont('');
+        $this->Cell(0,8, '     ______________________________                          Fecha:'.$todayDate, '0',1,'L');
+        $this->SetFont('times', 'I', 12);
+        $this->Cell(0, 9, "Firma del empleado ".$NameCollaborator, 0, 1, 'L');
+
+        $this->Ln(10);
+        $this->Cell(0, 9, "Revisado por (Personal de Servicios Generales):  ", 0, 1, 'L');
+
+
+
 
 
     }
@@ -250,7 +299,7 @@ $pdf->AliasNbPages();
 //Segunda página
 $pdf->AddPage();
 $pdf->SetY(35);
-$pdf->Body($_SESSION["NameUserlog"], $NameCollaborator, $EmployeeCode, $EmployeePosition,$Marca,$Modelo,$Serial,$Garantia,$Meses,$todayDate);
+$pdf->Body($_SESSION["NameUserlog"], $NameCollaborator, $EmployeeCode, $EmployeePosition,$Marca,$Modelo,$Serial,$Garantia,$Meses,$todayDate,$CT_Description, $PCS_Description, $Correlativo, $MNG_Description);
 // Genera un nombre de archivo único basado en la fecha y la hora actual
 $timestamp = date("Y-m-d_H-i-s"); // Genera un timestamp en el formato deseado
 $nombreArchivo = "Contradode_".$NameCollaborator . $timestamp . ".pdf"; // Nombre personalizado con marca de tiempo
