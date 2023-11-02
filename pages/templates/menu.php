@@ -6,18 +6,21 @@ if (in_array('Dashboard', array_column($privilegios, 'modulo'))) {
 } else {
     $PermisoDashboard = false;
 }
-#masterdata
-if (in_array('MasterData', array_column($privilegios, 'modulo'))) {
-    $PermisoMasterData = true;
-} else {
-    $PermisoMasterData = false;
-}
+
 #transaction
 if (in_array('Transaction', array_column($privilegios, 'modulo'))) {
     $PermisoTransaction = true;
 } else {
     $PermisoTransaction = false;
 }
+
+#masterdata
+if (in_array('MasterData', array_column($privilegios, 'modulo'))) {
+    $PermisoMasterData = true;
+} else {
+    $PermisoMasterData = false;
+}
+
 #Seguridad
 if (in_array('Security', array_column($privilegios, 'modulo'))) {
     $PermisoSecurity = true;
@@ -101,92 +104,92 @@ if (in_array('Security', array_column($privilegios, 'modulo'))) {
                         </li>
                     </ul>
                 </li>
-
-                <!-- Masterdata -->
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-folder-open"></i>
-                        <p>Master Data </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <?php
-                            // Verificar si el usuario tiene el permiso de "Software"
-                            if ($PermisoSTF) {
-                                echo ' <li class="nav-item">';
-                                echo '<a href="../views/view_software.php" class="nav-link">';
-                                echo '<i class="far fa-circle nav-icon"></i>';
-                                echo ' <p>Software</p>';
-                                echo '</a>';
-                                echo '</li>';
-                            }
-
-                            // Verificar si el usuario tiene el permiso de "Perifericos"
-                            if ($PermisoPRL) {
-                                echo'<li class="nav-item">';
-                                echo'<a href="../views/view_peripherals.php" class="nav-link">';
-                                echo'<i class="far fa-circle nav-icon"></i>';
-                                echo'<p>Perifericos</p>';
-                                echo'</a>';
-                                echo'</li>';
-                                
-                            }
-                                            
-                            // Verificar si el usuario tiene el permiso de "Colaboradores"
-                            if ($PermisoCBT) {
-                                echo '<li class="nav-item">';
-                                echo '<a href="../views/view_collaborator.php" class="nav-link">';
-                                echo '<i class="far fa-circle nav-icon"></i>';
-                                echo '<p>Colaboradores</p>';
-                                echo '</a>';
-                                echo '</li>';                            
-                            }
-                            ?>  
-                    </ul>
-                </li>
-
                 <!-- Transaction -->
-                <li class="nav-item">
-                    <a href="../views/explorer.php" class="nav-link">
-                        <i class="nav-icon fa fa-database"></i>
-                        <p> Transaction </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <?php
-                        // Verificar si el usuario tiene el permiso de "USER"
-                        if ($PermisoCMP) {
-                            // Mostrar la opción del menú para el usuario
-                            echo '<li class="nav-item">';
-                            echo '<a href="../views/view_computer.php" class="nav-link">';
-                            echo '<i class="far fa-circle nav-icon"></i>';
-                            echo ' <p>Computadoras</p>';
-                            echo '</a>';
-                            echo '</li>';
-                        }
-                        if ($PermisoPCA) {
-                            echo ' <li class="nav-item">';
-                            echo '<a href="../views/view_assignment_pc.php" class="nav-link">';
-                            echo ' <i class="far fa-circle nav-icon"></i>';
-                            echo '  <p>Asignar PC</p>';
-                            echo ' </a>';
-                            echo ' </li>';
-                        } 
-                        if ($PermisoWR) {
-                            echo '  <li class="nav-item">';
-                            echo ' <a href="../views/view_warranty.php" class="nav-link">';
-                            echo '  <i class="far fa-circle nav-icon"></i>';
-                            echo '   <p>Garantia</p>';
-                            echo ' </a>';
-                            echo ' </li>';
-                        } 
-                        ?>
-                    </ul>
-                </li>
+                <?php
+                if ($PermisoTransaction) {
+                    echo '<li class="nav-item"> ';
+                    echo '<a href="#" class="nav-link">';
+                    echo '<i class="nav-icon fa fa-database"></i>';
+                    echo '<p> Transaction </p>';
+                    echo '</a>';
+                    echo ' <ul class="nav nav-treeview">';
 
+                    // Verificar si el usuario tiene el permiso de "USER"
+                    if ($PermisoCMP) {
+                        // Mostrar la opción del menú para el usuario
+                        echo '<li class="nav-item">';
+                        echo '<a href="../views/view_computer.php" class="nav-link">';
+                        echo '<i class="far fa-circle nav-icon"></i>';
+                        echo ' <p>Computadoras</p>';
+                        echo '</a>';
+                        echo '</li>';
+                    }
+                    if ($PermisoPCA) {
+                        echo ' <li class="nav-item">';
+                        echo '<a href="../views/view_assignment_pc.php" class="nav-link">';
+                        echo ' <i class="far fa-circle nav-icon"></i>';
+                        echo '  <p>Asignar PC</p>';
+                        echo ' </a>';
+                        echo ' </li>';
+                    }
+                    if ($PermisoWR) {
+                        echo '  <li class="nav-item">';
+                        echo ' <a href="../views/view_warranty.php" class="nav-link">';
+                        echo '  <i class="far fa-circle nav-icon"></i>';
+                        echo '   <p>Garantia</p>';
+                        echo ' </a>';
+                        echo ' </li>';
+                    }
+                echo '</ul>';
+                echo '</li>';
+                }
+                ?>
+                <!-- Masterdata -->
+                <?php
+                if ($PermisoMasterData) {
+                    echo '<li class="nav-item">';
+                    echo '<a href="#" class="nav-link">';
+                    echo '   <i class="nav-icon fas fa-folder-open"></i>';
+                    echo '    <p>Master Data </p>';
+                    echo '</a>';
+                    echo '<ul class="nav nav-treeview">';
 
+                    // Verificar si el usuario tiene el permiso de "Software"
+                    if ($PermisoSTF) {
+                        echo ' <li class="nav-item">';
+                        echo '<a href="../views/view_software.php" class="nav-link">';
+                        echo '<i class="far fa-circle nav-icon"></i>';
+                        echo ' <p>Software</p>';
+                        echo '</a>';
+                        echo '</li>';
+                    }
+
+                    // Verificar si el usuario tiene el permiso de "Perifericos"
+                    if ($PermisoPRL) {
+                        echo '<li class="nav-item">';
+                        echo '<a href="../views/view_peripherals.php" class="nav-link">';
+                        echo '<i class="far fa-circle nav-icon"></i>';
+                        echo '<p>Perifericos</p>';
+                        echo '</a>';
+                        echo '</li>';
+                    }
+
+                    // Verificar si el usuario tiene el permiso de "Colaboradores"
+                    if ($PermisoCBT) {
+                        echo '<li class="nav-item">';
+                        echo '<a href="../views/view_collaborator.php" class="nav-link">';
+                        echo '<i class="far fa-circle nav-icon"></i>';
+                        echo '<p>Colaboradores</p>';
+                        echo '</a>';
+                        echo '</li>';
+                    }
+
+                    echo '</ul>';
+                    echo '</li>';
+                }
+                ?>
                 <!-- Security -->
                 <?php
-
-
 
                 if ($PermisoSecurity) {
                     echo '<li class="nav-item">';
@@ -199,9 +202,9 @@ if (in_array('Security', array_column($privilegios, 'modulo'))) {
                     if ($PermisoRLS) {
 
                         echo '   <li class="nav-item">';
-                        echo '  <a href="#" class="nav-link">';
+                        echo '  <a href="../views/view_permissions.php" class="nav-link">';
                         echo '  <i class="far fa-circle nav-icon"></i>';
-                        echo '  <p>Roles</p>';
+                        echo '  <p>Permisos</p>';
                         echo ' </a>';
                         echo '</li>';
                     }

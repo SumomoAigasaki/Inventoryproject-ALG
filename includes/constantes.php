@@ -128,6 +128,18 @@ elseif ($actualPage == 'view_peripherals.php') {
     $pageLink = "update_warranty.php";
   }
 
+  //Roles
+  elseif ($actualPage == 'view_permissions.php') {
+    $pageName = 'Listado de los permisos por rol ';
+    $pageLink = "view_warrpermissions";
+  } elseif ($actualPage == 'insert_permissions.php') {
+    $pageName = 'Registro de Permisos';
+    $pageLink = "insert_permissions.php";
+  } elseif ($actualPage == 'update_permissions.php') {
+    $pageName = 'Actualizar Permisos';
+    $pageLink = "update_permissions.php";
+  }
+
 
   //EXTRAS
  elseif ($actualPage == 'update_password.php') {

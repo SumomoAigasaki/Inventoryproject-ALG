@@ -19,21 +19,20 @@ function dataTableUser($stmt)
     echo "<td>" . $row['PCA_Inventory_Date'] . "</td>";
     echo "<td>" . $row['User_Username'] . "</td>";
     echo "<td>" . $row['STS_Description'] . "</td>";
-  
+
     echo "<td align='center'> 
             <a href='../views/update_assignment_pc.php?p=" . $row['PCA_idTbl_PC_Assignment'] . "' class='btn btn-outline-primary btn-sm' title='Editar Registro'>
               <i class='fas fa-pencil-alt'></i>
             </a>
             <a href='../views/view_mappingSoftware.php?p=" . $row['PCA_idTbl_PC_Assignment'] . "' class='btn btn-outline-info btn-sm' title='Más Información'>
             <i class='fas fa-info'></i>
-            </a>
-   
-            <a  href='../views/PCassignmentcontract.php?p=" . $row['PCA_idTbl_PC_Assignment'] . "' class='btn btn-outline-dark btn-sm imprimirContrato' title='Imprimir Contrato' name='imprimirContrato' id='imprimirContrato' >
+            </a>";
+    if ($row['STS_Description'] == "Activo(a)") {
+    echo"  <a  href='../views/PCassignmentcontract.php?p=" . $row['PCA_idTbl_PC_Assignment'] . "' class='btn btn-outline-dark btn-sm imprimirContrato' title='Imprimir Contrato' name='imprimirContrato' id='imprimirContrato' >
               <i class='fa fa-file-contract'></i>
-            </a>
-  
-
-            <button class='btn btn-outline-danger btn-sm btnDeleteCMP' title='Eliminar Registro' name='btnDeleteCBT' id='btnDeleteCBT' data-id='" . $row['PCA_idTbl_PC_Assignment'] . "'>
+            </a>";
+            }
+     echo"     <button class='btn btn-outline-danger btn-sm btnDeletePCA' title='Eliminar Registro' name='btnDeletePCA' id='btnDeletePCA' data-id='" . $row['PCA_idTbl_PC_Assignment'] . "'>
               <i class='fas fa-trash-alt'></i>
             </button>
           </td>";
@@ -196,13 +195,53 @@ function dataTableUser($stmt)
     </div>
     <!-- /.card -->
   </section>
-
 </div>
-
 <?php
 include "../templates/footer.php";
 ?>
+</div>
 
+<?php
+function deleteUser()
+{
+  global $conn; // Utilizar la variable $conn en el ámbito de la función
+
+  if (isset($_POST['id'])) {
+    $id = $_POST["id"];
+
+    $stmt = $conn->prepare("CALL sp_deleteAssigmentPC(?)");
+    // Mandamos los parametros y los input que seran enviados al PA O SP
+    $stmt->bind_param("s", $id); // Ejecutar el procedimiento almacenado
+
+    $stmt->execute();
+    // $query = "CALL sp_deleteComputer('$id')";
+    // echo $query;
+    // echo '<pre>';
+
+    if ($stmt->error) {
+      error_log("Error en la ejecución del procedimiento almacenado: " . $stmt->error);
+    }
+    // Obtener el número de filas afectadas por el insert
+    $stmt->bind_result($idPCA);
+    $stmt->fetch();
+    // Cerrar el statement
+    $stmt->close();
+    // Avanzar al siguiente conjunto de resultados si hay varios
+    $conn->next_result();
+
+    if ($idPCA > 0) {
+      echo '<script>
+          setTimeout(function() {
+            window.location.href = "view_assignment_pc.php";
+          }, 10000);
+        </script>';
+    }
+  }
+}
+
+// Llamar a la función deleteComputer
+deleteUser();
+?>
 
 <script>
   $(function() {
@@ -213,5 +252,39 @@ include "../templates/footer.php";
       "lengthChange": false,
       "autoWidth": false
     });
+  });
+
+  $('#example1').on('click', 'button.btnDeletePCA', function() {
+    var id = $(this).data('id');
+
+    // Mostrar Sweet Alert
+    Swal.fire({
+      title: "Eliminar registro",
+      text: "¿Estás seguro de eliminar este registro N: " + id + "?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, Quiero Elimnarlo!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $('#deleteId').val(id);
+
+        $.ajax({
+          type: "POST",
+          url: window.location.href, // URL actual de la página
+          data: {
+            id: id
+          }, // Datos a enviar al servidor
+          success: function(response) {
+            Swal.fire("Registro eliminado", "El registro ha sido eliminado correctamente", "success").then(() => {
+              // Redireccionar después de mostrar el SweetAlert
+              window.location.href = "view_assignment_pc.php";
+            });
+          }
+        });
+      }
+    });
+
   });
 </script>

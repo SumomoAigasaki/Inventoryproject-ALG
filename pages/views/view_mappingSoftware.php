@@ -1,22 +1,22 @@
 <?php
 require_once "../templates/nav.php";
 require_once "../templates/menu.php";
-$opciones = false;
+// $opciones = false;
 
 //Parte de codigo se hace de manera extra para no tener que entrar al metodo o funcion y que se haca al cargar la pagina 
 //y esta misma tenga el conocimiento si tendra la columna de opciones o no desde el momento que esta se carga
-$idMS = $_GET['p'];
+// $idMS = $_GET['p'];
 // Realizar consulta para obtener todos los registros
-$stmt = $conn->query("CALL sp_selectAllMappingSoftware($idMS)");
-$existingOptions  = array(); // Aquí almacenaremos los datos de la segunda consulta
+// $stmt = $conn->query("CALL sp_selectAllMappingSoftware($idMS)");
+// $existingOptions  = array(); // Aquí almacenaremos los datos de la segunda consulta
 
-while ($fila = $stmt->fetch_assoc()) {
-  if ($fila['STS_Description'] == "Desintalado") {
-    $opciones = true;
-  }
-}
-$stmt->close();
-$conn->next_result();
+// while ($fila = $stmt->fetch_assoc()) {
+//   if ($fila['STS_Description'] == "Desintalado") {
+//     $opciones = true;
+//   }
+// }
+// $stmt->close();
+// $conn->next_result();
 
 
 function dataTableUser($stmt)
@@ -34,13 +34,14 @@ function dataTableUser($stmt)
     echo "<td>" . $row['MS_Instalation_date'] . "</td>";
     echo "<td>" . $row['STS_Description'] . "</td>";
     echo "<td>" . $row['User_Username'] . "</td>";
-    if ($row['STS_Description'] == "Desintalado") {
-      echo "<td align='center'> 
-      <button class='btn btn-outline-success btn-sm btnDeleteCMP' title='Activar registro' name='btnDeleteCBT' id='btnDeleteCBT' data-id='" . $row['MS_idtbl_mapping_softwarecol'] . "'>
-      <i class='fas fa-toggle-on'></i>
-             </button>
-          </td>";
-    }
+    // echo "<td align='center'> ";
+    // if ($row['STS_Description'] == "Desintalado") {
+    //   echo "
+    //   <button class='btn btn-outline-success btn-sm btnDeleteCMP' title='Activar registro' name='btnDeleteCBT' id='btnDeleteCBT' data-id='" . $row['MS_idtbl_mapping_softwarecol'] . "'>
+    //   <i class='fas fa-wrench'></i>
+    //          </button>";
+    // }
+    // echo"</td>";
 
     echo "</tr>";
   }
@@ -49,10 +50,17 @@ function dataTableUser($stmt)
 //PARA OBTENEER EL VALOR DE COMPUTADORA
 $idMS = $_GET['p'];
 $stmt = $conn->query("CALL sp_selectAllMappingSoftware($idMS)");
-while ($row = $stmt->fetch_assoc()) {
-  $computerid = $row['CMP_idTbl_Computer'];
-  $computername = $row['CMP_Technical_Name'];
-  $computadoraValue = $row['Datos'];
+if ($stmt->num_rows > 0) {
+  while ($row = $stmt->fetch_assoc()) {
+      $computerid = $row['CMP_idTbl_Computer'];
+      $computername = $row['CMP_Technical_Name'];
+      $computadoraValue = $row['Datos'];
+  }
+} else {
+  $computerid = "Datos no disponibles";
+  $computername = "Datos no disponibles" ;
+  $computadoraValue ="Datos no disponibles" ;
+  // Asigna valores predeterminados para $computername y $computadoraValue si es necesario
 }
 $stmt->close();
 $conn->next_result();
@@ -150,11 +158,11 @@ $conn->next_result();
                       }
                     }
 
-                    if (validar_permisos($rol, $PermisoPCA)) {
-                      if ($opciones) {
-                        echo "<th>Opciones</th>";
-                      }
-                    }
+                    // if (validar_permisos($rol, $PermisoPCA)) {
+                    //   if ($opciones) {
+                    //     echo "<th>Opciones</th>";
+                    //   }
+                    // }
                     ?>
                     <!-- <th>Opciones</th> -->
 
@@ -195,11 +203,11 @@ $conn->next_result();
                     <th>Estado</th>
                     <th>Usuario</th>
                     <?php
-                    if (validar_permisos($rol, $PermisoPCA)) {
-                      if ($opciones) {
-                        echo "<th>Opciones</th>";
-                      }
-                    }
+                    // if (validar_permisos($rol, $PermisoPCA)) {
+                    //   if ($opciones) {
+                    //     echo "<th>Opciones</th>";
+                    //   }
+                    // }
                     ?>
                     <!-- <th>Opciones</th> -->
 

@@ -227,19 +227,21 @@ if (!in_array($pagina_actual, $linksDefault) && !$PermisoWR && in_array($pagina_
 
 
 
-#ROLES
+#ROLES / PERMISOS
+$linksRLS = array(
+  "insert_permissions.php",
+  "update_permissions.php",
+  "view_permissions.php"
+);
 
 if (in_array('RLS', array_column($privilegios, 'permiso'))) {
   $PermisoRLS = true;
 } else {
   $PermisoRLS = false;
 }
-
-
-
-// if (array_key_exists($pagina_actual, $linksCMP) && array_key_exists($pagina_actual, $linksUSER) && array_key_exists($pagina_actual, $linksDefault)) {
-//   // header("HTTP/1.0 404 Not Found");
-//   header("Location: ../templates/404.php");
-//   exit();
-// }
+if (!in_array($pagina_actual, $linksDefault) && !$PermisoRLS && in_array($pagina_actual, $linksRLS)) {
+  // Si la página actual no está en la lista de enlaces por defecto, el usuario no tiene el permiso "USER" y la página actual no está permitida
+  header("Location: ../templates/404.php");
+  exit();
+}
 
