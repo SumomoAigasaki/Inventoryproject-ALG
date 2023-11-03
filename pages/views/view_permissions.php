@@ -32,16 +32,6 @@ function dataTableUser($stmt, $countRoles)
     echo ">";
     echo "<td>" . $row['USP_IDtbl_user_privileges'] . "</td>";
 
-    // if ($lineNumber == $position) {
-    //   echo "<td align='center'> 
-    //           <button href='../views/update_peripherals.php?p=" . $row['USP_IDtbl_user_privileges'] . "' class='btn btn-outline-primary btn-sm' title='Editar Registro'>
-    //               <i class='fas fa-pencil-alt'></i>
-    //           </button>
-    //         </td>";
-    // } else {
-    //   echo "<td></td>"; // Espacio en blanco si RLS_Description se repite
-    // } 
-
     // Iterar sobre cada elemento del array $countRoles y verificar la condición para cada uno de ellos
     if (isset($countRoles[$lineNumber]) && $countRoles[$lineNumber]['id'] == $row['USP_IDtbl_user_privileges']) {
       $conteo = $countRoles[$lineNumber]['conteo']; // Obtener el valor 'conteo' del primer elemento del array
@@ -79,22 +69,6 @@ function dataTableUser($stmt, $countRoles)
         $idrol = $countRole['id'];
         $totalCount =$countRole['total'];
 
-
-        // if ($countRole['id'] == 1) {
-        //         // Si el 'id' es 1, calcula la posición basada en 0 y 'cr_CountRoles' y muestra un mensaje correspondiente
-        //         $position = 0 + $cr_CountRoles;
-        //         $border = 0 + $conteo;
-        //         // echo '.-1 LINEA A IMPRIMIR:' . $position . "\n .-   ";
-        //       } else {
-        //         // Si el 'id' no es 1, accede al 'conteo' correspondiente al valor de 'previousCount' y calcula la posición basada en eso y 'cr_CountRoles'
-        //         $position =  $countRoles[$previousCount]['conteo'] + $cr_CountRoles;
-        //         $border = $countRoles[$previousCount]['conteo'] + $conteo;
-        //         // Imprime un mensaje indicando la línea a imprimir, seguido de $position y un salto de línea.
-        //         // echo ' . . .- - -2 LINEA A IMPRIMIR:' . $position . "\n  . . .- - -";
-        //       }
-        //       $previousCount++; // Aumenta 'previousCount' en preparación para la siguiente iteración
-        //       break; // Romper el bucle si se encuentra una coincidencia
-        //     }
         // Almacenar el resultado de la función array_key_exists en una variable
 
         // Verifica si 'id' existe en el array actual
@@ -119,35 +93,22 @@ function dataTableUser($stmt, $countRoles)
           //obtenemos el conteo del array anterior y le sumamos lo que esta dentro de la varibale
           $position = $countRoles[$previousCount]['conteo'] + $cr_CountRoles;
           
-          if ( $conteo < $totalCount ){
-            // echo"<p><b>conteo es menor que el total registros</b></p>";
+          //validacion para imprimir el border en la posicion que se deberia 
+            if ( $conteo < $totalCount ){
+              // echo"<p><b>conteo es menor que el total registros</b></p>";
+              //Variable para guardar el valor de la resta
+              $valueRemaining=abs(($countRoles[$previousCount]['conteo'] + $conteo) -$totalCount); 
 
-            $valor= $countRoles[$previousCount]['conteo'] + $conteo;
-            $valueRemaining=abs(($countRoles[$previousCount]['conteo'] + $conteo) -$totalCount); 
+              // echo"<p>posicion: ".$valor."   numero total de filas:".$totalCount."</p>";
+              // echo"<p>valor restante es: ". $valueRemaining."</p>";
+              $border = ($countRoles[$previousCount]['conteo']+$valueRemaining) + $conteo;
 
-            // echo"<p>posicion: ".$valor."   numero total de filas:".$totalCount."</p>";
-            // echo"<p>valor restante es: ". $valueRemaining."</p>";
-            $border = ($countRoles[$previousCount]['conteo']+$valueRemaining) + $conteo;
-
-          }
-          elseif  ( $conteo === $totalCount ){
-            // echo"<p></p><b>conteo es igual que el total registros</b></p>";
-            $border = $countRoles[$previousCount]['conteo'] + $conteo;
-          }
-
-         
-          // echo "segundo valor   " . $idrol . " >= " . $firstArrayValue;
-          // // Imprime un mensaje indicando la línea a imprimir, seguido de $position y un salto de línea.
-          // echo ' . . .- - -2 LINEA A IMPRIMIR:' . $position . "\n  . . .- - - <br/>";
+            }
+            elseif  ( $conteo === $totalCount ){
+              // echo"<p></p><b>conteo es igual que el total registros</b></p>";
+              $border = $countRoles[$previousCount]['conteo'] + $conteo;
+            }
         }
-        // echo "<p>";
-        // echo "Array <br />";
-        // print_r(array($countRole));
-        // echo "<br />";
-        // // echo "<br />";
-        // echo  "Id  " . $idrol . "<br />";
-        // echo "primer valor   " . $firstArrayValue . "";
-        // // echo  $idrol ."<br />";
 
         echo "</p>";
         $previousCount++; // Aumenta 'previousCount' en preparación para la siguiente iteración
