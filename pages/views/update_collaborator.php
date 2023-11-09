@@ -156,7 +156,7 @@ $conn->next_result();
                                         </div>
                                         <!-- Nacionalidad -->
                                         <div class="form-group" style="padding-top:28px;">
-                                            <label>Nacionalidad: </label>
+                                            <label><code>*</code>Nacionalidad: </label>
                                             <?php
                                             #Se procede a llamar al procedimiento almacenado que se llama sp_manufacturer_select,con la variable que almancena "cnn" la base de datos 
                                             $resultado = mysqli_query($conn, "CALL sp_selectNationality()"); ?>
@@ -182,7 +182,7 @@ $conn->next_result();
                                         <!-- Codigo de Empleado -->
 
                                         <div class="form-group">
-                                            <label>Código Empleado:</label>
+                                            <label><code>*</code>Código Empleado:</label>
                                             <input type="number" class="form-control" name="txtEmployeeCode" id="txtEmployeeCode" maxlength="45" placeholder="002872" value="<?php echo $CBT_Employee_Code ?>">
                                         </div>
 
@@ -200,7 +200,7 @@ $conn->next_result();
                                     <!-- Primer Nombre -->
                                     <div class="col-sm-4">
                                         <div class="form-group">
-                                            <label>Primer Nombre :</label>
+                                            <label><code>*</code>Primer Nombre :</label>
                                             <input type="text" class="form-control" name="txtfirstName" id="txtfirstName" maxlength="25" placeholder="José" value="<?php echo $CBT_First_Name ?>">
                                         </div>
                                     </div>
@@ -216,7 +216,7 @@ $conn->next_result();
                                     <!-- Primer Apellido -->
                                     <div class="col-sm-4">
                                         <div class="form-group">
-                                            <label>Primer Apellido :</label>
+                                            <label><code>*</code>Primer Apellido :</label>
                                             <input type="text" class="form-control" name="txtfirstSurname" id="txtfirstSurname" maxlength="25" placeholder="Martinez" value="<?php echo $CBT_First_Surname ?>">
                                         </div>
                                     </div>
@@ -234,7 +234,7 @@ $conn->next_result();
                                     <!-- Genero -->
                                     <div class="col-sm-4">
                                         <div class="form-group">
-                                            <label>Genero: </label>
+                                            <label><code>*</code>Genero: </label>
                                             <?php
                                             #Se procede a llamar al procedimiento almacenado que se llama sp_manufacturer_select,con la variable que almancena "cnn" la base de datos 
                                             $resultado = mysqli_query($conn, "CALL sp_selectGender()"); ?>
@@ -267,7 +267,7 @@ $conn->next_result();
                                     <!-- Dirección -->
                                     <div class="col-sm-3">
                                         <div class="form-group">
-                                            <label>Dirección :</label>
+                                            <label><code>*</code>Dirección :</label>
                                             <input type="text" class="form-control" name="txtaddress" id="txtaddress" maxlength="60" placeholder="B° el centro" value="<?php echo $CBT_Address; ?>">
                                         </div>
                                     </div>
@@ -276,7 +276,7 @@ $conn->next_result();
                                     <!-- Gerencia -->
                                     <div class="col-sm-3">
                                         <div class="form-group">
-                                            <label>Gestion: </label>
+                                            <label><code>*</code>Gestion: </label>
                                             <?php
                                             #Se procede a llamar al procedimiento almacenado que se llama sp_manufacturer_select,con la variable que almancena "cnn" la base de datos 
                                             $resultado = mysqli_query($conn, "CALL sp_selectManagement()"); ?>
@@ -299,7 +299,7 @@ $conn->next_result();
                                     <!-- Proceso -->
                                     <div class="col-sm-3">
                                         <div class="form-group">
-                                            <label>Proceso: </label>
+                                            <label><code>*</code>Proceso: </label>
                                             <?php
                                             #Se procede a llamar al procedimiento almacenado que se llama sp_manufacturer_select,con la variable que almancena "cnn" la base de datos 
                                             $resultado = mysqli_query($conn, "CALL sp_selectProcess()"); ?>
@@ -321,9 +321,9 @@ $conn->next_result();
                                     <!-- Estado de la computadora  -->
                                     <div class="col-sm-3">
                                         <div class="form-group">
-                                            <label>Estado Colaborador: </label>
+                                            <label><code>*</code>Estado Colaborador: </label>
                                             <?php $resultado = mysqli_query($conn, "CALL sp_status_select()"); ?>
-                                            <select class="form-control" id="slctStatus" name="slctStatus">
+                                            <select class="form-control select2bs4" id="slctStatus" name="slctStatus">
                                                 <?php while ($row = mysqli_fetch_array($resultado)) {
                                                     $select = ($STS_idTbl_Status == $row['STS_idTbl_Status']) ? "selected=selected" : "";
                                                 ?>
@@ -345,7 +345,7 @@ $conn->next_result();
                                 <div class="row justify-content-center" style="padding-bottom:20px;">
                                     <div class="col-sm-4">
                                         <div class="form-group">
-                                            <label>Cargo a Desempeñar:</label>
+                                            <label><code>*</code>Cargo a Desempeñar:</label>
                                             <input type="text" class="form-control" name="txtposition" id="txtposition" maxlength="45" placeholder="Auxiliar " value="<?php echo $CBT_employee_position; ?>">
                                         </div>
                                     </div>

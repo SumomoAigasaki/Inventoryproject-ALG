@@ -169,11 +169,11 @@ $conn->next_result();
                     <!-- MARCA  -->
                     <div>
                       <div class="form-group">
-                        <label>Marca: </label>
+                        <label><code>*</code>Marca: </label>
                         <?php
                         #Se procede a llamar al procedimiento almacenado que se llama sp_manufacturer_select,con la variable que almancena "cnn" la base de datos 
                         $resultado = mysqli_query($conn, "CALL sp_manufacturer_select()"); ?>
-                        <select class="form-control" id="selectManufacturerSelect" name="selectManufacturerSelect" onchange="filtrarModelos()">
+                        <select class="form-control select2bs4" id="selectManufacturerSelect" name="selectManufacturerSelect" onchange="filtrarModelos()">
                           <?php while ($row = mysqli_fetch_array($resultado)) {
                             $select = ($MFC_idTbl_Manufacturer == $row['MFC_idTbl_Manufacturer']) ? "selected=selected" : "";
 
@@ -195,7 +195,7 @@ $conn->next_result();
                   <div class="col-sm-3">
                     <div class="form-group">
                       <!-- Fecha de Compra -->
-                      <label>Fecha de Compra:</label>
+                      <label><code>*</code>Fecha de Compra:</label>
                       <div class="input-group">
                         <input type="text" class="form-control datepicker-input" name="txtAcquisitionDate" id="txtAcquisitionDate" value="<?php echo $CMP_Acquisition_Date; ?>">
                       </div>
@@ -203,7 +203,7 @@ $conn->next_result();
                     <!-- MODELOS  -->
                     <div>
                       <div class="form-group">
-                        <label>Modelo : </label>
+                        <label><code>*</code>Modelo : </label>
                         <!-- <input type="text" id="lookModels" placeholder="Buscar modelo en especifico" class="form-control">
                         <?php $resultado = mysqli_query($conn, "CALL sp_model_select()"); ?> -->
                         <select class="form-control select2bs4" id="selectModel" name="selectModel">
@@ -229,9 +229,9 @@ $conn->next_result();
                   <!-- TIPO DE COMPUTADORA -->
                   <div class="col-sm-3">
                     <div class="form-group">
-                      <label>Tipo de Computadora : </label>
+                      <label><code>*</code>Tipo de Computadora : </label>
                       <?php $resultado = mysqli_query($conn, "CALL sp_computerType_select()"); ?>
-                      <select class="form-control" id="selectComputerTypes" name="selectComputerTypes">
+                      <select class="form-control select2bs4" id="selectComputerTypes" name="selectComputerTypes">
                         <?php while ($row = mysqli_fetch_array($resultado)) {
                           $select = ($CT_idTbl_Computer_Type == $row['CT_idTbl_Computer_Type']) ? "selected=selected" : "";
                         ?>
@@ -249,14 +249,14 @@ $conn->next_result();
                   <!-- Nombre Tecnico-->
                   <div class="col-sm-3">
                     <div class="form-group">
-                      <label>Nombre Técnico: </label>
+                      <label><code>*</code>Nombre Técnico: </label>
                       <input type="text" class="form-control" name="txtTechnicalName" id="txtTechnicalName" maxlength="45" value="<?php echo $CMP_Technical_Name; ?>" placeholder="ASSET2023-0#">
                     </div>
                   </div>
                   <!-- Servitag-->
                   <div class="col-sm-2">
                     <div class="form-group">
-                      <label>Servitag: </label>
+                      <label><code>*</code>Servitag: </label>
                       <input type="text" class="form-control" name="txtServitag" id="txtServitag" maxlength="45" value="<?php echo $CMP_Servitag; ?>" placeholder="FKCX???">
                     </div>
                   </div>
@@ -264,7 +264,7 @@ $conn->next_result();
                   <!-- Fecha limite garantia -->
                   <div class="col-sm-2">
                     <div class="form-group">
-                      <label ACRONYM title="Fecha Límite de la Garantía">Fec. Lím. Garantía:</label>
+                      <label ACRONYM title="Fecha Límite de la Garantía"><code>*</code>Fec. Lím. Garantía:</label>
                       <div class="input-group">
                         <input type="text" class="form-control datepicker-input " name="txtWarrantyExpiration" id="txtWarrantyExpiration" value="<?php echo $CMP_Warranty_Expiration; ?>" onchange="actualizarAnio()">
                       </div>
@@ -284,11 +284,11 @@ $conn->next_result();
                 <div class="row" style="padding-bottom:10px;">
                   <div class="col-sm-3">
                     <div class="form-group">
-                      <label>Tipo de Garantia: </label>
+                      <label><code>*</code>Tipo de Garantia: </label>
                       <?php
                       #Se procede a llamar al procedimiento almacenado que se llama sp_manufacturer_select,con la variable que almancena "cnn" la base de datos 
                       $resultado = mysqli_query($conn, "CALL sp_typeGuarantee_select()"); ?>
-                      <select class="form-control" id="selectTypeGuarantee" name="selectTypeGuarantee">
+                      <select class="form-control select2bs4" id="selectTypeGuarantee" name="selectTypeGuarantee">
                         <?php while ($row = mysqli_fetch_array($resultado)) {
 
                           $select = ($TG_idtbl_Type_Guarantee == $row['TG_idtbl_Type_Guarantee']) ? "selected=selected" : "";
@@ -307,7 +307,7 @@ $conn->next_result();
                   <!-- Lincencia -->
                   <div class="col-sm-3">
                     <div class="form-group">
-                      <label>Licencia: </label>
+                      <label><code>*</code>Licencia: </label>
                       <input type="text" class="form-control" name="txtLicense" id="txtLicense" maxlength="60" value="<?php echo $CMP_License; ?>" placeholder="CMCDN-?????-?????-?????-?????">
                     </div>
                   </div>
@@ -321,9 +321,9 @@ $conn->next_result();
                   <!-- Estado de la computadora  -->
                   <div class="col-sm-3">
                     <div class="form-group">
-                      <label>Estado Computadora: </label>
+                      <label><code>*</code>Estado Computadora: </label>
                       <?php $resultado = mysqli_query($conn, "CALL sp_status_select()"); ?>
-                      <select class="form-control" id="selectStatus" name="selectStatus">
+                      <select class="form-control select2bs4" id="selectStatus" name="selectStatus">
                         <?php while ($row = mysqli_fetch_array($resultado)) {
                           $select = ($STS_idTbl_Status == $row['STS_idTbl_Status']) ? "selected=selected" : "";
                         ?>
@@ -345,10 +345,10 @@ $conn->next_result();
                   <div class="col-sm-3">
                     <!-- Localizacion -->
 
-                    <label>Localización Computadora: </label>
+                    <label><code>*</code>Localización Computadora: </label>
                     <div class="form-group">
                       <?php $resultado = mysqli_query($conn, "CALL sp_location_select"); ?>
-                      <select class="form-control" id="selectLocations" name="selectLocations">
+                      <select class="form-control select2bs4" id="selectLocations" name="selectLocations">
                         <?php while ($row = mysqli_fetch_array($resultado)) {
                           $select = ($LCT_idTbl_Location == $row['LCT_idTbl_Location']) ? "selected=selected" : "";
                         ?>
@@ -561,7 +561,7 @@ if (isset($_POST["buttonUpdateComputer"])) {
     var statusSelect = document.getElementById('selectStatus');
     var locationsSelect = document.getElementById('selectLocations');
     var todayDateInput = document.getElementById('todayDate');
-
+    var typeGuanteeSelect = document.getElementById('selectTypeGuarantee');
 
     if (acquisitionFecha.value.trim() === "") {
       console.log("dentro de fecha");
@@ -601,6 +601,9 @@ if (isset($_POST["buttonUpdateComputer"])) {
     } else if (locationsSelect.selectedIndex == 0) {
       toastr.warning('La <b>Localizacion del Computador</b> esta vacio(a).<br>Por favor Ingrese una Localizacion del Computador valida');
       locationsSelect.focus();
+    } else if (typeGuanteeSelect.selectedIndex == 0) {
+      toastr.warning('El <b>Tipo de Garantia</b> esta vacio(a).<br>Por favor Ingrese un Tipo de Garantia valida');
+      typeGuanteeSelect.focus();
     } else {
       // Si no hay errores, procesa los datos enviados
       //$opcion = $_POST['opciones'];

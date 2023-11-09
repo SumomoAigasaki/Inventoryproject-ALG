@@ -116,7 +116,7 @@ $conn->next_result();
                                     <!-- nombre -->
                                     <div class="col-sm-4">
                                         <div class="form-group" style="padding-top: 20px;">
-                                            <label>Nombre Periferico:</label>
+                                            <label><code>*</code>Nombre Periferico:</label>
                                             <input type="text" class="form-control" name="txt_namePRL" id="txt_namePRL" maxlength="45" value="<?php echo $PRL_Name ?>" required>
                                         </div>
                                     </div>
@@ -124,7 +124,7 @@ $conn->next_result();
                                     <!-- Tipo de componente  -->
                                     <div class="col-sm-4" style="padding-top: 20px;">
                                         <div class="form-group">
-                                            <label>Tipo De Periferico: </label>
+                                            <label><code>*</code>Tipo De Periferico: </label>
                                             <?php $resultado = mysqli_query($conn, "CALL sp_selectComponenteType()"); ?>
                                             <select class="form-control" id="slct_componentType" name="slct_componentType" onchange="filtrarMarcas()">
                                                 <?php while ($row = mysqli_fetch_array($resultado)) {
@@ -156,7 +156,7 @@ $conn->next_result();
                                     <!-- Especificacion del componente -->
                                     <div class="col-sm-4" style="padding-top: 20px;">
                                         <div class="form-group">
-                                            <label>Especificacion del componente: </label>
+                                            <label><code>*</code>Especificacion del componente: </label>
                                             <?php $resultado = mysqli_query($conn, "CALL sp_selectComponentDescription()"); ?>
                                             <select class="form-control select2bs4" id="slct_componentDescription" name="slct_componentDescription">
                                                 <?php while ($row = mysqli_fetch_array($resultado)) {
@@ -198,7 +198,7 @@ $conn->next_result();
                                     <!-- Localizacion -->
                                     <div class="col-sm-4" style="padding-top: 20px;">
                                         <div class="form-group">
-                                            <label>Localizacion del Componente : </label>
+                                            <label><code>*</code>Localizacion del Componente : </label>
                                             <?php $resultado = mysqli_query($conn, "CALL sp_location_select"); ?>
                                             <select class="form-control" id="slctLocation" name="slctLocation">
                                                 <?php while ($row = mysqli_fetch_array($resultado)) {

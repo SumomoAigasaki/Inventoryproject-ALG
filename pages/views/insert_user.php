@@ -115,7 +115,7 @@ require_once "../templates/menu.php";
                                     <!-- Colaborador-->
                                     <div class="col-sm-4">
                                         <div class="form-group" style="padding-top: 70px;">
-                                            <label>Colaborador:</label>
+                                            <label><code>*</code>Colaborador:</label>
                                             <!-- <input type="text" class="form-control" id="txt_busqueda" name="txt_busqueda" placeholder="Buscar Colaborador">
                                             <?php $resultado = mysqli_query($conn, "CALL sp_selectCollaborators()"); ?> -->
                                             <select class="form-control select2bs4" id="selectColaborador" name="selectColaborador">
@@ -135,7 +135,7 @@ require_once "../templates/menu.php";
                                     <!-- UserName -->
                                     <div class="col-sm-4">
                                         <div class="form-group" style="padding-top: 70px;">
-                                            <label>Username:</label>
+                                            <label><code>*</code>Username:</label>
                                             <input type="text" class="form-control" name="txt_username" id="txt_username" maxlength="16" placeholder="fcalderon" required>
                                         </div>
                                     </div>
@@ -148,14 +148,14 @@ require_once "../templates/menu.php";
                                     <!-- email -->
                                     <div class="col-sm-3">
                                         <div class="form-group">
-                                            <label>Email:</label>
+                                            <label><code>*</code>Email:</label>
                                             <input type="email" class="form-control" name="txt_email" id="txt_email" placeholder="juanjose@alg.com" maxlength="100" required>
                                         </div>
                                     </div>
                                     <!-- Rol Usuario  -->
                                     <div class="col-sm-3">
                                         <div class="form-group">
-                                            <label>Rol Usuario: </label>
+                                            <label><code>*</code>Rol Usuario: </label>
                                             <?php $resultado = mysqli_query($conn, "CALL sp_rolesSelect()"); ?>
                                             <select class="form-control" id="selectRoles" name="selectRoles">
                                                 <?php while ($row = mysqli_fetch_array($resultado)) { ?>
@@ -173,7 +173,7 @@ require_once "../templates/menu.php";
                                     <!-- Password -->
                                     <div class="col-sm-3">
                                         <div class="form-group">
-                                            <label>Contraseña:</label>
+                                            <label><code>*</code>Contraseña:</label>
                                             <input type="password" class="form-control" name="txt_password" id="txt_password" maxlength="32" required>
                                         </div>
                                     </div>
@@ -181,7 +181,7 @@ require_once "../templates/menu.php";
                                     <!-- Password -->
                                     <div class="col-sm-3">
                                         <div class="form-group">
-                                            <label>Confirmar Contraseña:</label>
+                                            <label><code>*</code>Confirmar Contraseña:</label>
                                             <input type="password" class="form-control" name="txt_confirmPassword" id="txt_confirmPassword" maxlength="32" required>
                                         </div>
                                     </div>

@@ -114,7 +114,7 @@ require_once "../templates/menu.php"; ?>
                                     <!-- Codigo de Empleado -->
                                     <div class="col-sm-3">
                                         <div class="form-group">
-                                            <label>Código Empleado:</label>
+                                            <label><code>*</code>Código Empleado:</label>
                                             <input type="number" class="form-control" name="txtEmployeeCode" id="txtEmployeeCode" maxlength="45" placeholder="002872">
                                         </div>
                                     </div>
@@ -122,7 +122,7 @@ require_once "../templates/menu.php"; ?>
                                     <!-- Nacionalidad -->
                                     <div class="col-sm-3">
                                         <div class="form-group">
-                                            <label>Nacionalidad: </label>
+                                            <label><code>*</code>Nacionalidad: </label>
                                             <?php
                                             #Se procede a llamar al procedimiento almacenado que se llama sp_manufacturer_select,con la variable que almancena "cnn" la base de datos 
                                             $resultado = mysqli_query($conn, "CALL sp_selectNationality()"); ?>
@@ -143,7 +143,7 @@ require_once "../templates/menu.php"; ?>
                                     <!-- Primer Nombre -->
                                     <div class="col-sm-3">
                                         <div class="form-group">
-                                            <label>Primer Nombre :</label>
+                                            <label><code>*</code>Primer Nombre :</label>
                                             <input type="text" class="form-control" name="txtfirstName" id="txtfirstName" maxlength="25" placeholder="José">
                                         </div>
                                     </div>
@@ -162,7 +162,7 @@ require_once "../templates/menu.php"; ?>
                                     <!-- Primer Apellido -->
                                     <div class="col-sm-3">
                                         <div class="form-group">
-                                            <label>Primer Apellido :</label>
+                                            <label><code>*</code>Primer Apellido :</label>
                                             <input type="text" class="form-control" name="txtfirstSurname" id="txtfirstSurname" maxlength="25" placeholder="Martinez">
                                         </div>
                                     </div>
@@ -178,7 +178,7 @@ require_once "../templates/menu.php"; ?>
                                     <!-- Genero -->
                                     <div class="col-sm-3">
                                         <div class="form-group">
-                                            <label>Genero: </label>
+                                            <label><code>*</code>Genero: </label>
                                             <?php
                                             #Se procede a llamar al procedimiento almacenado que se llama sp_manufacturer_select,con la variable que almancena "cnn" la base de datos 
                                             $resultado = mysqli_query($conn, "CALL sp_selectGender()"); ?>
@@ -199,7 +199,7 @@ require_once "../templates/menu.php"; ?>
                                     <!-- Número de teléfono -->
                                     <div class="col-sm-3">
                                         <div class="form-group">
-                                            <label>Número de teléfono :</label>
+                                            <label><code>*</code>Número de teléfono :</label>
                                             <input type="text" class="form-control" name="txtphoneNumber" id="txtphoneNumber" maxlength="16" placeholder="+504 0000-0000" pattern="\([0-9]{4}\) [0-9]{4}[ -][0-9]{4}" required>
                                         </div>
                                     </div>
@@ -219,7 +219,7 @@ require_once "../templates/menu.php"; ?>
                                     <!-- Dirección -->
                                     <div class="col-sm-3">
                                         <div class="form-group">
-                                            <label>Dirección :</label>
+                                            <label><code>*</code>Dirección :</label>
                                             <input type="text" class="form-control" name="txtaddress" id="txtaddress" maxlength="60" placeholder="B° el centro">
                                         </div>
                                     </div>
@@ -227,7 +227,7 @@ require_once "../templates/menu.php"; ?>
                                     <!-- Gerencia -->
                                     <div class="col-sm-3">
                                         <div class="form-group">
-                                            <label>Gestion: </label>
+                                            <label><code>*</code>Gestion: </label>
                                             <?php
                                             #Se procede a llamar al procedimiento almacenado que se llama sp_manufacturer_select,con la variable que almancena "cnn" la base de datos 
                                             $resultado = mysqli_query($conn, "CALL sp_selectManagement()"); ?>
@@ -248,7 +248,7 @@ require_once "../templates/menu.php"; ?>
                                     <!-- Proceso -->
                                     <div class="col-sm-3">
                                         <div class="form-group">
-                                            <label>Proceso: </label>
+                                            <label><code>*</code>Proceso: </label>
                                             <?php
                                             #Se procede a llamar al procedimiento almacenado que se llama sp_manufacturer_select,con la variable que almancena "cnn" la base de datos 
                                             $resultado = mysqli_query($conn, "CALL sp_selectProcess()"); ?>
@@ -270,7 +270,7 @@ require_once "../templates/menu.php"; ?>
                                 <div class="row justify-content-center" style="padding-bottom:20px;">
                                     <div class="col-sm-4">
                                         <div class="form-group">
-                                            <label>Cargo a Desempeñar:</label>
+                                            <label><code>*</code>Cargo a Desempeñar:</label>
                                             <input type="text" class="form-control" name="txtposition" id="txtposition" maxlength="45" placeholder="Auxiliar ">
                                         </div>
                                     </div>

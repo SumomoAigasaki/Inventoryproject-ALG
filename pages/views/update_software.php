@@ -117,24 +117,24 @@ $conn->next_result();
                                         </div>
                                         <!-- USERNAME -->
                                         <div class="form-group" style="padding-left:15px;">
-                                            <label ACRONYM title="Nombre de Software">Nomb. Soft.: </label>
+                                            <label ACRONYM title="Nombre de Software"><code>*</code>Nomb. Soft.: </label>
                                             <input type="text" class="form-control" id="txtNombreSoftware" name="txtNombreSoftware" maxlength="45" value="<?php echo $SFT_Software_Name; ?>" placeholder="Nickname">
                                         </div>
                                         <!-- VERSION -->
                                         <div class="form-group" style="padding-left:15px;">
-                                            <label ACRONYM title="Version de Software Instalada">Version. Soft. Instalada : </label>
+                                            <label ACRONYM title="Version de Software Instalada"><code>*</code>Version. Soft. Instalada : </label>
                                             <input type="text" class="form-control" id="txtVersionSoftware" name="txtVersionSoftware" maxlength="25" value="<?php echo $SFT_Version_Installe; ?>" placeholder="Version">
                                         </div>
                                         <!-- Serial -->
                                         <div class="form-group" style="padding-left:15px;">
-                                            <label ACRONYM title="Serial del Software">Serial: </label>
+                                            <label ACRONYM title="Serial del Software"><code>*</code>Serial: </label>
                                             <input type="text" class="form-control" id="txtSerialSoftware" name="txtSerialSoftware" maxlength="45" value="<?php echo $SFT_Serial; ?>" placeholder="Serial">
                                         </div>
                                         <!-- Clasificacion de Licencia  -->
                                         <div class="form-group" style="padding-left:15px; padding-top:2.5px;">
-                                            <label>Tipo De software: </label>
+                                            <label><code>*</code>Clasificacion de Licencia: </label>
                                             <?php $resultado = mysqli_query($conn, "CALL sp_select_licence_clasificatioion()"); ?>
-                                            <select class="form-control" id="slct_licenceClasification" name="slct_licenceClasification">
+                                            <select class="form-control select2bs4" id="slct_licenceClasification" name="slct_licenceClasification">
                                                 <?php while ($row = mysqli_fetch_array($resultado)) {
                                                     $select = ($LC_idTbl_License_Clasification == $row['LC_idTbl_License_Clasification']) ? "selected=selected" : "";
                                                 ?>
@@ -163,7 +163,7 @@ $conn->next_result();
                                         <div class="form-group" style="padding-left:15px; padding-top:2.5px;">
                                             <label>Tipo De software: </label>
                                             <?php $resultado = mysqli_query($conn, "CALL sp_Select_SoftwareType()"); ?>
-                                            <select class="form-control" id="slct_SftType" name="slct_SftType">
+                                            <select class="form-control select2bs4" id="slct_SftType" name="slct_SftType">
                                                 <?php while ($row = mysqli_fetch_array($resultado)) {
                                                     $select = ($STP_idTbl_Software_Type == $row['STP_idTbl_Software_Type']) ? "selected=selected" : "";
                                                 ?>
@@ -181,7 +181,7 @@ $conn->next_result();
 
                                         <!-- categoria  -->
                                         <div class="form-group" style="padding-left:15px; padding-top:2.5px;">
-                                            <label>Categoria: </label>
+                                            <label><code>*</code>Categoria: </label>
                                             <?php $resultado = mysqli_query($conn, "CALL sp_selectCategory()"); ?>
                                             <select class="form-control select2bs4 " id="slct_category" name="slct_category">
                                                 <?php while ($row = mysqli_fetch_array($resultado)) {
@@ -199,7 +199,7 @@ $conn->next_result();
                                         </div>
 
                                         <div class="form-group" style="padding-left:15px; padding-top:2.5px;">
-                                            <label>Fabricante: </label>
+                                            <label><code>*</code>Fabricante: </label>
                                             <?php $resultado = mysqli_query($conn, "CALL sp_manufacturerSoft_Select()"); ?>
                                             <select class="form-control select2bs4" style="width: 100%;" id="slct_manufacturerSftType" name="slct_manufacturerSftType">
                                                 <?php while ($row = mysqli_fetch_array($resultado)) {
@@ -218,9 +218,9 @@ $conn->next_result();
                                         </div>
                                         <!-- Estado -->
                                         <div class="form-group" style="padding-left:15px; padding-top:2.5px;">
-                                            <label>Estado del Software: </label>
+                                            <label><code>*</code>Estado del Software: </label>
                                             <?php $resultado = mysqli_query($conn, "CALL sp_status_select()"); ?>
-                                            <select class="form-control" id="selectStatus" name="selectStatus">
+                                            <select class="form-control select2bs4" id="selectStatus" name="selectStatus">
                                                 <?php while ($row = mysqli_fetch_array($resultado)) {
                                                     $select = ($STS_idTbl_Status == $row['STS_idTbl_Status']) ? "selected=selected" : "";
                                                 ?>
@@ -388,20 +388,16 @@ if (isset($_POST["buttonUpdateSoftware"])) {
     // funcion para validar los datos ingresados en el formulario
 
     function validateData() {
-        let dataRegisterInput = document.getElementById('txtFechaIngresado');
         let softwarenameInput = document.getElementById('txtNombreSoftware');
         let versionInput = document.getElementById('txtVersionSoftware');
         let licenseSelect = document.getElementById('slct_licenceClasification');
         let statusSelect = document.getElementById('selectStatus');
         let categorySelect = document.getElementById('slct_category');
         let manufacturerSelect = document.getElementById('slct_manufacturerSftType');
+        let serialSoftwareInput =document.getElementById('txtSerialSoftware');
         let Action = document.getElementById('txtAction');
 
-        if (dataRegisterInput.value.trim() === "") {
-            toastr.warning('La <b>Fecha de Registro</b> esta vacio(a).<br>Por favor, rellene este campo');
-            dataRegisterInput.focus();
-            return false;
-        } else if (softwarenameInput.value.trim() === "") {
+         if (softwarenameInput.value.trim() === "") {
             toastr.warning('La <b>Nombre del software</b> esta vacio(a).<br>Por favor, rellene este campo');
             softwarenameInput.focus();
             return false;
@@ -409,7 +405,11 @@ if (isset($_POST["buttonUpdateSoftware"])) {
             toastr.warning('La <b>Version de Instalacion</b> esta vacio(a).<br>Por favor, rellene este campo');
             versionInput.focus();
             return false;
-        } else if (licenseSelect.selectedIndex === 0) {
+        } else if (serialSoftwareInput.value.trim() === "") {
+            toastr.warning('El <b>Serial/b> esta vacio(a).<br>Por favor, rellene este campo');
+            serialSoftwareInput.focus();
+            return false;
+        }else if (licenseSelect.selectedIndex === 0) {
             toastr.warning('La <b>Licencia</b> seleccionado no es valido(a).<br>Por favor,seleccione un campo valido');
             licenseSelect.focus();
             return false;

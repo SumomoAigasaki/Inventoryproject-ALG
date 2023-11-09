@@ -292,7 +292,7 @@ deleteUser();
           success: function(response) {
             Swal.fire("Registro eliminado", "El registro ha sido eliminado correctamente", "success").then(() => {
               // Redireccionar después de mostrar el SweetAlert
-              window.location.href = "view_.php";
+              window.location.href = "view_software.php";
             });
           }
         });

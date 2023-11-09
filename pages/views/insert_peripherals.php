@@ -95,7 +95,7 @@ require_once "../templates/menu.php";
                                     <!-- nombre -->
                                     <div class="col-sm-4">
                                         <div class="form-group" style="padding-top: 20px;">
-                                            <label>Nombre Periferico:</label>
+                                            <label><code>*</code>Nombre Periferico:</label>
                                             <input type="text" class="form-control" name="txt_namePRL" id="txt_namePRL" maxlength="45" required>
                                         </div>
                                     </div>
@@ -103,9 +103,9 @@ require_once "../templates/menu.php";
                                     <!-- Tipo de componente  -->
                                     <div class="col-sm-4" style="padding-top: 20px;">
                                         <div class="form-group">
-                                            <label>Tipo De Periferico: </label>
+                                            <label><code>*</code>Tipo De Periferico: </label>
                                             <?php $resultado = mysqli_query($conn, "CALL sp_selectComponenteType()"); ?>
-                                            <select class="form-control" id="slct_componentType" name="slct_componentType" onchange="filtrarMarcas()">
+                                            <select class="form-control select2bs4" id="slct_componentType" name="slct_componentType" onchange="filtrarMarcas()">
                                                 <?php while ($row = mysqli_fetch_array($resultado)) { ?>
                                                     <option value="<?php echo $row['CPT_idtbl_component_type']; ?>"><?php echo $row['CPT_Description']; ?></option>
                                                 <?php }
@@ -133,7 +133,7 @@ require_once "../templates/menu.php";
                                     <!-- Especificacion del componente -->
                                     <div class="col-sm-4" style="padding-top: 20px;">
                                         <div class="form-group">
-                                            <label>Especificacion del componente: </label>
+                                            <label><code>*</code>Especificacion del componente: </label>
                                             <?php $resultado = mysqli_query($conn, "CALL sp_selectComponentDescription()"); ?>
                                             <select class="form-control select2bs4" id="slct_componentDescription" name="slct_componentDescription">
                                                 <?php while ($row = mysqli_fetch_array($resultado)) { ?>
@@ -171,9 +171,9 @@ require_once "../templates/menu.php";
                                     <!-- Localizacion -->
                                     <div class="col-sm-4" style="padding-top: 20px;">
                                         <div class="form-group">
-                                            <label>Localizacion del Componente : </label>
+                                            <label><code>*</code>Localizacion del Componente : </label>
                                             <?php $resultado = mysqli_query($conn, "CALL sp_location_select"); ?>
-                                            <select class="form-control" id="slctLocation" name="slctLocation">
+                                            <select class="form-control select2bs4" id="slctLocation" name="slctLocation">
                                                 <?php while ($row = mysqli_fetch_array($resultado)) { ?>
                                                     <option value="<?php echo $row['LCT_idTbl_Location']; ?>"><?php echo $row['LCT_Description']; ?></option>
                                                 <?php }

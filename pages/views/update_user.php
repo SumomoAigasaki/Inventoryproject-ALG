@@ -114,7 +114,7 @@ $conn->next_result();
                                         </div>
                                         <!-- USERNAME -->
                                         <div class="form-group" style="padding-left:15px;">
-                                            <label ACRONYM title="Nombre de Usuario">Nomb. Usuario: </label>
+                                            <label ACRONYM title="Nombre de Usuario"><code>*</code>Nomb. Usuario: </label>
                                             <input type="text" class="form-control" id="txtNombreUsuario" name="txtNombreUsuario" maxlength="45" value="<?php echo $User_Username; ?>" placeholder="Nickname">
                                         </div>
 
@@ -131,7 +131,7 @@ $conn->next_result();
 
                                         <!-- COLABORADOR -->
                                         <div class="form-group" style="padding-left:15px; padding-top:2.5px;">
-                                            <label ACRONYM title="Nombre de Colaborador">Nomb. Colaborador: </label>
+                                            <label ACRONYM title="Nombre de Colaborador"><code>*</code>Nomb. Colaborador: </label>
                                             <!-- <input type="text" class="form-control" id="txt_busqueda" name="txt_busqueda" placeholder="Buscar Colaborador"> -->
                                             <?php $resultado = mysqli_query($conn, "CALL sp_selectCollaborators()"); ?>
                                             <select class="form-control select2bs4" id="selectColaborador" name="selectColaborador">
@@ -151,14 +151,14 @@ $conn->next_result();
                                         </div>
                                         <!-- Correo -->
                                         <div class="form-group" style="padding-left:15px; padding-top:2.5px;">
-                                            <label ACRONYM title="Correo Electronico">Email </label>
+                                            <label ACRONYM title="Correo Electronico"><code>*</code>Email </label>
                                             <input type="emai" class="form-control" id="txtEmail" name="txtEmail" maxlength="45" value="<?php echo $User_Email; ?>" placeholder="Nickname">
                                         </div>
                                         <!-- Estado -->
                                         <div class="form-group" style="padding-left:15px; padding-top:2.5px;">
-                                            <label>Estado del Usuario: </label>
+                                            <label><code>*</code>Estado del Usuario: </label>
                                             <?php $resultado = mysqli_query($conn, "CALL sp_status_select()"); ?>
-                                            <select class="form-control" id="selectStatus" name="selectStatus">
+                                            <select class="form-control select2bs4" id="selectStatus" name="selectStatus">
                                                 <?php while ($row = mysqli_fetch_array($resultado)) {
                                                     $select = ($STS_idTbl_Status == $row['STS_idTbl_Status']) ? "selected=selected" : "";
                                                 ?>
@@ -174,9 +174,10 @@ $conn->next_result();
                                         </div>
                                         <!-- ROL DE USUARIO -->
                                         <div class="form-group" style="padding-left:15px; padding-top:2.5px;">
-                                            <label>Rol de Usuario: </label>
+                                            <label><code>*</code>Rol de Usuario: </label>
                                             <?php $resultado = mysqli_query($conn, "CALL sp_rolesSelect()"); ?>
-                                            <select class="form-control" id="selectRoles" name="selectRoles">
+                                            <select class="form-control select2bs4" id="selectRoles" name="selectRoles">
+                                            <option value="0">0.- Empty/Vacio</option>
                                                 <?php while ($row = mysqli_fetch_array($resultado)) {
                                                     $select = ($RLS_idTbl_Roles == $row['RLS_idTbl_Roles']) ? "selected=selected" : ""; ?>
                                                     <option value="<?php echo $row['RLS_idTbl_Roles']; ?>" <?php echo $select; ?>><?php echo $row['RLS_Description']; ?></option>

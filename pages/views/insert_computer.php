@@ -92,7 +92,7 @@ require_once "../templates/menu.php"; ?>
             toastr.warning('El <b>Serial</b> esta vacio(a).<br>Por favor Ingrese un Serial para el Computador valido');
             serialTxt.focus();
             return false;
-        }else {
+        } else {
             // Si no hay errores, procesa los datos enviados
             //$opcion = $_POST['opciones'];
             if (accionInput.value.trim() === "") {
@@ -176,7 +176,7 @@ require_once "../templates/menu.php"; ?>
                                     <!-- Fecha de Compra -->
                                     <div class="col-sm-4">
                                         <div class="form-group">
-                                            <label>Fecha de Compra:</label>
+                                            <label><code>*</code>Fecha de Compra:</label>
                                             <div class="input-group">
                                                 <input type="text" class="form-control datepicker-input" name="txtacquisitionDate" id="txtacquisitionDate">
                                             </div>
@@ -185,7 +185,7 @@ require_once "../templates/menu.php"; ?>
                                     <!-- MARCA -->
                                     <div class="col-sm-2">
                                         <div class="form-group">
-                                            <label>Marca: </label>
+                                            <label><code>*</code>Marca: </label>
                                             <?php
                                             #Se procede a llamar al procedimiento almacenado que se llama sp_manufacturer_select,con la variable que almancena "cnn" la base de datos 
                                             $resultado = mysqli_query($conn, "CALL sp_manufacturer_select()"); ?>
@@ -205,7 +205,7 @@ require_once "../templates/menu.php"; ?>
                                     <!-- MODELOS  -->
                                     <div class="col-sm-3">
                                         <div class="form-group">
-                                            <label>Modelo : </label>
+                                            <label><code>*</code>Modelo : </label>
                                             <!-- <input type="text" id="lookModels" placeholder="Buscar modelo en especifico" class="form-control"> -->
                                             <?php $resultado = mysqli_query($conn, "CALL sp_model_select()"); ?>
                                             <select class="form-control select2bs4" id="selectModel" name="selectModel">
@@ -224,7 +224,7 @@ require_once "../templates/menu.php"; ?>
                                     <!-- TIPO DE COMPUTADORA -->
                                     <div class="col-sm-3">
                                         <div class="form-group">
-                                            <label>Tipo de Computadora : </label>
+                                            <label><code>*</code>Tipo de Computadora : </label>
                                             <?php $resultado = mysqli_query($conn, "CALL sp_computerType_select()"); ?>
                                             <select class="form-control" id="selectComputertypes" name="selectComputertypes">
                                                 <?php while ($row = mysqli_fetch_array($resultado)) { ?>
@@ -245,21 +245,21 @@ require_once "../templates/menu.php"; ?>
                                     <!-- Nombre Tecnico-->
                                     <div class="col-sm-3">
                                         <div class="form-group">
-                                            <label>Nombre Técnico:</label>
+                                            <label><code>*</code>Nombre Técnico:</label>
                                             <input type="text" class="form-control" name="txtTechnicalName" id="txtTechnicalName" maxlength="45" placeholder="ASSET2023-0#">
                                         </div>
                                     </div>
                                     <!-- Servitag-->
                                     <div class="col-sm-2">
                                         <div class="form-group">
-                                            <label>Servitag: </label>
+                                            <label><code>*</code>Servitag: </label>
                                             <input type="text" class="form-control" name="txtServitag" id="txtServitag" maxlength="45" placeholder="FKCX???">
                                         </div>
                                     </div>
                                     <!-- Fecha limite garantia -->
                                     <div class="col-sm-2">
                                         <div class="form-group">
-                                            <label>Fecha Límite Garantía:</label>
+                                            <label><code>*</code>Fecha Límite Garantía:</label>
                                             <div class="input-group">
                                                 <input type="text" class="form-control datepicker-input" name="txtWarrantyExpiration" id="txtWarrantyExpiration" onchange="actualizarAnio()">
                                             </div>
@@ -277,11 +277,11 @@ require_once "../templates/menu.php"; ?>
 
                                     <div class="col-sm-3">
                                         <div class="form-group">
-                                            <label>Tipo de Garantia: </label>
+                                            <label><code>*</code>Tipo de Garantia: </label>
                                             <?php
                                             #Se procede a llamar al procedimiento almacenado que se llama sp_manufacturer_select,con la variable que almancena "cnn" la base de datos 
                                             $resultado = mysqli_query($conn, "CALL sp_typeGuarantee_select()"); ?>
-                                            <select class="form-control" id="selectTypeGuarantee" name="selectTypeGuarantee">
+                                            <select class="form-control select2bs4" id="selectTypeGuarantee" name="selectTypeGuarantee">
                                                 <?php while ($row = mysqli_fetch_array($resultado)) { ?>
                                                     <option value="<?php echo $row['TG_idtbl_Type_Guarantee']; ?>" data-warranty="<?php echo $row['MFC_idTbl_Manufacturer']; ?>"><?php echo $row['TG_Description']; ?></option>
                                                 <?php }
@@ -297,18 +297,18 @@ require_once "../templates/menu.php"; ?>
                                 </div>
                                 <!-- Comienzo fila 3 -->
                                 <div class="row justify-content-center" style="padding-bottom:10px;">
-                                    
+
                                     <!-- Lincencia -->
                                     <div class="col-sm-3">
                                         <div class="form-group">
-                                            <label>Licencia: </label>
+                                            <label><code>*</code>Licencia: </label>
                                             <input type="text" class="form-control" name="txtLicense" id="txtLicense" maxlength="60" placeholder="CMCDN-?????-?????-?????-?????">
                                         </div>
                                     </div>
                                     <!-- Tarjeta Madre -->
                                     <div class="col-sm-3">
                                         <div class="form-group">
-                                            <label>Serial: </label>
+                                            <label><code>*</code>Serial: </label>
                                             <input type="text" class="form-control" name="txtSerial" id="txtSerial" maxlength="60" placeholder="FKC---3">
                                         </div>
                                     </div>
@@ -334,9 +334,9 @@ require_once "../templates/menu.php"; ?>
                                     <!-- Localizacion -->
                                     <div class="col-sm-3">
                                         <div class="form-group">
-                                            <label>Localizacion del Computador : </label>
+                                            <label><code>*</code>Localizacion del Computador : </label>
                                             <?php $resultado = mysqli_query($conn, "CALL sp_location_select"); ?>
-                                            <select class="form-control" id="selectLocation" name="selectLocation">
+                                            <select class="form-control select2bs4" id="selectLocation" name="selectLocation">
                                                 <?php while ($row = mysqli_fetch_array($resultado)) { ?>
                                                     <option value="<?php echo $row['LCT_idTbl_Location']; ?>"><?php echo $row['LCT_Description']; ?></option>
                                                 <?php }
@@ -349,8 +349,8 @@ require_once "../templates/menu.php"; ?>
                                             </select>
                                         </div>
                                     </div>
-                                     <!-- Observaciones -->
-                                     <div class="col-sm-3">
+                                    <!-- Observaciones -->
+                                    <div class="col-sm-3">
                                         <div class="form-group">
                                             <label>Observaciones: </label>
                                             <textarea type="text" class="form-control" name="txtObservation" id="txtObservation" maxlength="100" value="<?php echo (isset($observations) ? $observations : ""); ?>"> </textarea>
@@ -372,7 +372,7 @@ require_once "../templates/menu.php"; ?>
                                             </div>
                                         </div>
                                     </div>
-                                   
+
 
 
                                 </div>
@@ -542,6 +542,8 @@ require_once "../templates/footer.php";
         yearExpirationInput.value = anio;
     }
     $(function() {
+        //Initialize Select2 Elements
+        $('.select2').select2()
 
         //Initialize Select2 Elements
         $('.select2bs4').select2({

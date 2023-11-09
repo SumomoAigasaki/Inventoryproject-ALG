@@ -312,12 +312,12 @@ require_once "../templates/footer.php";
         let computerSlct = document.getElementById('slctComputer');
         let numberApplicationstxt = document.getElementById('txtNumberApplications');
         let mainProblemtxt = document.getElementById('txtMainProblem');
-        let actionDonetxt= document.getElementById('txtActionDone');
-        
+        let actionDonetxt = document.getElementById('txtActionDone');
+
         let diagnostictxt = document.getElementById('txtDiagnostic');
         let dateSolutiontxt = document.getElementById('txtDateSolution');
         let solutionstxt = document.getElementById('txtSolutions');
-        
+
 
         if (dateAdmisiontxt.value.trim() === "") {
             toastr.warning("La <b>Fecha de reporte</b> esta vacia(a).<br>Por favor Ingrese una Fecha de Reporte valida");
@@ -351,8 +351,7 @@ require_once "../templates/footer.php";
             toastr.warning('La <b>Solución</b> estan vacios(as).<br>Por favor Ingrese una Solución valida');
             solutionstxt.focus();
             return false;
-        } 
-        else {
+        } else {
             // Si no hay errores, procesa los datos enviados
             if (accionInput.value.trim() === "") {
                 accionInput.value = "1";
@@ -387,10 +386,10 @@ require_once "../templates/footer.php";
     $("#fileReferent").change(function() {
         readURL(this);
     });
-    
 
-      // Funcion para cargar la previsualizacion de imagen 
-      function readIMGURL(input) {
+
+    // Funcion para cargar la previsualizacion de imagen 
+    function readIMGURL(input) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
             reader.onload = function(e) {
@@ -418,15 +417,16 @@ require_once "../templates/footer.php";
 <?php
 $uploads_dir = '../../resources/Warranty/';
 if (isset($_POST["buttonUpdateWR"])) {
-    $wrId= $_POST["TxtId"];
+    $wrId = $_POST["TxtId"];
     $computerId = $_POST["slctComputer"];
     $dateAdmisiontxt = $_POST["txtDateAdmision"];
     $numberApplicationstxt = $_POST["txtNumberApplications"];
-    $mainProblemtxt = $_POST["txtMainProblem"];  
-    $actionDonetxt = $_POST["txtActionDone"];  
+    $mainProblemtxt = $_POST["txtMainProblem"];
+    $actionDonetxt = $_POST["txtActionDone"];
     $imgProblem =  $_FILES['fileReferent']['name'];
     if (empty($imgProblem)) {
-        $imgProblem = '/resources/Warranty/DefaultProblem.jpg';
+        // El campo de imagen está vacío
+        $imgProblem = $WR_Image_Problem;
     } else {
         $imgProblem = '/resources/Warranty/' . $_FILES['fileReferent']['name'];
     }
@@ -434,15 +434,15 @@ if (isset($_POST["buttonUpdateWR"])) {
     $solutionsTxt = $_POST["txtSolutions"];
     $imgSolutions =  $_FILES['fileReferentSolutions']['name'];
     if (empty($imgSolutions)) {
-        $imgSolutions = '/resources/Warranty/compuiterRepair.jpg';
+        $imgSolutions = $WR_Image_Solution;
     } else {
         $imgSolutions = '/resources/Warranty/' . $_FILES['fileReferentSolutions']['name'];
     }
     $dateSolutiontxt = $_POST["txtDateSolution"];
-    $observationstxt= $_POST["txtObservation"];
-    $statusSlct= $_POST["selectStatus"];
-    
-    
+    $observationstxt = $_POST["txtObservation"];
+    $statusSlct = $_POST["selectStatus"];
+
+
 
 
     // Verificar el permiso para realizar la operación
@@ -454,7 +454,7 @@ if (isset($_POST["buttonUpdateWR"])) {
             $query = "CALL sp_updateWarranty( '$wrId','$computerId','$dateAdmisiontxt',' $numberApplicationstxt','$mainProblemtxt','$actionDonetxt','$imgProblem ','$diagnosticTxt','$solutionsTxt','$imgSolutions ','$dateSolutiontxt','$observationstxt','$statusSlct');";
             echo $query;
             // Mandamos los parametros y los input que seran enviados al PA O SP
-            $stmt->bind_param("sssssssssssss",$wrId,$computerId, $dateAdmisiontxt, $numberApplicationstxt,$mainProblemtxt,$actionDonetxt,$imgProblem,$diagnosticTxt,$solutionsTxt,$imgSolutions, $dateSolutiontxt,$observationstxt,$statusSlct  );
+            $stmt->bind_param("sssssssssssss", $wrId, $computerId, $dateAdmisiontxt, $numberApplicationstxt, $mainProblemtxt, $actionDonetxt, $imgProblem, $diagnosticTxt, $solutionsTxt, $imgSolutions, $dateSolutiontxt, $observationstxt, $statusSlct);
 
 
             // Ejecutar el procedimiento almacenado
@@ -476,9 +476,9 @@ if (isset($_POST["buttonUpdateWR"])) {
                 echo 'document.getElementById("formUpdateWR").reset(); ';
                 echo '</script>';
 
-                if ($_FILES['imgProblem']['name'] != 'DefaultProblem.jpg') {
-                    move_uploaded_file($_FILES['imgProblem']['tmp_name'], $uploads_dir . $_FILES['imgProblem']['name']);
-                } else if (file_exists($uploads_dir . $_FILES['imgProblem']['name'])) {
+                if ($_FILES['fileReferent']['name'] != 'DefaultProblem.jpg') {
+                    move_uploaded_file($_FILES['fileReferent']['tmp_name'], $uploads_dir . $_FILES['fileReferent']['name']);
+                } else if (file_exists($uploads_dir . $_FILES['fileReferent']['name'])) {
                     echo '<script > toastr.info("La imagen ya existe ' . $imgProblem . '")</script>;';
                     $uploadOk = 0; //si existe lanza un valor en 0                 
                 }
@@ -489,7 +489,7 @@ if (isset($_POST["buttonUpdateWR"])) {
                     $uploadOk = 0; //si existe lanza un valor en 0                 
 
                 }
-                
+
                 exit;
 
                 exit;

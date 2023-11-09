@@ -108,7 +108,7 @@ require_once "../templates/menu.php";
                                     <!-- nombre -->
                                     <div class="col-sm-3">
                                         <div class="form-group" style="padding-top: 70px;">
-                                            <label>Nombre Software:</label>
+                                            <label><code>*</code>Nombre Software:</label>
                                             <input type="text" class="form-control" name="txt_nameSft" id="txt_nameSft" maxlength="45" required>
                                         </div>
                                     </div>
@@ -116,7 +116,7 @@ require_once "../templates/menu.php";
                                     <!-- version -->
                                     <div class="col-sm-2">
                                         <div class="form-group" style="padding-top: 70px;">
-                                            <label>Versión Software:</label>
+                                            <label><code>*</code>Versión Software:</label>
                                             <input type="text" class="form-control" name="txt_versionSft" id="txt_versionSft" maxlength="25" required>
                                         </div>
                                     </div>
@@ -124,9 +124,9 @@ require_once "../templates/menu.php";
                                     <!-- Tipo de software  -->
                                     <div class="col-sm-2" style="padding-top: 70px;">
                                         <div class="form-group">
-                                            <label>Tipo De software: </label>
+                                            <label><code>*</code>Tipo De software: </label>
                                             <?php $resultado = mysqli_query($conn, "CALL sp_Select_SoftwareType()"); ?>
-                                            <select class="form-control" id="slct_SftType" name="slct_SftType">
+                                            <select class="form-control select2bs4" id="slct_SftType" name="slct_SftType">
                                                 <?php while ($row = mysqli_fetch_array($resultado)) { ?>
                                                     <option value="<?php echo $row['STP_idTbl_Software_Type']; ?>"><?php echo $row['STP_Description']; ?></option>
                                                 <?php }
@@ -142,7 +142,7 @@ require_once "../templates/menu.php";
                                     <!-- Fabricante  -->
                                     <div class="col-md-2 " style="padding-top: 70px;">
                                         <div class="form-group">
-                                            <label>Fabricante: </label>
+                                            <label><code>*</code>Fabricante: </label>
                                             <?php $resultado = mysqli_query($conn, "CALL sp_manufacturerSoft_Select()"); ?>
                                             <select class="form-control select2bs4" style="width: 100%;" id="slct_manufacturerSftType" name="slct_manufacturerSftType">
                                                 <?php while ($row = mysqli_fetch_array($resultado)) { ?>
@@ -182,7 +182,7 @@ require_once "../templates/menu.php";
                                     <!-- Licencia/Serial -->
                                     <div class="col-sm-3">
                                         <div class="form-group" style="padding-top: 20px;">
-                                            <label>Licencia / Serial:</label>
+                                            <label><code>*</code>Licencia / Serial:</label>
                                             <input type="text" class="form-control" name="txt_licenciaSft" id="txt_licenciaSft" maxlength="45">
                                         </div>
                                     </div>
@@ -190,9 +190,9 @@ require_once "../templates/menu.php";
                                     <!-- clasificacion de licencia  -->
                                     <div class="col-sm-3" style="padding-top: 20px;">
                                         <div class="form-group">
-                                            <label>Clasificación de Licencia: </label>
+                                            <label><code>*</code>Clasificación de Licencia: </label>
                                             <?php $resultado = mysqli_query($conn, "CALL sp_select_licence_clasificatioion()"); ?>
-                                            <select class="form-control" id="slct_licenceClasification" name="slct_licenceClasification">
+                                            <select class="form-control select2bs4" id="slct_licenceClasification" name="slct_licenceClasification">
                                                 <?php while ($row = mysqli_fetch_array($resultado)) { ?>
                                                     <option value="<?php echo $row['LC_idTbl_License_Clasification']; ?>"><?php echo $row['LC_Description']; ?></option>
                                                 <?php }
@@ -209,7 +209,7 @@ require_once "../templates/menu.php";
                                     <!-- categoria  -->
                                     <div class="col-sm-3" style="padding-top: 20px;">
                                         <div class="form-group">
-                                            <label>Categoria: </label>
+                                            <label><code>*</code>Categoria: </label>
                                             <?php $resultado = mysqli_query($conn, "CALL sp_selectCategory()"); ?>
                                             <select class="form-control select2bs4 " id="slct_category" name="slct_category">
                                                 <?php while ($row = mysqli_fetch_array($resultado)) { ?>

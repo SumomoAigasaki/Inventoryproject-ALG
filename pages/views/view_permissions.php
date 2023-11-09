@@ -1,196 +1,168 @@
 <?php
 require_once "../templates/nav.php";
 require_once "../templates/menu.php";
-$rol = $_SESSION["RLS_idTbl_Roles"];
-// Verificar si el rol tiene el rol 2 (administrador) y el permiso de PRL   
-function validar_permisos($rol, $PermisoRLS)
+
+
+function dataTableUser($stmt, $ListSelectRol, $rol)
 {
-  if ($rol == "2" && $PermisoRLS) {
-    return true;
-  } else {
-    return false;
-  }
-}
 
-
-
-function dataTableUser($stmt, $countRoles)
-{
   $previousRLSDescription = null; // Inicializa un array vacío para almacenar los valores únicos.
   $previusMDUDescriptions = null;
   $lineNumber = "1"; // Inicializa un contador de líneas.
   $position = 0; // Inicializa la variable de posición fuera del bucle para que no se reinicie en cada iteración.
   $border = 0;
-  $idrol = 0;
+  $currentId = 0;
+  $currentIdRol = 0;
+
 
   while ($row = $stmt->fetch_assoc()) {
-    echo "<tr";
-    if ($row['USP_IDtbl_user_privileges'] == $border) {
-      echo " class='special-row'";
-      // echo"<p>num ES igual al conteo" .$lineNumber." -- ".$border ." yes </p>";
-    }
-    echo ">";
-    echo "<td>" . $row['USP_IDtbl_user_privileges'] . "</td>";
 
-    // Iterar sobre cada elemento del array $countRoles y verificar la condición para cada uno de ellos
-    if (isset($countRoles[$lineNumber]) && $countRoles[$lineNumber]['id'] == $row['USP_IDtbl_user_privileges']) {
-      $conteo = $countRoles[$lineNumber]['conteo']; // Obtener el valor 'conteo' del primer elemento del array
-      $cr_CountRoles = strval(ceil($conteo / 2));
+  
 
-      // Aumentar la posición en función de la mitad del conteo
-    }
+      echo "<tr";
 
-    if ($lineNumber === $position) {
+      if ($row['USP_IDtbl_user_privileges'] == $border) {
+        echo " class='special-row'";
+        // echo"<p>num ES igual al conteo" .$lineNumber." -- ".$border ." yes </p>";
+      }
+      echo ">";
+      echo "<td>" . $row['USP_IDtbl_user_privileges'] . "</td>";
+
+      // Iterar sobre cada elemento del array $ListSelectRol y verificar la condición para cada uno de ellos
+      if (isset($ListSelectRol[$lineNumber]) && $ListSelectRol[$lineNumber]['id'] == $row['USP_IDtbl_user_privileges']) {
+        $currenteConteo = $ListSelectRol[$lineNumber]['conteo']; // Obtener el valor 'conteo' del primer elemento del array
+        $getHalfCount = strval(ceil($currenteConteo / 2));
+
+        // Aumentar la posición en función de la mitad del conteo
+      }
+
+      if ($lineNumber === $position) {
+        echo "<td align='center'> 
+                <a href='../views/update_permissions.php?p=" . $row['RLS_Description'] . "' class='btn btn-outline-primary btn-sm' title='Editar Permisos del Rol " . $currentIdRol . " '>
+                    <i class='fas fa-pencil-alt'></i>
+                </a>
+              </td>";
+
+        echo "<td align='center'><b>" . $currentIdRol . " " . $row['RLS_Description'] . "</b></td>";
+      } else {
+        echo "<td></td>";
+        echo "<td></td>"; // Espacio en blanco si RLS_Description se repite
+      }
+
+      $getHalfCount = null; // Inicializar la variable antes del bucle
+      $previousCount = 0; // Inicializa una variable para almacenar el 'conteo' anterior
+
+
+
+      foreach ($ListSelectRol as $idValueListRol) {
+        // Verifica si el 'USP_IDtbl_user_privileges' actual coincide con el 'id' en el arreglo $countRoles
+        //Declaro varibale para obtener la lista de los ids 
+        if ($row['USP_IDtbl_user_privileges'] == $idValueListRol['id']) {
+
+          // Obtiene el valor 'conteo' del elemento actual del arreglo
+          //declaramos variables para obtener los datos actuales del Arreglo
+          $currentId = $idValueListRol['id'];
+          $currentIdRol = $idValueListRol['idRol'];
+          $currentRol = $idValueListRol['rol'];
+          $currenteConteo = $idValueListRol['conteo'];
+          $currentTotalRegister = $idValueListRol['totalRegistros'];
+
+
+
+          //formula para obtener la mitad de la variable currenteConteo
+          $getHalfCount = strval(ceil($currenteConteo / 2));
+          // Almacenar el resultado de la función array_key_exists en una variable
+
+          // Verifica si 'id' existe en el array actual
+          //array key devuelve valores boleanos 
+          // $firstArrayValue = array_key_exists('id', $countRole);
+
+          // Obtener el primer valor del array de ids
+
+          $ListSelectId = array_column($ListSelectRol, 'id');
+          $listIdRol = array_column($ListSelectRol, 'id');
+          $firstArrayValue = strval($listIdRol[0]);
+
+          foreach ($listIdRol as $index => $id) {
+            if ($id == $currentId) {
+              // echo "Valor de la lista: <br>"; // Esta línea imprimirá el valor de $id en cada iteración.
+              // print_r($listIdRol);
+              // echo "Valor de id: " . $id . "<br>"; // Esta línea imprimirá el valor de $id en cada iteración.
+              // Obtener el índice del primer valor en el array
+              $previousCount = array_search($firstArrayValue, $ListSelectId);
+
+              // echo "</pre>";
+              // echo "-----------------------------------<br>";
+              // echo "valores de la lista<br>";
+              // print_r($listIdRol);
+
+              // echo "Valor comparativo: " . $firstArrayValue . "<br>";
+              // echo "IdRol: " . $id . "<br>";
+              // echo "valor previo del array: " . $previousCount . "<br>";
+              if ($id === $firstArrayValue) {
+
+                if ($index === 0) {
+                  // echo "<br>";
+                  // echo "ID es Igual al Primer Campo: " . $id . "<br>";
+                  $position = 0 + $getHalfCount;
+                  $border = 0 + $currenteConteo;
+                }
+              } elseif ($id >= $firstArrayValue) {
+                // echo "<br>";
+                // echo "ID (" . $id . ")es MAYOR que Primer Campo:" . $id . " <br>";
+                // Resto de tu lógica condicional
+                $position = $ListSelectRol[$previousCount]['conteo'] + $getHalfCount;
+                if ($currenteConteo < $currentTotalRegister) {
+
+                  $valueRemaining = abs(($ListSelectRol[$previousCount]['conteo'] + $currenteConteo) - $currentTotalRegister);
+                  // echo "total de rengoles: " . $currentTotalRegister . "<br>";
+                  // echo "Valor Restante: " . $valueRemaining . "<br>";
+                  $border = ($ListSelectRol[$previousCount]['conteo'] + $valueRemaining) + $currenteConteo;
+                } elseif ($currenteConteo === $currentTotalRegister) {
+                  $border = $ListSelectRol[$previousCount]['conteo'] + $currenteConteo;
+                }
+              }
+              // echo "<br>";
+
+              // echo "Posición de texto en: " . $position . "<br>";
+              // echo "Borde en : " . $border . "<br>";
+            }
+          }
+
+          $previousCount++; // Aumenta 'previousCount' en preparación para la siguiente iteración
+          break; // Romper el bucle si se encuentra una coincidencia
+
+        }
+      }
+
+      if ($previusMDUDescriptions == $row['MDU_Descriptions']) {
+        echo "<td></td>"; // Espacio en blanco si RLS_Description se repite
+      } else {
+        echo "<td align='center'> <b>" . $row['MDU_Descriptions'] . "</b></td>";
+        $previusMDUDescriptions = $row['MDU_Descriptions'];
+      }
+
+      echo "<td>" . $row['PRV_Name'] . "</td>";
+      echo "<td>" . $row['PRV_Descriptions'] . "</td>";
+      echo "<td>" . $row['USP_Inventory_Date'] . "</td>";
+      echo "<td>" . $row['STS_Description'] . "</td>";
+      echo "<td>" . $row['User_Username'] . "</td>";
+
       echo "<td align='center'> 
-              <button href='../views/update_peripherals.php?p=" . $row['USP_IDtbl_user_privileges'] . "' class='btn btn-outline-primary btn-sm' title='Editar Permisos del Rol " . $idrol . " '>
-                  <i class='fas fa-pencil-alt'></i>
+              <button class='btn btn-outline-danger btn-sm btnDeleteUSP' title='Eliminar Permiso' name='btnDeleteUserP' id='btnDeleteUserP' data-id='" . $row['USP_IDtbl_user_privileges'] . "'>
+                <i class='fas fa-trash-alt'></i>
               </button>
             </td>";
+      echo "</tr>";
 
-      echo "<td align='center'><b>" . $idrol . " " . $row['RLS_Description'] . "</b></td>";
-    } else {
-      echo "<td></td>";
-      echo "<td></td>"; // Espacio en blanco si RLS_Description se repite
-    }
-
-    $cr_CountRoles = null; // Inicializar la variable antes del bucle
-    $previousCount = 0; // Inicializa una variable para almacenar el 'conteo' anterior
-
-
-
-    foreach ($countRoles as $countRole) {
-      // Verifica si el 'USP_IDtbl_user_privileges' actual coincide con el 'id' en el arreglo $countRoles
-      if ($row['USP_IDtbl_user_privileges'] == $countRole['id']) {
-        // Obtiene el valor 'conteo' del elemento actual del arreglo
-        $conteo = $countRole['conteo'];
-        // Calcula la mitad de 'conteo' y lo convierte en una cadena
-        $cr_CountRoles = strval(ceil($conteo / 2));
-
-        $idrol = $countRole['id'];
-        $totalCount =$countRole['total'];
-
-        // Almacenar el resultado de la función array_key_exists en una variable
-
-        // Verifica si 'id' existe en el array actual
-        //array key devuelve valores boleanos 
-        // $firstArrayValue = array_key_exists('id', $countRole);
-        $firstArrayValue = $countRoles[0]['id'];
-
-        // En esta linea de codigo se quiere acceder a los datos de manera dinamica atravez de conteo y la variable cr_countRoles
-        //para obtener la posicion ya que por medio de este obtendremos la mitad de donde se debe colocar la palabra de admin 
-
-        // Verifica si el 'id' es el primer valor
-        if ($idrol == $firstArrayValue) {
-
-          // Si el 'id' es 1, calcula la posición basada en 0 y 'cr_CountRoles' y muestra un mensaje correspondiente
-          $position = 0 + $cr_CountRoles;
-          $border = 0 + $conteo;
-          //  echo "primer valor   " . $idrol . " === " . $firstArrayValue;
-          //  echo '.-1 LINEA A IMPRIMIR:' . $position . "\n .-   ";
-
-        } elseif ($idrol >= $firstArrayValue) {
-          // Si el rol es mayor que el primer numero del array entonces entrara a 
-          //obtenemos el conteo del array anterior y le sumamos lo que esta dentro de la varibale
-          $position = $countRoles[$previousCount]['conteo'] + $cr_CountRoles;
-          
-          //validacion para imprimir el border en la posicion que se deberia 
-            if ( $conteo < $totalCount ){
-              // echo"<p><b>conteo es menor que el total registros</b></p>";
-              //Variable para guardar el valor de la resta
-              $valueRemaining=abs(($countRoles[$previousCount]['conteo'] + $conteo) -$totalCount); 
-
-              // echo"<p>posicion: ".$valor."   numero total de filas:".$totalCount."</p>";
-              // echo"<p>valor restante es: ". $valueRemaining."</p>";
-              $border = ($countRoles[$previousCount]['conteo']+$valueRemaining) + $conteo;
-
-            }
-            elseif  ( $conteo === $totalCount ){
-              // echo"<p></p><b>conteo es igual que el total registros</b></p>";
-              $border = $countRoles[$previousCount]['conteo'] + $conteo;
-            }
-        }
-
-        echo "</p>";
-        $previousCount++; // Aumenta 'previousCount' en preparación para la siguiente iteración
-        break; // Romper el bucle si se encuentra una coincidencia
-      }
-    }
-
-    if ($previusMDUDescriptions == $row['MDU_Descriptions']) {
-      echo "<td></td>"; // Espacio en blanco si RLS_Description se repite
-    } else {
-      echo "<td align='center'> <b>" . $row['MDU_Descriptions'] . "</b></td>";
-      $previusMDUDescriptions = $row['MDU_Descriptions'];
-    }
-
-    echo "<td>" . $row['PRV_Name'] . "</td>";
-    echo "<td>" . $row['PRV_Descriptions'] . "</td>";
-    echo "<td>" . $row['USP_Inventory_Date'] . "</td>";
-    echo "<td>" . $row['STS_Description'] . "</td>";
-    echo "<td>" . $row['User_Username'] . "</td>";
-
-    echo "<td align='center'> 
-            <button class='btn btn-outline-danger btn-sm btnDeleteUSP' title='Eliminar Permiso' name='btnDeleteUserP' id='btnDeleteUserP' data-id='" . $row['USP_IDtbl_user_privileges'] . "'>
-              <i class='fas fa-trash-alt'></i>
-            </button>
-          </td>";
-    echo "</tr>";
-    $lineNumber++;
-  }
-}
-
-
-
-
-if (validar_permisos($rol, $PermisoRLS)) {
-  $countRoles = array();
-  $stmt = $conn->query("CALL sp_countRoles()");
-  while ($fila = $stmt->fetch_assoc()) {
-    $countRole = array(
-      "id" => $fila['USP_IDtbl_user_privileges'],
-      "rol" => $fila['RLS_Description'],
-      "conteo" => $fila['countRoles']
-    );
-    $countRoles[] = $countRole;
-  }
-  $stmt->close();
-  $conn->next_result();
-
-  $stmt = $conn->query("CALL sp_totalCountUSP()");
-  while ($row = $stmt->fetch_assoc()) {
-    $totalCount = $row['TotalCount'];
-    if (!empty($countRoles)) {
-      foreach ($countRoles as &$countRole) {
-        $countRole["total"] = $totalCount; // Agrega 'total' como una nueva clave en cada elemento del array $countRoles
-      }
+      $lineNumber++;
     }
   }
-} else {
 
-  $countRoles = array();
 
-  $stmt = $conn->query("CALL sp_countRolesActivos()");
-  while ($fila = $stmt->fetch_assoc()) {
-    $countRole = array(
-      "id" => $fila['USP_IDtbl_user_privileges'],
-      "rol" => $fila['RLS_Description'],
-      "conteo" => $fila['countRoles']
-    );
-    $countRoles[] = $countRole;
-  }
-  $stmt->close();
-  $conn->next_result();
 
-  $stmt = $conn->query("CALL sp_totalCountUSP()");
-  while ($row = $stmt->fetch_assoc()) {
-    $totalCount = $row['TotalCount'];
-    if (!empty($countRoles)) {
-      foreach ($countRoles as &$countRole) {
-        $countRole["total"] = $totalCount; // Agrega 'total' como una nueva clave en cada elemento del array $countRoles
-      }
-    }
-  }
-}
+
+
 
 
 ?>
@@ -286,35 +258,90 @@ if (validar_permisos($rol, $PermisoRLS)) {
 
                   <?php
 
+                  $rol = $_SESSION["RLS_idTbl_Roles"];
+                  // Verificar si el rol tiene el rol 2 (administrador) y el permiso de PRL   
+                  // function validar_permisos($rol, $PermisoRLS)
+                  // {
+                  //   // echo  "rol  " . $rol . "<br />";
+                  //   // echo  "permiso  " . $PermisoRLS . "<br />";
 
-                  function obtener_registros($conn, $rol, $PermisoRLS, $countRoles)
+                  //   if ($rol == "2" && $PermisoRLS) {
+                  //     return true;
+                  //   } else {
+                  //     return false;
+                  //   }
+                  // }
+
+
+                  function obtener_registros($conn, $rol, $PermisoRLS)
                   {
                     include "../../includes/conecta.php";
 
-                    if (validar_permisos($rol, $PermisoRLS)) {
+                    //declaro la variable del array 
+                    //Lista del select de Roles
+                    $ListSelectRol = array();
 
-                      // Realizar consulta para obtener todos los registros
-                      $stmt = $conn->query("CALL sp_selectAllPermissions()");
-                      // $query= "CALL sp_selectAllUser()";
-                      // echo $query;
-                      // Ejecutar el procedimiento almacenado
-                      // Obtener todos los resultados
-                      dataTableUser($stmt, $countRoles);
-                      $stmt->close();
-                      $conn->next_result();
-                    } else {
-                      // Realizar consulta para obtener solo registros activos
-                      $stmt = $conn->query("CALL sp_selectActivePermissions ()");
-                      // $query= "CALL CALL sp_selectActiveUser()";
-                      // echo $query;
-                      // Ejecutar el procedimiento almacenado
-                      // Obtener todos los resultados
-                      dataTableUser($stmt, $countRoles);
-                      $stmt->close();
-                      $conn->next_result();
+
+                    $stmt = $conn->query("CALL sp_countRoles()");
+
+                    while ($fila = $stmt->fetch_assoc()) {
+                      $dataSelectRol = array(
+                        "id" => $fila['USP_IDtbl_user_privileges'],
+                        "idRol" => $fila['RLS_idTbl_Roles'],
+                        "rol" => $fila['RLS_Description'],
+                        "conteo" => $fila['countRoles'],
+                        "totalRegistros" => $fila['TotalCount']
+                      );
+                      $ListSelectRol[] = $dataSelectRol;
                     }
+                    $stmt->close();
+                    $conn->next_result();
+
+
+
+                    // Realizar consulta para obtener todos los registros
+                    $stmt = $conn->query("CALL sp_selectAllPermissions()");
+                    // Ejecutar el procedimiento almacenado
+                    // Obtener todos los resultados
+
+                    dataTableUser($stmt, $ListSelectRol, $rol);
+                    $stmt->close();
+                    $conn->next_result();
+
+                    // if (validar_permisos($rol, $PermisoRLS)) {
+                    //   // Codigo para Todos los Roles
+
+
+                    // }
+                    //  else {
+                    //   // Codigo para Roles Activos
+
+                    //   $stmt = $conn->query("CALL sp_countRolesActivos()");
+
+                    //   while ($fila = $stmt->fetch_assoc()) {
+                    //     $dataSelectRol = array(
+                    //       "id" => $fila['USP_IDtbl_user_privileges'],
+                    //       "rol" => $fila['RLS_Description'],
+                    //       "conteo" => $fila['countRoles'],
+                    //       "totalRegistros" => $fila['TotalCount']
+                    //     );
+                    //     $ListSelectRol[] = $dataSelectRol;
+                    //   }
+                    //   $stmt->close();
+                    //   $conn->next_result();
+
+
+                    //   // Realizar consulta para obtener solo registros activos
+                    //   $stmt = $conn->query("CALL sp_selectActivePermissions ()");
+
+                    //   // Ejecutar el procedimiento almacenado
+                    //   // Obtener todos los resultados
+                    //   dataTableUser($stmt, $ListSelectRol);
+                    //   $stmt->close();
+                    //   $conn->next_result();
+                    // }
                   }
-                  obtener_registros($conn, $rol, $PermisoPRL, $countRoles);
+                  obtener_registros($conn, $rol, $PermisoRLS);
                   ?>
                 </tbody>
                 <tfoot>

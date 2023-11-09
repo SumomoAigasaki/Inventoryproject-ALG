@@ -99,7 +99,7 @@ require_once "../templates/menu.php"; ?>
                                     <!-- Colaborador-->
                                     <div class="col-sm-4">
                                         <div class="form-group" style="padding-top: 10px;">
-                                            <label>Colaborador:</label>
+                                            <label><code>*</code>Colaborador:</label>
                                             <!-- <input type="text" class="form-control" id="txt_busqueda" name="txt_busqueda" placeholder="Buscar Colaborador">
                                             <?php $resultado = mysqli_query($conn, "CALL sp_selectCollaborators()"); ?> -->
                                             <select class="form-control select2bs4" id="slctColaborador" name="slctColaborador">
@@ -119,7 +119,7 @@ require_once "../templates/menu.php"; ?>
                                     <!-- Computadora-->
                                     <div class="col-sm-4">
                                         <div class="form-group" style="padding-top: 10px;">
-                                            <label>Computadora:</label>
+                                            <label><code>*</code>Computadora:</label>
                                             <!-- <input type="text" class="form-control" id="txt_busqueda" name="txt_busqueda" placeholder="Buscar Colaborador">
                                             <?php $resultado = mysqli_query($conn, "CALL sp_selectComputerActive()"); ?> -->
                                             <select class="form-control select2bs4" id="slctComputer" name="slctComputer">
@@ -138,7 +138,7 @@ require_once "../templates/menu.php"; ?>
                                     <!-- Fecha de Entrega -->
                                     <div class="col-sm-4">
                                         <div class="form-group" style="padding-top: 10px;">
-                                            <label ACRONYM title="Fecha en que el area de TI le hace entrega del dispositivo"> Fecha de Entrega:</label>
+                                            <label ACRONYM title="Fecha en que el area de TI le hace entrega del dispositivo"><code>*</code> Fecha de Entrega:</label>
                                             <input type="text" class="form-control datepicker-input" name="txtDeadline" id="txtDeadline">
                                         </div>
                                     </div>
@@ -150,7 +150,7 @@ require_once "../templates/menu.php"; ?>
                                     <!-- Software-->
                                     <div class="col-sm-5">
                                         <div class="form-group">
-                                            <label>Software:</label>
+                                            <label><code>*</code>Software:</label>
                                             <?php $resultado = mysqli_query($conn, "CALL sp_selectSoftwareActive()"); ?>
 
                                             <select class="duallistbox" multiple="multiple" id="slctSoftware" name="slctSoftware">
@@ -170,7 +170,7 @@ require_once "../templates/menu.php"; ?>
                                     <div class="col-sm-3">
                                         <div class="form-group">
                                             <!-- Fecha de Instalacion Software -->
-                                            <label> Fecha de Instalacion Software:</label>
+                                            <label> <code>*</code>Fecha de Instalacion Software:</label>
                                             <input type="text" class="form-control datepicker-input" name="txtInstalleSoftware" id="txtInstalleSoftware">
                                         </div>
 
@@ -190,7 +190,7 @@ require_once "../templates/menu.php"; ?>
                                         </div>
                                         <!-- Fecha de Retorno -->
                                         <div class="form-group">
-                                            <label> Fecha de Retorno:</label>
+                                            <label><code>*</code> Fecha de Retorno:</label>
                                             <input type="text" class="form-control datepicker-input" name="txtReturnDate" id="txtReturnDate" readonly>
                                         </div>
 

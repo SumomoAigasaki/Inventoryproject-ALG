@@ -160,7 +160,7 @@ $conn->next_result();
                                     <!-- Colaborador-->
                                     <div class="col-sm-3">
                                         <div class="form-group" style="padding-top: 10px;">
-                                            <label>Colaborador:</label>
+                                            <label><code>*</code>Colaborador:</label>
                                             <!-- <input type="text" class="form-control" id="txt_busqueda" name="txt_busqueda" placeholder="Buscar Colaborador"> -->
                                             <?php $resultado = mysqli_query($conn, "CALL sp_selectCollaborators()"); ?>
                                             <select class="form-control select2bs4" id="slctColaborador" name="slctColaborador">
@@ -181,7 +181,7 @@ $conn->next_result();
                                     <!-- Computadora-->
                                     <div class="col-sm-3">
                                         <div class="form-group" style="padding-top: 10px;">
-                                            <label>Computadora:</label>
+                                            <label><code>*</code>Computadora:</label>
                                             <!-- <input type="text" class="form-control" id="txt_busqueda" name="txt_busqueda" placeholder="Buscar Colaborador">
                                             <?php $resultado = mysqli_query($conn, "CALL sp_selectComputerAll()"); ?> -->
                                             <select class="form-control select2bs4" id="slctComputer" name="slctComputer">
@@ -202,7 +202,7 @@ $conn->next_result();
                                     <!-- ESTADO -->
                                     <div class="col-sm-3" style="padding-top: 10px;">
                                         <div class="form-group">
-                                            <label>Estado de asignacion PC: </label>
+                                            <label><code>*</code>Estado de asignacion PC: </label>
                                             <?php $resultado = mysqli_query($conn, "CALL sp_status_select()"); ?>
                                             <select class="form-control select2bs4" id="slctStatus" name="slctStatus">
                                                 <?php while ($row = mysqli_fetch_array($resultado)) {
@@ -234,7 +234,7 @@ $conn->next_result();
                                     <!-- Software-->
                                     <div class="col-sm-5">
                                         <div class="form-group">
-                                            <label>Software:</label>
+                                            <label><code>*</code>Software:</label>
                                             <?php $resultado = mysqli_query($conn, "CALL sp_selectSoftwareActive()"); ?>
                                             <select class="duallistbox" multiple="multiple" id="slctSoftware" name="slctSoftware">
                                                 <?php while ($row = mysqli_fetch_array($resultado)) {
@@ -251,7 +251,7 @@ $conn->next_result();
                                     <div class="col-sm-3">
                                         <div class="form-group">
                                             <!-- Fecha de Instalacion Software -->
-                                            <label> Fecha de Instalacion Software:</label>
+                                            <label><code>*</code> Fecha de Instalacion Software:</label>
                                             <input type="text" class="form-control datepicker-input" name="txtInstalleSoftware" id="txtInstalleSoftware" value="<?php echo $MS_Instalation_date ?>">
                                         </div>
 
@@ -266,7 +266,7 @@ $conn->next_result();
                                     <div class="col-sm-4">
                                         <!-- Fecha de Retorno -->
                                         <div class="form-group">
-                                            <label ACRONYM title="Fecha en que el area de TI le hace entrega del dispositivo"> Fecha de Entrega:</label>
+                                            <label ACRONYM title="Fecha en que el area de TI le hace entrega del dispositivo"><code>*</code> Fecha de Entrega:</label>
                                             <input type="text" class="form-control datepicker-input" name="txtDeadline" id="txtDeadline" value="<?php echo $PCA_Date_Assignment ?>">
                                         </div>
                                         <div class="form-group">
@@ -275,7 +275,7 @@ $conn->next_result();
                                         </div>
                                         <!-- Fecha de Retorno -->
                                         <div class="form-group">
-                                            <label> Fecha de Retorno:</label>
+                                            <label><code>*</code> Fecha de Retorno:</label>
                                             <input type="text" class="form-control datepicker-input" name="txtReturnDate" id="txtReturnDate" readonly value="<?php echo $PCA_Return_Date ?>">
                                         </div>
 
