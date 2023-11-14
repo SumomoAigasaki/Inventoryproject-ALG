@@ -69,11 +69,11 @@ $conn->next_result();
                 <div class="col-sm-4">
                     <!--cinta de home y el nombre de la pagina -->
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="<?php echo $pageLink; ?>">
-                                <?php echo $pageName; ?>
+                        <li class="breadcrumb-item"><a href="../templates/index.php">
+                                Inicio
                             </a></li>
                         <li class="breadcrumb-item active">
-                            <?php echo nameProject; ?>
+                            <?php echo $pageName; ?>
                         </li>
                     </ol>
                     <!-- /.col -->
@@ -177,7 +177,7 @@ $conn->next_result();
                                             <label><code>*</code>Rol de Usuario: </label>
                                             <?php $resultado = mysqli_query($conn, "CALL sp_rolesSelect()"); ?>
                                             <select class="form-control select2bs4" id="selectRoles" name="selectRoles">
-                                            <option value="0">0.- Empty/Vacio</option>
+                                                <option value="0">0.- Empty/Vacio</option>
                                                 <?php while ($row = mysqli_fetch_array($resultado)) {
                                                     $select = ($RLS_idTbl_Roles == $row['RLS_idTbl_Roles']) ? "selected=selected" : ""; ?>
                                                     <option value="<?php echo $row['RLS_idTbl_Roles']; ?>" <?php echo $select; ?>><?php echo $row['RLS_Description']; ?></option>
@@ -283,21 +283,21 @@ if (isset($_POST["buttonUpdateUser"])) {
                 echo 'document.getElementById("formInsertCMP").reset(); ';
                 echo '</script>';
                 // Comprobar si el archivo ya existe
-                  $targetFilePath = $uploads_dir . $_FILES['imgUser']['name'];
+                $targetFilePath = $uploads_dir . $_FILES['imgUser']['name'];
 
-                  // Verificar si el archivo ya existe en la ruta de destino
-                  if (file_exists($targetFilePath)) {
-                      echo '<script>toastr.info("La imagen ya existe");</script>';
-                      $uploadOk = 0; // Marcar la subida como no exitosa
-                  } else {
-                      // Si el archivo no existe, intentar moverlo a la ruta de destino
-                      if (move_uploaded_file($_FILES['imgUser']['tmp_name'], $targetFilePath)) {
-                          // El archivo se movió con éxito, aquí podrías realizar más acciones si es necesario
-                      } else {
-                          // Si hubo un error al mover el archivo, mostrar una notificación de error
-                          echo '<script>toastr.error("Error al mover la imagen.");</script>';
-                      }
-                  }
+                // Verificar si el archivo ya existe en la ruta de destino
+                if (file_exists($targetFilePath)) {
+                    echo '<script>toastr.info("La imagen ya existe");</script>';
+                    $uploadOk = 0; // Marcar la subida como no exitosa
+                } else {
+                    // Si el archivo no existe, intentar moverlo a la ruta de destino
+                    if (move_uploaded_file($_FILES['imgUser']['tmp_name'], $targetFilePath)) {
+                        // El archivo se movió con éxito, aquí podrías realizar más acciones si es necesario
+                    } else {
+                        // Si hubo un error al mover el archivo, mostrar una notificación de error
+                        echo '<script>toastr.error("Error al mover la imagen.");</script>';
+                    }
+                }
             }
         } catch (mysqli_sql_exception $e) {
             // Si ocurre una excepción, capturamos el código de error y lo imprimimos
@@ -329,7 +329,6 @@ if (isset($_POST["buttonUpdateUser"])) {
                 // Handle other types of database-related errors
                 echo "Error código: " . $e->getCode() . " - " . $e->getMessage();
             }
-
         }
     }
 }
@@ -403,7 +402,7 @@ if (isset($_POST["buttonUpdateUser"])) {
 </script>
 
 <script>
-     $(function() {
+    $(function() {
         //Initialize Select2 Elements
         $('.select2').select2()
 
@@ -412,7 +411,7 @@ if (isset($_POST["buttonUpdateUser"])) {
             theme: 'bootstrap4'
         })
     });
-    
+
     $(function() {
         $(".datepicker-input").datepicker({
             dateFormat: "yy-mm-dd"

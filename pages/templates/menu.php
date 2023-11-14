@@ -97,9 +97,9 @@ if (in_array('Security', array_column($privilegios, 'modulo'))) {
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="../views/dashboard_warranty.php" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Garantia vigentes</p>
+                                <p>Dashboard Garantias</p>
                             </a>
                         </li>
                     </ul>

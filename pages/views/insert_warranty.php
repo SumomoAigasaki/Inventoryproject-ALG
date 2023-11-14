@@ -64,11 +64,11 @@ require_once "../templates/menu.php";
                 <div class="col-sm-4">
                     <!--cinta de home y el nombre de la pagina -->
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="<?php echo $pageLink; ?>">
-                                <?php echo $pageName; ?>
+                        <li class="breadcrumb-item"><a href="../templates/index.php">
+                                Inicio
                             </a></li>
                         <li class="breadcrumb-item active">
-                            <?php echo nameProject; ?>
+                            <?php echo $pageName; ?>
                         </li>
                     </ol>
                     <!-- /.col -->
@@ -147,12 +147,12 @@ require_once "../templates/menu.php";
                                     <div class="col-sm-4" style="padding-top: 10px;">
                                         <div class="form-group">
                                             <label><code> * </code>Problema Principal: </label>
-                                            <textarea type="text" class="form-control" name="txtMainProblem" id="txtMainProblem" maxlength="255" > </textarea>
+                                            <textarea type="text" class="form-control" name="txtMainProblem" id="txtMainProblem" maxlength="255"> </textarea>
                                         </div>
                                     </div>
 
-                                   <!-- Observaciones -->
-                                   <div class="col-sm-4" style="padding-top: 10px;">
+                                    <!-- Observaciones -->
+                                    <div class="col-sm-4" style="padding-top: 10px;">
                                         <div class="form-group">
                                             <label> <code> * </code>Acciones Realizadas: </label>
                                             <textarea type="text" class="form-control" name="txtActionDone" id="txtActionDone" maxlength="255"> </textarea>
@@ -169,16 +169,16 @@ require_once "../templates/menu.php";
                                 </div>
                             </div>
                             <div class="row justify-content-center">
-                                 <!-- IMAGEN -->
-                                 <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label>Imagen de Referencia del Problema: </label>
-                                            <div class="input-group" style=" display: flex;   justify-content: center;   align-items: center;   height: 200px;">
-                                                <img class="img-fluid" src="../../resources/Warranty/computadoraMantenimiento.png" width="200" height="250" id="imgPerfil">
-                                                <input type="file" name="fileReferent" id="fileReferent" accept="image/png,image/jpeg" style="margin-left: 20px;text-align: center;">
-                                            </div>
+                                <!-- IMAGEN -->
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Imagen de Referencia del Problema: </label>
+                                        <div class="input-group" style=" display: flex;   justify-content: center;   align-items: center;   height: 200px;">
+                                            <img class="img-fluid" src="../../resources/Warranty/computadoraMantenimiento.png" width="200" height="250" id="imgPerfil">
+                                            <input type="file" name="fileReferent" id="fileReferent" accept="image/png,image/jpeg" style="margin-left: 20px;text-align: center;">
                                         </div>
                                     </div>
+                                </div>
                             </div>
                             <div class="row justify-content-center" style="padding-bottom:20px;">
                                 <div class="col-mb-3">
@@ -201,27 +201,27 @@ require_once "../templates/menu.php";
 </div>
 
 <script>
-  var textarea = document.getElementById("txtMainProblem");
-  
-  // Agregar el mensaje de ejemplo al cargar la página
-  textarea.value = "Descripción detallada de la problemática o defecto reportado por el usuario, incluyendo síntomas, mensajes de error, o cualquier información relevante";
-  textarea.classList.add("placeholder");
+    var textarea = document.getElementById("txtMainProblem");
 
-  // Cuando el usuario hace clic en el textarea, eliminar el mensaje de ejemplo y el estilo CSS
-  textarea.addEventListener("focus", function() {
-    if (textarea.classList.contains("placeholder")) {
-      textarea.value = "";
-      textarea.classList.remove("placeholder");
-    }
-  });
+    // Agregar el mensaje de ejemplo al cargar la página
+    textarea.value = "Descripción detallada de la problemática o defecto reportado por el usuario, incluyendo síntomas, mensajes de error, o cualquier información relevante";
+    textarea.classList.add("placeholder");
 
-  // Cuando el usuario sale del textarea sin ingresar ningún texto, restaurar el mensaje de ejemplo
-  textarea.addEventListener("blur", function() {
-    if (textarea.value === "") {
-      textarea.value = "Descripción detallada de la problemática o defecto reportado por el usuario, incluyendo síntomas, mensajes de error, o cualquier información relevante";
-      textarea.classList.add("placeholder");
-    }
-  });
+    // Cuando el usuario hace clic en el textarea, eliminar el mensaje de ejemplo y el estilo CSS
+    textarea.addEventListener("focus", function() {
+        if (textarea.classList.contains("placeholder")) {
+            textarea.value = "";
+            textarea.classList.remove("placeholder");
+        }
+    });
+
+    // Cuando el usuario sale del textarea sin ingresar ningún texto, restaurar el mensaje de ejemplo
+    textarea.addEventListener("blur", function() {
+        if (textarea.value === "") {
+            textarea.value = "Descripción detallada de la problemática o defecto reportado por el usuario, incluyendo síntomas, mensajes de error, o cualquier información relevante";
+            textarea.classList.add("placeholder");
+        }
+    });
 </script>
 
 <?php
@@ -234,7 +234,7 @@ require_once "../templates/footer.php";
         let computerSlct = document.getElementById('slctComputer');
         let numberApplicationstxt = document.getElementById('txtNumberApplications');
         let mainProblemtxt = document.getElementById('txtMainProblem');
-        let actionDonetxt= document.getElementById('txtActionDone');
+        let actionDonetxt = document.getElementById('txtActionDone');
 
 
         if (dateAdmisiontxt.value.trim() === "") {
@@ -277,8 +277,8 @@ require_once "../templates/footer.php";
         });
     });
 
-      // Funcion para cargar la previsualizacion de imagen 
-      function readURL(input) {
+    // Funcion para cargar la previsualizacion de imagen 
+    function readURL(input) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
             reader.onload = function(e) {
@@ -311,18 +311,18 @@ if (isset($_POST["buttonInsertWR"])) {
     $numberApplicationstxt = $_POST["txtNumberApplications"];
     $actionDonetxt = $_POST["txtActionDone"];
     $imgProblem =  $_FILES['fileReferent']['name'];
-        if (empty($imgProblem)) {
-            $imgProblem = '/resources/Warranty/DefaultProblem.jpg';
-        } else {
-            $imgProblem = '/resources/Warranty/' . $_FILES['fileReferent']['name'];
-        }
-    $observationstxt= $_POST["txtObservation"];
+    if (empty($imgProblem)) {
+        $imgProblem = '/resources/Warranty/DefaultProblem.jpg';
+    } else {
+        $imgProblem = '/resources/Warranty/' . $_FILES['fileReferent']['name'];
+    }
+    $observationstxt = $_POST["txtObservation"];
     $user = $_SESSION["User_idTbl_User"];
     // el estado en 4 porque es en espera 
     $status = 4;
     date_default_timezone_set('America/Mexico_City');
     $todayDate = date("Y-m-d");
-   
+
 
     // Verificar el permiso para realizar la operación
     if ($PermisoWR) {
@@ -330,10 +330,10 @@ if (isset($_POST["buttonInsertWR"])) {
             //Caso contrario Guardara
             $stmt = $conn->prepare("CALL  sp_insertWarranty(?,?,?,?,?,?,?,?,?,?)");
 
-                                 $query = "CALL sp_insertWarranty( '$computerId', '$dateAdmisiontxt', '$numberApplicationstxt', '$mainProblemtxt', '$actionDonetxt','$imgProblem', '$observationstxt', '$todayDate', '$status', '$user');";
-                                echo $query;
+            $query = "CALL sp_insertWarranty( '$computerId', '$dateAdmisiontxt', '$numberApplicationstxt', '$mainProblemtxt', '$actionDonetxt','$imgProblem', '$observationstxt', '$todayDate', '$status', '$user');";
+            echo $query;
             // Mandamos los parametros y los input que seran enviados al PA O SP
-            $stmt->bind_param("ssssssssss", $computerId, $dateAdmisiontxt, $numberApplicationstxt, $mainProblemtxt,$actionDonetxt, $imgProblem, $observationstxt, $todayDate, $status, $user);
+            $stmt->bind_param("ssssssssss", $computerId, $dateAdmisiontxt, $numberApplicationstxt, $mainProblemtxt, $actionDonetxt, $imgProblem, $observationstxt, $todayDate, $status, $user);
 
 
             // Ejecutar el procedimiento almacenado

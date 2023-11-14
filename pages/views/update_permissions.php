@@ -18,7 +18,7 @@ while ($row = $stmt->fetch_assoc()) {
         "idUSP" => $row['USP_IDtbl_user_privileges']
     );
     $existingUSPID[] = $usplista;
-    $USP_IDtbl_user_privileges=$row['USP_IDtbl_user_privileges'];
+    $USP_IDtbl_user_privileges = $row['USP_IDtbl_user_privileges'];
     //ID DE ROL
     $RLS_idTbl_Roles = $row['RLS_idTbl_Roles'];
 
@@ -122,11 +122,11 @@ $conn->next_result();
                 <div class="col-sm-4">
                     <!--cinta de home y el nombre de la pagina -->
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="<?php echo $pageLink; ?>">
-                                <?php echo $pageName; ?>
+                        <li class="breadcrumb-item"><a href="../templates/index.php">
+                                Inicio
                             </a></li>
                         <li class="breadcrumb-item active">
-                            <?php echo nameProject; ?>
+                            <?php echo $pageName; ?>
                         </li>
                     </ol>
                     <!-- /.col -->
@@ -153,15 +153,15 @@ $conn->next_result();
                                 <input type="hidden" class="form-control" id="todayDate" name="todayDate">
                                 <input type="hidden" class="form-control" id="accion" name="accion" placeholder="">
                                 <input type="hidden" class="form-control" id="TxtIdUSP" name="TxtIdUSP" value="<?php echo $USP_IDtbl_user_privileges ?>">
-                                <!-- <input type="hidden" class="form-control" id="TxtIdUSP" name="TxtIdUSP" value="<?php 
-                                                                                                                if (is_array($existingUSPID)) {
-                                                                                                                    foreach ($existingUSPID as $array) {
-                                                                                                                        echo implode(',', $array) . ',';
+                                <!-- <input type="hidden" class="form-control" id="TxtIdUSP" name="TxtIdUSP" value="<?php
+                                                                                                                    if (is_array($existingUSPID)) {
+                                                                                                                        foreach ($existingUSPID as $array) {
+                                                                                                                            echo implode(',', $array) . ',';
+                                                                                                                        }
+                                                                                                                    } else {
+                                                                                                                        echo $existingUSPID;
                                                                                                                     }
-                                                                                                                } else {
-                                                                                                                    echo $existingUSPID;
-                                                                                                                }
-                                                                                                                ?>"> -->
+                                                                                                                    ?>"> -->
                                 <!-- Input oculto MODULO -->
                                 <input type="hidden" class="form-control" id="txtIdModule" name="txtIdModule" placeholder="">
                                 <!-- Input oculto PRIVILEGIOS -->
@@ -621,7 +621,7 @@ if (isset($_POST["buttonUpdateUSP"])) {
         }
 
         // Comprobar si la inserción tuvo éxito
-         if ($answerExistsUSP > 0) {
+        if ($answerExistsUSP > 0) {
             // Mostrar un mensaje de éxito y redirigir después de 2 segundos
             echo '<script > toastr.success("Los datos del rol con Id <b>' . $rolId . '</b> se Guardaron de manera exitosa.", "¡¡Enhorabuena!!"); ';
             echo 'setTimeout(function() {';
@@ -631,6 +631,5 @@ if (isset($_POST["buttonUpdateUSP"])) {
             echo '</script>';
         }
     }
-
 }
 ?>

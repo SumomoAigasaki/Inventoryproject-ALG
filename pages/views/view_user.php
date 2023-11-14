@@ -75,11 +75,11 @@ function dataTableUser($stmt)
         <div class="col-sm-4">
           <!--cinta de home y el nombre de la pagina -->
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="<?php echo $pageLink; ?>">
-                <?php echo $pageName; ?>
+            <li class="breadcrumb-item"><a href="../templates/index.php">
+                Inicio
               </a></li>
             <li class="breadcrumb-item active">
-              <?php echo nameProject; ?>
+              <?php echo $pageName; ?>
             </li>
           </ol>
           <!-- /.col -->
@@ -124,44 +124,46 @@ function dataTableUser($stmt)
                 <tbody>
 
                   <?php
-                  $rol=$_SESSION["RLS_idTbl_Roles"] ;
+                  $rol = $_SESSION["RLS_idTbl_Roles"];
                   // Verificar si el rol tiene el rol 2 (administrador) y el permiso de SFT
-                  function validar_permisos($rol,$PermisoUSER) {
+                  function validar_permisos($rol, $PermisoUSER)
+                  {
                     if ($rol == "2" && $PermisoUSER) {
-                        return true;
+                      return true;
                     } else {
-                        return false;
+                      return false;
                     }
                   }
-                  
-                  
-                  function obtener_registros($conn,$rol,$PermisoUSER) {
+
+
+                  function obtener_registros($conn, $rol, $PermisoUSER)
+                  {
                     include "../../includes/conecta.php";
 
-                    if (validar_permisos($rol,$PermisoUSER)) {
-                      
-                        // Realizar consulta para obtener todos los registros
-                        $stmt = $conn->query("CALL sp_selectAllUser()");
-                        // $query= "CALL sp_selectAllUser()";
-                        // echo $query;
-                          // Ejecutar el procedimiento almacenado
-                          // Obtener todos los resultados
-                          dataTableUser($stmt);
-                          $stmt->close();
-                          $conn->next_result();
+                    if (validar_permisos($rol, $PermisoUSER)) {
+
+                      // Realizar consulta para obtener todos los registros
+                      $stmt = $conn->query("CALL sp_selectAllUser()");
+                      // $query= "CALL sp_selectAllUser()";
+                      // echo $query;
+                      // Ejecutar el procedimiento almacenado
+                      // Obtener todos los resultados
+                      dataTableUser($stmt);
+                      $stmt->close();
+                      $conn->next_result();
                     } else {
-                        // Realizar consulta para obtener solo registros activos
-                        $stmt = $conn->query("CALL sp_selectActiveUser()");
-                        // $query= "CALL CALL sp_selectActiveUser()";
-                        // echo $query;
-                        // Ejecutar el procedimiento almacenado
-                        // Obtener todos los resultados
-                        dataTableUser($stmt);
-                        $stmt->close();
-                        $conn->next_result();
+                      // Realizar consulta para obtener solo registros activos
+                      $stmt = $conn->query("CALL sp_selectActiveUser()");
+                      // $query= "CALL CALL sp_selectActiveUser()";
+                      // echo $query;
+                      // Ejecutar el procedimiento almacenado
+                      // Obtener todos los resultados
+                      dataTableUser($stmt);
+                      $stmt->close();
+                      $conn->next_result();
                     }
                   }
-                  obtener_registros($conn,$rol, $PermisoUSER);
+                  obtener_registros($conn, $rol, $PermisoUSER);
                   ?>
                 </tbody>
                 <tfoot>

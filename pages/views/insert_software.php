@@ -21,7 +21,7 @@ require_once "../templates/menu.php";
         extendedTimeOut: '1000',
         showEasing: 'swing',
         hideEasing: 'linear',
-        showMethod: 'fadeIn',                      
+        showMethod: 'fadeIn',
         hideMethod: 'fadeOut'
     }
 </script>
@@ -61,11 +61,11 @@ require_once "../templates/menu.php";
                 <div class="col-sm-4">
                     <!--cinta de home y el nombre de la pagina -->
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="<?php echo $pageLink; ?>">
-                                <?php echo $pageName; ?>
+                        <li class="breadcrumb-item"><a href="../templates/index.php">
+                                Inicio
                             </a></li>
                         <li class="breadcrumb-item active">
-                            <?php echo nameProject; ?>
+                            <?php echo $pageName; ?>
                         </li>
                     </ol>
                     <!-- /.col -->
@@ -330,23 +330,23 @@ if (isset($_POST["buttonInsertSFT"])) {
     $versionSft = $_POST['txt_versionSft'];
     $serialSft = $_POST['txt_licenciaSft'];
 
-    if (empty($serialSft)){
-        $serialSft= NULL;
+    if (empty($serialSft)) {
+        $serialSft = NULL;
     }
     $typeSft = $_POST['slct_SftType'];
     $clasificationLicenceSft = $_POST['slct_licenceClasification'];
     date_default_timezone_set('America/Mexico_City');
     $todayDate = date("Y-m-d");
-    $observationsSft=$_POST['txt_observation'];
-    $category= $_POST['slct_category'];
-    $user= $_SESSION["User_idTbl_User"];
-    $status='2';
+    $observationsSft = $_POST['txt_observation'];
+    $category = $_POST['slct_category'];
+    $user = $_SESSION["User_idTbl_User"];
+    $status = '2';
 
     # Ruta de la carpeta de destino para los archivos
     $urlSFT = '../../resources/Software/';
 
     if ($PermisoSTF) {
-        try{
+        try {
             //Caso contrario Guardara
             $stmt = $conn->prepare("CALL  sp_insertSoftware(?,?,?,?,?,?,?,?,?,?,?,?)");
 
@@ -366,8 +366,8 @@ if (isset($_POST["buttonInsertSFT"])) {
             $stmt->fetch();
             $stmt->close();
             $conn->next_result();
-             // se extraen los valores qu     nos devuelve el procedimiento almacenado y enviamos el error
-             if ($answerExistsSoft > 0) {
+            // se extraen los valores qu     nos devuelve el procedimiento almacenado y enviamos el error
+            if ($answerExistsSoft > 0) {
                 echo '<script > toastr.success("Los datos de <b>' . $nameSft . '</b> se Guardaron de manera exitosa.", "¡¡Enhorabuena!!"); ';
                 echo 'setTimeout(function() {';
                 echo '  window.location.href = "view_software.php";';
@@ -384,9 +384,7 @@ if (isset($_POST["buttonInsertSFT"])) {
                 }
                 exit;
             }
-
-        }
-        catch (mysqli_sql_exception $e) {
+        } catch (mysqli_sql_exception $e) {
             if ($e->getCode() == 1062) {
                 // Check which specific unique field is causing the constraint violation
                 if ($e->getCode() == 1062) {
@@ -402,17 +400,16 @@ if (isset($_POST["buttonInsertSFT"])) {
                         echo 'var serialInput = document.getElementById("txt_licenciaSft");';
                         echo 'serialInput.focus();';
                         echo '</script>';
-                    } 
-                    } else {
-                        // If none of the specific fields match, display a generic error message
-                        echo "Error: Duplicate entry for one or more unique fields. Please provide different values.";
                     }
                 } else {
-                    // Handle other types of database-related errors
-                    echo "Error código: " . $e->getCode() . " - " . $e->getMessage();
+                    // If none of the specific fields match, display a generic error message
+                    echo "Error: Duplicate entry for one or more unique fields. Please provide different values.";
                 }
+            } else {
+                // Handle other types of database-related errors
+                echo "Error código: " . $e->getCode() . " - " . $e->getMessage();
             }
-        
+        }
     }
 }
 ?>

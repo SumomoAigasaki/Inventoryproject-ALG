@@ -63,11 +63,11 @@ require_once "../templates/menu.php"; ?>
                 <div class="col-sm-4">
                     <!--cinta de home y el nombre de la pagina -->
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="<?php echo $pageLink; ?>">
-                                <?php echo $pageName; ?>
+                        <li class="breadcrumb-item"><a href="../templates/index.php">
+                                Inicio
                             </a></li>
                         <li class="breadcrumb-item active">
-                            <?php echo nameProject; ?>
+                            <?php echo $pageName; ?>
                         </li>
                     </ol>
                     <!-- /.col -->
@@ -223,37 +223,37 @@ require_once "../templates/footer.php";
 ?>
 
 <script>
-      // Obtener los elementos del formulario
-      var deadlineTxtInput = document.getElementById("txtDeadline");
-        var txtmonthInput = document.getElementById("txtmonth");
-        var txtReturnDateInput = document.getElementById("txtReturnDate");
+    // Obtener los elementos del formulario
+    var deadlineTxtInput = document.getElementById("txtDeadline");
+    var txtmonthInput = document.getElementById("txtmonth");
+    var txtReturnDateInput = document.getElementById("txtReturnDate");
 
-        // Agregar eventos a los campos de fecha de entrega y meses de contratación
-        deadlineTxtInput.addEventListener("input", calcularFechaRetorno);
-        txtmonthInput.addEventListener("input", calcularFechaRetorno);
+    // Agregar eventos a los campos de fecha de entrega y meses de contratación
+    deadlineTxtInput.addEventListener("input", calcularFechaRetorno);
+    txtmonthInput.addEventListener("input", calcularFechaRetorno);
 
-        // Agregar evento blur al campo de meses de contratación
-        txtmonthInput.addEventListener("blur", function() {
-            calcularFechaRetorno();
-        });
-        // Función para calcular la fecha de retorno
-        function calcularFechaRetorno() {
-            var fechaEntrega = new Date(deadlineTxtInput.value);
-            var mesesContratacion = parseInt(txtmonthInput.value);
+    // Agregar evento blur al campo de meses de contratación
+    txtmonthInput.addEventListener("blur", function() {
+        calcularFechaRetorno();
+    });
+    // Función para calcular la fecha de retorno
+    function calcularFechaRetorno() {
+        var fechaEntrega = new Date(deadlineTxtInput.value);
+        var mesesContratacion = parseInt(txtmonthInput.value);
 
-            if (!isNaN(mesesContratacion)) {
-                var fechaRetorno = new Date(fechaEntrega);
-                fechaRetorno.setMonth(fechaRetorno.getMonth() + mesesContratacion);
+        if (!isNaN(mesesContratacion)) {
+            var fechaRetorno = new Date(fechaEntrega);
+            fechaRetorno.setMonth(fechaRetorno.getMonth() + mesesContratacion);
 
-                // Formatear la fecha de retorno como "YYYY-MM-DD"
-                var yyyy = fechaRetorno.getFullYear();
-                var mm = String(fechaRetorno.getMonth() + 1).padStart(2, '0');
-                var dd = String(fechaRetorno.getDate() + 1).padStart(2, '0');
-                txtReturnDateInput.value = yyyy + '-' + mm + '-' + dd;
-            } else {
-                txtReturnDateInput.value = ""; // Borrar la fecha de retorno si no se ingresan meses válidos
-            }
+            // Formatear la fecha de retorno como "YYYY-MM-DD"
+            var yyyy = fechaRetorno.getFullYear();
+            var mm = String(fechaRetorno.getMonth() + 1).padStart(2, '0');
+            var dd = String(fechaRetorno.getDate() + 1).padStart(2, '0');
+            txtReturnDateInput.value = yyyy + '-' + mm + '-' + dd;
+        } else {
+            txtReturnDateInput.value = ""; // Borrar la fecha de retorno si no se ingresan meses válidos
         }
+    }
 
 
 
@@ -389,7 +389,7 @@ if (isset($_POST["buttonInsertPCA"])) {
     $returnDateTxt = $_POST["txtReturnDate"];
     $observationTxt = $_POST["txtObservation"];
     $idsArrayTexto  = $_POST["TxtId"];
-    $monthtxt =$_POST["txtmonth"];
+    $monthtxt = $_POST["txtmonth"];
     date_default_timezone_set('America/Mexico_City');
     $todayDate = date("Y-m-d");
     $user = $_SESSION["User_idTbl_User"];
@@ -408,7 +408,7 @@ if (isset($_POST["buttonInsertPCA"])) {
             // $query = "CALL sp_insertAssignmentPC( '$deadlineTxt', '$user', '$colaboradorId', '$computerId', '$returnDateTxt', '$status', '$observationTxt', '$todayDate');";
             // echo $query;
             // Mandamos los parametros y los input que seran enviados al PA O SP
-            $stmt->bind_param("sssssssss", $deadlineTxt, $user, $colaboradorId, $computerId, $returnDateTxt, $status, $observationTxt, $todayDate,$monthtxt);
+            $stmt->bind_param("sssssssss", $deadlineTxt, $user, $colaboradorId, $computerId, $returnDateTxt, $status, $observationTxt, $todayDate, $monthtxt);
 
 
             // Ejecutar el procedimiento almacenado

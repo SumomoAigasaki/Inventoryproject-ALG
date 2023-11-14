@@ -36,14 +36,17 @@ if ($actualPage == 'index.php') {
   //COMPUTADORA
 } elseif ($actualPage == 'view_computer.php') {
   $pageName = 'Lista de Computadoras';
+  $sectionName = 'Transaction';
   $pageLink = "view_computer.php";
 } elseif ($actualPage == 'update_computer.php') {
   $pageName = 'Actualizar Computadora';
   $pageLink = "update_Computer.php";
+  $sectionName = 'Transaction';
   $imagepath = "resources/Computer/";
 } elseif ($actualPage == 'insert_computer.php') {
   $pageName = 'Añadir Computadoras';
   $pageLink = "insert_computer.php";
+  $sectionName = 'Transaction';
   $imagepath = "resources/Computer/";
 }
 
@@ -96,7 +99,7 @@ elseif ($actualPage == 'view_peripherals.php') {
 
 //Asignacion De PC
   elseif ($actualPage == 'view_assignment_pc.php') {
-    $pageName = 'Lista Asignación PC';
+    $pageName = 'Listado de PC asignadas';
     $pageLink = "view_assignment_pc.php";
   } elseif ($actualPage == 'insert_assignment_pc.php') {
     $pageName = 'Asignación de PC';
@@ -138,6 +141,14 @@ elseif ($actualPage == 'view_peripherals.php') {
   } elseif ($actualPage == 'update_permissions.php') {
     $pageName = 'Actualizar Permisos';
     $pageLink = "update_permissions.php";
+  }
+
+
+   //Dashboard
+   elseif ($actualPage == 'dashboard_warranty.php') {
+    $pageName = 'Dashboard Garantia ';
+    $sectionName = 'Dashboard';
+    $pageLink = "dashboard_warranty.php";
   }
 
 

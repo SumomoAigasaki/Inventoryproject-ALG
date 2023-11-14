@@ -72,11 +72,11 @@ $conn->next_result();
                 <div class="col-sm-4">
                     <!--cinta de home y el nombre de la pagina -->
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="<?php echo $pageLink; ?>">
-                                <?php echo $pageName; ?>
+                        <li class="breadcrumb-item"><a href="../templates/index.php">
+                                Inicio
                             </a></li>
                         <li class="breadcrumb-item active">
-                            <?php echo nameProject; ?>
+                            <?php echo $pageName; ?>
                         </li>
                     </ol>
                     <!-- /.col -->
@@ -394,10 +394,10 @@ if (isset($_POST["buttonUpdateSoftware"])) {
         let statusSelect = document.getElementById('selectStatus');
         let categorySelect = document.getElementById('slct_category');
         let manufacturerSelect = document.getElementById('slct_manufacturerSftType');
-        let serialSoftwareInput =document.getElementById('txtSerialSoftware');
+        let serialSoftwareInput = document.getElementById('txtSerialSoftware');
         let Action = document.getElementById('txtAction');
 
-         if (softwarenameInput.value.trim() === "") {
+        if (softwarenameInput.value.trim() === "") {
             toastr.warning('La <b>Nombre del software</b> esta vacio(a).<br>Por favor, rellene este campo');
             softwarenameInput.focus();
             return false;
@@ -409,7 +409,7 @@ if (isset($_POST["buttonUpdateSoftware"])) {
             toastr.warning('El <b>Serial/b> esta vacio(a).<br>Por favor, rellene este campo');
             serialSoftwareInput.focus();
             return false;
-        }else if (licenseSelect.selectedIndex === 0) {
+        } else if (licenseSelect.selectedIndex === 0) {
             toastr.warning('La <b>Licencia</b> seleccionado no es valido(a).<br>Por favor,seleccione un campo valido');
             licenseSelect.focus();
             return false;

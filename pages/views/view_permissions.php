@@ -13,159 +13,159 @@ function dataTableUser($stmt, $ListSelectRol, $rol)
   $border = 0;
   $currentId = 0;
   $currentIdRol = 0;
-  $countLine=0;//conteo de lineas o saltos me ayudara  
+  $countLine = 0; //conteo de lineas o saltos me ayudara  
 
   while ($row = $stmt->fetch_assoc()) {
 
     $countLine++;
 
-      echo "<tr";
+    echo "<tr";
 
-      if ($countLine == $border) {
-        echo " class='special-row'";
-        // echo"<p>num ES igual al conteo" .$lineNumber." -- ".$border ." yes </p>";
-      }
-      echo ">";
-      echo "<td>" .$countLine . "</td>";
+    if ($countLine == $border) {
+      echo " class='special-row'";
+      // echo"<p>num ES igual al conteo" .$lineNumber." -- ".$border ." yes </p>";
+    }
+    echo ">";
+    echo "<td>" . $countLine . "</td>";
 
-      // Iterar sobre cada elemento del array $ListSelectRol y verificar la condición para cada uno de ellos
-      if (isset($ListSelectRol[$lineNumber]) && $ListSelectRol[$lineNumber]['id'] == $countLine) {
-        $currenteConteo = $ListSelectRol[$lineNumber]['conteo']; // Obtener el valor 'conteo' del primer elemento del array
-        $getHalfCount = strval(ceil($currenteConteo / 2));
+    // Iterar sobre cada elemento del array $ListSelectRol y verificar la condición para cada uno de ellos
+    if (isset($ListSelectRol[$lineNumber]) && $ListSelectRol[$lineNumber]['id'] == $countLine) {
+      $currenteConteo = $ListSelectRol[$lineNumber]['conteo']; // Obtener el valor 'conteo' del primer elemento del array
+      $getHalfCount = strval(ceil($currenteConteo / 2));
 
-        // Aumentar la posición en función de la mitad del conteo
-      }
+      // Aumentar la posición en función de la mitad del conteo
+    }
 
-      if ($lineNumber === $position) {
-        echo "<td align='center'> 
+    if ($lineNumber === $position) {
+      echo "<td align='center'> 
                 <a href='../views/update_permissions.php?p=" . $row['RLS_Description'] . "' class='btn btn-outline-primary btn-sm' title='Editar Permisos del Rol " . $currentIdRol . " '>
                     <i class='fas fa-pencil-alt'></i>
                 </a>
               </td>";
 
-        echo "<td align='center'><b>" . $currentIdRol . " " . $row['RLS_Description'] . "</b></td>";
-      } else {
-        echo "<td></td>";
-        echo "<td></td>"; // Espacio en blanco si RLS_Description se repite
-      }
-
-      $getHalfCount = null; // Inicializar la variable antes del bucle
-      $previousCount = 0; // Inicializa una variable para almacenar el 'conteo' anterior
-
-
-
-      foreach ($ListSelectRol as $idValueListRol) {
-        // Verifica si el 'USP_IDtbl_user_privileges' actual coincide con el 'id' en el arreglo $countRoles
-        //Declaro varibale para obtener la lista de los ids 
-        if ($countLine == $idValueListRol['id']) {
-
-          // Obtiene el valor 'conteo' del elemento actual del arreglo
-          //declaramos variables para obtener los datos actuales del Arreglo
-          $currentId = $idValueListRol['id'];
-          $currentIdRol = $idValueListRol['idRol'];
-          $currentRol = $idValueListRol['rol'];
-          $currenteConteo = $idValueListRol['conteo'];
-          $currentTotalRegister = $idValueListRol['totalRegistros'];
-
-
-
-          //formula para obtener la mitad de la variable currenteConteo
-          $getHalfCount = strval(ceil($currenteConteo / 2));
-          // Almacenar el resultado de la función array_key_exists en una variable
-
-          // Verifica si 'id' existe en el array actual
-          //array key devuelve valores boleanos 
-          // $firstArrayValue = array_key_exists('id', $countRole);
-
-          // Obtener el primer valor del array de ids
-
-          $ListSelectId = array_column($ListSelectRol, 'id');
-          $listIdRol = array_column($ListSelectRol, 'id');
-          $firstArrayValue = strval($listIdRol[0]);
-
-          foreach ($listIdRol as $index => $id) {
-            if ($id == $currentId) {
-              // echo "Valor de la lista: <br>"; // Esta línea imprimirá el valor de $id en cada iteración.
-              // print_r($listIdRol);
-              // echo "Valor de id: " . $id . "<br>"; // Esta línea imprimirá el valor de $id en cada iteración.
-              // Obtener el índice del primer valor en el array
-              $previousCount = array_search($firstArrayValue, $ListSelectId);
-
-              // echo "</pre>";
-              // echo "-----------------------------------<br>";
-              // echo "valores de la lista<br>";
-              // print_r($listIdRol);
-
-              // echo "Valor comparativo: " . $firstArrayValue . "<br>";
-              // echo "IdRol: " . $id . "<br>";
-              // echo "valor previo del array: " . $previousCount . "<br>";
-              if ($id === $firstArrayValue) {
-
-                if ($index === 0) {
-                  // echo "<br>";
-                  // echo "ID es Igual al Primer Campo: " . $id . "<br>";
-                  $position = 0 + $getHalfCount;
-                  $border = 0 + $currenteConteo;
-                }
-              } elseif ($id >= $firstArrayValue) {
-                // echo "<br>";
-                // echo "ID (" . $id . ")es MAYOR que Primer Campo:" . $id . " <br>";
-                // Resto de tu lógica condicional
-                $position = $ListSelectRol[$previousCount]['conteo'] + $getHalfCount;
-                if ($currenteConteo < $currentTotalRegister) {
-
-                  $valueRemaining = abs(($ListSelectRol[$previousCount]['conteo'] + $currenteConteo) - $currentTotalRegister);
-                  // echo "total de rengoles: " . $currentTotalRegister . "<br>";
-                  // echo "Valor Restante: " . $valueRemaining . "<br>";
-                  $border = ($ListSelectRol[$previousCount]['conteo'] + $valueRemaining) + $currenteConteo;
-                } elseif ($currenteConteo === $currentTotalRegister) {
-                  $border = $ListSelectRol[$previousCount]['conteo'] + $currenteConteo;
-                }
-              }
-              // echo "<br>";
-
-              // echo "Posición de texto en: " . $position . "<br>";
-              // echo "Borde en : " . $border . "<br>";
-            }
-          }
-
-          $previousCount++; // Aumenta 'previousCount' en preparación para la siguiente iteración
-          break; // Romper el bucle si se encuentra una coincidencia
-
-        }
-      }
-
-      if ($previusMDUDescriptions == $row['MDU_Descriptions']) {
-        echo "<td></td>"; // Espacio en blanco si RLS_Description se repite
-      } else {
-        echo "<td align='center'> <b>" . $row['MDU_Descriptions'] . "</b></td>";
-        $previusMDUDescriptions = $row['MDU_Descriptions'];
-      }
-
-      echo "<td>" . $row['PRV_Name'] . "</td>";
-      echo "<td>" . $row['PRV_Descriptions'] . "</td>";
-      echo "<td>" . $row['USP_Inventory_Date'] . "</td>";
-      echo "<td>" . $row['STS_Description'] . "</td>";
-      echo "<td>" . $row['User_Username'] . "</td>";
-
-      echo "<td align='center'>";
-      if ($row['STS_Description'] == "Deshabilitado") {
-        echo" <button class='btn btn-outline-danger btn-sm btnDeleteUSP disabled' title='Eliminar Permiso' name='btnDeleteUserP' id='btnDeleteUserP' data-id='" . $row['USP_IDtbl_user_privileges'] . "'>
-        <i class='fas fa-trash-alt'></i>
-      </button>";
-      }else {
-        echo" <button class='btn btn-outline-danger btn-sm btnDeleteUSP ' title='Eliminar Permiso' name='btnDeleteUserP' id='btnDeleteUserP' data-id='" . $row['USP_IDtbl_user_privileges'] . "'>
-        <i class='fas fa-trash-alt'></i>
-      </button>";
-      }
-      
-             
-            echo"</td>";
-      echo "</tr>";
-
-      $lineNumber++;
+      echo "<td align='center'><b>" . $currentIdRol . " " . $row['RLS_Description'] . "</b></td>";
+    } else {
+      echo "<td></td>";
+      echo "<td></td>"; // Espacio en blanco si RLS_Description se repite
     }
+
+    $getHalfCount = null; // Inicializar la variable antes del bucle
+    $previousCount = 0; // Inicializa una variable para almacenar el 'conteo' anterior
+
+
+
+    foreach ($ListSelectRol as $idValueListRol) {
+      // Verifica si el 'USP_IDtbl_user_privileges' actual coincide con el 'id' en el arreglo $countRoles
+      //Declaro varibale para obtener la lista de los ids 
+      if ($countLine == $idValueListRol['id']) {
+
+        // Obtiene el valor 'conteo' del elemento actual del arreglo
+        //declaramos variables para obtener los datos actuales del Arreglo
+        $currentId = $idValueListRol['id'];
+        $currentIdRol = $idValueListRol['idRol'];
+        $currentRol = $idValueListRol['rol'];
+        $currenteConteo = $idValueListRol['conteo'];
+        $currentTotalRegister = $idValueListRol['totalRegistros'];
+
+
+
+        //formula para obtener la mitad de la variable currenteConteo
+        $getHalfCount = strval(ceil($currenteConteo / 2));
+        // Almacenar el resultado de la función array_key_exists en una variable
+
+        // Verifica si 'id' existe en el array actual
+        //array key devuelve valores boleanos 
+        // $firstArrayValue = array_key_exists('id', $countRole);
+
+        // Obtener el primer valor del array de ids
+
+        $ListSelectId = array_column($ListSelectRol, 'id');
+        $listIdRol = array_column($ListSelectRol, 'id');
+        $firstArrayValue = strval($listIdRol[0]);
+
+        foreach ($listIdRol as $index => $id) {
+          if ($id == $currentId) {
+            // echo "Valor de la lista: <br>"; // Esta línea imprimirá el valor de $id en cada iteración.
+            // print_r($listIdRol);
+            // echo "Valor de id: " . $id . "<br>"; // Esta línea imprimirá el valor de $id en cada iteración.
+            // Obtener el índice del primer valor en el array
+            $previousCount = array_search($firstArrayValue, $ListSelectId);
+
+            // echo "</pre>";
+            // echo "-----------------------------------<br>";
+            // echo "valores de la lista<br>";
+            // print_r($listIdRol);
+
+            // echo "Valor comparativo: " . $firstArrayValue . "<br>";
+            // echo "IdRol: " . $id . "<br>";
+            // echo "valor previo del array: " . $previousCount . "<br>";
+            if ($id === $firstArrayValue) {
+
+              if ($index === 0) {
+                // echo "<br>";
+                // echo "ID es Igual al Primer Campo: " . $id . "<br>";
+                $position = 0 + $getHalfCount;
+                $border = 0 + $currenteConteo;
+              }
+            } elseif ($id >= $firstArrayValue) {
+              // echo "<br>";
+              // echo "ID (" . $id . ")es MAYOR que Primer Campo:" . $id . " <br>";
+              // Resto de tu lógica condicional
+              $position = $ListSelectRol[$previousCount]['conteo'] + $getHalfCount;
+              if ($currenteConteo < $currentTotalRegister) {
+
+                $valueRemaining = abs(($ListSelectRol[$previousCount]['conteo'] + $currenteConteo) - $currentTotalRegister);
+                // echo "total de rengoles: " . $currentTotalRegister . "<br>";
+                // echo "Valor Restante: " . $valueRemaining . "<br>";
+                $border = ($ListSelectRol[$previousCount]['conteo'] + $valueRemaining) + $currenteConteo;
+              } elseif ($currenteConteo === $currentTotalRegister) {
+                $border = $ListSelectRol[$previousCount]['conteo'] + $currenteConteo;
+              }
+            }
+            // echo "<br>";
+
+            // echo "Posición de texto en: " . $position . "<br>";
+            // echo "Borde en : " . $border . "<br>";
+          }
+        }
+
+        $previousCount++; // Aumenta 'previousCount' en preparación para la siguiente iteración
+        break; // Romper el bucle si se encuentra una coincidencia
+
+      }
+    }
+
+    if ($previusMDUDescriptions == $row['MDU_Descriptions']) {
+      echo "<td></td>"; // Espacio en blanco si RLS_Description se repite
+    } else {
+      echo "<td align='center'> <b>" . $row['MDU_Descriptions'] . "</b></td>";
+      $previusMDUDescriptions = $row['MDU_Descriptions'];
+    }
+
+    echo "<td>" . $row['PRV_Name'] . "</td>";
+    echo "<td>" . $row['PRV_Descriptions'] . "</td>";
+    echo "<td>" . $row['USP_Inventory_Date'] . "</td>";
+    echo "<td>" . $row['STS_Description'] . "</td>";
+    echo "<td>" . $row['User_Username'] . "</td>";
+
+    echo "<td align='center'>";
+    if ($row['STS_Description'] == "Deshabilitado") {
+      echo " <button class='btn btn-outline-danger btn-sm btnDeleteUSP disabled' title='Eliminar Permiso' name='btnDeleteUserP' id='btnDeleteUserP' data-id='" . $row['USP_IDtbl_user_privileges'] . "'>
+        <i class='fas fa-trash-alt'></i>
+      </button>";
+    } else {
+      echo " <button class='btn btn-outline-danger btn-sm btnDeleteUSP ' title='Eliminar Permiso' name='btnDeleteUserP' id='btnDeleteUserP' data-id='" . $row['USP_IDtbl_user_privileges'] . "'>
+        <i class='fas fa-trash-alt'></i>
+      </button>";
+    }
+
+
+    echo "</td>";
+    echo "</tr>";
+
+    $lineNumber++;
   }
+}
 
 
 
@@ -215,12 +215,12 @@ function dataTableUser($stmt, $ListSelectRol, $rol)
         <div class="col-sm-4">
           <!--cinta de home y el nombre de la pagina -->
           <ol class="breadcrumb float-sm-right">
-            <p class="breadcrumb-item"><a href="<?php echo $pageLink; ?>">
-                <?php echo $pageName; ?>
-              </a></p>
-            <p class="breadcrumb-item active">
-              <?php echo nameProject; ?>
-            </p>
+            <li class="breadcrumb-item"><a href="../templates/index.php">
+                Inicio
+              </a></li>
+            <li class="breadcrumb-item active">
+              <?php echo $pageName; ?>
+            </li>
           </ol>
           <!-- /.col -->
         </div>

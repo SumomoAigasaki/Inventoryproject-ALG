@@ -15,15 +15,15 @@ function dataTableUser($stmt)
     if (empty($row['SFT_Image'])) {
       echo "<li class='list-inline-item'>
                       <img alt='Avatar' width='50' height='50' class='table-avatar img-circle' src='../../resources/Software/default.jpg'>
-                    </li>" ;
+                    </li>";
     } else {
       echo "<li class='list-inline-item'>
                       <img alt='Avatar' width='50' height='50' class='table-avatar img-circle' src='../.." . $row['SFT_Image'] . "'>
-                    </li>" ;
+                    </li>";
     }
     echo "</td>";
     echo "<td>" . $row['SFT_Software_Name'] . "</td>";
-   
+
     echo "<td>" . $row['MFS_Description'] . "</td>";
     echo "<td>" . $row['SFT_Version_Installe'] . "</td>";
     echo "<td>" . $row['SFT_Serial'] . "</td>";
@@ -84,11 +84,11 @@ function dataTableUser($stmt)
         <div class="col-sm-4">
           <!--cinta de home y el nombre de la pagina -->
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="<?php echo $pageLink; ?>">
-                <?php echo $pageName; ?>
+            <li class="breadcrumb-item"><a href="../templates/index.php">
+                Inicio
               </a></li>
             <li class="breadcrumb-item active">
-              <?php echo nameProject; ?>
+              <?php echo $pageName; ?>
             </li>
           </ol>
           <!-- /.col -->
@@ -140,49 +140,51 @@ function dataTableUser($stmt)
                 <tbody>
 
                   <?php
-                  $rol=$_SESSION["RLS_idTbl_Roles"] ;
+                  $rol = $_SESSION["RLS_idTbl_Roles"];
                   // Verificar si el rol tiene el rol 2 (administrador) y el permiso de SFT
-                  function validar_permisos($rol,$PermisoSTF) {
+                  function validar_permisos($rol, $PermisoSTF)
+                  {
                     if ($rol == "2" && $PermisoSTF) {
-                        return true;
+                      return true;
                     } else {
-                        return false;
+                      return false;
                     }
                   }
-                  
-                  
-                  function obtener_registros($conn,$rol,$PermisoSTF) {
+
+
+                  function obtener_registros($conn, $rol, $PermisoSTF)
+                  {
                     include "../../includes/conecta.php";
 
-                    if (validar_permisos($rol,$PermisoSTF)) {
-                      
-                        // Realizar consulta para obtener todos los registros
-                        $stmt = $conn->query("CALL sp_selectAllSoftware()");
-                        // $query= "CALL sp_selectAllUser()";
-                        // echo $query;
-                          // Ejecutar el procedimiento almacenado
-                          // Obtener todos los resultados
-                          dataTableUser($stmt);
-                          $stmt->close();
-                          $conn->next_result();
+                    if (validar_permisos($rol, $PermisoSTF)) {
+
+                      // Realizar consulta para obtener todos los registros
+                      $stmt = $conn->query("CALL sp_selectAllSoftware()");
+                      // $query= "CALL sp_selectAllUser()";
+                      // echo $query;
+                      // Ejecutar el procedimiento almacenado
+                      // Obtener todos los resultados
+                      dataTableUser($stmt);
+                      $stmt->close();
+                      $conn->next_result();
                     } else {
-                        // Realizar consulta para obtener solo registros activos
-                        $stmt = $conn->query("CALL sp_selectActiveSoftware()");
-                        // $query= "CALL CALL sp_selectActiveUser()";
-                        // echo $query;
-                        // Ejecutar el procedimiento almacenado
-                        // Obtener todos los resultados
-                        dataTableUser($stmt);
-                        $stmt->close();
-                        $conn->next_result();
+                      // Realizar consulta para obtener solo registros activos
+                      $stmt = $conn->query("CALL sp_selectActiveSoftware()");
+                      // $query= "CALL CALL sp_selectActiveUser()";
+                      // echo $query;
+                      // Ejecutar el procedimiento almacenado
+                      // Obtener todos los resultados
+                      dataTableUser($stmt);
+                      $stmt->close();
+                      $conn->next_result();
                     }
                   }
-                  obtener_registros($conn,$rol, $PermisoSTF);
+                  obtener_registros($conn, $rol, $PermisoSTF);
                   ?>
                 </tbody>
                 <tfoot>
                   <tr>
-                  <th>#</th>
+                    <th>#</th>
                     <th>Imagen</th>
                     <th>Nombre Software </th>
                     <th>Fabricante del Software</th>

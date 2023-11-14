@@ -34,7 +34,7 @@ function dataTableUser($stmt)
     echo "<td>" . $row['CBT_Inventory_Date'] . "</td>";
     echo "<td>" . $row['User_Username'] . "</td>";
     echo "<td>" . $row['STS_Description'] . "</td>";
-    
+
     echo "<td align='center'> 
             <a href='../views/update_collaborator.php?p=" . $row['CBT_idTbl_Collaborator'] . "' class='btn btn-outline-primary btn-sm' title='Editar Registro'>
               <i class='fas fa-pencil-alt'></i>
@@ -84,11 +84,11 @@ function dataTableUser($stmt)
         <div class="col-sm-4">
           <!--cinta de home y el nombre de la pagina -->
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="<?php echo $pageLink; ?>">
-                <?php echo $pageName; ?>
+            <li class="breadcrumb-item"><a href="../templates/index.php">
+                Inicio
               </a></li>
             <li class="breadcrumb-item active">
-              <?php echo nameProject; ?>
+              <?php echo $pageName; ?>
             </li>
           </ol>
           <!-- /.col -->
@@ -132,8 +132,8 @@ function dataTableUser($stmt)
                     <th>Proceso</th>
                     <th>Cargo</th>
                     <th>Fecha inventario</th>
-                    <th>Usuario</th> 
-                    <th>Estado</th> 
+                    <th>Usuario</th>
+                    <th>Estado</th>
                     <th>Opciones</th>
 
                   </tr>
@@ -141,49 +141,51 @@ function dataTableUser($stmt)
                 <tbody>
 
                   <?php
-                  $rol=$_SESSION["RLS_idTbl_Roles"] ;
+                  $rol = $_SESSION["RLS_idTbl_Roles"];
                   // Verificar si el rol tiene el rol 2 (administrador) y el permiso de SFT
-                  function validar_permisos($rol,$PermisoCBT) {
+                  function validar_permisos($rol, $PermisoCBT)
+                  {
                     if ($rol == "2" && $PermisoCBT) {
-                        return true;
+                      return true;
                     } else {
-                        return false;
+                      return false;
                     }
                   }
-                  
-                  
-                  function obtener_registros($conn,$rol,$PermisoCBT) {
+
+
+                  function obtener_registros($conn, $rol, $PermisoCBT)
+                  {
                     include "../../includes/conecta.php";
 
-                    if (validar_permisos($rol,$PermisoCBT)) {
-                      
-                        // Realizar consulta para obtener todos los registros
-                        $stmt = $conn->query("CALL sp_selectAllCollaborator()");
-                        // $query= "CALL sp_selectAllUser()";
-                        // echo $query;
-                          // Ejecutar el procedimiento almacenado
-                          // Obtener todos los resultados
-                          dataTableUser($stmt);
-                          $stmt->close();
-                          $conn->next_result();
+                    if (validar_permisos($rol, $PermisoCBT)) {
+
+                      // Realizar consulta para obtener todos los registros
+                      $stmt = $conn->query("CALL sp_selectAllCollaborator()");
+                      // $query= "CALL sp_selectAllUser()";
+                      // echo $query;
+                      // Ejecutar el procedimiento almacenado
+                      // Obtener todos los resultados
+                      dataTableUser($stmt);
+                      $stmt->close();
+                      $conn->next_result();
                     } else {
-                        // Realizar consulta para obtener solo registros activos
-                        $stmt = $conn->query("CALL sp_selectActiveCollaborators()");
-                        // $query= "CALL CALL sp_selectActiveUser()";
-                        // echo $query;
-                        // Ejecutar el procedimiento almacenado
-                        // Obtener todos los resultados
-                        dataTableUser($stmt);
-                        $stmt->close();
-                        $conn->next_result();
+                      // Realizar consulta para obtener solo registros activos
+                      $stmt = $conn->query("CALL sp_selectActiveCollaborators()");
+                      // $query= "CALL CALL sp_selectActiveUser()";
+                      // echo $query;
+                      // Ejecutar el procedimiento almacenado
+                      // Obtener todos los resultados
+                      dataTableUser($stmt);
+                      $stmt->close();
+                      $conn->next_result();
                     }
                   }
-                  obtener_registros($conn,$rol, $PermisoCBT);
+                  obtener_registros($conn, $rol, $PermisoCBT);
                   ?>
                 </tbody>
                 <tfoot>
                   <tr>
-                  <th>#</th>
+                    <th>#</th>
                     <th>Codigo de empleado </th>
                     <th>Nacionalidad</th>
                     <th>Nombre Completo</th>
@@ -195,8 +197,8 @@ function dataTableUser($stmt)
                     <th>Proceso</th>
                     <th>Cargo</th>
                     <th>Fecha inventario</th>
-                    <th>Usuario</th> 
-                    <th>Estado</th> 
+                    <th>Usuario</th>
+                    <th>Estado</th>
                     <th>Opciones</th>
                   </tr>
                 </tfoot>

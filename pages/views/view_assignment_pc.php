@@ -76,12 +76,12 @@ function dataTableUser($stmt)
         <div class="col-sm-4">
           <!--cinta de home y el nombre de la pagina -->
           <ol class="breadcrumb float-sm-right">
-            <p class="breadcrumb-item"><a href="<?php echo $pageLink; ?>">
-                <?php echo $pageName; ?>
-              </a></p>
-            <p class="breadcrumb-item active">
-              <?php echo nameProject; ?>
-            </p>
+            <li class="breadcrumb-item"><a href="../templates/index.php">
+               Inicio
+              </a></li>
+            <li class="breadcrumb-item active">
+              <?php echo $pageName; ?>
+            </li>
           </ol>
           <!-- /.col -->
         </div>
