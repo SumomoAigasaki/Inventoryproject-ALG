@@ -13,23 +13,23 @@ function dataTableUser($stmt, $ListSelectRol, $rol)
   $border = 0;
   $currentId = 0;
   $currentIdRol = 0;
-
+  $countLine=0;//conteo de lineas o saltos me ayudara  
 
   while ($row = $stmt->fetch_assoc()) {
 
-  
+    $countLine++;
 
       echo "<tr";
 
-      if ($row['USP_IDtbl_user_privileges'] == $border) {
+      if ($countLine == $border) {
         echo " class='special-row'";
         // echo"<p>num ES igual al conteo" .$lineNumber." -- ".$border ." yes </p>";
       }
       echo ">";
-      echo "<td>" . $row['USP_IDtbl_user_privileges'] . "</td>";
+      echo "<td>" .$countLine . "</td>";
 
       // Iterar sobre cada elemento del array $ListSelectRol y verificar la condición para cada uno de ellos
-      if (isset($ListSelectRol[$lineNumber]) && $ListSelectRol[$lineNumber]['id'] == $row['USP_IDtbl_user_privileges']) {
+      if (isset($ListSelectRol[$lineNumber]) && $ListSelectRol[$lineNumber]['id'] == $countLine) {
         $currenteConteo = $ListSelectRol[$lineNumber]['conteo']; // Obtener el valor 'conteo' del primer elemento del array
         $getHalfCount = strval(ceil($currenteConteo / 2));
 
@@ -57,7 +57,7 @@ function dataTableUser($stmt, $ListSelectRol, $rol)
       foreach ($ListSelectRol as $idValueListRol) {
         // Verifica si el 'USP_IDtbl_user_privileges' actual coincide con el 'id' en el arreglo $countRoles
         //Declaro varibale para obtener la lista de los ids 
-        if ($row['USP_IDtbl_user_privileges'] == $idValueListRol['id']) {
+        if ($countLine == $idValueListRol['id']) {
 
           // Obtiene el valor 'conteo' del elemento actual del arreglo
           //declaramos variables para obtener los datos actuales del Arreglo
@@ -148,11 +148,19 @@ function dataTableUser($stmt, $ListSelectRol, $rol)
       echo "<td>" . $row['STS_Description'] . "</td>";
       echo "<td>" . $row['User_Username'] . "</td>";
 
-      echo "<td align='center'> 
-              <button class='btn btn-outline-danger btn-sm btnDeleteUSP' title='Eliminar Permiso' name='btnDeleteUserP' id='btnDeleteUserP' data-id='" . $row['USP_IDtbl_user_privileges'] . "'>
-                <i class='fas fa-trash-alt'></i>
-              </button>
-            </td>";
+      echo "<td align='center'>";
+      if ($row['STS_Description'] == "Deshabilitado") {
+        echo" <button class='btn btn-outline-danger btn-sm btnDeleteUSP disabled' title='Eliminar Permiso' name='btnDeleteUserP' id='btnDeleteUserP' data-id='" . $row['USP_IDtbl_user_privileges'] . "'>
+        <i class='fas fa-trash-alt'></i>
+      </button>";
+      }else {
+        echo" <button class='btn btn-outline-danger btn-sm btnDeleteUSP ' title='Eliminar Permiso' name='btnDeleteUserP' id='btnDeleteUserP' data-id='" . $row['USP_IDtbl_user_privileges'] . "'>
+        <i class='fas fa-trash-alt'></i>
+      </button>";
+      }
+      
+             
+            echo"</td>";
       echo "</tr>";
 
       $lineNumber++;
