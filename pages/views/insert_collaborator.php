@@ -408,6 +408,10 @@ if (isset($_POST["buttonInsertCBT"])) {
     $genderCBT = $_POST["slctGender"];
     $phoneNumberCBT = $_POST["txtphoneNumber"];
     $birthDateCBT = $_POST["txtbirthDate"];
+    if (!isset($birthDateCBT) || empty($birthDateCBT)) {
+        // Si no está definido o está vacío
+        $birthDateCBT = "000-00-00";
+    } 
     $addressCBT = $_POST["txtaddress"];
     $processCBT = $_POST["slctProcess"];
     $managementCBT = $_POST["slctManagement"];

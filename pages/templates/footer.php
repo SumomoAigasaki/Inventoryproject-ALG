@@ -60,7 +60,11 @@
 <script src="../../public/css/select2/js/select2.full.min.js"></script>
 <!-- Bootstrap4 Duallistbox -->
 <script src="../../public/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
+<!-- ChartJS -->
+<script src="../../public/js/chart.js/Chart.min.js"></script>
 
+<!-- Sparkline -->
+<!-- <script src="../../public/js/sparklines/sparkline.js"></script> -->
 </body>
 
 </html>

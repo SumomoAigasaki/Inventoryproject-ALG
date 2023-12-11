@@ -144,12 +144,20 @@ $conn->next_result();
                                 <input type="hidden" class="form-control" id="TxtId" name="TxtId" placeholder="">
                                 <input type="hidden" class="form-control" id="TxtIdPCAsignment" name="TxtIdPCAsignment" value="<?php echo $PCA_idTbl_PC_Assignment ?>">
                                 <input type="hidden" class="form-control" id="TxtIdMappingsoftware" name="TxtIdMappingsoftware">
+
                                 <div class="row justify-content-center" style="padding-bottom:20px;">
                                     <div class="col-mb-4">
                                         <label>Contrato de Asignacion de PC</label>
-                                        <div class="input-group" style="flex-direction: column; padding-left:15px; display: flex; justify-content: center; align-items: center;">
-                                            <div id="vistaPrevia"></div>
-                                            <img class="img-fluid" src="../../resources/AsignacionPC/defaultPDF.jpg" width="250" height="200" name="imgPerfil" id="imgPerfil">
+                                        <div class="input-group" style="flex-direction: column; padding-left: 15px; display: flex; justify-content: center; align-items: center;">
+                                            <div id="vistaPrevia">
+                                                <!-- Agrega un contenedor para el embed -->
+                                                <div id="embedContainer" style="width: 350px; height: 300px; display: none; overflow: hidden; position: relative;">
+                                                    <embed id="embedImage" type="application/pdf" style="width: 100%; height: 100%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                                                </div>
+                                                <!-- Agrega la imagen por defecto -->
+                                                <img class="img-fluid" src="../../resources/AsignacionPC/defaultPDF.jpg" width="250" height="200" name="imgPerfil" id="imgPerfil">
+                                            </div>
+                                            <!-- Mueve el input fuera del div "vistaPrevia" -->
                                             <input type="file" name="filePDF" id="filePDF" accept="application/pdf" />
                                         </div>
                                     </div>
@@ -283,14 +291,14 @@ $conn->next_result();
 
 
                                 </div>
-
+                                <div class="row justify-content-center" style="padding-bottom:20px;">
+                                    <div class="col-mb-3">
+                                        <button type="submit" class="btn btn-block bg-olive" id="buttonUpdatePCA" name="buttonUpdatePCA" onclick='return validate_data();'>Actualizar</button>
+                                    </div>
+                                </div>
                             </div>
                     </div>
-                    <div class="row justify-content-center" style="padding-bottom:20px;">
-                        <div class="col-mb-3">
-                            <button type="submit" class="btn btn-block bg-olive" id="buttonUpdatePCA" name="buttonUpdatePCA" onclick='return validate_data();'>Actualizar</button>
-                        </div>
-                    </div>
+
                     <div class="form-group">
                     </div>
                 </div>
@@ -311,21 +319,44 @@ require_once "../templates/footer.php";
 <!-- script para colocar el pdf en el div y hacer una vista previa -->
 <script>
     const filePDF = document.getElementById('filePDF');
-    const labelArchivoPDF = document.getElementById('labelArchivoPDF');
     const imgPerfil = document.getElementById('imgPerfil');
-    const vistaPrevia = document.getElementById('vistaPrevia');
+    const embedContainer = document.getElementById('embedContainer');
 
-    // Obtener la URL de la imagen del contrato desde PHP
-    const imgContratoURL = "<?php echo $PCA_imgContrato; ?>";
+    // Obtener la URL del archivo desde PHP (imagen o PDF)
+    const archivoURL = "<?php echo $PCA_imgContrato; ?>";
 
-    // Comprobar si hay una URL de imagen del contrato disponible y si no es la URL por defecto
-    if (imgContratoURL && imgContratoURL !== "/resources/AsignacionPC/defaultPDF.jpg") {
-        // Mostrar la imagen del contrato en un elemento embed
-        const embedTag = `<embed src="${imgContratoURL}"  type="application/pdf"  width="350" height="300">`;
-        vistaPrevia.innerHTML = embedTag;
-        vistaPrevia.style.display = 'block'; // Mostrar la previsualización del contrato
-        imgPerfil.style.display = 'none'; // Ocultar la imagen por defecto
+    // Función para comprobar si es un PDF según la extensión del archivo
+    function esPDF(archivo) {
+        return archivo.toLowerCase().endsWith('.pdf');
     }
+
+    // Función para mostrar la imagen o el PDF en base a la URL proporcionada
+    function mostrarArchivo() {
+        if (archivoURL && archivoURL !== "/resources/AsignacionPC/defaultPDF.jpg") {
+            // Mostrar el PDF si es un PDF, de lo contrario, mostrar la imagen
+            if (esPDF(archivoURL)) {
+                const embedTag = `<embed src="${archivoURL}"  type="application/pdf"  width="350" height="300">`;
+                embedContainer.innerHTML = embedTag;
+                embedContainer.style.display = 'block'; // Mostrar la previsualización del PDF
+                imgPerfil.style.display = 'none'; // Ocultar la imagen por defecto
+            } else {
+                imgPerfil.src = "../../resources/AsignacionPC/defaultPDF.jpg";
+                imgPerfil.style.display = 'block'; // Mostrar la imagen por defecto
+                embedContainer.style.display = 'none'; // Ocultar la previsualización del PDF
+            }
+        } else {
+            // Restaurar la previsualización si no hay URL válida
+            embedContainer.innerHTML = '';
+            embedContainer.style.display = 'none';
+
+            // Mostrar la imagen por defecto si no hay URL válida o es la URL por defecto
+            imgPerfil.style.display = 'block';
+            imgPerfil.src = "../../resources/AsignacionPC/defaultPDF.jpg";
+        }
+    }
+
+    // Llamar a la función al cargar la página
+    mostrarArchivo();
 
     filePDF.addEventListener('change', function() {
         const archivo = filePDF.files[0];
@@ -333,32 +364,24 @@ require_once "../templates/footer.php";
         if (archivo) {
             const lector = new FileReader();
             lector.onload = function(e) {
-                // Actualizar la previsualización del PDF
-                const embedTag = `<embed src="${e.target.result}" type="application/pdf" width="350" height="300">`;
-                vistaPrevia.innerHTML = embedTag;
-                vistaPrevia.style.display = 'block';
+                const archivoData = e.target.result;
 
-                // Ocultar la imagen por defecto
-                imgPerfil.style.display = 'none';
+                // Mostrar el PDF si es un PDF, de lo contrario, mostrar la imagen
+                if (esPDF(archivo.name)) {
+                    const embedTag = `<embed src="${archivoData}" type="application/pdf" width="350" height="300">`;
+                    embedContainer.innerHTML = embedTag;
+                    embedContainer.style.display = 'block'; // Mostrar la previsualización del PDF
+                    imgPerfil.style.display = 'none'; // Ocultar la imagen por defecto
+                } else {
+                    imgPerfil.src = "../../resources/AsignacionPC/defaultPDF.jpg";
+                    imgPerfil.style.display = 'block'; // Mostrar la imagen por defecto
+                    embedContainer.style.display = 'none'; // Ocultar la previsualización del PDF
+                }
             };
 
             lector.readAsDataURL(archivo);
         } else {
-            // Mostrar la imagen del contrato si está disponible
-            if (imgContratoURL && imgContratoURL !== "/resources/AsignacionPC/defaultPDF.jpg") {
-                // Mostrar la imagen del contrato en un elemento embed
-                const embedTag = `<embed src="${imgContratoURL}"  type="application/pdf"  width="350" height="300">`;
-                vistaPrevia.innerHTML = embedTag;
-                vistaPrevia.style.display = 'block'; // Mostrar la previsualización del contrato
-                imgPerfil.style.display = 'none'; // Ocultar la imagen por defecto
-            } else {
-                // Restaurar la previsualización del PDF si no hay imagen del contrato
-                vistaPrevia.innerHTML = '';
-                vistaPrevia.style.display = 'none';
-
-                // Restaurar la imagen por defecto
-                imgPerfil.style.display = 'block';
-            }
+            mostrarArchivo();
         }
     });
 </script>

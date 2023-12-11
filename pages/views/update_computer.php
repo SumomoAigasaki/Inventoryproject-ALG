@@ -163,7 +163,7 @@ $conn->next_result();
                     <div class="form-group">
                       <label>Fecha de Inventariado:</label>
                       <div class="input-group">
-                        <input type="text" class="form-control datepicker-input" id="todayDate" name="todayDate" value="<?php echo $inventoryDate ?>" require>
+                        <input type="text" class="form-control" id="todayDate" name="todayDate" value="<?php echo $inventoryDate ?>" readonly>
                       </div>
                     </div>
                     <!-- MARCA  -->
