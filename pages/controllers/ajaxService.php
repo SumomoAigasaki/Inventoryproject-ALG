@@ -22,6 +22,18 @@ if($rq ==1){
     $response= $oMySQL->getScatterPlotData();
 }else if($rq ==7){
     $response= $oMySQL->getPieChartData();
+}else if($rq ==8){
+    $response= $oMySQL->getNewRegisterTable();
+}else if($rq ==9){
+    $response= $oMySQL->getFullCoverageTable();
+}else if($rq ==10){
+    $response= $oMySQL->getUncoveredRecordsUseTable();
+}else if($rq==11){
+    $response= $oMySQL->getExpiredRecordsTable();
+}else if($rq==12){
+    $response= $oMySQL->getDataPieTable();
+}else if($rq==13){
+    $response= $oMySQL->getDataScatterTable();
 }
 
 echo $response;

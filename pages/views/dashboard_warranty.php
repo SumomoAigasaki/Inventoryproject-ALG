@@ -32,6 +32,7 @@ require_once "../templates/menu.php";
         <!-- /.container-fluid -->
     </div>
 
+
     <section class="content">
         <div class="container-fluid">
             <!-- Small boxes (Stat box) -->
@@ -47,7 +48,7 @@ require_once "../templates/menu.php";
                         <div class="icon">
                             <i class="fas fa-clipboard-list"></i>
                         </div>
-                        <!-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
+                        <a href="#" class="small-box-footer" data-toggle="modal" data-target="#modal-xl-newRegister">Más Información <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
                 <!-- ./col -->
@@ -55,7 +56,7 @@ require_once "../templates/menu.php";
                     <!-- small box -->
                     <div class="small-box" style="background-color: #003F6D; color: white;">
                         <div class="inner">
-                        <!-- <h3>53<sup style="font-size: 20px">%</sup></h3> -->
+                            <!-- <h3>53<sup style="font-size: 20px">%</sup></h3> -->
                             <h3><span id="rCoverage">00</span></h3>
 
                             <p>Registros con Cobertura Sin Asignar<b>(Full)</b></p>
@@ -63,7 +64,7 @@ require_once "../templates/menu.php";
                         <div class="icon">
                             <i class="fas fa-signal"></i>
                         </div>
-                        <!-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
+                        <a href="#" class="small-box-footer" data-toggle="modal" data-target="#modal-xl-Coverage">Más Información <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
 
@@ -79,7 +80,7 @@ require_once "../templates/menu.php";
                         <div class="icon">
                             <i class="far fa-hand-point-up"></i>
                         </div>
-                        <!-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
+                        <a href="#" class="small-box-footer" data-toggle="modal" data-target="#modal-xl-Uncovered">Más Información <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
 
@@ -95,7 +96,7 @@ require_once "../templates/menu.php";
                         <div class="icon">
                             <i class="far fa-calendar-times"></i>
                         </div>
-                        <!-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
+                        <a href="#" class="small-box-footer" data-toggle="modal" data-target="#modal-xl-Expired">Más Información<i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
             </div>
@@ -106,7 +107,7 @@ require_once "../templates/menu.php";
                     <div class="card">
                         <div class="card-header border-0">
                             <div class="d-flex justify-content-between">
-                                <h3 class="card-title">Grafica Lineal-  Gráfico de Tendencia: Estado de Dispositivos por Vigencia de Garantía</h3>
+                                <h3 class="card-title">Grafica Lineal- Gráfico de Tendencia: Estado de Dispositivos por Vigencia de Garantía</h3>
                                 <!-- <a href="javascript:void(0);">View Report</a> -->
                             </div>
                         </div>
@@ -151,7 +152,10 @@ require_once "../templates/menu.php";
                 <div class="col-lg-6">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Gráfico de Dispersión - Cantidad de Computadoras ubicadas por Gerencia</h3>
+                            <div class="d-flex justify-content-between">
+                                <h3 class="card-title">Gráfico de Dispersión - Cantidad de Computadoras ubicadas por Gerencia</h3>
+                                <a href="" data-toggle="modal" data-target="#modal-xl-Scatter">Vista de Reporte</a>
+                            </div>
                         </div>
                         <div class="card-body">
                             <canvas id="scatterChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
@@ -161,8 +165,11 @@ require_once "../templates/menu.php";
 
                 <div class="col-lg-6">
                     <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Grafica Pastel-Cantidad de registros con tipo de garantía</h3>
+                        <div class="card-header border-0">
+                            <div class="d-flex justify-content-between">
+                                <h3 class="card-title">Grafica Pastel-Cantidad de registros con tipo de garantía</h3>
+                                <a href="" data-toggle="modal" data-target="#modal-xl-Pastel">Vista de Reporte</a>
+                            </div>
                         </div>
                         <div class="card-body">
                             <canvas id="pieChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
@@ -174,6 +181,231 @@ require_once "../templates/menu.php";
 
         </div>
     </section>
+</div>
+
+<!-- Modal de lista de nuevos registros -->
+<div class="modal fade" id="modal-xl-newRegister">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Registros Nuevos</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Fecha Vencimiento Garantía</th>
+                            <th>Nombre de Dispositivo</th>
+                            <th>Marca</th>
+                            <th>Modelo</th>
+                            <th>Tipo de Garantia</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <!-- Puedes agregar más filas según sea necesario -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+    <!-- /.modal-content -->
+</div>
+
+<!-- Modal de lista de con Cobertura Sin Asignar-->
+<div class="modal fade" id="modal-xl-Coverage">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Registros con Cobertura Sin Asignar (FULL)</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Fecha Vencimiento Garantía</th>
+                            <th>Nombre de Dispositivo</th>
+                            <th>Marca</th>
+                            <th>Modelo</th>
+                            <th>Tipo de Garantia</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <!-- Puedes agregar más filas según sea necesario -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+    <!-- /.modal-content -->
+</div>
+
+<!-- Modal de lista de Registros con Cobertura Asignadosr-->
+<div class="modal fade" id="modal-xl-Uncovered">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Registros con Cobertura Asignados</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Fecha de Asignacion</th>
+                            <th>Fecha de Retorno</th>
+                            <th>Nombre de Colaborador</th>
+                            <th>Nombre de Dispositivo</th>
+                            <th>Fecha Expiro Garantia</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <!-- Puedes agregar más filas según sea necesario -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+    <!-- /.modal-content -->
+</div>
+
+<!-- Modal de lista de Registros prox. Vencer Activos y Circulando-->
+<div class="modal fade" id="modal-xl-Expired">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Registros prox. Vencer Activos y Circulando</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Fecha Vencimiento Garantía</th>
+                            <th>Nombre de Dispositivo</th>
+                            <th>Marca</th>
+                            <th>Modelo</th>
+                            <th>Tipo de Garantia</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <!-- Puedes agregar más filas según sea necesario -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+    <!-- /.modal-content -->
+</div>
+
+<!-- Modal de lista deGrafica Pastel-Cantidad de registros con tipo de garantía-->
+<div class="modal fade" id="modal-xl-Pastel">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Reporte de Cantidad de registros con tipo de garantía </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Fecha de Adquisicion</th>
+                            <th>Tipo de Garantia</th>
+                            <th>Nombre de Dispositivo</th>
+                            <th>Servitag</th>
+                            <th>Licensia</th>
+                            <th>Marca</th>
+                            <th>Modelo</th>
+                            <th>Fecha Vencimiento Garantía</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <!-- Puedes agregar más filas según sea necesario -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+    <!-- /.modal-content -->
+</div>
+
+<!-- Modal de lista d eGrafica Dispersion Cantidad de Computadoras ubicadas por Gerencia-->
+<div class="modal fade" id="modal-xl-Scatter">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Reporte de Cantidad de Computadoras ubicadas por Gerencia </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Fecha de Asignación</th>
+                            <th>Nombre Colaborador</th>
+                            <th>Nombre Tecnico Pc</th>
+                            <th>Gerencia</th>
+                            <th>Proceso</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <!-- Puedes agregar más filas según sea necesario -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+    <!-- /.modal-content -->
 </div>
 
 

@@ -8,6 +8,13 @@ function index(){
         this.getDataLine();
         this.getScatterData();
         this.getPieData();
+        this.getNewRegisterTable();
+        this.getFullCoverageTable ();
+        this.getUncoveredRecordsTable();
+        this.getExpiredRecordsTable();
+        this.getDataPieTable();
+        this.getDataScatterTable();
+        console.log("termina");
        
     }
 
@@ -91,10 +98,10 @@ function index(){
         });
 
     }
-      /**
+
+    /**
     * Asignar  datos a la Grafica Lineal
     */
-
     this.getDataLine= function(){
         $.ajax({
             statusCode:{
@@ -340,6 +347,204 @@ function index(){
         });
 
     }
+    /**
+    * Asignar  datos al modal de registros nuevos
+    */
+    this.getNewRegisterTable = function() {
+        $.ajax({
+            statusCode: {
+                404: function() {
+                    console.log("Esta pagina no existe");
+                }
+            },
+            url: '../controllers/ajaxservice.php',
+            method: 'POST',
+            data: {
+                rq: "8"
+            }
+        }).done(function(datos){
+                if(datos != ''){
+
+                    var jDatos = JSON.parse(datos);
+                    var table = $('#modal-xl-newRegister').find('.table tbody');
+                    // Limpia el cuerpo de la tabla
+                    // $('.table tbody').empty();
+                    console.log("tabla");
+                    console.log(jDatos);
+                    for (var i in jDatos) {
+                        table.append('<tr><td>' + jDatos[i].idComputer + '</td><td>' + jDatos[i].fechaExpiracion + '</td><td>' + jDatos[i].nombreTecnico + '</td><td>' + jDatos[i].manofacturacion + '</td><td>' + jDatos[i].modelo + '</td><td>' + jDatos[i].tipoGarantía + '</td></tr>');
+                    }
+                }
+                
+            });
+        
+    };
+
+      /**
+    * Asignar  datos al modal de Registros con Cobertura Sin Asignar (FULL)
+    */
+      this.getFullCoverageTable = function() {
+        $.ajax({
+            statusCode: {
+                404: function() {
+                    console.log("Esta pagina no existe");
+                }
+            },
+            url: '../controllers/ajaxservice.php',
+            method: 'POST',
+            data: {
+                rq: "9"
+            }
+        }).done(function(datos){
+                if(datos != ''){
+
+                    var jDatos = JSON.parse(datos);
+                    var table = $('#modal-xl-Coverage').find('.table tbody');
+                    // Limpia el cuerpo de la tabla
+                    // $('.table tbody').empty();
+                    console.log("tabla Coverage");
+                    console.log(jDatos);
+                    for (var i in jDatos) {
+                        table.append('<tr><td>' + jDatos[i].idComputer + '</td><td>' + jDatos[i].fechaExpiracion + '</td><td>' + jDatos[i].nombreTecnico + '</td><td>' + jDatos[i].manofacturacion + '</td><td>' + jDatos[i].modelo + '</td><td>' + jDatos[i].tipoGarantía + '</td></tr>');
+                    }
+                }
+                
+            });
+        
+    };
+
+       /**
+    * Asignar  datos al modal de Registros asignados sin cobertura
+    */
+       this.getUncoveredRecordsTable = function() {
+        $.ajax({
+            statusCode: {
+                404: function() {
+                    console.log("Esta pagina no existe");
+                }
+            },
+            url: '../controllers/ajaxservice.php',
+            method: 'POST',
+            data: {
+                rq: "10"
+            }
+        }).done(function(datos){
+                if(datos != ''){
+
+                    var jDatos = JSON.parse(datos);
+                    var table = $('#modal-xl-Uncovered').find('.table tbody');
+                    // Limpia el cuerpo de la tabla
+                    // $('.table tbody').empty();
+                    console.log("tabla Uncovered");
+                    console.log(jDatos);
+                    for (var i in jDatos) {
+                        table.append('<tr><td>' + jDatos[i].idAsignacionPc + '</td><td>' + jDatos[i].fechaAsignacion + '</td><td>' + jDatos[i].fechaDevolucion + '</td><td>' + jDatos[i].nombreColaborador + '</td><td>' + jDatos[i].nombreTecnico + '</td><td>' + jDatos[i].fechaExpiracion + '</td></tr>');
+                    }
+                }
+                
+            });
+        
+    };
+
+
+     /**
+    * Asignar  datos al modal de Registros prox. Vencer Activos y Circulando
+    */
+     this.getExpiredRecordsTable = function() {
+        $.ajax({
+            statusCode: {
+                404: function() {
+                    console.log("Esta pagina no existe");
+                }
+            },
+            url: '../controllers/ajaxservice.php',
+            method: 'POST',
+            data: {
+                rq: "11"
+            }
+        }).done(function(datos){
+                if(datos != ''){
+
+                    var jDatos = JSON.parse(datos);
+                    var table = $('#modal-xl-Expired').find('.table tbody');
+                    // Limpia el cuerpo de la tabla
+                    // $('.table tbody').empty();
+                    console.log("tabla Expired");
+                    console.log(jDatos);
+                    for (var i in jDatos) {
+                        table.append('<tr><td>' + jDatos[i].idAsignacionPc + '</td><td>' + jDatos[i].fechaAsignacion + '</td><td>' + jDatos[i].fechaDevolucion + '</td><td>' + jDatos[i].nombreColaborador + '</td><td>' + jDatos[i].nombreTecnico + '</td><td>' + jDatos[i].fechaExpiracion + '</td></tr>');
+                    }
+                }
+                
+            });
+        
+    };
+    
+    
+     /**
+    * Asignar  datos al modal de tabla/Reporte de la Grafica Pastel
+    */
+     this.getDataPieTable = function() {
+        $.ajax({
+            statusCode: {
+                404: function() {
+                    console.log("Esta pagina no existe");
+                }
+            },
+            url: '../controllers/ajaxservice.php',
+            method: 'POST',
+            data: {
+                rq: "12"
+            }
+        }).done(function(datos){
+                if(datos != ''){
+
+                    var jDatos = JSON.parse(datos);
+                    var table = $('#modal-xl-Pastel').find('.table tbody');
+                    // Limpia el cuerpo de la tabla
+                    // $('.table tbody').empty();
+                    console.log("tabla Pastel");
+                    console.log(jDatos);
+                    for (var i in jDatos) {
+                        table.append('<tr><td>' + jDatos[i].idComputer + '</td><td>' + jDatos[i].fechaAdquisicion + '</td><td>' + jDatos[i].tipoGarantia + '</td><td>' + jDatos[i].nombreTecnico + '</td><td>' + jDatos[i].servitag + '</td><td>' + jDatos[i].licensia + '</td><td>' + jDatos[i].manofacturacion + '</td><td>' + jDatos[i].modelo + '</td><td>' + jDatos[i].fechaExpiracion + '</td></tr>');   }
+                }
+                
+            });
+        
+    };
+    
+
+    /**
+    * Asignar  datos al modal de tabla/Reporte de la Grafica Dispersion
+    */
+    this.getDataScatterTable = function() {
+        $.ajax({
+            statusCode: {
+                404: function() {
+                    console.log("Esta pagina no existe");
+                }
+            },
+            url: '../controllers/ajaxservice.php',
+            method: 'POST',
+            data: {
+                rq: "13"
+            }
+        }).done(function(datos){
+                if(datos != ''){
+
+                    var jDatos = JSON.parse(datos);
+                    var table = $('#modal-xl-Scatter').find('.table tbody');
+                    // Limpia el cuerpo de la tabla
+                    // $('.table tbody').empty();
+                    console.log("tabla Scatter");
+                    console.log(jDatos);
+                    for (var i in jDatos) {
+                        table.append('<tr><td>' + jDatos[i].idPCAsigment + '</td><td>' + jDatos[i].fechaAsignacion + '</td><td>' + jDatos[i].NombreColaborador + '</td><td>' + jDatos[i].nombreTecnico + '</td><td>' + jDatos[i].Gerencia + '</td><td>' + jDatos[i].Area + '</td></tr>');   }
+                }
+                
+            });
+        
+    };
 }
 
 var oIndex = new index();
