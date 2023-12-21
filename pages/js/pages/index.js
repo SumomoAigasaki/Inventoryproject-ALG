@@ -322,8 +322,9 @@ function index(){
                     data: {
                         labels: etiquetas,
                         datasets: [{
-                            label: 'Cantidad de Dispositivos',
+                            
                             data: dataPie,
+                            label: 'Cantidad de Dispositivos',
                             backgroundColor: colors,
                         }]
                     },
@@ -472,7 +473,7 @@ function index(){
                     console.log("tabla Expired");
                     console.log(jDatos);
                     for (var i in jDatos) {
-                        table.append('<tr><td>' + jDatos[i].idAsignacionPc + '</td><td>' + jDatos[i].fechaAsignacion + '</td><td>' + jDatos[i].fechaDevolucion + '</td><td>' + jDatos[i].nombreColaborador + '</td><td>' + jDatos[i].nombreTecnico + '</td><td>' + jDatos[i].fechaExpiracion + '</td></tr>');
+                        table.append('<tr><td>' + jDatos[i].idComputer + '</td><td>' + jDatos[i].fechaExpiracion + '</td><td>' + jDatos[i].nombreTecnico + '</td><td>' + jDatos[i].manofacturacion + '</td><td>' + jDatos[i].modelo + '</td><td>' + jDatos[i].tipoGarantía + '</td></tr>');
                     }
                 }
                 
