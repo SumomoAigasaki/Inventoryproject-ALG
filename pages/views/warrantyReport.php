@@ -60,52 +60,71 @@ class PDF extends FPDF
     //Cabecera de página
     function Header()
     {
-        $logoUrl = '../../resources/Warranty/LogoALG.png'; // Ruta a la imagen local
-        // $imgData = getBase64Image($logoUrl);
-        $this->Image($logoUrl, 13, 8, 45, 20, "PNG"); // Ajusta los parámetros según sea necesario (x, y, ancho, alto)
-        //Arial bold 15
-        $this->SetFont('times', 'B', 11);
-        $this->Cell(115);
-        $this->Cell(60, 3, "Azucarera la Grecia S.A de C.V");
-        $this->SetFont('times', 'I', 9);
-        $this->Ln(3);
-        $this->Cell(105);
-        // se agrega utf8_decode para solucionar el problema con los acentos
-        $this->Cell(60, 6, utf8_decode("Kilómetro 21, Carretera hacia Cedeño"));
-        $this->Ln(3);
-        $this->Cell(115);
-        $this->Cell(60, 8, "Marcovia, Choluteca, Honduras C.A");
-        $this->Ln(3);
-        $this->Cell(102);
-        $this->Cell(60, 10, "Tel: 2705-3900 / Correo: info@azucareralagrecia.com",);
-
-        //Salto de línea
-        $this->Ln(20);
-    }
+       //Posición: a 1,5 cm del final
+      $logoUrl = '../../resources/Warranty/LogoALG.png'; // Ruta a la imagen local
+      $this->Image($logoUrl, 15, 16, 50); // Inserta el logo
+  
+      $this->SetFont('times', 'I', 9);
+  
+      // Salto de línea
+      $this->Ln(40);
+  }
 
     //Pie de página
     function Footer()
     {
+        // Establecer la posición y el tamaño de la página
+        $this->SetY(-40);
+        $this->SetMargins(15, 0, 15);
+        $this->SetFont('times', 'I', 8);
+    
+        // Iconos con coordenadas absolutas
+        $telefono = '../../resources/Warranty/telefono.png';
+        $this->Image($telefono, 25, $this->GetY() + 2.5, 4);
+        $direccion = '../../resources/Warranty/internet(1).png';
+        $this->Image($direccion, 25, $this->GetY() + 13, 4);
+        $localizacion = '../../resources/Warranty/localizacion.png';
+        $this->Image($localizacion, 25, $this->GetY() + 23, 4);
+    
+        // Texto con coordenadas absolutas
+        $this->SetTextColor(0, 0, 0); // Color negro para el texto
+        $this->SetY(-40);
+        $this->SetX(35);
+        $this->Cell(0, 5, utf8_decode("+(504) 2705-3900 "), 0, 0, 'L', 0);
+        $this->Ln();
+        $this->SetX(35);
+        $this->Cell(0, 3, utf8_decode("+(504) 3333-3333 "), 0, 0, 'L', 0);
+        $this->Ln(6);
 
-        //Posición: a 1,5 cm del final
-        $this->SetY(-15);
-        //Arial italic 8
-        $this->SetFont('times', 'I', 10);
-        //Número de página
-        $this->Cell(70, 10, "Informe distribuido por el sistema INFRAG");
-        $this->Ln(4);
-        $this->SetFont('times', 'IB', 10);
-        $this->Cell(70, 9, "Reporte Version: 0.1");
+        $this->SetX(35);
+        $this->Cell(0, 5, utf8_decode("gerenciageneral@lagreciahn.com"), 0, 0, 'L', );
+        $this->Ln();
+        $this->SetX(35);
+        $this->Cell(0, 3, utf8_decode("www.lagreciahn.com"), 0, 0, 'L', );
+        $this->Ln(6);
 
-        $this->Cell(180, 8, 'Pagina ' . $this->PageNo() . 'de {nb}', 0, 0, 'C');
+        $this->SetX(35);
+        $this->Cell(0, 5, utf8_decode("Kilómetro 21, Carretera hacia Cedeño"), 0, 0, 'L', 0);
+        $this->Ln();
+        $this->SetX(35);
+        $this->Cell(0, 3, utf8_decode("Marcovia, Choluteca, Honduras C.A"), 0, 0, 'L', 0);
+       
+        $this->SetX(35);
+        $this->SetFont('times', 'I', 11);
+        $this->MultiCell(155, 0, 'Pagina ' . $this->PageNo() . ' de {nb}','', 'R',false);
     }
 
     function TablarReporte($header,$todayDate,$NombreCompleto,$PCS_Description,$CBT_employee_position,$CT_Description,$MFC_Description,$MDL_Description,$CMP_Serial,$CMP_Servitag,$ticket,$CMP_Technical_Name,$WR_Date_Admission,
     $WR_Main_ProblemPDF,$WR_ActionsDonePDF,$WR_DiagnosisPDF,$WR_SolutionPDF,$STS_DescriptionPDF)
     {
+      $this->SetY(34); // Ajustar posición para dejar espacio para la firma
+      $this->SetMargins(15, 0, 15);
+       // Agregar el título
+       $this->SetFont('times', 'I', 12);
+       $this->Cell(170, 5,utf8_decode( " Marcovia-Choluteca ".$todayDate),  0, 1, 'R');
         // Agregar el título
         $this->SetFont('times', 'B', 14);
-        $this->Cell(0, 20, utf8_decode("Informe de Reporte Técnico en Garantías"), 0, 1, 'C');
+        $this->Cell(0, 18, utf8_decode("Ficha tecnica de reclamación de la garantía"), 0, 1, 'C');
         // Guardar márgenes
         $margenIzquierdo = ($this->GetPageWidth() - 160) / 2;
 
@@ -132,30 +151,8 @@ class PDF extends FPDF
             $this->SetFillColor(215, 219, 221 );
             $this->SetTextColor(0);
             $this->SetFont('');
-            //Datos
             $fill = false;
-            $this->SetFont('times', 'B', 12);
-            $this->Cell(80, 7, "Ubicacion/Fecha de Informe:", 'LTRB', 0, 'L', 1);
-            $this->SetFont('');
-            $this->Cell(80, 7, " Marcovia | ".$todayDate, 'LTRB', 1, 'L', 0);
-            $this->Ln(8);
-
-            $fill = !$fill;
-            $this->SetFont('times', 'B', 12);
-            $this->Cell(80, 7, "Nombre de Colaborador: ", 'LTRB', 0, 'L', 1);
-            $this->SetFont('');
-            $this->Cell(80, 7, " ".$NombreCompleto, 'LTRB', 0, 'L', 0);
-            $fill = true;
-            $this->Ln();
-
-            $fill = !$fill;
-            $this->SetFont('times', 'B', 12);
-            $this->Cell(80, 7, "Proceso/Area de Trabajo: ", 'LTRB', 0, 'L', 1);
-            $this->SetFont('');
-            $this->Cell(80, 7," ". $PCS_Description ." | " .$CBT_employee_position, 'LTRB', 0, 'L', 0);
-            $fill = false;
-            $this->Ln();
-
+          
             $fill = !$fill;
             $this->SetFont('times', 'B', 12);
             $this->Cell(80, 7, "Tipo de Equipo: ", 'LTRB', 0, 'L', 1);
@@ -214,18 +211,18 @@ class PDF extends FPDF
 
             $fill = !$fill;
             $this->SetFont('times', 'B', 12);
-            $this->Cell(80, 7, "Fecha en que se creo el reporte: ", 'LTRB', 0, 'L', 1);
+            $this->Cell(80, 7, "Fecha Creacion Reporte: ", 'LTRB', 0, 'L', 1);
             $this->SetFont('');
-            $this->Cell(80, 7, " ".$WR_Date_Admission, 'LTRB', 0, 'L', 0);
+            $this->Cell(80, 7, "".$WR_Date_Admission, 'LTRB', 0, 'L', 0);
             $fill = false;
             $this->Ln();
             $this->Cell(160, 0, '', 'T');
             
 
 
-    $this->SetFont('times', 'B', 14);
-    $this->Cell(-160,25, utf8_decode("Informe General del Reporte"), 0, 1, 'C');
-            
+        $this->SetFont('times', 'IB', 12);
+        $this->Cell(-160,18, utf8_decode("Información General del Reporte"), 0, 1, 'C');
+                
             for ($o = 0; $o <=0; $o++){
                 $this->SetFillColor(242, 243, 244);
                 $this->SetTextColor(0);
@@ -233,13 +230,13 @@ class PDF extends FPDF
                 //Datos
                 $fill = true;
                 $this->SetFont('times', 'B', 12);
-                $this->Cell(160, 6, "A. Descripcion del Fallo/Problema", 'LTR', 0, 'L', $fill);
+                $this->Cell(160, 7, "A. Descripcion del Fallo/Problema", 'LTR', 0, 'L', $fill);
                 $this->Ln();
                 
                 $fill = !$fill;
                 $this->SetFont('times', 'B', 12);
                 $this->SetFont('');
-                $this->MultiCell(160, 9, utf8_decode( "".$WR_Main_ProblemPDF), 'LTR', 'J', $fill);
+                $this->MultiCell(160, 9, utf8_decode("".$WR_Main_ProblemPDF), 'LTR', 'J', $fill);
                 $fill = false;
 
                 $fill = true;
@@ -272,7 +269,7 @@ class PDF extends FPDF
                 $fill = !$fill;
                 $this->SetFont('times', 'B', 12);
                 $this->SetFont('');
-                $this->MultiCell(160, 9,utf8_decode( "".$WR_SolutionPDF), 'LTR', 'J', $fill);
+                $this->MultiCell(160, 9,utf8_decode("".$WR_SolutionPDF), 'LTR', 'J', $fill);
                 $fill = false;
 
                 $fill = true;
@@ -288,9 +285,9 @@ class PDF extends FPDF
                   } else if ($STS_DescriptionPDF == "Espera") {
                 $this->MultiCell(160, 9,utf8_decode("El problema está en proceso por lo tanto el folio está abierto todavía no se le ha dado solución por favor esperar a que los técnicos se acerquen para poder cerrar el caso.") ,'LTRB', 'J', $fill);
                   } else if ($STS_DescriptionPDF == "Sin Respuesta") {
-                    $this->MultiCell(160, 9,utf8_decode( "El problema no tuvo respuesta volver a hacer el reporte para dar seguimiento."),'LTRB', 'J', $fill);
+                    $this->MultiCell(160, 9,utf8_decode("El problema no tuvo respuesta volver a hacer el reporte para dar seguimiento."),'LTRB', 'J', $fill);
                   } else if ($STS_DescriptionPDF == "Cancelado") {
-                    $this->MultiCell(160, 9,utf8_decode( "El problema no se resolvió porque hubo problemas con la gestión por lo cual no se le pudo dar seguimiento.") ,'LTRB', 'J', $fill);
+                    $this->MultiCell(160, 9,utf8_decode("El problema no se resolvió porque hubo problemas con la gestión por lo cual no se le pudo dar seguimiento.") ,'LTRB', 'J', $fill);
                   } else if ($STS_DescriptionPDF == "Deshabilitado") {
                     $this->MultiCell(160, 9,utf8_decode("El Registro actualmente se encuentra Deshabilidato del Sistema, por lo tanto no es como que cuente con alguna cobertura conforme de la garantia.") ,'LTRB', 'J', $fill);
                   }
@@ -298,31 +295,32 @@ class PDF extends FPDF
                 $fill = false;
 
                 $this->Cell(160, 0, '', 'T');
-                $this->Ln();
+              
 
             }
-
-          
-            $this->Ln();
-            $this->SetFont('times', 'B', 12);
-            $this->Cell(0,15, utf8_decode("Atentamente:"), 0, 1, 'C');    
-            
-            $this->Ln();
+            $this->Ln(10);
+            $this->SetFont('times', '', 12);
+            $this->MultiCell(160, 5, utf8_decode("NOTA: Al firmar este documento, se acepta que la información presentada es precisa y confirma que el problema o caso ha sido resuelto en conjunto con la empresa responsable de la reclamación de la garantía. La firma valida la exactitud de los datos proporcionados y la conclusión satisfactoria del asunto."), '', 'J', $fill);
+            $this->Ln(25);
             $this->SetFont('');
-            $this->Cell(0,8, '________________________________', '0',1,'C');
-            $this->SetFont('times', 'B', 12);
-            $this->Cell(0, 9, "Firma de ".$NombreCompleto, 0, 1, 'C');
-        
+            $this->SetFont('times', 'IB', 12);
+            $this->MultiCell(170, 9, "Lic. ".$NombreCompleto,'', 'R', $fill);
+            $this->SetFont('times', 'I', 12);
+            $this->MultiCell(170, 0, $CBT_employee_position.", Azucarera La Grecia",'', 'R', $fill);
+            $this->Ln(3);
 
 
     }
 }
+// ... (código previo)
 
 $pdf = new PDF();
 // Establecer márgenes
-$topMargin = 10; // Margen superior en unidades de medida del PDF
-$bottomMargin = 30; // Margen inferior en unidades de medida del PDF
-$pdf->SetMargins(10, $topMargin, 10); // Configura los márgenes izquierdo, derecho, y superior
+$topMargin = 35; // Margen superior en unidades de medida del PDF
+$bottomMargin = 35; // Margen inferior en unidades de medida del PDF
+$leftMargin = 15; // Margen izquierdo en unidades de medida del PDF
+$rightMargin = 15; // Margen derecho en unidades de medida del PDF
+$pdf->SetMargins($leftMargin, $topMargin, $rightMargin); // Configura los márgenes izquierdo, derecho, y superior
 $pdf->SetAutoPageBreak(true, $bottomMargin); // Activa el salto automático de página con un margen inferior
 
 //Títulos de las columnas
@@ -330,7 +328,7 @@ $header = array('Descripcion de Campos', 'Informacion');
 $pdf->AliasNbPages();
 //Segunda página
 $pdf->AddPage();
-$pdf->SetY(35);
+$pdf->SetY(50);
 $pdf->TablarReporte($header,$todayDate,$NombreCompleto,$PCS_Description,$CBT_employee_position,$CT_Description,$MFC_Description,$MDL_Description,$CMP_Serial,$CMP_Servitag,$ticket,$CMP_Technical_Name,$WR_Date_Admission,
 $WR_Main_ProblemPDF,$WR_ActionsDonePDF,$WR_DiagnosisPDF,$WR_SolutionPDF,$STS_DescriptionPDF);
 // Genera un nombre de archivo único basado en la fecha y la hora actual

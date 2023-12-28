@@ -291,6 +291,7 @@ class MySQL
                 while ($row = $eQuery->fetch()) {
                     $oDataSP = new newRegisterTableData();
                     $oDataSP->idComputer = $row['CMP_idTbl_Computer'];
+                    $oDataSP->fechaAdquisicion = $row['CMP_Inventory_Date'];
                     $oDataSP->fechaExpiracion = $row['CMP_Warranty_Expiration'];
                     $oDataSP->nombreTecnico = $row['CMP_Technical_Name'];
                     $oDataSP->manofacturacion = $row['MFC_Description'];
@@ -311,7 +312,7 @@ class MySQL
     
 
      /**
-     * Extraer datos para tabla de nuevos Registros
+     * Extraer datos para tabla de registros con cobertura sin asignar 
      */
     public function getFullCoverageTable()
     {
@@ -328,7 +329,7 @@ class MySQL
                 $eQuery->setFetchMode(PDO::FETCH_ASSOC);
 
                 while ($row = $eQuery->fetch()) {
-                    $oDataSP = new newRegisterTableData();
+                    $oDataSP = new RegisterTableData();
                     $oDataSP->idComputer = $row['CMP_idTbl_Computer'];
                     $oDataSP->fechaExpiracion = $row['CMP_Warranty_Expiration'];
                     $oDataSP->nombreTecnico = $row['CMP_Technical_Name'];
@@ -388,7 +389,7 @@ class MySQL
 
     
      /**
-     * Extraer datos para tabla de nuevos Registros
+     * Extraer datos para tabla de registros proximos a vencer
      */
     public function getExpiredRecordsTable()
     {
@@ -405,7 +406,7 @@ class MySQL
                 $eQuery->setFetchMode(PDO::FETCH_ASSOC);
 
                 while ($row = $eQuery->fetch()) {
-                    $oDataSP = new newRegisterTableData();
+                    $oDataSP = new RegisterTableData();
                     $oDataSP->idComputer = $row['CMP_idTbl_Computer'];
                     $oDataSP->fechaExpiracion = $row['CMP_Warranty_Expiration'];
                     $oDataSP->nombreTecnico = $row['CMP_Technical_Name'];
@@ -418,6 +419,52 @@ class MySQL
             }
 
             $jDatos = json_encode($ArrayExpiredRecordsTable);
+        } catch (PDOException $e) {
+            echo "MySql.Get Scatter " . $e->getMessage() . "\n";
+            return false;
+        }
+        return $jDatos;
+    }
+
+    /**
+     * Extraer datos para tabla/Reporte de la Grafica Lineal
+     */
+    public function getMonthlySummaryTable()
+    {
+        $jDatos = '';
+        $ArrayMonthlySummaryTable= array();
+        $i = 0;
+
+        try {
+            $strQuery = "CALL sp_DashWarrantyMonthlySummaryTable()";
+
+            if ($this->conBDPDO()) {
+                $eQuery = $this->oConDB->prepare($strQuery);
+                $eQuery->execute();
+                $eQuery->setFetchMode(PDO::FETCH_ASSOC);
+
+                while ($row = $eQuery->fetch()) {
+                    $oDataSP = new RegisterTableData();
+                    $oDataSP->idComputer = $row['CMP_idTbl_Computer'];
+                    $oDataSP->fechaExpiracion = $row['CMP_Warranty_Expiration'];
+                    $oDataSP->nombreTecnico = $row['CMP_Technical_Name'];
+                    $oDataSP->manofacturacion = $row['MFC_Description'];
+                    $oDataSP->modelo = $row['MDL_Description'];
+                    $oDataSP->tipoGarantía = $row['TG_Description'];
+                    $ArrayMonthlySummaryTable[] = $oDataSP; // Agregar el objeto $oData1 al array
+                    $i++;
+                }
+                // Obtener el número total de registros
+                $total_registros = $eQuery->rowCount();;
+
+                // Combinar los datos y el total de registros en un array final
+                $response = array(
+                    "data" => $ArrayMonthlySummaryTable,
+                    "total_registros" => $total_registros
+                );
+            }
+
+            $jDatos = json_encode($response);
         } catch (PDOException $e) {
             echo "MySql.Get Scatter " . $e->getMessage() . "\n";
             return false;
@@ -456,9 +503,17 @@ class MySQL
                     $ArrayDataPieTable[] = $oDataSP; // Agregar el objeto $oData1 al array
                     $i++;
                 }
+                 // Obtener el número total de registros
+                 $total_registros = $eQuery->rowCount();;
+
+                 // Combinar los datos y el total de registros en un array final
+                 $response = array(
+                     "data" => $ArrayDataPieTable,
+                     "total_registros" => $total_registros
+                 );
             }
 
-            $jDatos = json_encode($ArrayDataPieTable);
+            $jDatos = json_encode($response);
         } catch (PDOException $e) {
             echo "MySql.Get Scatter " . $e->getMessage() . "\n";
             return false;
@@ -493,10 +548,18 @@ class MySQL
                     $oDataSP->Area = $row['AREA'];
                     $ArrayDataScatterTable[] = $oDataSP; // Agregar el objeto $oData1 al array
                     $i++;
-                }
-            }
+                } 
+                // Obtener el número total de registros
+                $total_registros = $eQuery->rowCount();;
 
-            $jDatos = json_encode($ArrayDataScatterTable);
+                // Combinar los datos y el total de registros en un array final
+                $response = array(
+                    "data" => $ArrayDataScatterTable,
+                    "total_registros" => $total_registros
+                );
+           }
+
+           $jDatos = json_encode($response);
         } catch (PDOException $e) {
             echo "MySql.Get Scatter " . $e->getMessage() . "\n";
             return false;
@@ -545,6 +608,7 @@ class PieData
 class newRegisterTableData
 {
     public $idComputer = 0;
+    public $fechaAdquisicion =0;
     public $fechaExpiracion = 0;
     public $nombreTecnico = 0;
     public $manofacturacion = 0;
@@ -552,6 +616,16 @@ class newRegisterTableData
     public $tipoGarantía = 0;
 }
 
+
+class RegisterTableData
+{
+    public $idComputer = 0;
+    public $fechaExpiracion = 0;
+    public $nombreTecnico = 0;
+    public $manofacturacion = 0;
+    public $modelo = 0;
+    public $tipoGarantía = 0;
+}
 class RegisterCoverageTableData
 {
     public $idAsignacionPc = 0;

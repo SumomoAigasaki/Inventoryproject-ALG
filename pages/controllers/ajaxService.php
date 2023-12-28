@@ -34,6 +34,8 @@ if($rq ==1){
     $response= $oMySQL->getDataPieTable();
 }else if($rq==13){
     $response= $oMySQL->getDataScatterTable();
+}else if($rq==14){
+    $response= $oMySQL->getMonthlySummaryTable();
 }
 
 echo $response;

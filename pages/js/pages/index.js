@@ -14,7 +14,8 @@ function index(){
         this.getExpiredRecordsTable();
         this.getDataPieTable();
         this.getDataScatterTable();
-        console.log("termina");
+        this.getDataMonthlySummaryTable();
+        // console.log("termina");
        
     }
 
@@ -146,7 +147,7 @@ function index(){
                 labels: etiquetaFecha,
                 datasets: [{
                   type: 'bar',
-                  label: 'Dispositivos Vigentes con Garantía',
+                  label: 'Dispositivos con Garantía Activa',
                   backgroundColor: colors[0],
                   borderColor: colors[0],
                   // backgroundColor: Utils.transparentize(Utils.CHART_COLORS.red, 0.5),
@@ -154,7 +155,7 @@ function index(){
                   data: dataVigentes,
                 }, {
                   type: 'bar',
-                  label: 'Dispositivos Vencidos sin Garantía',
+                  label: 'Dispositivos con Garantía Próxima a Vencer ',
                   backgroundColor: colors[1],
                   borderColor: colors[1],
                   data:dataVencidos,
@@ -279,9 +280,7 @@ function index(){
     * Asignar  datos a la Grafica de Pastel
     */
     this.getPieData= function(){
-       
-      
-     
+    
         $.ajax({
             statusCode:{
                 404:function(){
@@ -348,6 +347,7 @@ function index(){
         });
 
     }
+
     /**
     * Asignar  datos al modal de registros nuevos
     */
@@ -370,12 +370,37 @@ function index(){
                     var table = $('#modal-xl-newRegister').find('.table tbody');
                     // Limpia el cuerpo de la tabla
                     // $('.table tbody').empty();
-                    console.log("tabla");
-                    console.log(jDatos);
+                    // console.log("tabla");
+                    // console.log(jDatos);
                     for (var i in jDatos) {
-                        table.append('<tr><td>' + jDatos[i].idComputer + '</td><td>' + jDatos[i].fechaExpiracion + '</td><td>' + jDatos[i].nombreTecnico + '</td><td>' + jDatos[i].manofacturacion + '</td><td>' + jDatos[i].modelo + '</td><td>' + jDatos[i].tipoGarantía + '</td></tr>');
+                        table.append('<tr><td>' + jDatos[i].idComputer + '</td><td>' + jDatos[i].fechaAdquisicion + '</td><td>' + jDatos[i].fechaExpiracion + '</td><td>' + jDatos[i].nombreTecnico + '</td><td>' + jDatos[i].manofacturacion + '</td><td>' + jDatos[i].modelo + '</td><td>' + jDatos[i].tipoGarantía + '</td></tr>');
                     }
+
+                    $.ajax({
+                        statusCode:{
+                            404:function(){
+                                console.log("Esta pagina no existe");
+                            }
+                        },
+                        url:'../controllers/ajaxservice.php', 
+                        method:'POST',
+                        data:{
+                            rq:"1"
+                        }
+                    }).done(function(registro){
+                        if(registro != ''){
+                            var jDatosRq1 = JSON.parse(registro);
+                            // Aquí puedes hacer lo que necesites con los datos obtenidos de la segunda petición (rq: "1")
+                            // console.log("Datos rq1:");
+                            // console.log(jDatosRq1);
+                            $("#mNuevos").text(parseFloat(jDatosRq1).toLocaleString());
+                        }
+                       
+                    });
                 }
+
+
+                
                 
             });
         
@@ -403,11 +428,33 @@ function index(){
                     var table = $('#modal-xl-Coverage').find('.table tbody');
                     // Limpia el cuerpo de la tabla
                     // $('.table tbody').empty();
-                    console.log("tabla Coverage");
-                    console.log(jDatos);
+                    // console.log("tabla Coverage");
+                    // console.log(jDatos);
                     for (var i in jDatos) {
                         table.append('<tr><td>' + jDatos[i].idComputer + '</td><td>' + jDatos[i].fechaExpiracion + '</td><td>' + jDatos[i].nombreTecnico + '</td><td>' + jDatos[i].manofacturacion + '</td><td>' + jDatos[i].modelo + '</td><td>' + jDatos[i].tipoGarantía + '</td></tr>');
                     }
+                    //para colocar la cantidad de datos que son 
+                    $.ajax({
+                        statusCode:{
+                            404:function(){
+                                console.log("Esta pagina no existe");
+                            }
+                        },
+                        url:'../controllers/ajaxservice.php', 
+                        method:'POST',
+                        data:{
+                            rq:"2"
+                        }
+                    }).done(function(registro){
+                        if(registro != ''){
+                            var jDatosRq1 = JSON.parse(registro);
+                            // Aquí puedes hacer lo que necesites con los datos obtenidos de la segunda petición (rq: "1")
+                            // console.log("Datos rq1:");
+                            // console.log(jDatosRq1);
+                            $("#mCoverage").text(parseFloat(jDatosRq1).toLocaleString());
+                        }
+                       
+                    });
                 }
                 
             });
@@ -436,11 +483,33 @@ function index(){
                     var table = $('#modal-xl-Uncovered').find('.table tbody');
                     // Limpia el cuerpo de la tabla
                     // $('.table tbody').empty();
-                    console.log("tabla Uncovered");
-                    console.log(jDatos);
+                    // console.log("tabla Uncovered");
+                    // console.log(jDatos);
                     for (var i in jDatos) {
                         table.append('<tr><td>' + jDatos[i].idAsignacionPc + '</td><td>' + jDatos[i].fechaAsignacion + '</td><td>' + jDatos[i].fechaDevolucion + '</td><td>' + jDatos[i].nombreColaborador + '</td><td>' + jDatos[i].nombreTecnico + '</td><td>' + jDatos[i].fechaExpiracion + '</td></tr>');
                     }
+
+                    $.ajax({
+                        statusCode:{
+                            404:function(){
+                                console.log("Esta pagina no existe");
+                            }
+                        },
+                        url:'../controllers/ajaxservice.php', 
+                        method:'POST',
+                        data:{
+                            rq:"3"
+                        }
+                    }).done(function(registro){
+                        if(registro != ''){
+                            var jDatosRq1 = JSON.parse(registro);
+                            // Aquí puedes hacer lo que necesites con los datos obtenidos de la segunda petición (rq: "1")
+                            // console.log("Datos rq1:");
+                            // console.log(jDatosRq1);
+                            $("#mNonCoverage").text(parseFloat(jDatosRq1).toLocaleString());
+                        }
+                       
+                    });
                 }
                 
             });
@@ -470,11 +539,33 @@ function index(){
                     var table = $('#modal-xl-Expired').find('.table tbody');
                     // Limpia el cuerpo de la tabla
                     // $('.table tbody').empty();
-                    console.log("tabla Expired");
-                    console.log(jDatos);
+                    // console.log("tabla Expired");
+                    // console.log(jDatos);
                     for (var i in jDatos) {
                         table.append('<tr><td>' + jDatos[i].idComputer + '</td><td>' + jDatos[i].fechaExpiracion + '</td><td>' + jDatos[i].nombreTecnico + '</td><td>' + jDatos[i].manofacturacion + '</td><td>' + jDatos[i].modelo + '</td><td>' + jDatos[i].tipoGarantía + '</td></tr>');
                     }
+
+                    $.ajax({
+                        statusCode:{
+                            404:function(){
+                                console.log("Esta pagina no existe");
+                            }
+                        },
+                        url:'../controllers/ajaxservice.php', 
+                        method:'POST',
+                        data:{
+                            rq:"4"
+                        }
+                    }).done(function(registro){
+                        if(registro != ''){
+                            var jDatosRq1 = JSON.parse(registro);
+                            // Aquí puedes hacer lo que necesites con los datos obtenidos de la segunda petición (rq: "1")
+                            // console.log("Datos rq1:");
+                            // console.log(jDatosRq1);
+                            $("#mUpcoming").text(parseFloat(jDatosRq1).toLocaleString());
+                        }
+                       
+                    });
                 }
                 
             });
@@ -499,16 +590,27 @@ function index(){
             }
         }).done(function(datos){
                 if(datos != ''){
+                    const parsedData = JSON.parse(datos);
 
-                    var jDatos = JSON.parse(datos);
+                    // var jDatos = JSON.parse(datos);
+                    // console.log("tabla Pastel");
+                    // console.log(parsedData);
+                    
+                    var registros =parsedData.data; // Array de objetos con los datos
+                    var totalRegistros = parsedData.total_registros; // Total de registros
+                    // console.log('registros:',registros);
+                    // console.log('total :',totalRegistros);
+                    
+                    
                     var table = $('#modal-xl-Pastel').find('.table tbody');
                     // Limpia el cuerpo de la tabla
                     // $('.table tbody').empty();
-                    console.log("tabla Pastel");
-                    console.log(jDatos);
-                    for (var i in jDatos) {
-                        table.append('<tr><td>' + jDatos[i].idComputer + '</td><td>' + jDatos[i].fechaAdquisicion + '</td><td>' + jDatos[i].tipoGarantia + '</td><td>' + jDatos[i].nombreTecnico + '</td><td>' + jDatos[i].servitag + '</td><td>' + jDatos[i].licensia + '</td><td>' + jDatos[i].manofacturacion + '</td><td>' + jDatos[i].modelo + '</td><td>' + jDatos[i].fechaExpiracion + '</td></tr>');   }
+                    
+                   
+                    for (var i in registros) {
+                        table.append('<tr><td>' + registros[i].idComputer + '</td><td>' + registros[i].fechaAdquisicion + '</td><td>' + registros[i].tipoGarantia + '</td><td>' + registros[i].nombreTecnico + '</td><td>' + registros[i].servitag + '</td><td>' + registros[i].licensia + '</td><td>' + registros[i].manofacturacion + '</td><td>' + registros[i].modelo + '</td><td>' + registros[i].fechaExpiracion + '</td></tr>');   }
                 }
+                $("#dataCountPie").text(parseFloat(totalRegistros).toLocaleString());
                 
             });
         
@@ -532,17 +634,70 @@ function index(){
             }
         }).done(function(datos){
                 if(datos != ''){
+                    const parsedData = JSON.parse(datos);
 
-                    var jDatos = JSON.parse(datos);
+                    // var jDatos = JSON.parse(datos);
+                    // console.log("tabla Pastel");
+                    // console.log(parsedData);
+                    
+                    var registros =parsedData.data; // Array de objetos con los datos
+                    var totalRegistros = parsedData.total_registros; // Total de registros
+                    // console.log('registros:',registros);
+                    // console.log('total :',totalRegistros);
+                    
+
+                    // var jDatos = JSON.parse(datos);
                     var table = $('#modal-xl-Scatter').find('.table tbody');
                     // Limpia el cuerpo de la tabla
                     // $('.table tbody').empty();
-                    console.log("tabla Scatter");
-                    console.log(jDatos);
-                    for (var i in jDatos) {
-                        table.append('<tr><td>' + jDatos[i].idPCAsigment + '</td><td>' + jDatos[i].fechaAsignacion + '</td><td>' + jDatos[i].NombreColaborador + '</td><td>' + jDatos[i].nombreTecnico + '</td><td>' + jDatos[i].Gerencia + '</td><td>' + jDatos[i].Area + '</td></tr>');   }
+                    // console.log("tabla Scatter");
+                    // console.log(jDatos);
+                    for (var i in registros) {
+                        table.append('<tr><td>' + registros[i].idPCAsigment + '</td><td>' + registros[i].fechaAsignacion + '</td><td>' + registros[i].Gerencia + '</td><td>' + registros[i].Area + '</td><td>' + registros[i].NombreColaborador + '</td><td>' + registros[i].nombreTecnico + '</td></tr>');   }
                 }
-                
+                $("#dataCountScatter").text(parseFloat(totalRegistros).toLocaleString());
+            });
+        
+    };
+
+     /**
+    * Asignar  datos al modal de tabla/Reporte de la Grafica Lineal
+    */
+     this.getDataMonthlySummaryTable = function() {
+        $.ajax({
+            statusCode: {
+                404: function() {
+                    console.log("Esta pagina no existe");
+                }
+            },
+            url: '../controllers/ajaxservice.php',
+            method: 'POST',
+            data: {
+                rq: "14"
+            }
+        }).done(function(datos){
+                if(datos != ''){
+                    const parsedData = JSON.parse(datos);
+
+                    console.log("tabla Pastel");
+                    console.log(parsedData);
+                    
+                    var registros =parsedData.data; // Array de objetos con los datos
+                    var totalRegistros = parsedData.total_registros; // Total de registros
+                    console.log('registros:',registros);
+                    console.log('total :',totalRegistros);
+
+                    // var jDatos = JSON.parse(datos);
+                    var table = $('#modal-xl-LineBar').find('.table tbody');
+                    // Limpia el cuerpo de la tabla
+                    // $('.table tbody').empty();
+                    // console.log("tabla LineBar");
+                    // console.log(jDatos);
+                    for (var i in registros) {
+                        table.append('<tr><td>' + registros[i].idComputer + '</td><td>' + registros[i].fechaExpiracion + '</td><td>' + registros[i].nombreTecnico + '</td><td>' + registros[i].manofacturacion + '</td><td>' + registros[i].modelo + '</td><td>' + registros[i].tipoGarantía + '</td></tr>');
+                   }
+                   $("#dataCountLinel").text(parseFloat(totalRegistros).toLocaleString());
+                }
             });
         
     };
