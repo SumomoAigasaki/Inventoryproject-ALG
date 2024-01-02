@@ -22,6 +22,10 @@ while ($row = $result->fetch_assoc()) {
   $_SESSION["RLS_idTbl_Roles"] =  $row["RLS_idTbl_Roles"];
   $_SESSION["STS_idTbl_Status"] =  $row["STS_idTbl_Status"];
   $_SESSION["NameUserlog"]= $row["NameUserlog"];
+  
+  $_SESSION['user_EmployeePosition']=$row["EmployeePosition"];
+  $_SESSION['firmaUser']=$row["firma"];
+
   $stmt->close();
   $conn->next_result();
 
