@@ -217,17 +217,42 @@ require_once "../templates/menu.php"; ?>
                                     </div>
 
                                     <!-- Dirección -->
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-4">
                                         <div class="form-group">
                                             <label><code>*</code>Dirección :</label>
                                             <input type="text" class="form-control" name="txtaddress" id="txtaddress" maxlength="60" placeholder="B° el centro">
                                         </div>
                                     </div>
 
+                                    <!-- Grado de Estudios -->
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label><code>*</code>Grado de Estudios :</label>
+                                            <?php
+                                            #Se procede a llamar al procedimiento almacenado que se llama sp_manufacturer_select,con la variable que almancena "cnn" la base de datos 
+                                            $resultado = mysqli_query($conn, "CALL sp_selectGrade()"); ?>
+                                            <select class="form-control select2bs4" id="slctGrade" name="slctGrade">
+                                                <option value="0">Empty/Vacío</option>
+                                                <?php while ($row = mysqli_fetch_array($resultado)) { ?>
+                                                    <option value="<?php echo $row['AD_idtbl_academicDegree']; ?>"><?php echo $row['AD_Description']; ?></option>
+                                                <?php }
+                                                #NOTA
+                                                #CADA QUE QUIERA HACER UNA NUEVA CONSULTA CON PROCEDIMIENTOS ALMACENADOS ESTOS EL RESULTADO SE CIERRA Y LA VARIABLE DE LA CONECCION SE PREPARA PARA EL NUEVO RESULTADO
+                                                # QUE TENDRA ABAJO
+                                                $resultado->close();
+                                                $conn->next_result();
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <!-- Fila  -->
+                                <div class="row justify-content-center" style="padding-bottom:20px;">
                                     <!-- Gerencia -->
                                     <div class="col-sm-3">
                                         <div class="form-group">
-                                            <label><code>*</code>Gestion: </label>
+                                            <label><code>*</code>Gerencia: </label>
                                             <?php
                                             #Se procede a llamar al procedimiento almacenado que se llama sp_manufacturer_select,con la variable que almancena "cnn" la base de datos 
                                             $resultado = mysqli_query($conn, "CALL sp_selectManagement()"); ?>
@@ -265,16 +290,55 @@ require_once "../templates/menu.php"; ?>
                                             </select>
                                         </div>
                                     </div>
-
-                                </div>
-                                <div class="row justify-content-center" style="padding-bottom:20px;">
-                                    <div class="col-sm-4">
+                                    <!-- Cargo a Desempeñar -->
+                                    <div class="col-sm-3">
                                         <div class="form-group">
                                             <label><code>*</code>Cargo a Desempeñar:</label>
                                             <input type="text" class="form-control" name="txtposition" id="txtposition" maxlength="45" placeholder="Auxiliar ">
                                         </div>
                                     </div>
+                                    <!-- Tipo de contratacion -->
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label><code>*</code>Tipo de contratacion: </label>
+                                            <?php
+                                            #Se procede a llamar al procedimiento almacenado que se llama sp_manufacturer_select,con la variable que almancena "cnn" la base de datos 
+                                            $resultado = mysqli_query($conn, "CALL sp_selectTypeContract()"); ?>
+                                            <select class="form-control select2bs4" id="slcTypeContract" name="slcTypeContract">
+                                                <option value="0">Empty/Vacío</option>
+                                                <?php while ($row = mysqli_fetch_array($resultado)) { ?>
+                                                    <option value="<?php echo $row['TCNT_idtbl_typeContract']; ?>"><?php echo $row['TCNT_Description']; ?></option>
+                                                <?php }
+                                                #NOTA
+                                                #CADA QUE QUIERA HACER UNA NUEVA CONSULTA CON PROCEDIMIENTOS ALMACENADOS ESTOS EL RESULTADO SE CIERRA Y LA VARIABLE DE LA CONECCION SE PREPARA PARA EL NUEVO RESULTADO
+                                                # QUE TENDRA ABAJO
+                                                $resultado->close();
+                                                $conn->next_result();
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
+
+                                <!-- Fila  -->
+                                <div class="row justify-content-center" style="padding-top:10px; padding-bottom:10px;">
+                                    <!--Fecha de Contratación -->
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label><code>*</code> Fecha de Contratación:</label>
+                                            <input type="text" class="form-control datepicker-input" name="txtContratcDate" id="txtContratcDate">
+                                        </div>
+                                    </div>
+
+                                     <!-- Meses de Contratación -->
+                                     <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label><code>*</code> Meses de Contratación:</label>
+                                            <input type="number" class="form-control" name="txtContratMounth" id="txtContratMounth">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Fila de Boton Guardar -->
                                 <div class="row justify-content-center" style="padding-bottom:20px;">
                                     <!-- Boton guardar -->
                                     <div class="col-sm-2" style="padding-top:40px;">
@@ -307,51 +371,71 @@ require_once "../templates/footer.php";
         let genderSlct = document.getElementById('slctGender');
         let phoneNumberTxt = document.getElementById('txtphoneNumber');
         let addressTxt = document.getElementById('txtaddress');
+        let GradeSlct = document.getElementById('slctGrade');
         let processSlct = document.getElementById('slctProcess');
         let managementSlct = document.getElementById('slctManagement');
         let positionTxt = document.getElementById('txtposition');
+        let typeContratcSlct = document.getElementById('slcTypeContract');
+        let contractDateTxt = document.getElementById('txtContratcDate');
+        let contractMounthTxt = document.getElementById('txtContratMounth');
 
         if (employeeCodeTxt.value.trim() === "") {
-            toastr.warning("El <b>Codigo de Empleado</b> esta vacio(a).<br>Por favor Ingrese un Codigo de Empleado valida");
+            toastr.warning("El <b>Codigo de Empleado</b> esta vacio(a).<br>Por favor Ingrese un Codigo de Empleado valida.");
             employeeCodeTxt.focus();
             return false;
         } else if (nacionalitySlct.selectedIndex == 0) {
-            toastr.warning('La <b>Nacionalidad</b> esta vacio(a).<br>Por favor Ingrese una Nacionalidad valida');
+            toastr.warning('La <b>Nacionalidad</b> esta vacio(a).<br>Por favor Ingrese una Nacionalidad valida.');
             nacionalitySlct.focus();
             return false;
         } else if (firstNameTxt.value.trim() === "") {
-            toastr.warning("El <b>Primer Nombre</b> esta vacio(a).<br>Por favor Ingrese un Primer Nombre valida");
+            toastr.warning("El <b>Primer Nombre</b> esta vacio(a).<br>Por favor Ingrese un Primer Nombre valida.");
             firstNameTxt.focus();
             return false;
         } else if (firstSurnameTxt.value.trim() === "") {
-            toastr.warning("El <b>Primer Apellido</b> esta vacio(a).<br>Por favor Ingrese un Primer Apellido valida");
+            toastr.warning("El <b>Primer Apellido</b> esta vacio(a).<br>Por favor Ingrese un Primer Apellido valida.");
             firstSurnameTxt.focus();
             return false;
         } else if (genderSlct.selectedIndex == 0) {
-            toastr.warning('El <b>Genero</b> esta vacio(a).<br>Por favor Ingrese una Genero valida');
+            toastr.warning('El <b>Genero</b> esta vacio(a).<br>Por favor Ingrese una Genero valida.');
             genderSlct.focus();
             return false;
         } else if (phoneNumberTxt.value.trim() === "") {
-            toastr.warning("El <b>Número de teléfono</b> esta vacio(a).<br>Por favor Ingrese un Número de teléfono valida");
+            toastr.warning("El <b>Número de teléfono</b> esta vacio(a).<br>Por favor Ingrese un Número de teléfono valida.");
             phoneNumberTxt.focus();
             return false;
         } else if (addressTxt.value.trim() === "") {
-            toastr.warning("La <b>Dirección</b> esta vacio(a).<br>Por favor Ingrese una Dirección valida");
+            toastr.warning("La <b>Dirección</b> esta vacio(a).<br>Por favor Ingrese una Dirección valida.");
             addressTxt.focus();
             return false;
-        } else if (processSlct.selectedIndex == 0) {
-            toastr.warning('El <b>Proceso</b> esta vacio(a).<br>Por favor Ingrese una Proceso valida');
-            processSlct.focus();
+        } else if (GradeSlct.selectedIndex == 0) {
+            toastr.warning('El <b>Grado de Estudios</b> esta vacio(a).<br>Por favor Ingrese un Grado de Estudios valida.');
+            GradeSlct.focus();
             return false;
         } else if (managementSlct.selectedIndex == 0) {
-            toastr.warning('La <b>Gestión</b> esta vacio(a).<br>Por favor Ingrese una Gestión valida');
+            toastr.warning('La <b>Gestión</b> esta vacio(a).<br>Por favor Ingrese una Gestión valida.');
             managementSlct.focus();
             return false;
+        } else if (processSlct.selectedIndex == 0) {
+            toastr.warning('El <b>Proceso</b> esta vacio(a).<br>Por favor Ingrese una Proceso valida.');
+            processSlct.focus();
+            return false;
         } else if (positionTxt.value.trim() === "") {
-            toastr.warning("El <b>Cargo de Desempeño</b> esta vacio(a).<br>Por favor Ingrese un Cargo de Desempeño");
+            toastr.warning("El <b>Cargo de Desempeño</b> esta vacio(a).<br>Por favor Ingrese un Cargo de Desempeño valida.");
             positionTxt.focus();
             return false;
-        } else {
+        }else if (typeContratcSlct.selectedIndex == 0) {
+            toastr.warning('El <b>Tipo de Contratacion</b> esta vacio(a).<br>Por favor Ingrese un Tipo de Contratacion valida.');
+            typeContratcSlct.focus();
+            return false;
+        } else if (contractDateTxt.value.trim() === "") {
+            toastr.warning("La <b>Fecha de Contratacón</b> esta vacio(a).<br>Por favor Ingrese una Fecha de Contratacón valida.");
+            contractDateTxt.focus();
+            return false;
+        }else if (contractMounthTxt.value.trim() === "") {
+            toastr.warning("El <b>Meses de Contratacón</b> esta vacio(a).<br>Por favor Ingrese una Meses de Contratacón valida.");
+            contractMounthTxt.focus();
+            return false;
+        }else {
             // Si no hay errores, procesa los datos enviados
             if (accionInput.value.trim() === "") {
                 accionInput.value = "1";
@@ -411,7 +495,7 @@ if (isset($_POST["buttonInsertCBT"])) {
     if (!isset($birthDateCBT) || empty($birthDateCBT)) {
         // Si no está definido o está vacío
         $birthDateCBT = "000-00-00";
-    } 
+    }
     $addressCBT = $_POST["txtaddress"];
     $processCBT = $_POST["slctProcess"];
     $managementCBT = $_POST["slctManagement"];
@@ -420,7 +504,12 @@ if (isset($_POST["buttonInsertCBT"])) {
     $todayDate = date("Y-m-d");
     $idUser = $_SESSION["User_idTbl_User"];
     $status = '2';
-
+    $academicDegreeCBT=$_POST["slctGrade"];
+    $typeContractCBT=$_POST["slcTypeContract"];
+    $hireStartDateCBT=$_POST["txtContratcDate"];
+    $hiringMonthsCBT=$_POST["txtContratMounth"];
+  
+    
 
     if (empty($imgCBT)) {
         $imgCBT = '/resources/Collaborator/default.jpg';
@@ -432,12 +521,12 @@ if (isset($_POST["buttonInsertCBT"])) {
     if ($PermisoCBT) {
         try {
             //Caso contrario Guardara
-            $stmt = $conn->prepare("CALL sp_insertCollaborator(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            $stmt = $conn->prepare("CALL sp_insertCollaborator(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
-            // $query = "CALL sp_insertCollaborator('$imgCBT', '$employeCodeCBT', '$nacionalityCBT', '$firstNameCBT', '$secondNameCBT', '$firstSurnameCBT', '$secondSurnameCBT', '$genderCBT', '$phoneNumberCBT', '$birthDateCBT', '$addressCBT', '$processCBT', '$managementCBT', '$todayDate', '$idUser','$status');";
-            // echo $query;
+            $query = "CALL sp_insertCollaborator('$imgCBT', '$employeCodeCBT', '$nacionalityCBT', '$firstNameCBT', '$secondNameCBT', '$firstSurnameCBT', '$secondSurnameCBT', '$genderCBT', '$phoneNumberCBT', '$birthDateCBT', '$addressCBT', '$processCBT', '$managementCBT', '$todayDate', '$idUser','$status','$employeePositionCBT','$academicDegreeCBT','$typeContractCBT','$hireStartDateCBT','$hiringMonthsCBT');";
+            echo $query;
             // Mandamos los parametros y los input que seran enviados al PA O SP
-            $stmt->bind_param("sssssssssssssssss", $imgCBT, $employeCodeCBT, $nacionalityCBT, $firstNameCBT, $secondNameCBT, $firstSurnameCBT, $secondSurnameCBT, $genderCBT, $phoneNumberCBT, $birthDateCBT, $addressCBT, $processCBT, $managementCBT, $todayDate, $idUser, $status, $employeePositionCBT);
+            $stmt->bind_param("sssssssssssssssssssss", $imgCBT, $employeCodeCBT, $nacionalityCBT, $firstNameCBT, $secondNameCBT, $firstSurnameCBT, $secondSurnameCBT, $genderCBT, $phoneNumberCBT, $birthDateCBT, $addressCBT, $processCBT, $managementCBT, $todayDate, $idUser, $status, $employeePositionCBT,$academicDegreeCBT,$typeContractCBT, $hireStartDateCBT,  $hiringMonthsCBT);
 
 
             // Ejecutar el procedimiento almacenado

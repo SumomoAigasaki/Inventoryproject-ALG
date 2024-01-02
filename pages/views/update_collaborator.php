@@ -34,6 +34,11 @@ while ($row = $stmt->fetch_assoc()) {
     $User_idTbl_User = $row['User_idTbl_User'];
     $STS_idTbl_Status = $row['STS_idTbl_Status'];
     $CBT_employee_position = $row['CBT_employee_position'];
+
+    $AD_idtbl_academicDegree = $row['AD_idtbl_academicDegree'];
+    $TCNT_idtbl_typeContract = $row['TCNT_idtbl_typeContract'];
+    $CBT_Date_Hire_Start = $row['CBT_Date_Hire_Start'];
+    $CBT_Hiring_Months = $row['CBT_Hiring_Months'];
 }
 $stmt->close();
 $conn->next_result();
@@ -132,7 +137,7 @@ $conn->next_result();
                                 <input type="hidden" class="form-control" id="txtId" name="txtId" value="<?php echo $CBT_idTbl_Collaborator ?>">
                                 <input type="hidden" class="form-control" id="txtAccion" name="txtAccion" value="2">
 
-                                <!--  Primer Row -->
+                                <!--  1 FILA -->
                                 <div class="row" style="padding-top:10px; padding-bottom:10px;">
                                     <!--  Carusel de imagenes -->
                                     <div class="col-sm-6 d-flex justify-content-center align-items-center">
@@ -151,7 +156,7 @@ $conn->next_result();
                                         <div class="form-group" style="padding-top:25px; padding-bottom:10px;">
                                             <label>Fecha de Inventariado:</label>
                                             <div class="input-group">
-                                                <input type="text" class="form-control datepicker-input" id="todayDate" name="todayDate" value="<?php echo $CBT_Inventory_Date ?>" required>
+                                                <input type="text" class="form-control -input" id="todayDate" name="todayDate" value="<?php echo $CBT_Inventory_Date ?>" readonly>
                                             </div>
                                         </div>
                                         <!-- Nacionalidad -->
@@ -189,16 +194,16 @@ $conn->next_result();
 
                                         <!-- Número de teléfono -->
                                         <div class="form-group" style="padding-top:37px;">
-                                            <label>Número de teléfono :</label>
+                                            <label><code>*</code>Número de teléfono :</label>
                                             <input type="text" class="form-control" name="txtphoneNumber" id="txtphoneNumber" maxlength="16" placeholder="+504 0000-0000" pattern="\([0-9]{4}\) [0-9]{4}[ -][0-9]{4}" value="<?php echo $CBT_Phone_Number ?>" required>
                                         </div>
                                     </div>
                                 </div>
 
-                                <!-- Comienzo fila 2 -->
+                                <!-- FILA 2-->
                                 <div class="row">
                                     <!-- Primer Nombre -->
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-3">
                                         <div class="form-group">
                                             <label><code>*</code>Primer Nombre :</label>
                                             <input type="text" class="form-control" name="txtfirstName" id="txtfirstName" maxlength="25" placeholder="José" value="<?php echo $CBT_First_Name ?>">
@@ -206,7 +211,7 @@ $conn->next_result();
                                     </div>
 
                                     <!-- Segundo Nombre -->
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-3">
                                         <div class="form-group">
                                             <label>Segundo Nombre :</label>
                                             <input type="text" class="form-control" name="txtsecondName" id="txtsecondName" maxlength="25" placeholder="Santos" value="<?php echo $CBT_Second_Name ?>">
@@ -214,25 +219,56 @@ $conn->next_result();
                                     </div>
 
                                     <!-- Primer Apellido -->
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-3">
                                         <div class="form-group">
                                             <label><code>*</code>Primer Apellido :</label>
                                             <input type="text" class="form-control" name="txtfirstSurname" id="txtfirstSurname" maxlength="25" placeholder="Martinez" value="<?php echo $CBT_First_Surname ?>">
                                         </div>
                                     </div>
 
-                                </div>
-                                <!-- Comienzo fila 3 -->
-                                <div class="row" style="padding-bottom:10px;">
                                     <!-- Segundo Apellido -->
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-3">
                                         <div class="form-group">
                                             <label>Segundo Apellido :</label>
                                             <input type="text" class="form-control" name="txtsecondSurname" id="txtsecondSurname" maxlength="25" placeholder="Hernandez" value="<?php echo $CBT_Second_Surname ?>">
                                         </div>
                                     </div>
+                                </div>
+
+                                <!-- Fila 3 -->
+                                <div class="row" style="padding-bottom:10px;">
+                                    <!-- Grado de Estudios -->
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label><code>*</code>Grado de Estudios :</label>
+                                            <?php
+                                            #Se procede a llamar al procedimiento almacenado que se llama sp_manufacturer_select,con la variable que almancena "cnn" la base de datos 
+                                            $resultado = mysqli_query($conn, "CALL sp_selectGrade()"); ?>
+                                            <select class="form-control select2bs4" id="slctGrade" name="slctGrade">
+                                                <option value="0">Empty/Vacío</option>
+                                                <?php while ($row = mysqli_fetch_array($resultado)) {
+                                                    $select = ($AD_idtbl_academicDegree == $row['AD_idtbl_academicDegree']) ? "selected=selected" : ""; ?>
+                                                    <option value="<?php echo $row['AD_idtbl_academicDegree']; ?>" <?php echo $select; ?>><?php echo $row['AD_Description']; ?></option>
+                                                <?php }
+                                                #NOTA
+                                                #CADA QUE QUIERA HACER UNA NUEVA CONSULTA CON PROCEDIMIENTOS ALMACENADOS ESTOS EL RESULTADO SE CIERRA Y LA VARIABLE DE LA CONECCION SE PREPARA PARA EL NUEVO RESULTADO
+                                                # QUE TENDRA ABAJO
+                                                $resultado->close();
+                                                $conn->next_result();
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!-- Dirección -->
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label><code>*</code>Dirección :</label>
+                                            <input type="text" class="form-control" name="txtaddress" id="txtaddress" maxlength="60" placeholder="B° el centro" value="<?php echo $CBT_Address; ?>">
+                                        </div>
+                                    </div>
+
                                     <!-- Genero -->
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-3">
                                         <div class="form-group">
                                             <label><code>*</code>Genero: </label>
                                             <?php
@@ -253,25 +289,17 @@ $conn->next_result();
                                             </select>
                                         </div>
                                     </div>
-                                    <!-- Fecha de cumpleaños -->
-                                    <div class="col-sm-4">
+                                    <!-- Fecha de Nacimiento -->
+                                    <div class="col-sm-3">
                                         <div class="form-group">
                                             <label> Fecha de Nacimiento:</label>
                                             <input type="text" class="form-control datepicker-input" name="txtbirthDate" id="txtbirthDate" value="<?php echo $CBT_Birth_Date ?>">
                                         </div>
                                     </div>
                                 </div>
-                                <!-- Comienzo fila 4 -->
-                                <div class="row" style="padding-bottom:10px;">
 
-                                    <!-- Dirección -->
-                                    <div class="col-sm-3">
-                                        <div class="form-group">
-                                            <label><code>*</code>Dirección :</label>
-                                            <input type="text" class="form-control" name="txtaddress" id="txtaddress" maxlength="60" placeholder="B° el centro" value="<?php echo $CBT_Address; ?>">
-                                        </div>
-                                    </div>
-
+                                <!-- Fila 4 -->
+                                <div class="row" style="padding-top:30px;">
 
                                     <!-- Gerencia -->
                                     <div class="col-sm-3">
@@ -318,6 +346,67 @@ $conn->next_result();
                                             </select>
                                         </div>
                                     </div>
+                                    <!-- Cargo a Desempeñar -->
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label><code>*</code>Cargo a Desempeñar:</label>
+                                            <input type="text" class="form-control" name="txtposition" id="txtposition" maxlength="45" placeholder="Auxiliar " value="<?php echo $CBT_employee_position ?>">
+                                        </div>
+                                    </div>
+                                    <!-- Tipo de contratacion -->
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label><code>*</code>Tipo de contratacion: </label>
+                                            <?php
+                                            #Se procede a llamar al procedimiento almacenado que se llama sp_manufacturer_select,con la variable que almancena "cnn" la base de datos 
+                                            $resultado = mysqli_query($conn, "CALL sp_selectTypeContract()"); ?>
+                                            <select class="form-control select2bs4" id="slcTypeContract" name="slcTypeContract">
+                                                <option value="0">Empty/Vacío</option>
+                                                <?php while ($row = mysqli_fetch_array($resultado)) {
+                                                    $select = ($TCNT_idtbl_typeContract == $row['TCNT_idtbl_typeContract']) ? "selected=selected" : ""; ?>
+                                                    <option value="<?php echo $row['TCNT_idtbl_typeContract']; ?>" <?php echo $select; ?>><?php echo $row['TCNT_Description']; ?></option>
+                                                <?php }
+                                                #NOTA
+                                                #CADA QUE QUIERA HACER UNA NUEVA CONSULTA CON PROCEDIMIENTOS ALMACENADOS ESTOS EL RESULTADO SE CIERRA Y LA VARIABLE DE LA CONECCION SE PREPARA PARA EL NUEVO RESULTADO
+                                                # QUE TENDRA ABAJO
+                                                $resultado->close();
+                                                $conn->next_result();
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
+
+
+
+                                    <!--/. fila 4 -->
+                                </div>
+
+                                <!-- Fila 5-->
+                                <div class="row justify-content-center" style="padding-bottom:10px;">
+
+                                    <!-- Fecha de Contratacion -->
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label><code>*</code>Fecha de Contratacion:</label>
+                                            <input type="text" class="form-control datepicker-input" name="txtDateHirtStart" id="txtDateHirtStart" value="<?php echo $CBT_Date_Hire_Start ?>">
+                                        </div>
+                                    </div>
+
+                                    <!-- Meses de Contratacion -->
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label><code>*</code>Meses de Contratacion:</label>
+                                            <input type="number" class="form-control" name="txtMountHiring" id="txtMountHiring" value="<?php echo $CBT_Hiring_Months ?>">
+                                        </div>
+                                    </div>
+
+                                    <!-- Fecha aprox. Termina Contratacion -->
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label>Fecha aprox. Termina Contratacion:</label>
+                                            <input type="text" class="form-control" name="txtDateHirtEnd" id="txtDateHirtEnd" readonly>
+                                        </div>
+                                    </div>
                                     <!-- Estado de la computadora  -->
                                     <div class="col-sm-3">
                                         <div class="form-group">
@@ -338,20 +427,10 @@ $conn->next_result();
                                             </select>
                                         </div>
                                     </div>
-                                    <!-- Boton guardar -->
-
-                                    <!--/. fila 4 -->
                                 </div>
-                                <div class="row justify-content-center" style="padding-bottom:20px;">
-                                    <div class="col-sm-4">
-                                        <div class="form-group">
-                                            <label><code>*</code>Cargo a Desempeñar:</label>
-                                            <input type="text" class="form-control" name="txtposition" id="txtposition" maxlength="45" placeholder="Auxiliar " value="<?php echo $CBT_employee_position; ?>">
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Comienzo fila 5 -->
+                                <!-- Fila 6 -->
                                 <div class="row justify-content-center" style="padding-bottom:10px;">
+                                    <!-- Boton guardar -->
                                     <div class="col-mb-3">
                                         <button type="submit" class="btn btn-block bg-olive" id="buttonUpdateCBT" name="buttonUpdateCBT" onclick='return validate_data();'>Actualizar</button>
                                     </div>
@@ -394,6 +473,13 @@ if (isset($_POST["buttonUpdateCBT"])) {
     $processCBT = $_POST['slctProcess'];
     $employeePositionCBT = $_POST["txtposition"];
 
+    $gadreCBT = $_POST["slctGrade"];
+    $tContractCBT = $_POST["slcTypeContract"]; 
+    $dateHirtCBT = $_POST["txtDateHirtStart"]; 
+    $mounthHiringCBT = $_POST["txtMountHiring"]; 
+    
+    
+
     if (empty($_FILES['imgCBT']['name'])) {
         // El campo de imagen está vacío
         $CBTimage = $CBT_Image;
@@ -406,13 +492,13 @@ if (isset($_POST["buttonUpdateCBT"])) {
 
         try {
             //llamamos el procedimiento almacemado de actualizar computadora 
-            $stmt = $conn->prepare("CALL sp_updateCollaborator(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            $stmt = $conn->prepare("CALL sp_updateCollaborator(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
             // Mandamos los parametros y los input que seran enviados al PA O SP
-            $stmt->bind_param("sssssssssssssssss", $idCBT, $CBTimage, $inventoryDateCBT, $nacionalityCBT, $employeeCodeCBT, $phoneNumberCBT, $firstNameCBT, $secondNameCBT, $firstSurnameCBT, $secondSurnameCBT, $genderCBT, $birthDateCBT, $addressCBT, $managementCBT, $processCBT, $statusCBT, $employeePositionCBT);
+            $stmt->bind_param("sssssssssssssssssssss", $idCBT, $CBTimage, $inventoryDateCBT, $nacionalityCBT, $employeeCodeCBT, $phoneNumberCBT, $firstNameCBT, $secondNameCBT, $firstSurnameCBT, $secondSurnameCBT, $genderCBT, $birthDateCBT, $addressCBT, $managementCBT, $processCBT, $statusCBT, $employeePositionCBT,$gadreCBT,$tContractCBT,$dateHirtCBT,$mounthHiringCBT);
             // Ejecutar el procedimiento almacenado
 
             $stmt->execute();
-            // $query = "CALL sp_updateComputer('$cmpId', '$todayDate', '$cmpIdManufacturer', '$cmpImgComp', '$cmptName', '$cmpIdModel', '$cmpCompType', '$cmpServitag', '$cmpLicence', '$cmpMotherboard', '$cmpAcquisitionDate', '$cmpWarrantyExpiration', '$cmpYearExpiration', '$cmpIdLocation', '$cmpIdStatu', '$cmpObservation', '$cmpImgCompReport', '$idUser', '$cmpeIdGuarate');";
+            // $query = "CALL sp_updateCollaborator('$idCBT', '$CBTimage', '$inventoryDateCBT', '$nacionalityCBT', '$employeeCodeCBT', '$phoneNumberCBT', '$firstNameCBT', '$secondNameCBT', '$firstSurnameCBT', '$secondSurnameCBT', '$genderCBT', '$birthDateCBT', '$addressCBT', '$managementCBT', '$processCBT', '$statusCBT', '$employeePositionCBT', '$gadreCBT', '$tContractCBT', '$dateHirtCBT', '$mounthHiringCBT');";
             // echo $query;
             // echo '<pre>';
             if ($stmt->error) {
@@ -429,7 +515,7 @@ if (isset($_POST["buttonUpdateCBT"])) {
             $conn->next_result();
             // se extraen los valores qu     nos devuelve el procedimiento almacenado y enviamos el error
             if ($answerExistsComp > 0) {
-                echo '<script > toastr.success("Los datos de <b>' . $employeCodeCBT . '</b> se Guardaron de manera exitosa.", "¡¡Enhorabuena!!"); ';
+                echo '<script > toastr.success("Los datos de (<b>' . $employeeCodeCBT . ' '. $firstNameCBT. ' '.$firstSurnameCBT. '</b>) se Guardaron de manera exitosa.", "¡¡Enhorabuena!!"); ';
                 echo 'setTimeout(function() {';
                 echo '  window.location.href = "view_collaborator.php";';
                 echo ' }, 2000); // 2000 milisegundos = 2 segundos de retraso ';
@@ -488,50 +574,71 @@ if (isset($_POST["buttonUpdateCBT"])) {
         let statusSlct = document.getElementById('slctStatus');
         let positionTxt = document.getElementById('txtposition');
 
+        let gradeSlct = document.getElementById('slctGrade');
+        let typeContractSlct = document.getElementById('slcTypeContract');
+        let dateHirtTxt = document.getElementById('txtDateHirtStart');
+        let mountHiringTxt = document.getElementById('txtMountHiring');
+
 
         if (employeeCodeTxt.value.trim() === "") {
-            toastr.warning("El <b>Codigo de Empleado</b> esta vacio(a).<br>Por favor Ingrese un Codigo de Empleado valida");
+            toastr.warning("El <b>Codigo de Empleado</b> esta vacio(a).<br>Por favor Ingrese un Codigo de Empleado valido(a).");
             employeeCodeTxt.focus();
             return false;
         } else if (nacionalitySlct.selectedIndex == 0) {
-            toastr.warning('La <b>Nacionalidad</b> esta vacio(a).<br>Por favor Ingrese una Nacionalidad valida');
+            toastr.warning('La <b>Nacionalidad</b> esta vacio(a).<br>Por favor Ingrese una Nacionalidad valido(a).');
             nacionalitySlct.focus();
             return false;
         } else if (firstNameTxt.value.trim() === "") {
-            toastr.warning("El <b>Primer Nombre</b> esta vacio(a).<br>Por favor Ingrese un Primer Nombre valida");
+            toastr.warning("El <b>Primer Nombre</b> esta vacio(a).<br>Por favor Ingrese un Primer Nombre valido(a).");
             firstNameTxt.focus();
             return false;
         } else if (firstSurnameTxt.value.trim() === "") {
-            toastr.warning("El <b>Primer Apellido</b> esta vacio(a).<br>Por favor Ingrese un Primer Apellido valida");
+            toastr.warning("El <b>Primer Apellido</b> esta vacio(a).<br>Por favor Ingrese un Primer Apellido valido(a).");
             firstSurnameTxt.focus();
             return false;
         } else if (genderSlct.selectedIndex == 0) {
-            toastr.warning('El <b>Genero</b> esta vacio(a).<br>Por favor Ingrese una Genero valida');
+            toastr.warning('El <b>Genero</b> esta vacio(a).<br>Por favor Ingrese una Genero valido(a).');
             genderSlct.focus();
             return false;
         } else if (phoneNumberTxt.value.trim() === "") {
-            toastr.warning("El <b>Número de teléfono</b> esta vacio(a).<br>Por favor Ingrese un Número de teléfono valida");
+            toastr.warning("El <b>Número de teléfono</b> esta vacio(a).<br>Por favor Ingrese un Número de teléfono valido(a).");
             phoneNumberTxt.focus();
             return false;
         } else if (addressTxt.value.trim() === "") {
-            toastr.warning("La <b>Dirección</b> esta vacio(a).<br>Por favor Ingrese una Dirección valida");
+            toastr.warning("La <b>Dirección</b> esta vacio(a).<br>Por favor Ingrese una Dirección valido(a).");
             addressTxt.focus();
             return false;
         } else if (processSlct.selectedIndex == 0) {
-            toastr.warning('El <b>Proceso</b> esta vacio(a).<br>Por favor Ingrese una Proceso valida');
+            toastr.warning('El <b>Proceso</b> esta vacio(a).<br>Por favor Ingrese una Proceso valido(a).');
             processSlct.focus();
             return false;
         } else if (managementSlct.selectedIndex == 0) {
-            toastr.warning('La <b>Gestión</b> esta vacio(a).<br>Por favor Ingrese una Gestión valida');
+            toastr.warning('La <b>Gestión</b> esta vacio(a).<br>Por favor Ingrese una Gestión valido(a).');
             managementSlct.focus();
             return false;
         } else if (statusSlct.selectedIndex == 0) {
-            toastr.warning('El <b>Estado</b> esta vacio(a).<br>Por favor Ingrese un Estado valida');
+            toastr.warning('El <b>Estado</b> esta vacio(a).<br>Por favor Ingrese un Estado valido(a).');
             statusSlct.focus();
             return false;
         } else if (positionTxt.value.trim() === "") {
-            toastr.warning("El <b>Cargo de Desempeño</b> esta vacio(a).<br>Por favor Ingrese un Cargo de Desempeño");
+            toastr.warning("El <b>Cargo de Desempeño</b> esta vacio(a).<br>Por favor Ingrese un Cargo de Desempeño valido(a).");
             positionTxt.focus();
+            return false;
+        } else if (gradeSlct.selectedIndex == 0) {
+            toastr.warning('El <b>Grado de Estudios</b> esta vacio(a).<br>Por favor Ingrese un Grado de Estudios valido(a).');
+            gradeSlct.focus();
+            return false;
+        } else if (typeContractSlct.selectedIndex == 0) {
+            toastr.warning('El <b>Tipo de Contratacion</b> esta vacio(a).<br>Por favor Ingrese un Tipo de Contratacion valido(a).');
+            typeContractSlct.focus();
+            return false;
+        } else if (dateHirtTxt.value.trim() === "") {
+            toastr.warning("La <b>Fecha de Contratación</b> esta vacio(a).<br>Por favor Ingrese una Fecha de Contratación valido(a).");
+            dateHirtTxt.focus();
+            return false;
+        } else if (mountHiringTxt.value.trim() === "") {
+            toastr.warning("El(Los) <b>Mes(es) de Contratación </b> esta vacio(a).<br>Por favor Ingrese un(os) Mes(es) de Contratación valido(a).");
+            mountHiringTxt.focus();
             return false;
         } else {
             // Si no hay errores, procesa los datos enviados
@@ -573,6 +680,47 @@ if (isset($_POST["buttonUpdateCBT"])) {
     // El listener va asignado al input
     $("#imgCBT").change(function() {
         readURL(this);
+    });
+
+    // $(document).ready(function() {
+    //  $('#txtDateHirtStart, #txtMountHiring').on('change', function() {
+    //      var startDate = new Date($('#txtDateHirtStart').val());
+    //      var hiringMonths = parseInt($('#txtMountHiring').val());
+
+    //         if (!isNaN(startDate.getTime()) && hiringMonths) {
+    //             var endDate = new Date(startDate.getFullYear(), startDate.getMonth() + hiringMonths, startDate.getDate());
+    //             endDate.setDate(endDate.getDate() - 1); // Ajustar al último día del mes
+
+    //             var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth() + 1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
+    //             $('#txtDateHirtEnd').val(formattedEndDate);
+    //         }
+    //     });
+    // });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var startDate = new Date(document.getElementById('txtDateHirtStart').value);
+        var hiringMonths = parseInt(document.getElementById('txtMountHiring').value);
+
+        if (!isNaN(startDate.getTime()) && hiringMonths) {
+            // Obtener la fecha al inicio del siguiente mes
+            var nextMonth = new Date(startDate);
+            nextMonth.setMonth(nextMonth.getMonth() + 1);
+            nextMonth.setDate(1);
+
+            var endDate = new Date(nextMonth);
+            endDate.setMonth(endDate.getMonth() + hiringMonths);
+
+            // Si la fecha de inicio y fin está en el mismo día del mes, restamos un día
+            if (startDate.getDate() === endDate.getDate()) {
+                endDate.setDate(endDate.getDate() - 1);
+            }
+
+            var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth() + 1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
+            document.getElementById('txtDateHirtEnd').value = formattedEndDate;
+        } else {
+            // Manejar el caso en el que los campos estén vacíos o no sean válidos
+            console.error("Por favor, completa los campos de fecha de contratación y meses de contratación válidos.");
+        }
     });
 </script>
 

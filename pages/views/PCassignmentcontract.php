@@ -54,51 +54,67 @@ class PDF extends FPDF
     //Cabecera de página
     function Header()
     {
-        $logoUrl = '../../resources/Warranty/LogoALG.png'; // Ruta a la imagen local
-        // $imgData = getBase64Image($logoUrl);
-        $this->Image($logoUrl, 13, 8, 45, 20, "PNG"); // Ajusta los parámetros según sea necesario (x, y, ancho, alto)
-        //Arial bold 15
-        $this->SetFont('times', 'B', 11);
-        $this->Cell(115);
-        $this->Cell(60, 3, "Azucarera la Grecia S.A de C.V");
-        $this->SetFont('times', 'I', 9);
-        $this->Ln(3);
-        $this->Cell(105);
-        // se agrega utf8_decode para solucionar el problema con los acentos
-        $this->Cell(60, 6, utf8_decode("Kilómetro 21, Carretera hacia Cedeño"));
-        $this->Ln(3);
-        $this->Cell(115);
-        $this->Cell(60, 8, "Marcovia, Choluteca, Honduras C.A");
-        $this->Ln(3);
-        $this->Cell(102);
-        $this->Cell(60, 10, "Tel: 2705-3900 / Correo: info@azucareralagrecia.com",);
-
-        //Salto de línea
-        $this->Ln(20);
+       //Posición: a 1,5 cm del final
+      $logoUrl = '../../resources/Warranty/LogoALG.png'; // Ruta a la imagen local
+      $this->Image($logoUrl, 15, 16, 50); // Inserta el logo
+  
+      $this->SetFont('times', 'I', 9);
+  
+      // Salto de línea
+      $this->Ln(40);
     }
-
-    //Pie de página
-    function Footer()
-    {
-
-        //Posición: a 1,5 cm del final
-        $this->SetY(-15);
-        //Arial italic 8
-        $this->SetFont('times', 'I', 10);
-        //Número de página
-        $this->Cell(70, 10, "Informe distribuido por el sistema INFRAG");
-        $this->Ln(4);
-        $this->SetFont('times', 'IB', 10);
-        $this->Cell(70, 9, "Contrato Version: 0.1");
-
-        $this->Cell(180, 8, 'Pagina ' . $this->PageNo() . 'de {nb}', 0, 0, 'C');
-    }
+      //Pie de página
+      function Footer()
+      {
+          // Establecer la posición y el tamaño de la página
+          $this->SetY(-40);
+          $this->SetMargins(15, 0, 15);
+          $this->SetFont('times', 'I', 8);
+      
+          // Iconos con coordenadas absolutas
+          $telefono = '../../resources/Warranty/telefono.png';
+          $this->Image($telefono, 25, $this->GetY() + 2.5, 4);
+          $direccion = '../../resources/Warranty/internet(1).png';
+          $this->Image($direccion, 25, $this->GetY() + 13, 4);
+          $localizacion = '../../resources/Warranty/localizacion.png';
+          $this->Image($localizacion, 25, $this->GetY() + 23, 4);
+      
+          // Texto con coordenadas absolutas
+          $this->SetTextColor(0, 0, 0); // Color negro para el texto
+          $this->SetY(-40);
+          $this->SetX(35);
+          $this->Cell(0, 5, utf8_decode("+(504) 2705-3900 "), 0, 0, 'L', 0);
+          $this->Ln();
+          $this->SetX(35);
+          $this->Cell(0, 3, utf8_decode("+(504) 3333-3333 "), 0, 0, 'L', 0);
+          $this->Ln(6);
+  
+          $this->SetX(35);
+          $this->Cell(0, 5, utf8_decode("gerenciageneral@lagreciahn.com"), 0, 0, 'L', );
+          $this->Ln();
+          $this->SetX(35);
+          $this->Cell(0, 3, utf8_decode("www.lagreciahn.com"), 0, 0, 'L', );
+          $this->Ln(6);
+  
+          $this->SetX(35);
+          $this->Cell(0, 5, utf8_decode("Kilómetro 21, Carretera hacia Cedeño"), 0, 0, 'L', 0);
+          $this->Ln();
+          $this->SetX(35);
+          $this->Cell(0, 3, utf8_decode("Marcovia, Choluteca, Honduras C.A"), 0, 0, 'L', 0);
+         
+          $this->SetX(35);
+          $this->SetFont('times', 'I', 11);
+          $this->MultiCell(155, 0, 'Pagina ' . $this->PageNo() . ' de {nb}','', 'R',false);
+      }
 
     function Body($nameUserlog, $NameCollaborator, $EmployeeCode, $EmployeePosition,$Marca,$Modelo,$Serial,$Garantia,$Meses,$todayDate,$CT_Description, $PCS_Description, $Correlativo, $MNG_Description)
     {
 
         //Posición: a 1,5 cm del final
         //Arial italic 8
+        // Agregar el título
+       $this->SetFont('times', 'I', 12);
+       $this->Cell(170, 5,utf8_decode( " Marcovia-Choluteca ".$todayDate),  0, 1, 'R');
         $this->SetFont('times', 'B', 14);
         //Número de página
         $this->Cell(0, 10, utf8_decode("CONTRATO DE ASIGNACIÓN DE EQUIPO DE CÓMPUTO"), 0, 1, 'C');
@@ -234,24 +250,74 @@ class PDF extends FPDF
         $this->SetFont('');
         $this->Cell(0,8, '_____________________________              ______________________________ ', '0',1,'C');
         $this->SetFont('times', 'I', 12);
-        $this->Cell(0, 9, "     Firma de ".$nameUserlog."                       Firma de ".$NameCollaborator, 0, 1, 'C');
+        $this->Cell(0, 9, "     Lic.".$nameUserlog."                       Firma de ".$NameCollaborator, 0, 1, 'C');
 
 
-        $this->Ln(5);
+        $this->Ln(10);
         $this->SetFont('times', 'B', 14);
         //Número de página
-        $this->Cell(0, 10, utf8_decode("Formato de asignación de equipo Personal"), 0, 1, 'C');
+        $this->Cell(0, 7, utf8_decode("Formato de asignación de equipo Personal"), 0, 1, 'C');
+        $this->Ln(3);
+       
+            
+             $this->SetFillColor(215, 219, 221 );
+             $this->SetTextColor(0);
+             $this->SetFont('');
+           $this->SetLineWidth(.2);
+           $this->SetFont('times', 'B', 12);
+   
+   
+        $this->SetFont('times', 'B', 12);
+        $this->Cell(70, 7, utf8_decode("Informacion Equipo ") , 'LTR', 0, 'C', 0);
+        $this->Cell(110, 7, utf8_decode("Informacion Colaborador ") , 'LTR', 0, 'C', 0);
 
+        $this->Ln(3);
         $this->SetFont('times', 'B', 12);
         $this->Ln(4);
-        $this->Cell(90, 14, utf8_decode("Tipo de equipo : ".$CT_Description) , 'LTR', 0, 'L', 0);
-        $this->MultiCell(90, 7, utf8_decode("Nombre del Empleado:  ").$NameCollaborator, 'LTR', 'L',0);
-        $this->Cell(90, 7, utf8_decode("Modelo :" . $Marca .", " .$Modelo ), 'LR', 0, 'L', 0);
-        $this->Cell(90, 7, utf8_decode("Cargo:  " . $EmployeePosition), 'LR', 1, 'L', 0);
-        $this->Cell(90, 7, utf8_decode("Serial : " . $Serial ), 'LR', 0, 'L', 0);
-        $this->Cell(90, 7, utf8_decode("Departamento: ".$PCS_Description ), 'LR', 1, 'L', 0);
-        $this->Cell(90, 7, utf8_decode("Etiqueta N° : ".$Correlativo  ), 'LRB', 0, 'L', 0);
-        $this->Cell(90, 7, utf8_decode("Gerencia:  ".$MNG_Description ), 'LRB', 1, 'L', 0);
+        $this->Cell(32, 7, utf8_decode("Tipo de Equipo "), 'LTRB', 0, 'L', 1);
+        $this->SetFont('');
+        $this->Cell(38, 7, utf8_decode(" ".$CT_Description), 'LTRB', 0, 'L', 0);
+        $this->SetFont('times', 'B', 12);
+        $this->Cell(45, 7, utf8_decode("Nombre del Empleado "), 'LTRB', 0, 'L', 1);
+        $this->SetFont('');
+        $this->Cell(65, 7, utf8_decode(" ".$NameCollaborator), 'LTRB', 0, 'L', 0);
+
+
+        $this->Ln(3);
+        $this->SetFont('times', 'B', 12);
+        $this->Ln(4);
+        $this->Cell(32, 7, utf8_decode("Modelo "), 'LTRB', 0, 'L', 1);
+        $this->SetFont('');
+        $this->Cell(38, 7, utf8_decode(" ". $Marca ."/ " .$Modelo) , 'LTRB', 0, 'L', 0);
+        $this->SetFont('times', 'B', 12);
+        $this->Cell(45, 7, utf8_decode("Cargo"), 'LTRB', 0, 'L', 1);
+        $this->SetFont('');
+        $this->Cell(65, 7, utf8_decode(" ".$EmployeePosition) , 'LTRB', 0, 'L', 0);
+
+        $this->Ln(3);
+        $this->SetFont('times', 'B', 12);
+        $this->Ln(4);
+        $this->Cell(32, 7, utf8_decode("Serial "), 'LTRB', 0, 'L', 1);
+        $this->SetFont('');
+        $this->Cell(38, 7, utf8_decode(" ". $Serial), 'LTRB', 0, 'L', 0);
+        $this->SetFont('times', 'B', 12);
+        $this->Cell(45, 7, utf8_decode("Departamento "), 'LTRB', 0, 'L', 1);
+        $this->SetFont('');
+        $this->Cell(65, 7, utf8_decode(" ".$PCS_Description), 'LTRB', 0, 'L', 0);
+
+        $this->Ln(3);
+        $this->SetFont('times', 'B', 12);
+        $this->Ln(4);
+        $this->Cell(32, 7,  utf8_decode("Etiqueta N° "), 'LTRB', 0, 'L', 1);
+        $this->SetFont('');
+        $this->Cell(38, 7,  utf8_decode(" ". $Correlativo), 'LTRB', 0, 'L', 0);
+        $this->SetFont('times', 'B', 12);
+        $this->Cell(45, 7,  utf8_decode("Gerencia: "), 'LTRB', 0, 'L', 1);
+        $this->SetFont('');
+        $this->Cell(65, 7, " ".$MNG_Description, 'LTRB', 0, 'L', 0);
+        $this->Ln(3);
+
+       
         $this->Ln(8);
         
         $this->SetFont('times', '', 12);
@@ -288,9 +354,11 @@ class PDF extends FPDF
 
 $pdf = new PDF();
 // Establecer márgenes
-$topMargin = 10; // Margen superior en unidades de medida del PDF
-$bottomMargin = 30; // Margen inferior en unidades de medida del PDF
-$pdf->SetMargins(20, $topMargin, 20); // Configura los márgenes izquierdo, derecho, y superior
+$topMargin = 35; // Margen superior en unidades de medida del PDF
+$bottomMargin = 35; // Margen inferior en unidades de medida del PDF
+$leftMargin = 15; // Margen izquierdo en unidades de medida del PDF
+$rightMargin = 15; // Margen derecho en unidades de medida del PDF
+$pdf->SetMargins($leftMargin, $topMargin, $rightMargin); // Configura los márgenes izquierdo, derecho, y superior
 $pdf->SetAutoPageBreak(true, $bottomMargin); // Activa el salto automático de página con un margen inferior
 
 //Títulos de las columnas

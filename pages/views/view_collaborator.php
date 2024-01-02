@@ -13,6 +13,7 @@ function dataTableUser($stmt)
     echo "<td>" . $row['CBT_idTbl_Collaborator'] . "</td>";
     echo "<td>" . $row['CBT_Employee_Code'] . "</td>";
     echo "<td>" . $row['NTL_Description'] . "</td>";
+    echo "<td>" . $row['Grade'] . "</td>";
     echo "<td>";
     if (empty($row['CBT_Image'])) {
       echo "<li class='list-inline-item'>
@@ -31,6 +32,9 @@ function dataTableUser($stmt)
     echo "<td>" . $row['MNG_Description'] . "</td>";
     echo "<td>" . $row['PCS_Description'] . "</td>";
     echo "<td>" . $row['CBT_employee_position'] . "</td>";
+    echo "<td>" . $row['TCNT_Description'] . "</td>";
+    echo "<td>" . $row['CBT_Date_Hire_Start'] . "</td>";
+    echo "<td>" . $row['CBT_Hiring_Months'] . "</td>";
     echo "<td>" . $row['CBT_Inventory_Date'] . "</td>";
     echo "<td>" . $row['User_Username'] . "</td>";
     echo "<td>" . $row['STS_Description'] . "</td>";
@@ -123,6 +127,7 @@ function dataTableUser($stmt)
                     <th>#</th>
                     <th>Codigo de empleado </th>
                     <th>Nacionalidad</th>
+                    <th>Grado de. Est</th>
                     <th>Nombre Completo</th>
                     <th>Genero</th>
                     <th>Dirección</th>
@@ -131,6 +136,9 @@ function dataTableUser($stmt)
                     <th>Gestión</th>
                     <th>Proceso</th>
                     <th>Cargo</th>
+                    <th>Tipo Contratación</th>
+                    <th>Fecha Contratación</th>
+                    <th>Meses Contratación</th>
                     <th>Fecha inventario</th>
                     <th>Usuario</th>
                     <th>Estado</th>
@@ -188,6 +196,7 @@ function dataTableUser($stmt)
                     <th>#</th>
                     <th>Codigo de empleado </th>
                     <th>Nacionalidad</th>
+                    <th>Grado de. Est</th>
                     <th>Nombre Completo</th>
                     <th>Genero</th>
                     <th>Dirección</th>
@@ -196,6 +205,9 @@ function dataTableUser($stmt)
                     <th>Gestión</th>
                     <th>Proceso</th>
                     <th>Cargo</th>
+                    <th>Tipo Contratación</th>
+                    <th>Fecha Contratación</th>
+                    <th>Meses Contratación</th>
                     <th>Fecha inventario</th>
                     <th>Usuario</th>
                     <th>Estado</th>
