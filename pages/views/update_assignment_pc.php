@@ -231,7 +231,7 @@ $conn->next_result();
                                     <div class="col-sm-3">
                                         <div class="form-group" style="padding-top: 10px;">
                                             <label ACRONYM title="Fecha de Ingreso al Sistema"> Fecha de Ingreso:</label>
-                                            <input type="text" class="form-control datepicker-input" name="txtDateInventory" id="txtDateInventory" value="<?php echo $PCA_Inventory_Date ?>">
+                                            <input type="text" class="form-control" name="txtDateInventory" id="txtDateInventory" value="<?php echo $PCA_Inventory_Date ?>" readonly>
                                         </div>
                                     </div>
 
@@ -284,7 +284,7 @@ $conn->next_result();
                                         <!-- Fecha de Retorno -->
                                         <div class="form-group">
                                             <label><code>*</code> Fecha de Retorno:</label>
-                                            <input type="text" class="form-control datepicker-input" name="txtReturnDate" id="txtReturnDate" readonly value="<?php echo $PCA_Return_Date ?>">
+                                            <input type="text" class="form-control" name="txtReturnDate" id="txtReturnDate" readonly value="<?php echo $PCA_Return_Date ?>">
                                         </div>
 
                                     </div>

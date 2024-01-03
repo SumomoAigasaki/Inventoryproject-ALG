@@ -29,11 +29,43 @@ require_once "../templates/menu.php";
             </div>
             <!-- /.row -->
         </div>
+
+        <div class="container-fluid">
+            <div class="row mb-1 justify-content-center">
+                <div class="col-sm-4">
+                </div>
+
+                <div class="col-sm-4  text-center ">
+
+                    <div class="btn-group">
+                        <button type="button" id="downloadImages" class="btn btn-outline-dark dropdown-toggle " data-toggle="dropdown"> <i class="far fa-file"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#"><ion-icon name="print-outline"></ion-icon>Imprimir</a>
+                            <a class="dropdown-item" href="#"><i class="fa fa-file-pdf"></i> PDF</a>
+                        </div>
+                    </div>
+
+                    <!-- <div class="btn-group">
+                        <button type="button" class="btn btn-outline-dark dropdown-toggle " data-toggle="dropdown"> <ion-icon name="download-outline"></ion-icon>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#"><i class="fas fa-file-csv"></i> CSV</a>
+                            <a class="dropdown-item" href="#"><i class="far fa-file-excel"></i> XLSX</a>
+                        </div>
+                    </div> -->
+                </div>
+
+                <div class="col-sm-4">
+                </div>
+            </div>
+            <!-- /.row -->
+        </div>
         <!-- /.container-fluid -->
     </div>
 
 
-    <section class="content">
+    <section class=" content">
         <div class="container-fluid">
             <!-- Small boxes (Stat box) -->
             <div class="row">
@@ -113,11 +145,9 @@ require_once "../templates/menu.php";
                             </div>
                         </div>
                         <div class="card-body">
-                                <canvas id="lineBar"style="max-height: 450px; max-width: 100%;"></canvas>                       
+                            <canvas id="lineBar" style="max-height: 450px; max-width: 100%;"></canvas>
                         </div>
                     </div>
-
-
                 </div>
             </div>
 
@@ -161,7 +191,7 @@ require_once "../templates/menu.php";
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Registros Nuevos (<span id="mNuevos">datos</span>)  </h4>
+                <h4 class="modal-title">Registros Nuevos (<span id="mNuevos">datos</span>) </h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -236,7 +266,7 @@ require_once "../templates/menu.php";
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Registros con Cobertura Asignados  (<span id="mNonCoverage">datos</span>)</h4>
+                <h4 class="modal-title">Registros con Cobertura Asignados (<span id="mNonCoverage">datos</span>)</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -273,7 +303,7 @@ require_once "../templates/menu.php";
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Registros prox. Vencer Activos y Circulando   (<span id="mUpcoming">datos</span>)</h4>
+                <h4 class="modal-title">Registros prox. Vencer Activos y Circulando (<span id="mUpcoming">datos</span>)</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -362,7 +392,7 @@ require_once "../templates/menu.php";
                             <th>Proceso</th>
                             <th>Nombre Colaborador</th>
                             <th>Nombre Tecnico Pc</th>
-                            
+
                         </tr>
                     </thead>
                     <tbody>
@@ -385,7 +415,7 @@ require_once "../templates/menu.php";
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Reporte de Distribución de Registros por Tipo de Garantía (<span id="dataCountPie">datos</span>)  </h4>
+                <h4 class="modal-title">Reporte de Distribución de Registros por Tipo de Garantía (<span id="dataCountPie">datos</span>) </h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -427,7 +457,56 @@ require_once "../templates/menu.php";
 <?php
 require_once "../templates/footer.php";
 ?>
+
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js"></script>
+<!-- Filesaver -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
+<!-- <script>
+   document.getElementById('downloadImages').addEventListener('click', function() {
+    saveChartOnServer('lineBar', 'nombre_grafico_1.png');
+    saveChartOnServer('scatterChart', 'nombre_grafico_2.png');
+    saveChartOnServer('pieChart', 'nombre_grafico_3.png');
+});
+
+function saveChartOnServer(chartId, fileName) {
+    var chartCanvas = document.getElementById(chartId).toDataURL('image/png');
+
+    // Enviar los datos de la imagen al servidor usando AJAX
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '../models/savedImageDashW.php', true);
+    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            console.log('Imagen guardada en el servidor');
+        }
+    };
+    xhr.send('image=' + encodeURIComponent(chartCanvas) + '&filename=' + fileName);
+}
+</script> -->
+<script>
+    document.getElementById('downloadImages').addEventListener('click', function() {
+        saveChartOnServer('lineBar', 'graficoBarra.png');
+        saveChartOnServer('scatterChart', 'graficoDispersion.png');
+        saveChartOnServer('pieChart', 'graficoPastel.png');
+    });
+
+    function saveChartOnServer(chartId, fileName) {
+        var chartCanvas = document.getElementById(chartId).toDataURL('image/png');
+
+        // Enviar los datos de la imagen al servidor usando AJAX
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '../models/savedImageDashW.php', true);
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                console.log('Imagen guardada en el servidor: ' + fileName);
+            }
+        };
+        xhr.send('image=' + encodeURIComponent(chartCanvas) + '&filename=' + fileName);
+    }
+</script>
+
 
 
 <!-- <script>

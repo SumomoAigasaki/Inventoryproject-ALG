@@ -223,7 +223,7 @@ $conn->next_result();
                                         <div class="form-group">
                                             <label ACRONYM title="Fecha que fue ingresado">Fec. Ingreso:</label>
                                             <div class="input-group">
-                                                <input type="text" class="form-control datepicker-input " id="txtFechaIngresado" name="txtFechaIngresado" value="<?php echo $PRL_Inventory_Date; ?>">
+                                                <input type="text" class="form-control" id="txtFechaIngresado" name="txtFechaIngresado" value="<?php echo $PRL_Inventory_Date; ?>" readonly>
                                             </div>
                                         </div>
                                     </div>
