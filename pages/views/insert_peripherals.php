@@ -122,7 +122,7 @@ require_once "../templates/menu.php";
                                     <div class="col-sm-4">
                                         <div class="form-group" style="padding-top: 20px;">
                                             <label>Descripcion Principal Periferico:</label>
-                                            <input type="text" class="form-control" name="txt_description" id="txt_description" maxlength="45" required>
+                                            <input type="text" class="form-control" name="txt_description" id="txt_description" maxlength="45" >
                                         </div>
                                     </div>
 

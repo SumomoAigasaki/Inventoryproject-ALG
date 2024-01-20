@@ -126,7 +126,7 @@ $conn->next_result();
                                         <div class="form-group">
                                             <label><code>*</code>Tipo De Periferico: </label>
                                             <?php $resultado = mysqli_query($conn, "CALL sp_selectComponenteType()"); ?>
-                                            <select class="form-control" id="slct_componentType" name="slct_componentType" onchange="filtrarMarcas()">
+                                            <select class="form-control select2bs4" id="slct_componentType" name="slct_componentType" onchange="filtrarMarcas()">
                                                 <?php while ($row = mysqli_fetch_array($resultado)) {
                                                     $select = ($CPT_idtbl_component_type == $row['CPT_idtbl_component_type']) ? "selected=selected" : "";
                                                 ?>
@@ -145,7 +145,7 @@ $conn->next_result();
                                     <div class="col-sm-4">
                                         <div class="form-group" style="padding-top: 20px;">
                                             <label>Descripcion Principal Periferico:</label>
-                                            <input type="text" class="form-control" name="txt_description" id="txt_description" maxlength="45" value="<?php echo $PRL_Main_Description ?>" required>
+                                            <input type="text" class="form-control" name="txt_description" id="txt_description" maxlength="45" value="<?php echo $PRL_Main_Description ?>">
                                         </div>
                                     </div>
 
@@ -233,7 +233,7 @@ $conn->next_result();
                                         <div class="form-group">
                                             <label>Estado del Perifico: </label>
                                             <?php $resultado = mysqli_query($conn, "CALL sp_status_select()"); ?>
-                                            <select class="form-control" id="slctStatus" name="slctStatus">
+                                            <select class="form-control select2bs4" id="slctStatus" name="slctStatus">
                                                 <?php while ($row = mysqli_fetch_array($resultado)) {
                                                     $select = ($STS_idTbl_Status == $row['STS_idTbl_Status']) ? "selected=selected" : "";
                                                 ?>
