@@ -1,6 +1,6 @@
 function index(){
     this.ini = function(){
-        console.log("Inicio...");
+        // console.log("Inicio...");
         this.getDataCardsRN();
         this.getDataCardsRWF();
         this.getDataCardsRNC ();        

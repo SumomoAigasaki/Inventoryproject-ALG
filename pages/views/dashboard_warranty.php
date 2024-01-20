@@ -37,14 +37,9 @@ require_once "../templates/menu.php";
 
                 <div class="col-sm-4  text-center ">
 
-                    <div class="btn-group">
-                        <button type="button" id="downloadImages" class="btn btn-outline-dark dropdown-toggle " data-toggle="dropdown"> <i class="far fa-file"></i>
+                        <button type="button" id="downloadImages" class="btn btn-outline-dark ReportPDf" > <i class="fa fa-file-pdf"></i> PDF</a>
                         </button>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#"><ion-icon name="print-outline"></ion-icon>Imprimir</a>
-                            <a class="dropdown-item" href="#"><i class="fa fa-file-pdf"></i> PDF</a>
-                        </div>
-                    </div>
+                      
 
                     <!-- <div class="btn-group">
                         <button type="button" class="btn btn-outline-dark dropdown-toggle " data-toggle="dropdown"> <ion-icon name="download-outline"></ion-icon>
@@ -74,7 +69,7 @@ require_once "../templates/menu.php";
                     <div class="small-box" style="background-color: #008000; color: white;">
                         <div class="inner">
                             <!-- -->
-                            <h3><span id="rNuevos">datos</span></h3>
+                            <h3><span id="rNuevos">00</span></h3>
                             <p> Registros Nuevos</p>
                         </div>
                         <div class="icon">
@@ -132,15 +127,38 @@ require_once "../templates/menu.php";
                     </div>
                 </div>
             </div>
-
-            <!-- Grafica Lineal -->
+            <!-- cinta de botones-->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header border-0">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h3 class="card-title m-0">Filtro para los Años de:</h3>
+                                <div class="card-body justify-content-center d-flex flex-wrap">
+                                    <?php
+                                    // Preparar la llamada al procedimiento almacenado
+                                    $stmt = $conn->query("CALL sp_filterYearsWarranty()");
+                                    while ($row = $stmt->fetch_assoc()) {
+                                        $year = $row['Warranty_Year'];
+                                        echo "<button type='submit' class='btn btn-outline-success filtro-year'  style='margin-right: 5px;' name='year' value='$year' id='boton_$year'>$year</button>";
+                                    }
+                                    $stmt->close();
+                                    $conn->next_result();
+                                    ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Grafica de Barras -->
             <div class="row">
 
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-header border-0">
                             <div class="d-flex justify-content-between">
-                                <h3 class="card-title">Grafica Lineal- Resumen Mensual : Dispositivos con Garantía Activa y Próxima a Vencer</h3>
+                                <h3 class="card-title">Grafica de Barras- Resumen Mensual : Dispositivos con Garantía Activa y Próxima a Vencer</h3>
                                 <a href="" data-toggle="modal" data-target="#modal-xl-LineBar">Más Información</a>
                             </div>
                         </div>
@@ -185,6 +203,49 @@ require_once "../templates/menu.php";
         </div>
     </section>
 </div>
+
+<script>
+    //Validacion para el boton del PDF
+    $(document).ready(function() {
+        $('.ReportPDf').on('click', function(event) {
+            event.preventDefault(); // Prevenir el comportamiento predeterminado del enlace
+
+            // Obtener el año seleccionado desde localStorage
+            var yearSeleccionado = localStorage.getItem('yearSeleccionado');
+
+            // Crear el enlace con el valor de yearSeleccionado
+            var enlacePDF = "../views/warrantyDashboardPDF.php?year=" + yearSeleccionado;
+
+            // Redirigir a la página de PDF con el año en la URL
+            window.location.href = enlacePDF;
+        });
+        //filtro para enviar los años al RQ
+        $(".filtro-year").click(function() {
+            var idBoton = $(this).attr('id');
+            var yearSeleccionado = idBoton.split('_')[1];
+
+            var yaSeleccionado = $(this).hasClass('seleccionado');
+
+            if (!yaSeleccionado) {
+                localStorage.removeItem('yearSeleccionado'); // Eliminar el año del almacenamiento local
+
+                // Si el botón no estaba seleccionado, marcarlo como seleccionado
+                $(".filtro-year").removeClass('seleccionado');
+                $(this).addClass('seleccionado');
+                localStorage.setItem('yearSeleccionado', yearSeleccionado);
+                console.log('Año seleccionado enviado al servidor: ' + yearSeleccionado);
+
+                // Recargar la página después de 2 segundos (2000 milisegundos)
+                setTimeout(function() {
+                    location.reload();
+                }, 2000);
+            }
+
+        });
+    });
+
+
+</script>
 
 <!-- Modal de lista de nuevos registros -->
 <div class="modal fade" id="modal-xl-newRegister">
@@ -266,7 +327,7 @@ require_once "../templates/menu.php";
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Registros con Cobertura Asignados (<span id="mNonCoverage">datos</span>)</h4>
+                <h4 class="modal-title">Registros sin Cobertura Asignados (<span id="mNonCoverage">datos</span>)</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -314,6 +375,7 @@ require_once "../templates/menu.php";
                         <tr>
                             <th>ID</th>
                             <th>Fecha Vencimiento Garantía</th>
+                            <th>Estado</th>
                             <th>Nombre de Dispositivo</th>
                             <th>Marca</th>
                             <th>Modelo</th>
@@ -462,28 +524,6 @@ require_once "../templates/footer.php";
 <!-- Filesaver -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 
-<!-- <script>
-   document.getElementById('downloadImages').addEventListener('click', function() {
-    saveChartOnServer('lineBar', 'nombre_grafico_1.png');
-    saveChartOnServer('scatterChart', 'nombre_grafico_2.png');
-    saveChartOnServer('pieChart', 'nombre_grafico_3.png');
-});
-
-function saveChartOnServer(chartId, fileName) {
-    var chartCanvas = document.getElementById(chartId).toDataURL('image/png');
-
-    // Enviar los datos de la imagen al servidor usando AJAX
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', '../models/savedImageDashW.php', true);
-    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            console.log('Imagen guardada en el servidor');
-        }
-    };
-    xhr.send('image=' + encodeURIComponent(chartCanvas) + '&filename=' + fileName);
-}
-</script> -->
 <script>
     document.getElementById('downloadImages').addEventListener('click', function() {
         saveChartOnServer('lineBar', 'graficoBarra.png');
@@ -514,5 +554,5 @@ function saveChartOnServer(chartId, fileName) {
 </script> -->
 <!-- archivo donde obtiene los datos de algunos charts -->
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<!-- <script src="../js/pages/dashboardWarranty.js"></script> -->
-<script src="../js/pages/index.js"></script>
+<script src="../js/pages/dashboardWarranty.js"></script>
+<!-- <script src="../js/pages/index.js"></script> -->
