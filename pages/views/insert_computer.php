@@ -38,58 +38,73 @@ require_once "../templates/menu.php"; ?>
         var nombreInput = document.getElementById('txtTechnicalName');
         var servitagInput = document.getElementById('txtServitag');
         var warrantyExpirationInput = document.getElementById('txtWarrantyExpiration');
-        var licenceInput = document.getElementById('txtLicense');
+        // var licenceInput = document.getElementById('txtLicense');
         var statusSelect = document.getElementById('selectStatus');
         var locationsSelect = document.getElementById('selectLocation');
         var guaranteeSelect = document.getElementById('selectTypeGuarantee');
         var todayDateInput = document.getElementById('todayDate');
         var serialTxt = document.getElementById('txtSerial');
+        var sistemaOperativosslct = document.getElementById('slctOS');
+        let peripheralsSlct = document.getElementById('slctPeripherals');
+        let selectedOptions = Array.from(slctPeripherals.selectedOptions);
+        if (selectedOptions.length == 0) {
+            // alert('Ninguna opción ha sido seleccionada.');
+            toastr.warning('No ha seleccionado ninguna <b>Especificacion del Equipo</b> esta vacio(a).<br>Por favor Ingrese una Software valida');
+            peripheralsSlct.focus();
+            return false;
+        }
 
         if (acquisitionFecha.value.trim() === "") {
-            toastr.warning("La <b>Fecha de Compra</b> esta vacio(a).<br>Por favor Ingrese una fecha valida");
+            toastr.warning("La <b>Fecha de Compra</b> esta vacio(a).<br>Por favor Ingrese una fecha valida.");
             acquisitionFecha.focus();
             return false;
         } else if (selectmanufacturer.selectedIndex == 0) {
-            toastr.warning('La <b>Marca</b> esta vacio(a).<br>Por favor Ingrese una Marca valida');
+            toastr.warning('La <b>Marca</b> esta vacio(a).<br>Por favor Ingrese una Marca valida.');
             selectmanufacturer.focus();
             return false;
         } else if (selectModel.value == 1) {
-            toastr.warning('El <b>Modelo</b> esta vacio(a).<br>Por favor Ingrese un Modelo valida');
+            toastr.warning('El <b>Modelo</b> esta vacio(a).<br>Por favor Ingrese un Modelo valida.');
             selectModel.focus();
             return false;
         } else if (selectComputertypes.selectedIndex == 0) {
-            toastr.warning('El <b>Tipo de computadora</b> esta vacio(a).<br>Por favor Ingrese un tipo de computadora valido');
+            toastr.warning('El <b>Tipo de computadora</b> esta vacio(a).<br>Por favor Ingrese un tipo de computadora valido.');
             selectComputertypes.focus();
         } else if (nombreInput.value.trim() === "") {
-            toastr.warning('El <b>Nombre técnico</b> esta vacio(a).<br>Por favor Ingrese un Nombre valido');
+            toastr.warning('El <b>Nombre técnico</b> esta vacio(a).<br>Por favor Ingrese un Nombre valido.');
             nombreInput.focus();
             return false;
         } else if (servitagInput.value.trim() === "") {
-            toastr.warning('El <b>Servitag</b> esta vacio(a).<br>Por favor Ingrese una txtServitag valido');
+            toastr.warning('El <b>Servitag</b> esta vacio(a).<br>Por favor Ingrese una txtServitag valido.');
             servitagInput.focus();
             return false;
         } else if (warrantyExpirationInput.value.trim() === "") {
-            toastr.warning('La <b>Fecha Límite Garantía</b> esta vacio(a).<br>Por favor Ingrese una Fecha Límite Garantía valida');
+            toastr.warning('La <b>Fecha Límite Garantía</b> esta vacio(a).<br>Por favor Ingrese una Fecha Límite Garantía valida.');
             warrantyExpirationInput.focus();
             return false;
-        } else if (licenceInput.value.trim() === "") {
-            toastr.warning('La <b>Lincencia</b> esta vacio(a).<br>Por favor Ingrese una Lincensia valida');
-            licenceInput.focus();
-            return false;
-        } else if (statusSelect.selectedIndex == 0) {
-            toastr.warning('El <b>Estado del Computador</b> esta vacio(a).<br>Por favor Ingrese una Estado del Computador valida');
+        }
+        // else if (licenceInput.value.trim() === "") {
+        //     toastr.warning('La <b>Lincencia</b> esta vacio(a).<br>Por favor Ingrese una Lincensia valida.');
+        //     licenceInput.focus();
+        //     return false;
+        // } 
+        else if (statusSelect.selectedIndex == 0) {
+            toastr.warning('El <b>Estado del Computador</b> esta vacio(a).<br>Por favor Ingrese una Estado del Computador valida.');
             statusSelect.focus();
             return false;
         } else if (locationsSelect.selectedIndex == 0) {
-            toastr.warning('La <b>Localizacion del Computador</b> esta vacio(a).<br>Por favor Ingrese una Localizacion del Computador valida');
+            toastr.warning('La <b>Localizacion del Computador</b> esta vacio(a).<br>Por favor Ingrese una Localizacion del Computador valida.');
             locationsSelect.focus();
             return false;
         } else if (guaranteeSelect.selectedIndex == 0) {
-            toastr.warning('El <b>Tipo de Garantia </b> esta vacio(a).<br>Por favorIngrese Tipo de Garantia del Computador valida');
+            toastr.warning('El <b>Tipo de Garantia </b> esta vacio(a).<br>Por favorIngrese Tipo de Garantia del Computador valida.');
             guaranteeSelect.focus();
             return false;
+        } else if (sistemaOperativosslct.selectedIndex == 0) {
+            toastr.warning('El <b>Sistema Operativo </b> esta vacio(a).<br>Por favor Ingrese Tipo de Garantia del Computador valida.');
+            sistemaOperativosslct.focus();
+            return false;
         } else if (serialTxt.value.trim() === "") {
-            toastr.warning('El <b>Serial</b> esta vacio(a).<br>Por favor Ingrese un Serial para el Computador valido');
+            toastr.warning('El <b>Serial</b> esta vacio(a).<br>Por favor Ingrese un Serial para el Computador valido.');
             serialTxt.focus();
             return false;
         } else {
@@ -168,13 +183,14 @@ require_once "../templates/menu.php"; ?>
                         <form role="form" action="" method="POST" name="formInsertCMP" id="formInsertCMP" class="form-horizontal" enctype="multipart/form-data">
                             <div class="card-body">
                                 <label class="form-check-label" style="padding-bottom: 5px;"> A continuación se le pedirá que <b> Ingrese</b> los siguientes datos:</label>
-
+                                <!-- Input para guardar la lista de los software a guardar -->
+                                <input type="hidden" class="form-control" id="TxtId" name="TxtId" placeholder="">
                                 <!-- Input ocultos  -->
-                                <input type="hidden" class="form-control" id="todayDate" name="todayDate" placeholder="<?php echo $todayDate ?>">
+                                <!-- <input type="hidden" class="form-control" id="todayDate" name="todayDate" placeholder="<?php echo $todayDate ?>"> -->
                                 <input type="hidden" class="form-control" id="accion" name="accion" placeholder="">
                                 <div class="row" style="padding-top:10px; padding-bottom:10px;">
                                     <!-- Fecha de Compra -->
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-2">
                                         <div class="form-group">
                                             <label><code>*</code>Fecha de Compra:</label>
                                             <div class="input-group">
@@ -189,7 +205,7 @@ require_once "../templates/menu.php"; ?>
                                             <?php
                                             #Se procede a llamar al procedimiento almacenado que se llama sp_manufacturer_select,con la variable que almancena "cnn" la base de datos 
                                             $resultado = mysqli_query($conn, "CALL sp_manufacturer_select()"); ?>
-                                            <select class="form-control" id="selectmanufacturer" name="selectmanufacturer" onchange="filtrarModelos()">
+                                            <select class="form-control select2bs4" id="selectmanufacturer" name="selectmanufacturer" onchange="filtrarModelos()">
                                                 <?php while ($row = mysqli_fetch_array($resultado)) { ?>
                                                     <option value="<?php echo $row['MFC_idTbl_Manufacturer']; ?>"><?php echo $row['MFC_Description']; ?></option>
                                                 <?php }
@@ -222,11 +238,11 @@ require_once "../templates/menu.php"; ?>
                                         </div>
                                     </div>
                                     <!-- TIPO DE COMPUTADORA -->
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-2">
                                         <div class="form-group">
                                             <label><code>*</code>Tipo de Computadora : </label>
                                             <?php $resultado = mysqli_query($conn, "CALL sp_computerType_select()"); ?>
-                                            <select class="form-control" id="selectComputertypes" name="selectComputertypes">
+                                            <select class="form-control select2bs4" id="selectComputertypes" name="selectComputertypes">
                                                 <?php while ($row = mysqli_fetch_array($resultado)) { ?>
                                                     <option value="<?php echo $row['CT_idTbl_Computer_Type']; ?>"><?php echo $row['CT_Description']; ?></option>
                                                 <?php }
@@ -239,9 +255,6 @@ require_once "../templates/menu.php"; ?>
                                             </select>
                                         </div>
                                     </div>
-                                </div>
-                                <!-- Comienzo fila 2 -->
-                                <div class="row" style="padding-bottom:10px;">
                                     <!-- Nombre Tecnico-->
                                     <div class="col-sm-3">
                                         <div class="form-group">
@@ -249,6 +262,10 @@ require_once "../templates/menu.php"; ?>
                                             <input type="text" class="form-control" name="txtTechnicalName" id="txtTechnicalName" maxlength="45" placeholder="ASSET2023-0#">
                                         </div>
                                     </div>
+                                </div>
+                                <!-- Comienzo fila 2 -->
+                                <div class="row" style="padding-bottom:10px;">
+
                                     <!-- Servitag-->
                                     <div class="col-sm-2">
                                         <div class="form-group">
@@ -274,7 +291,7 @@ require_once "../templates/menu.php"; ?>
                                             </div>
                                         </div>
                                     </div>
-
+                                    <!-- Tipo de Garantia -->
                                     <div class="col-sm-3">
                                         <div class="form-group">
                                             <label><code>*</code>Tipo de Garantia: </label>
@@ -294,22 +311,42 @@ require_once "../templates/menu.php"; ?>
                                             </select>
                                         </div>
                                     </div>
-                                </div>
-                                <!-- Comienzo fila 3 -->
-                                <div class="row justify-content-center" style="padding-bottom:10px;">
-
                                     <!-- Lincencia -->
                                     <div class="col-sm-3">
                                         <div class="form-group">
-                                            <label><code>*</code>Licencia: </label>
+                                            <label>Licencia: </label>
                                             <input type="text" class="form-control" name="txtLicense" id="txtLicense" maxlength="60" placeholder="CMCDN-?????-?????-?????-?????">
                                         </div>
                                     </div>
+                                </div>
+                                <!-- Comienzo fila 3 -->
+                                <div class="row justify-content-center" style="padding-bottom:10px;">
                                     <!-- Tarjeta Madre -->
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-2">
                                         <div class="form-group">
                                             <label><code>*</code>Serial: </label>
                                             <input type="text" class="form-control" name="txtSerial" id="txtSerial" maxlength="60" placeholder="FKC---3">
+                                        </div>
+                                    </div>
+                                    <!-- Sistema Operativo  -->
+                                    <div class="col-sm-2">
+                                        <div class="form-group">
+                                            <label><code>*</code>Sistema Operativo: </label>
+                                            <?php $resultado = mysqli_query($conn, "CALL sp_selectOperatingSystem()"); ?>
+                                            <select class="form-control select2bs4" id="slctOS" name="slctOS">
+                                                <option value="0">Empty/Vacio</option>
+                                                <?php while ($row = mysqli_fetch_array($resultado)) {
+                                                    $select = ($OS_idtbl_operatingSystems == $row['OS_idtbl_operatingSystems']) ? "selected=selected" : "";
+                                                ?>
+                                                    <option value="<?php echo $row['OS_idtbl_operatingSystems']; ?>" <?php echo $select; ?>><?php echo $row['INFO']; ?></option>
+                                                <?php }
+                                                #NOTA
+                                                #CADA QUE QUIERA HACER UNA NUEVA CONSULTA CON PROCEDIMIENTOS ALMACENADOS ESTOS EL RESULTADO SE CIERRA Y LA VARIABLE DE LA CONECCION SE PREPARA PARA EL NUEVO RESULTADO
+                                                # QUE TENDRA ABAJO
+                                                $resultado->close();
+                                                $conn->next_result();
+                                                ?>
+                                            </select>
                                         </div>
                                     </div>
                                     <!-- Estado de la computadora  -->
@@ -332,13 +369,32 @@ require_once "../templates/menu.php"; ?>
                                     </div> -->
 
                                     <!-- Localizacion -->
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-2">
                                         <div class="form-group">
                                             <label><code>*</code>Localizacion del Computador : </label>
                                             <?php $resultado = mysqli_query($conn, "CALL sp_location_select"); ?>
                                             <select class="form-control select2bs4" id="selectLocation" name="selectLocation">
                                                 <?php while ($row = mysqli_fetch_array($resultado)) { ?>
                                                     <option value="<?php echo $row['LCT_idTbl_Location']; ?>"><?php echo $row['LCT_Description']; ?></option>
+                                                <?php }
+                                                #NOTA
+                                                #CADA QUE QUIERA HACER UNA NUEVA CONSULTA CON PROCEDIMIENTOS ALMACENADOS ESTOS EL RESULTADO SE CIERRA Y LA VARIABLE DE LA CONECCION SE PREPARA PARA EL NUEVO RESULTADO
+                                                # QUE TENDRA ABAJO
+                                                $resultado->close();
+                                                $conn->next_result();
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!-- Especificaciones del Equipo-->
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label><code>*</code>Especificaciones del Equipo:</label>
+                                            <?php $resultado = mysqli_query($conn, "CALL sp_selectPeripheralsActive()"); ?>
+
+                                            <select class="duallistbox" multiple="multiple" id="slctPeripherals" name="slctPeripherals">
+                                                <?php while ($row = mysqli_fetch_array($resultado)) { ?>
+                                                    <option value="<?php echo $row['PRL_idTbl_Peripherals']; ?>"><?php echo $row['info']; ?></option>
                                                 <?php }
                                                 #NOTA
                                                 #CADA QUE QUIERA HACER UNA NUEVA CONSULTA CON PROCEDIMIENTOS ALMACENADOS ESTOS EL RESULTADO SE CIERRA Y LA VARIABLE DE LA CONECCION SE PREPARA PARA EL NUEVO RESULTADO
@@ -413,6 +469,11 @@ if (isset($_POST["buttonInsertCMP"])) {
     $cmpIdStatu = 2;
     $cmpIdLocation = $_POST['selectLocation'];
 
+    $idsArrayTexto  = $_POST["TxtId"];
+    // Decodifica la cadena JSON en un array de PHP
+    //idsArray es la variable para la lista de codigos seleccionados
+    $idsArray = json_decode($idsArrayTexto);
+
 
     //var_dump(isset(  $_FILES['fileImg']['name'])); 
     $cmpImgComp =  $_FILES['fileImg']['name'];
@@ -431,18 +492,17 @@ if (isset($_POST["buttonInsertCMP"])) {
     # Ruta de la carpeta de destino para los archivos
     $cmp_dir = '../../resources/Computer/';
     $idUser = $_SESSION["User_idTbl_User"];
+    $cmpIdSistemaOperativo = $_POST['slctOS'];
     //validamos si tiene permiso de hacer un insert 
 
     if ($PermisoCMP) {
 
         try {
             //Caso contrario Guardara
-            $stmt = $conn->prepare("CALL sp_insertComputer(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            $stmt = $conn->prepare("CALL sp_insertComputer(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
-            // $query = "CALL sp_insertComputer('$todayDate', '$cmpIdManufacturer', '$cmpImgComp', '$cmptName', '$cmpIdModel', '$cmpCompType', '$cmpServitag', '$cmpLicence', '$cmpMotherboard', '$cmpAcquisitionDate', '$cmpWarrantyExpiration', '$cmpYearExpiration', '$cmpIdLocation', '$cmpIdStatu', '$cmpObservation', '$idUser','$cmpIdGuarantee');";
-            // echo $query;
             // Mandamos los parametros y los input que seran enviados al PA O SP
-            $stmt->bind_param("sssssssssssssssss", $todayDate, $cmpIdManufacturer, $cmpImgComp, $cmptName, $cmpIdModel, $cmpCompType, $cmpServitag, $cmpLicence, $cmpMotherboard, $cmpAcquisitionDate, $cmpWarrantyExpiration, $cmpYearExpiration, $cmpIdLocation, $cmpIdStatu, $cmpObservation, $idUser, $cmpIdGuarantee);
+            $stmt->bind_param("ssssssssssssssssss", $todayDate, $cmpIdManufacturer, $cmpImgComp, $cmptName, $cmpIdModel, $cmpCompType, $cmpServitag, $cmpLicence, $cmpMotherboard, $cmpAcquisitionDate, $cmpWarrantyExpiration, $cmpYearExpiration, $cmpIdLocation, $cmpIdStatu, $cmpObservation, $idUser, $cmpIdGuarantee, $cmpIdSistemaOperativo);
 
 
             // Ejecutar el procedimiento almacenado
@@ -456,8 +516,39 @@ if (isset($_POST["buttonInsertCMP"])) {
             $stmt->close();
             $conn->next_result();
 
-            // se extraen los valores qu     nos devuelve el procedimiento almacenado y enviamos el error
             if ($answerExistsComp > 0) {
+                foreach ($idsArray as $id) {
+                    //Insert para mapping software 
+                    // detalle para software
+                    $stsId = '2';
+                    $stmt = $conn->prepare("CALL sp_insertComputerDetail(?,?,?,?,?)");
+
+                    $query = "CALL sp_insertComputerDetail( '$answerExistsComp', '$id', '$idUser', '$stsId', '$todayDate');";
+                    echo $query;
+                    // Mandamos los parametros y los input que seran enviados al PA O SP
+                    $stmt->bind_param("sssss", $answerExistsComp, $id, $idUser, $stsId, $todayDate);
+
+
+                    // Ejecutar el procedimiento almacenado
+                    $stmt->execute();
+                    if ($stmt->error) {
+                        error_log("Error en la ejecución del procedimiento almacenado: " . $stmt->error);
+                    }
+                    // Obtener el valor de la variable de salida
+                    $stmt->bind_result($answerExistsDetail);
+                    $stmt->fetch();
+                    $stmt->close();
+                    $conn->next_result();
+
+                    // echo "Inserción exitosa para ID: " . $id . "<br>";
+                    //   echo "Inserción exitosa para ID: " . $id . "<br>";
+
+                }
+            }
+
+
+            // se extraen los valores qu     nos devuelve el procedimiento almacenado y enviamos el error
+            if ($answerExistsDetail > 0) {
                 echo '<script > toastr.success("Los datos de <b>' . $cmptName . '</b> se Guardaron de manera exitosa.", "¡¡Enhorabuena!!"); ';
                 echo 'setTimeout(function() {';
                 echo '  window.location.href = "view_computer.php";';
@@ -551,6 +642,49 @@ require_once "../templates/footer.php";
         })
     });
 
+    //Bootstrap Duallistbox
+    $('.duallistbox').bootstrapDualListbox()
+    $(document).ready(function() {
+        // Inicializa el componente Dual Listbox para el select #slctPeripherals
+        var demo1 = $('select[name="slctPeripherals"]').bootstrapDualListbox();
+
+        // Variable para almacenar los IDs seleccionados
+        var array = [];
+
+        // Función para actualizar el campo de texto
+        function actualizarCampoTexto() {
+            // Obtiene los elementos seleccionados en el Dual Listbox del select #slctPeripherals
+            var selectedOptions = demo1.val();
+
+            if (selectedOptions.length > 0) {
+                // Reinicia el array en cada cambio para evitar duplicados
+                array = [];
+
+                // Recorre los valores seleccionados y agrega los IDs al array
+                selectedOptions.forEach(function(optionValue) {
+                    array.push(optionValue);
+                });
+
+                // Convierte el array a una cadena JSON
+                var arrayTexto = JSON.stringify(array);
+
+                // Actualiza el valor del campo de texto con la cadena JSON
+                $('#TxtId').val(arrayTexto);
+            } else {
+                // Si no hay opciones seleccionadas, borra el valor del campo de texto
+                $('#TxtId').val('');
+            }
+        }
+
+        // Agrega un manejador de evento para el cambio en el select #slctPeripherals
+        $('#slctPeripherals').on('change', function() {
+            // Llama a la función para actualizar el campo de texto
+            actualizarCampoTexto();
+        });
+
+        // Llama a la función al cargar la página para mostrar las opciones seleccionadas inicialmente
+        actualizarCampoTexto();
+    });
 
     function filtrarModelos() {
         // Obtener el valor seleccionado en el primer select

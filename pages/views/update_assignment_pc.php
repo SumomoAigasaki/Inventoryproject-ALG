@@ -479,11 +479,7 @@ require_once "../templates/footer.php";
 
         }
     }
-
-
-
-
-
+    
     $(function() {
         $(".datepicker-input").datepicker({
             dateFormat: "yy-mm-dd"

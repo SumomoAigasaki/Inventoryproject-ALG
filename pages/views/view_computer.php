@@ -8,7 +8,7 @@ function dataTableComputer($stmt)
     echo "
                 <tr> 
                 <td>" . $row['CMP_idTbl_Computer'] . "</td>
-                <td>" . $row['CMP_Inventory_Date'] . "</td>
+                <td>" . $row['CMP_Acquisition_Date'] . "</td>
                 <td>" . $row['MFC_Description'] . "</td>
                 ";
     if (empty($row['CMP_Image']) || $row['CMP_Image'] == "/resources/Computer/") {
@@ -27,10 +27,10 @@ function dataTableComputer($stmt)
                 <td>" . $row['CMP_Servitag'] . "</td>
                 <td>" . $row['CMP_License'] . "</td>
                 <td>" . $row['CMP_Serial'] . "</td>
-                <td>" . $row['CMP_Acquisition_Date'] . "</td>
+                <td>" . $row['Especificaciones'] . "</td>                
+                <td>" . $row['SistemaOperativo'] . "</td>
                 <td>" . $row['CMP_Warranty_Expiration'] . "</td>
                 <td>" . $row['TG_Description'] . "</td>
-                <td>" . $row['CMP_Warranty_Year'] . "</td>
                 <td>" . $row['STS_Description'] . "</td>
                 <td>" . $row['LCT_Description'] . "</td>
                 <td>" . $row['CMP_Observations'] . "</td>
@@ -46,6 +46,7 @@ function dataTableComputer($stmt)
             </tr>";
 
     // // Verificamos si tiene permiso para actualizar
+    //<td>" . $row['CMP_Warranty_Year'] . "</td>
     // if (isset($privilegios["U-CMP"]) && $privilegios["U-CMP"]) {
     //   echo '<a href="../views/update_computer.php?p=' . $row['CMP_idTbl_Computer'] . '" class="btn btn-outline-primary btn-sm" title="Editar Registro"><i class="fas fa-pencil-alt"></i></a>';
     // } else {
@@ -132,7 +133,7 @@ function dataTableComputer($stmt)
                 <thead>
                   <tr>
                     <th>#</th>
-                    <th>Fecha Inventario</th>
+                    <th>Fecha Adquisición</th>
                     <th>Marca</th>
                     <th>Imagen</th>
                     <th>Nomb. Tecnico</th>
@@ -141,10 +142,10 @@ function dataTableComputer($stmt)
                     <th>Servitag</th>
                     <th>Licencia</th>
                     <th>serial</th>
-                    <th>Fecha Adquisición</th>
+                    <th>Especificaciones</th>
+                    <th>Sistema Operativo</th>
                     <th>Fecha Limite Garantia</th>
                     <th>Tipo Garantia</th>
-                    <th>Año limite Garantia</th>
                     <th>Estado</th>
                     <th>Localizacion</th>
                     <th>Observaciones</th>
@@ -202,7 +203,7 @@ function dataTableComputer($stmt)
                 <tfoot>
                   <tr>
                     <th>#</th>
-                    <th>Fecha Inventario</th>
+                    <th>Fecha Adquisición</th>
                     <th>Marca</th>
                     <th>Imagen</th>
                     <th>Nomb. Tecnico</th>
@@ -211,10 +212,10 @@ function dataTableComputer($stmt)
                     <th>Servitag</th>
                     <th>Licencia</th>
                     <th>serial</th>
-                    <th>Fecha Adquisición</th>
+                    <th>Especificaciones</th>
+                    <th>Sistema Operativo</th>
                     <th>Fecha Limite Garantia</th>
-                    <th>Tipo Garantia</th>
-                    <th>Año limite Garantia</th>
+                    <th>Tipo Garantia</th>                    
                     <th>Estado</th>
                     <th>Localizacion</th>
                     <th>Observaciones</th>
