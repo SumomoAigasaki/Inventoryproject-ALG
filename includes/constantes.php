@@ -74,7 +74,7 @@ elseif ($actualPage == 'view_software.php') {
   $pageLink = "update_software.php";
 }
 
-  // perifericos
+// perifericos
 elseif ($actualPage == 'view_peripherals.php') {
   $pageName = 'Lista de Perifericos';
   $pageLink = "view_peripherals.php";
@@ -84,9 +84,9 @@ elseif ($actualPage == 'view_peripherals.php') {
 } elseif ($actualPage == 'update_peripherals.php') {
   $pageName = 'Actualizar Perifericos';
   $pageLink = "update_peripherals.php";
-  
-   // Colaborador
-}elseif ($actualPage == 'view_collaborator.php') {
+
+  // Colaborador
+} elseif ($actualPage == 'view_collaborator.php') {
   $pageName = 'Lista de Colaboradores';
   $pageLink = "view_collaborator.php";
 } elseif ($actualPage == 'insert_collaborator.php') {
@@ -98,62 +98,108 @@ elseif ($actualPage == 'view_peripherals.php') {
 }
 
 //Asignacion De PC
-  elseif ($actualPage == 'view_assignment_pc.php') {
-    $pageName = 'Listado de PC asignadas';
-    $pageLink = "view_assignment_pc.php";
-  } elseif ($actualPage == 'insert_assignment_pc.php') {
-    $pageName = 'Asignación de PC';
-    $pageLink = "insert_assignment_pc.php";
-  } elseif ($actualPage == 'update_assignment_pc.php') {
-    $pageName = 'Actualizar Asignación de PC';
-    $pageLink = "update_assignment_pc.php";
-  }  elseif ($actualPage == 'PCassignmentcontract.php') {
-    $pageName = 'Contrato de Asignación de PC';
-    $pageLink = "PCassignmentcontract.php";
-  }
-  //Asignacion De PC
-  elseif ($actualPage == 'view_mappingSoftware.php') {
-    $pageName = 'Lista de Software de Pc';
-    $pageLink = "view_mappingSoftware.php";
-  }
-  //Garantia
-  elseif ($actualPage == 'view_warranty.php') {
-    $pageName = 'Listado de reportes de Garantia ';
-    $pageLink = "view_warranty.php";
-  } elseif ($actualPage == 'insert_warranty.php') {
-    $pageName = 'Registro de Reporte Garantia';
-    $pageLink = "insert_warranty.php";
-  } elseif ($actualPage == 'update_warranty.php') {
-    $pageName = 'Actualizar Registro de Reporte de Garantia';
-    $pageLink = "update_warranty.php";
-  }elseif ($actualPage == 'warrantyReport.php') {
-    $pageName = 'Reporte de Garantia';
-    $pageLink = "update_warranty.php";
-  }
+elseif ($actualPage == 'view_assignment_pc.php') {
+  $pageName = 'Listado de PC asignadas';
+  $pageLink = "view_assignment_pc.php";
+} elseif ($actualPage == 'insert_assignment_pc.php') {
+  $pageName = 'Asignación de PC';
+  $pageLink = "insert_assignment_pc.php";
+} elseif ($actualPage == 'update_assignment_pc.php') {
+  $pageName = 'Actualizar Asignación de PC';
+  $pageLink = "update_assignment_pc.php";
+} elseif ($actualPage == 'PCassignmentcontract.php') {
+  $pageName = 'Contrato de Asignación de PC';
+  $pageLink = "PCassignmentcontract.php";
+}
+//Asignacion De PC
+elseif ($actualPage == 'view_mappingSoftware.php') {
+  $pageName = 'Lista de Software de Pc';
+  $pageLink = "view_mappingSoftware.php";
+}
+//Garantia
+elseif ($actualPage == 'view_warranty.php') {
+  $pageName = 'Listado de reportes de Garantia ';
+  $pageLink = "view_warranty.php";
+} elseif ($actualPage == 'insert_warranty.php') {
+  $pageName = 'Registro de Reporte Garantia';
+  $pageLink = "insert_warranty.php";
+} elseif ($actualPage == 'update_warranty.php') {
+  $pageName = 'Actualizar Registro de Reporte de Garantia';
+  $pageLink = "update_warranty.php";
+} elseif ($actualPage == 'warrantyReport.php') {
+  $pageName = 'Reporte de Garantia';
+  $pageLink = "update_warranty.php";
+}
 
-  //Roles
-  elseif ($actualPage == 'view_permissions.php') {
-    $pageName = 'Listado de los permisos por rol ';
-    $pageLink = "view_warrpermissions";
-  } elseif ($actualPage == 'insert_permissions.php') {
-    $pageName = 'Registro de Permisos';
-    $pageLink = "insert_permissions.php";
-  } elseif ($actualPage == 'update_permissions.php') {
-    $pageName = 'Actualizar Permisos';
-    $pageLink = "update_permissions.php";
-  }
-
-
-   //Dashboard
-   elseif ($actualPage == 'dashboard_warranty.php') {
-    $pageName = 'Dashboard Garantia ';
-    $sectionName = 'Dashboard';
-    $pageLink = "dashboard_warranty.php";
-  }
+//Roles
+elseif ($actualPage == 'view_permissions.php') {
+  $pageName = 'Listado de los permisos por rol ';
+  $pageLink = "view_warrpermissions";
+} elseif ($actualPage == 'insert_permissions.php') {
+  $pageName = 'Registro de Permisos';
+  $pageLink = "insert_permissions.php";
+} elseif ($actualPage == 'update_permissions.php') {
+  $pageName = 'Actualizar Permisos';
+  $pageLink = "update_permissions.php";
+}
 
 
-  //EXTRAS
- elseif ($actualPage == 'update_password.php') {
+//Dashboard
+elseif ($actualPage == 'dashboard_warranty.php') {
+  $pageName = 'Dashboard Garantia ';
+  $sectionName = 'Dashboard';
+  $pageLink = "dashboard_warranty.php";
+}
+
+//Lectura de computadoras
+elseif ($actualPage == 'reading_viewComputer.php') {
+  $pageName = 'Vista de Computadoras';
+  $sectionName = 'Vista Computradoras';
+  $pageLink = "reading_viewComputer.php";
+}
+
+
+//Lectura de Asignacion pc
+elseif ($actualPage == 'reading_viewAssignmentPC.php') {
+  $pageName = 'Vista de Asignación de Computadoras';
+  $sectionName = 'Vista Asignación  de Computadoras';
+  $pageLink = "reading_viewAssignmentPC.php";
+}
+
+//Lectura de Garantia
+elseif ($actualPage == 'reading_viewWarranty.php') {
+  $pageName = 'Vista de Garantias';
+  $sectionName = 'Vista  Garantias';
+  $pageLink = "reading_viewWarranty.php";
+}
+
+//Lectura de software
+elseif ($actualPage == 'reading_viewSoftware.php') {
+  $pageName = 'Vista de Software';
+  $sectionName = 'Vista Software';
+  $pageLink = "reading_viewSoftware.php";
+}
+
+//Lectura de Perifericos
+elseif ($actualPage == 'reading_viewPeripherals.php') {
+  $pageName = 'Vista de Perifericos';
+  $sectionName = 'Vista Perifericos';
+  $pageLink = "reading_viewPeripherals.php";
+}
+
+
+//Lectura de Colaboradores
+elseif ($actualPage == 'reading_viewColaborator.php') {
+  $pageName = 'Vista de Colaboradores';
+  $sectionName = 'Vista Colaboradores';
+  $pageLink = "reading_viewColaborator.php";
+}
+
+
+
+
+//EXTRAS
+elseif ($actualPage == 'update_password.php') {
   $pageName = 'UpdateContra';
   $pageLink = "update_password.php.php";
 } elseif ($actualPage == 'prueba.php') {
@@ -168,10 +214,4 @@ elseif ($actualPage == 'view_peripherals.php') {
   $pageLink = "404.php";
 } 
 
-// date_default_timezone_set('America/Mexico_City');
-// //variables globales 
-// $todayDate = date("Y-m-d");
-
-// echo '<script>';
-// echo 'var todayDate = ' . json_encode($todayDate) . ';'; // Convertir la variable en JSON y asignarla a la variable de JavaScript
-// echo '</script>';
+?>

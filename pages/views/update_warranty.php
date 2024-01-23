@@ -259,7 +259,7 @@ $conn->next_result();
                                     <!-- Estado -->
                                     <div class="col-sm-4" style="padding-top: 10px;">
                                         <div class="form-group" style="padding-left:15px; padding-top:2.5px;">
-                                            <label>Estado del Usuario: </label>
+                                            <label>Estado: </label>
                                             <?php $resultado = mysqli_query($conn, "CALL sp_status_select()"); ?>
                                             <select class="form-control select2bs4" id="selectStatus" name="selectStatus">
                                                 <?php while ($row = mysqli_fetch_array($resultado)) {

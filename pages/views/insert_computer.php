@@ -465,6 +465,9 @@ if (isset($_POST["buttonInsertCMP"])) {
     //$cmpYearExpiration = date("Y", strtotime($cmpWarrantyExpiration));
     $cmpYearExpiration = $_POST['txtYearExpiration'];
     $cmpLicence = $_POST['txtLicense'];
+    if (empty($cmpLicence)) {
+        $cmpLicence = NULL;
+    } 
     $cmpMotherboard = $_POST['txtSerial'];
     $cmpIdStatu = 2;
     $cmpIdLocation = $_POST['selectLocation'];

@@ -15,7 +15,7 @@ function dataTableUser($stmt)
   while ($row = $stmt->fetch_assoc()) {
     echo "<tr>";
     echo "<td>" . $row['WR_idTbl_Warranty_Registration'] . "</td>";
-    echo "<td>" . $row['WR_Inventory_Date'] . "</td>";
+ 
     echo "<td>" . $row['WR_Application_Number'] . "</td>";
     echo "<td>" . $row['WR_Date_Admission'] . "</td>";
     echo "<td>" . $row['Info'] . "</td>";
@@ -58,20 +58,7 @@ function dataTableUser($stmt)
     $idWR = $row['WR_idTbl_Warranty_Registration'];
   
   
-    echo "<td align='center'> 
-            <a href='../views/update_warranty.php?p=" . $row['WR_idTbl_Warranty_Registration'] . "' class='btn btn-outline-primary btn-sm' title='Editar Registro'>
-              <i class='fas fa-pencil-alt'></i>
-            </a>
-          
-            <a href='../views/warrantyReport.php?p=" . $row['WR_idTbl_Warranty_Registration'] . "' class='btn  btn-outline-info btn-sm ImprimirReporte' title='Imprimir Contrato' name='ImprimirReporte' id='ImprimirReporte'   >
-            <i class='fas fa-folder'></i>
-            </a>
 
-            <button class='btn btn-outline-danger btn-sm btnDeleteWR' title='Eliminar Registro' name='btnDeletWR' id='btnDeletWR' data-id='" . $row['WR_idTbl_Warranty_Registration'] . "'>
-              <i class='fas fa-trash-alt'></i>
-            </button>
-            
-          </td>";
     echo "</tr>";
   }
 }
@@ -150,15 +137,17 @@ function dataTableUser($stmt)
                 <thead>
                   <tr>
                     <th>#</th>
-                    <th>Fecha Inventario</th>
                     <th>Número de Reporte</th>
                     <th>Fecha Creación Reporte</th>
                     <th>Computadora</th>
                     <th>Problema Principal </th>
+                    <th>Acciones Realizadas</th>
+                    <th>Diagnostico </th>
+                    <th>Solucion </th>
+                    <th>Fecha de Solucion </th>
                     <th>Observaciones</th>
                     <th>Estado</th>
                     <th>Usuario</th>
-                    <th>Opciones</th>
 
                   </tr>
                 </thead>
@@ -209,16 +198,19 @@ function dataTableUser($stmt)
                 </tbody>
                 <tfoot>
                   <tr>
-                    <th>#</th>
-                    <th>Fecha Inventario</th>
+                  <th>#</th>
                     <th>Número de Reporte</th>
                     <th>Fecha Creación Reporte</th>
                     <th>Computadora</th>
                     <th>Problema Principal </th>
+                    <th>Acciones Realizadas</th>
+                    <th>Diagnostico </th>
+                    <th>Solucion </th>
+                    <th>Fecha de Solucion </th>
                     <th>Observaciones</th>
                     <th>Estado</th>
                     <th>Usuario</th>
-                    <th>Opciones</th>
+
                   </tr>
                 </tfoot>
               </table>

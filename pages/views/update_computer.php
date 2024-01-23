@@ -514,6 +514,9 @@ if (isset($_POST["buttonUpdateComputer"])) {
   $cmpWarrantyExpiration = $_POST['txtWarrantyExpiration']; // Fecha de vencimiento de la garantía
   $cmpYearExpiration = $_POST['txtyearExpiration']; // Año de vencimiento de la garantía
   $cmpLicence = $_POST['txtLicense']; // Licencia de la computadora
+  if (empty($cmpLicence)) {
+    $cmpLicence = NULL;
+} 
   $cmpMotherboard = $_POST['txtSerial']; // Número de serie de la tarjeta madre
   $cmpso = $_POST['slctOS']; // ID del sistema operativo
   $cmpIdStatu = $_POST['selectStatus']; // ID del estado de la computadora

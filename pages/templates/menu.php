@@ -28,6 +28,13 @@ if (in_array('Security', array_column($privilegios, 'modulo'))) {
     $PermisoSecurity = false;
 }
 
+#Lector
+if (in_array('Reading', array_column($privilegios, 'modulo'))) {
+    $PermisoReading = true;
+} else {
+    $PermisoReading = false;
+}
+
 
 
 ?>
@@ -87,13 +94,7 @@ if (in_array('Security', array_column($privilegios, 'modulo'))) {
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Computadoras por area</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Computadoras Ingresadas recientemente</p>
+                                <p>Dashboard Computadoras</p>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -140,8 +141,8 @@ if (in_array('Security', array_column($privilegios, 'modulo'))) {
                         echo ' </a>';
                         echo ' </li>';
                     }
-                echo '</ul>';
-                echo '</li>';
+                    echo '</ul>';
+                    echo '</li>';
                 }
                 ?>
                 <!-- Masterdata -->
@@ -223,28 +224,93 @@ if (in_array('Security', array_column($privilegios, 'modulo'))) {
                     echo '</li>';
                 }
                 ?>
+                
+                <!-- Visualizaciones/ Lector -->
+                <?php
+                if ($PermisoReading) {
+                    echo '<li class="nav-header">Opcion de Visualizacion </li>';
+                    echo ' <li class="nav-item">';
+                    echo ' <a href="#" class="nav-link">';
+                    echo ' <i class="far fa-eye"></i>';
+                    echo '  <p>Visualizaciones</p>';
+                    echo '</a>';
+                    echo '  <ul class="nav nav-treeview">';
+                    if ($PermisoRCMP) {
+                        echo ' <li class="nav-item">';
+                        echo '   <a href="../views/reading_viewComputer.php" class="nav-link">';
+                        echo '     <i class="far fa-circle nav-icon"></i>';
+                        echo '     <p>Computadoras</p>';
+                        echo '  </a>';
+                        echo ' </li>';
+                    }
+                    if ($PermisoRPCA) {
+                        echo ' <li class="nav-item">';
+                        echo '    <a href="../views/reading_viewAssignmentPC.php" class="nav-link">';
+                        echo '     <i class="far fa-circle nav-icon"></i>';
+                        echo '      <p>Asignacion Pc</p>';
+                        echo '  </a>';
+                        echo ' </li>';
+                    }
+                    if ($PermisoRWR) {
+                        echo ' <li class="nav-item">';
+                        echo '    <a href="../views/reading_viewWarranty.php" class="nav-link">';
+                        echo '     <i class="far fa-circle nav-icon"></i>';
+                        echo '     <p>Garantia</p>';
+                        echo '  </a>';
+                        echo ' </li>';
+                    }
+                    if ($PermisoRSFT) {
+                        echo ' <li class="nav-item">';
+                        echo '   <a href="../views/reading_viewSoftware.php" class="nav-link">';
+                        echo '     <i class="far fa-circle nav-icon"></i>';
+                        echo '     <p>Software</p>';
+                        echo '  </a>';
+                        echo ' </li>';
+                    }
+                    if ($PermisoRPRL) {
+                        echo ' <li class="nav-item">';
+                        echo '   <a href="../views/reading_viewPeripherals.php" class="nav-link">';
+                        echo '     <i class="far fa-circle nav-icon"></i>';
+                        echo '     <p>Perifericos</p>';
+                        echo '  </a>';
+                        echo ' </li>';
+                    }
+                    if ($PermisoRCBT) {
+                        echo ' <li class="nav-item">';
+                        echo '   <a href="../views/reading_viewColaborator.php" class="nav-link">';
+                        echo '     <i class="far fa-circle nav-icon"></i>';
+                        echo '     <p>Colaborador</p>';
+                        echo '  </a>';
+                        echo ' </li>';
+                    }
+                    echo ' </ul>';
+                    echo '</li>';
+                }
+                ?>
+                
 
-                <li class="nav-header">Opciones Generales</li>
-                <li class="nav-item">
-                    <a href="../update_password.php?p=<?php echo $_SESSION["User_idTbl_User"]; ?>&usuario=<?php echo  $_SESSION["User_Username"] ?>" class="nav-link">
-                        <i class="nav-icon fas fa-sync-alt"></i>
-                        <p>Cambiar Contraseña</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="../templates/SignOff.php" class="nav-link">
-                        <i class="nav-icon   fas fa-arrow-right"></i>
-                        <!--<i class="fa-solid fa-arrow-right-from-bracket"></i> -->
-                        <p>Cerrar Sesion </p>
-                    </a>
-                </li>
+            <!-- Opciones Generales -->
+            <li class="nav-header">Opciones Generales</li>
+            <li class="nav-item">
+                <a href="../update_password.php?p=<?php echo $_SESSION["User_idTbl_User"]; ?>&usuario=<?php echo  $_SESSION["User_Username"] ?>" class="nav-link">
+                    <i class="nav-icon fas fa-sync-alt"></i>
+                    <p>Cambiar Contraseña</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="../templates/SignOff.php" class="nav-link">
+                    <i class="nav-icon   fas fa-arrow-right"></i>
+                    <!--<i class="fa-solid fa-arrow-right-from-bracket"></i> -->
+                    <p>Cerrar Sesion </p>
+                </a>
+            </li>
 
-                <li class="nav-item">
-                    <a href="../views/explorer.php" class="nav-link">
-                        <i class="nav-icon fas fa-globe"></i>
-                        <p>Explorar </p>
-                    </a>
-                </li>
+            <li class="nav-item">
+                <a href="../views/explorer.php" class="nav-link">
+                    <i class="nav-icon fas fa-globe"></i>
+                    <p>Explorar </p>
+                </a>
+            </li>
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

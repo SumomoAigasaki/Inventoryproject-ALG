@@ -290,6 +290,9 @@ if (isset($_POST["buttonUpdateSoftware"])) {
     $nameSoftwareInput = $_POST["txtNombreSoftware"];
     $versionSoftwareInput = $_POST["txtVersionSoftware"];
     $serialSoftwareInput = $_POST["txtSerialSoftware"];
+    if (empty($serialSoftwareInput)) {
+        $serialSoftwareInput = NULL;
+    }
     $licenceClasificationSelect = $_POST["slct_licenceClasification"];
     $typeSoftwareSelect = $_POST["slct_SftType"];
     $categorySelect = $_POST["slct_category"];

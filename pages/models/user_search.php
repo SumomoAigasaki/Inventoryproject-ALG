@@ -249,3 +249,99 @@ if (!in_array($pagina_actual, $linksDefault) && !$PermisoRLS && in_array($pagina
   exit();
 }
 
+//Permiso para Vista de Computadoras
+$linksRCMP= array(
+  "reading_viewComputer.php"
+);
+
+if (in_array('RCMP', array_column($privilegios, 'permiso'))) {
+  $PermisoRCMP = true;
+} else {
+  $PermisoRCMP   = false;
+}
+if (!in_array($pagina_actual, $linksDefault) && !$PermisoRCMP && in_array($pagina_actual, $linksRCMP)) {
+  // Si la página actual no está en la lista de enlaces por defecto, el usuario no tiene el permiso "USER" y la página actual no está permitida
+  header("Location: ../templates/404.php");
+  exit();
+}
+
+//Permiso para Vista de Asignacion PC
+$linksRPCA= array(
+  "reading_viewAssignmentPC.php"
+);
+
+if (in_array('RPCA', array_column($privilegios, 'permiso'))) {
+  $PermisoRPCA = true;
+} else {
+  $PermisoRPCA   = false;
+}
+if (!in_array($pagina_actual, $linksDefault) && !$PermisoRPCA && in_array($pagina_actual, $linksRPCA)) {
+  // Si la página actual no está en la lista de enlaces por defecto, el usuario no tiene el permiso "USER" y la página actual no está permitida
+  header("Location: ../templates/404.php");
+  exit();
+}
+
+//Permiso para Vista de Garantia
+$linksRWR= array(
+  "reading_viewWarranty.php"
+);
+
+if (in_array('RWR', array_column($privilegios, 'permiso'))) {
+  $PermisoRWR = true;
+} else {
+  $PermisoRWR   = false;
+}
+if (!in_array($pagina_actual, $linksDefault) && !$PermisoRWR && in_array($pagina_actual, $linksRWR)) {
+  // Si la página actual no está en la lista de enlaces por defecto, el usuario no tiene el permiso "USER" y la página actual no está permitida
+  header("Location: ../templates/404.php");
+  exit();
+}
+
+//Permiso para Vista de Software
+$linksRSFT= array(
+  "reading_viewSoftware.php"
+);
+
+if (in_array('RSFT', array_column($privilegios, 'permiso'))) {
+  $PermisoRSFT = true;
+} else {
+  $PermisoRSFT   = false;
+}
+if (!in_array($pagina_actual, $linksDefault) && !$PermisoRSFT && in_array($pagina_actual, $linksRSFT)) {
+  // Si la página actual no está en la lista de enlaces por defecto, el usuario no tiene el permiso "USER" y la página actual no está permitida
+  header("Location: ../templates/404.php");
+  exit();
+}
+
+//Permiso para Vista de Perifericos
+$linksRPRL= array(
+  "reading_viewPeripherals.php"
+);
+
+if (in_array('RPRL', array_column($privilegios, 'permiso'))) {
+  $PermisoRPRL = true;
+} else {
+  $PermisoRPRL   = false;
+}
+if (!in_array($pagina_actual, $linksDefault) && !$PermisoRPRL && in_array($pagina_actual, $linksRPRL)) {
+  // Si la página actual no está en la lista de enlaces por defecto, el usuario no tiene el permiso "USER" y la página actual no está permitida
+  header("Location: ../templates/404.php");
+  exit();
+}
+
+
+//Permiso para Vista de Colaboradores
+$linksRCBT= array(
+  "reading_viewColaborator.php"
+);
+
+if (in_array('RCBT', array_column($privilegios, 'permiso'))) {
+  $PermisoRCBT = true;
+} else {
+  $PermisoRCBT   = false;
+}
+if (!in_array($pagina_actual, $linksDefault) && !$PermisoRCBT && in_array($pagina_actual, $linksRCBT)) {
+  // Si la página actual no está en la lista de enlaces por defecto, el usuario no tiene el permiso "USER" y la página actual no está permitida
+  header("Location: ../templates/404.php");
+  exit();
+}
