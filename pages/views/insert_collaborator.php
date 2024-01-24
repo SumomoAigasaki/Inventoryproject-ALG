@@ -115,7 +115,7 @@ require_once "../templates/menu.php"; ?>
                                     <div class="col-sm-3">
                                         <div class="form-group">
                                             <label><code>*</code>Código Empleado:</label>
-                                            <input type="number" class="form-control" name="txtEmployeeCode" id="txtEmployeeCode" maxlength="45" placeholder="002872">
+                                            <input type="text" class="form-control" name="txtEmployeeCode" id="txtEmployeeCode" maxlength="17" placeholder="ALGCBT202#_00000">
                                         </div>
                                     </div>
 

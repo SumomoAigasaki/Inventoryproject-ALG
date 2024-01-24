@@ -188,7 +188,7 @@ $conn->next_result();
 
                                         <div class="form-group">
                                             <label><code>*</code>Código Empleado:</label>
-                                            <input type="number" class="form-control" name="txtEmployeeCode" id="txtEmployeeCode" maxlength="45" placeholder="002872" value="<?php echo $CBT_Employee_Code ?>">
+                                            <input type="text" class="form-control" name="txtEmployeeCode" id="txtEmployeeCode" maxlength="17" placeholder="ALGCBT202#_00000" value="<?php echo $CBT_Employee_Code ?>">
                                         </div>
 
 

@@ -85,26 +85,38 @@ if (in_array('Reading', array_column($privilegios, 'modulo'))) {
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-header">Opciones del sistema</li>
                 <!-- dashboard -->
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-chart-pie"></i>
-                        <p>Dashboard </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Dashboard Computadoras</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="../views/dashboard_warranty.php" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Dashboard Garantias</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+                <?php
+                if ($PermisoDashboard) {
+                    echo '<li class="nav-item">';
+                    echo '    <a href="#" class="nav-link">';
+                    echo '        <i class="nav-icon fas fa-chart-pie"></i>';
+                    echo '        <p>Dashboard </p>';
+                    echo '    </a>';
+                    echo '    <ul class="nav nav-treeview">';
+
+
+                    if ($PermisoDWR) {
+                        echo '<li class="nav-item">';
+                        echo '    <a href="#" class="nav-link">';
+                        echo '        <i class="far fa-circle nav-icon"></i>';
+                        echo '        <p>Dashboard Computadoras</p>';
+                        echo '    </a>';
+                        echo '</li>';
+                    }
+
+                    if ($PermisoDWR) {
+                        echo '<li class="nav-item">';
+                        echo '    <a href="../views/dashboard_warranty.php" class="nav-link">';
+                        echo '        <i class="far fa-circle nav-icon"></i>';
+                        echo '        <p>Dashboard Garantias</p>';
+                        echo '    </a>';
+                        echo '</li>';
+                    }
+
+                    echo '</ul>';
+                    echo '</li>';
+                }
+                ?>
                 <!-- Transaction -->
                 <?php
                 if ($PermisoTransaction) {
@@ -224,7 +236,7 @@ if (in_array('Reading', array_column($privilegios, 'modulo'))) {
                     echo '</li>';
                 }
                 ?>
-                
+
                 <!-- Visualizaciones/ Lector -->
                 <?php
                 if ($PermisoReading) {
@@ -287,30 +299,30 @@ if (in_array('Reading', array_column($privilegios, 'modulo'))) {
                     echo '</li>';
                 }
                 ?>
-                
 
-            <!-- Opciones Generales -->
-            <li class="nav-header">Opciones Generales</li>
-            <li class="nav-item">
-                <a href="../update_password.php?p=<?php echo $_SESSION["User_idTbl_User"]; ?>&usuario=<?php echo  $_SESSION["User_Username"] ?>" class="nav-link">
-                    <i class="nav-icon fas fa-sync-alt"></i>
-                    <p>Cambiar Contraseña</p>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="../templates/SignOff.php" class="nav-link">
-                    <i class="nav-icon   fas fa-arrow-right"></i>
-                    <!--<i class="fa-solid fa-arrow-right-from-bracket"></i> -->
-                    <p>Cerrar Sesion </p>
-                </a>
-            </li>
 
-            <li class="nav-item">
-                <a href="../views/explorer.php" class="nav-link">
-                    <i class="nav-icon fas fa-globe"></i>
-                    <p>Explorar </p>
-                </a>
-            </li>
+                <!-- Opciones Generales -->
+                <li class="nav-header">Opciones Generales</li>
+                <li class="nav-item">
+                    <a href="../update_password.php?p=<?php echo $_SESSION["User_idTbl_User"]; ?>&usuario=<?php echo  $_SESSION["User_Username"] ?>" class="nav-link">
+                        <i class="nav-icon fas fa-sync-alt"></i>
+                        <p>Cambiar Contraseña</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="../templates/SignOff.php" class="nav-link">
+                        <i class="nav-icon   fas fa-arrow-right"></i>
+                        <!--<i class="fa-solid fa-arrow-right-from-bracket"></i> -->
+                        <p>Cerrar Sesion </p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="../views/explorer.php" class="nav-link">
+                        <i class="nav-icon fas fa-globe"></i>
+                        <p>Explorar </p>
+                    </a>
+                </li>
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

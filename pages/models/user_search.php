@@ -54,12 +54,7 @@ while ($row = $result->fetch_assoc()) {
   $stmt->close();
   $conn->next_result();
 
-  // Ahora $privilegios contiene todos los valores devueltos por el procedimiento almacenado
-
-  // Puedes acceder a los valores de esta manera:
-  // foreach ($privilegios as $privilegio) {
-  //   echo $privilegio["permiso"] . ", " . $privilegio["modulo"] . "<br>";
-  // }
+ 
 }
 
 $linksDefault = array(
@@ -89,9 +84,6 @@ if (in_array('CMP', array_column($privilegios, 'permiso'))) {
   $PermisoCMP = false;
 }
 
-// var_dump($privilegios);
-// var_dump($linksCMP);
-// var_dump($PermisoCMP);
 
 
 if (!in_array($pagina_actual, $linksDefault) && !$PermisoCMP && in_array($pagina_actual, $linksCMP)) {
@@ -212,8 +204,7 @@ if (!in_array($pagina_actual, $linksDefault) && !$PermisoPCA && in_array($pagina
 $linksWR = array(
   "insert_warranty.php",
   "update_warranty.php",
-  "view_warranty.php", 
-  "warrantyReport.php"
+  "view_warranty.php"
 );
 
 if (in_array('WR', array_column($privilegios, 'permiso'))) {
@@ -244,6 +235,43 @@ if (in_array('RLS', array_column($privilegios, 'permiso'))) {
   $PermisoRLS = false;
 }
 if (!in_array($pagina_actual, $linksDefault) && !$PermisoRLS && in_array($pagina_actual, $linksRLS)) {
+  // Si la página actual no está en la lista de enlaces por defecto, el usuario no tiene el permiso "USER" y la página actual no está permitida
+  header("Location: ../templates/404.php");
+  exit();
+}
+
+
+
+#Dashboard Garantia
+$linksDWR= array(
+  "dashboard_warranty.php",
+  "warrantyReport.php"
+);
+
+if (in_array('DWR', array_column($privilegios, 'permiso'))) {
+  $PermisoDWR = true;
+} else {
+  $PermisoDWR = false;
+}
+if (!in_array($pagina_actual, $linksDefault) && !$PermisoDWR && in_array($pagina_actual, $linksDWR)) {
+  // Si la página actual no está en la lista de enlaces por defecto, el usuario no tiene el permiso "USER" y la página actual no está permitida
+  header("Location: ../templates/404.php");
+  exit();
+}
+
+#Dashboard Computadoras
+$linksDCMP= array(
+  // "dashboard_warranty.php",
+  // "warrantyReport.php"
+);
+
+if (in_array('DCMP', array_column($privilegios, 'permiso'))) {
+  $PermisoDCMP = true;
+} else {
+  $PermisoDCMP = false;
+}
+
+if (!in_array($pagina_actual, $linksDefault) && !$PermisoDCMP && in_array($pagina_actual, $linksDCMP)) {
   // Si la página actual no está en la lista de enlaces por defecto, el usuario no tiene el permiso "USER" y la página actual no está permitida
   header("Location: ../templates/404.php");
   exit();

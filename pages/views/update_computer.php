@@ -312,8 +312,8 @@ $conn->next_result();
                   <!-- Lincencia -->
                   <div class="col-sm-3">
                     <div class="form-group">
-                      <label><code>*</code>Licencia: </label>
-                      <input type="text" class="form-control" name="txtLicense" id="txtLicense" maxlength="60" value="<?php echo $CMP_License; ?>" placeholder="CMCDN-?????-?????-?????-?????">
+                      <label>Licencia: </label>
+                      <input type="text" class="form-control" name="txtLicense" id="txtLicense" maxlength="29" value="<?php echo $CMP_License; ?>" placeholder="CMCDN-?????-?????-?????-?????">
                     </div>
                   </div>
                   <!-- Serial-->
@@ -611,7 +611,7 @@ if (isset($_POST["buttonUpdateComputer"])) {
               $stmtInsert = $conn->prepare("CALL sp_insertComputerDetailUpdate(?, ?, ?, ?, ?)");
               $stmtInsert->bind_param("sssss", $cmpId, $optionValue, $idUser, $statusprl, $todayDateInsert);
               $stmtInsert->execute();
-              $stmtInsert->bind_result($answerExistsPCD);
+              $stmtInsert->bind_result($answerExistsComp);
               $stmtInsert->fetch();
               $stmtInsert->close();
               $conn->next_result();
@@ -637,13 +637,13 @@ if (isset($_POST["buttonUpdateComputer"])) {
                 error_log("Error en la ejecución del tercer procedimiento almacenado: " . $stmt->error);
               }
 
-              $stmt->bind_result($answerExistsPCD);
+              $stmt->bind_result($answerExistsComp);
               $stmt->fetch();
               $stmt->close();
               $conn->next_result();
 
               // Verificar si la actualización fue exitosa
-              if ($answerExistsPCD > 0) {
+              if ($answerExistsComp > 0) {
                 // Mostrar mensaje de éxito y redirigir después de 2 segundos
                 echo '<script > toastr.success("Los datos de <b>' . $cmptName . '</b> se actualizaron de manera exitosa.", "¡Enhorabuena!"); ';
                 echo 'setTimeout(function() {';
@@ -675,7 +675,7 @@ if (isset($_POST["buttonUpdateComputer"])) {
         }
         
         // Verificar si la inserción fue exitosa
-        if ($answerExistsPCD > 0) {
+        if ($answerExistsComp > 0) {
           // Mostrar mensaje de éxito y redirigir después de 2 segundos
           echo '<script > toastr.success("Los datos de <b>' . $cmptName . '</b> se actualizaron de manera exitosa.", "¡Enhorabuena!"); ';
           echo 'setTimeout(function() {';

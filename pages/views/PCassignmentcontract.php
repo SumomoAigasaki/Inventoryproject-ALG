@@ -9,7 +9,7 @@ $idWR = $_GET['p'];
 $stmt = $conn->query("CALL sp_dataContract('$idWR')");
 while ($fila = $stmt->fetch_assoc()) {
     //optenemos las variables del select y la asignamos a la session activa
-    $idPCA=$fila["PCA_idTbl_PC_Assignment"];
+    $idPCA = $fila["PCA_idTbl_PC_Assignment"];
     $NameCollaborator =  $fila["NameCollaborator"];
     $Correlativo = $fila["Correlativo"];
     $EmployeeCode =  $fila["EmployeeCode"];
@@ -26,6 +26,8 @@ while ($fila = $stmt->fetch_assoc()) {
 
     $fechaContratacion = $fila["fechaContratacion"];
     $mesesContratacion = $fila["mesesContratacion"];
+    $especificaciones = $fila["Especificaciones"];
+    $codigoEmpleado = $fila["codigoEmpleado"];
     $scndFirma = $fila["firma"];
 }
 
@@ -60,7 +62,8 @@ class PDF extends FPDF
     public $scndFirma; // Declara la propiedad para almacenar la firma
     public $idPCA;
     // Constructor de la clase
-    public function __construct($scndFirma,$idPCA) {
+    public function __construct($scndFirma, $idPCA)
+    {
         parent::__construct(); // Llama al constructor de la clase padre si es necesario
         $this->scndFirma = $scndFirma; // Asigna el valor de $scndFirma a la propiedad $scndFirma
         $this->idPCA = $idPCA;
@@ -84,7 +87,7 @@ class PDF extends FPDF
     function Footer()
     {
         $firma = $this->scndFirma;
-        $idPCA= $this->idPCA;
+        $idPCA = $this->idPCA;
 
         // global $scndFirma; // Accedes a la variable global
         // Establecer la posición y el tamaño de la página
@@ -123,16 +126,16 @@ class PDF extends FPDF
         $this->SetX(35);
         $this->Cell(0, 3, utf8_decode("Marcovia, Choluteca, Honduras C.A"), 0, 0, 'L', 0);
 
-        
+
         $this->Ln();
         $this->SetX(35);
-        $this->MultiCell(155, -0, 'Contrato de Asignacion de Pc con el id: '.$idPCA.' para el usuario:'.$firma, '', 'R', false);
+        $this->MultiCell(155, -0, 'Contrato de Asignacion de Pc con el id: ' . $idPCA . ' para el usuario:' . $firma, '', 'R', false);
         $this->SetX(35);
         $this->SetFont('times', 'I', 11);
         $this->MultiCell(160, -15, 'Pagina ' . $this->PageNo() . ' de {nb}', '', 'R', false);
     }
 
-    function Body($nameUserlog, $user_EmployeePosition, $firmaUser, $NameCollaborator, $EmployeeCode, $EmployeePosition, $Marca, $Modelo, $Serial, $Garantia, $Meses, $todayDate, $CT_Description, $PCS_Description, $Correlativo, $MNG_Description, $fechaContratacion, $mesesContratacion, $scndFirma)
+    function Body($nameUserlog, $user_EmployeePosition, $firmaUser, $NameCollaborator, $EmployeeCode, $EmployeePosition, $Marca, $Modelo, $Serial, $Garantia, $Meses, $todayDate, $CT_Description, $PCS_Description, $Correlativo, $MNG_Description, $fechaContratacion, $mesesContratacion, $scndFirma, $especificaciones, $codigoEmpleado)
     {
 
         //Posición: a 1,5 cm del final
@@ -159,7 +162,7 @@ class PDF extends FPDF
         $fill = false;
         $this->Ln(4);
         $this->SetFont('times', '', 12);
-        $this->MultiCell(0, 8, utf8_decode("" . $NameCollaborator . " en adelante denominado 'El Empleado,' con número de identificación dentro de la empresa '" . $EmployeeCode . "', con el cargo de: ".$EmployeePosition. " en Azucarera La Grecia."), 0, 'J', $fill);
+        $this->MultiCell(0, 8, utf8_decode("" . $NameCollaborator . " en adelante denominado 'El Empleado,' con número de identificación dentro de la empresa '" . $EmployeeCode . "', con el cargo de: " . $EmployeePosition . " en Azucarera La Grecia."), 0, 'J', $fill);
 
 
         $this->Ln(4);
@@ -190,6 +193,11 @@ class PDF extends FPDF
 
         $this->Cell(175, 7, utf8_decode("Informacion Equipo "), 'LTR', 0, 'C', 0);
 
+        $this->Ln(7);
+        $this->SetFont('times', 'B', 12);
+        $this->Cell(86, 7, utf8_decode("Nombre de Registro: "), 'LTRB', 0, 'L', 1);
+        $this->SetFont('');
+        $this->Cell(89, 7, utf8_decode("" . $Correlativo), 'LTRB', 0, 'L', 0);
 
         $this->Ln(7);
         $this->SetFont('times', 'B', 12);
@@ -215,14 +223,22 @@ class PDF extends FPDF
         $this->SetFont('');
         $this->Cell(89, 7, utf8_decode($Garantia), 'LTRB', 0, 'L', 0);
 
-            // $this->Ln(7);
-            // $this->SetFont('times', 'B', 12);
-            // $this->Cell(86, 7,  utf8_decode("Etiqueta N° "), 'LTRB', 0, 'L', 1);
-            // $this->SetFont('');
-            // $this->Cell(89, 7,  utf8_decode(" ". $Correlativo), 'LTRB', 0, 'L', 0);
+        $this->Ln(7);
+        $this->SetFont('times', 'B', 12);
+        $this->Cell(86, 14, utf8_decode("Especificaciones: "), 'LTRB', 0, 'L', 1);
+        $this->SetFont('');
+        $this->MultiCell(89, 14, utf8_decode($especificaciones), 'LTRB', 'J', 0);
+
+
+
+        // $this->Ln(7);
+        // $this->SetFont('times', 'B', 12);
+        // $this->Cell(86, 7,  utf8_decode("Etiqueta N° "), 'LTRB', 0, 'L', 1);
+        // $this->SetFont('');
+        // $this->Cell(89, 7,  utf8_decode(" ". $Correlativo), 'LTRB', 0, 'L', 0);
         //  Finaliza 1er tabla 
 
-        $this->Ln(8);
+        $this->Ln(20);
         $this->SetFont('times', 'IB', 12);
         $this->Cell(0, 8, utf8_decode(" 2. Uso del Equipo de Cómputo"), 0, 1, 'L');
 
@@ -270,7 +286,7 @@ class PDF extends FPDF
         $this->SetFont('times', '', 12);
         $this->MultiCell(0, 8, utf8_decode("El Empleado se compromete a mantener la confidencialidad de la información almacenada en el equipo de cómputo y a no divulgar información confidencial de La Empresa. "), 0, 'J', $fill);
 
-        $this->Ln(3);
+        $this->Ln(10);
         $this->SetFont('times', 'IB', 12);
         $this->Cell(0, 8, utf8_decode("7. Duración del Contrato"), 0, 1, 'L');
 
@@ -296,9 +312,9 @@ class PDF extends FPDF
         $this->SetFont('times', 'IB', 12);
         $this->Cell(87, 7, utf8_decode($user_EmployeePosition . ", Azucarera La Grecia"), '', 0, 'C', 0);
         $this->Cell(87, 7, utf8_decode($EmployeePosition . ", Azucarera La Grecia"), '', 0, 'C', 0);
-       
+
         $this->SetFont('times', '', 12);
-        
+
         $this->Ln(15);
         $this->Cell(0, 7, utf8_decode("Realizado en la fecha de " . $todayDate . ""), '', 0, 'C', 0);
         // Agregar un salto de página
@@ -310,7 +326,7 @@ class PDF extends FPDF
         $this->Cell(170, 5, utf8_decode(" Marcovia-Choluteca " . $todayDate),  0, 1, 'R');
         $this->SetFont('times', 'B', 14);
         $this->Cell(0, 18, utf8_decode("Formato de asignación de equipo Personal"), 0, 1, 'C');
-        $this->Ln(3);
+        $this->Ln(2);
 
 
         $this->SetFillColor(215, 219, 221);
@@ -321,58 +337,77 @@ class PDF extends FPDF
 
 
         $this->SetFont('times', 'B', 12);
-        $this->Cell(70, 7, utf8_decode("Informacion Equipo "), 'LTR', 0, 'C', 0);
-        $this->Cell(110, 7, utf8_decode("Informacion Colaborador "), 'LTR', 0, 'C', 0);
+        $this->Cell(100, 7, utf8_decode("Informacion Colaborador "), 'LTR', 0, 'C', 0);
+        $this->Cell(72, 7, utf8_decode("Informacion Equipo "), 'LTR', 0, 'C', 0);
+       
 
-        $this->Ln(3);
+        $this->Ln(7);
+        // Codigo empleado 
         $this->SetFont('times', 'B', 12);
-        $this->Ln(4);
+        $this->Cell(45, 7, utf8_decode("Codigo empleado "), 'LTRB', 0, 'L', 1);
+        $this->SetFont('');
+        $this->Cell(55, 7, utf8_decode(" " . $codigoEmpleado), 'LTRB', 0, 'L', 0);
+
+        // Etiqueta N°
+        $this->SetFont('times', 'B', 12);
+        $this->Cell(32, 7,  utf8_decode("Etiqueta N°:"), 'LTRB', 0, 'L', 1);
+        $this->SetFont('');
+        $this->Cell(40, 7,  utf8_decode(" " . $Correlativo), 'LTRB', 0, 'L', 0);
+
+
+        $this->Ln(7);
+        // Nombre del Empleado
+        $this->SetFont('times', 'B', 12);
+        $this->Cell(45, 7, utf8_decode("Nombre del Empleado: "), 'LTRB', 0, 'L', 1);
+        $this->SetFont('');
+        $this->Cell(55, 7, utf8_decode(" " . $NameCollaborator), 'LTRB', 0, 'L', 0);
+
+        // Tipo de Equipo 
+        $this->SetFont('times', 'B', 12);
         $this->Cell(32, 7, utf8_decode("Tipo de Equipo "), 'LTRB', 0, 'L', 1);
         $this->SetFont('');
-        $this->Cell(38, 7, utf8_decode(" " . $CT_Description), 'LTRB', 0, 'L', 0);
-        $this->SetFont('times', 'B', 12);
-        $this->Cell(45, 7, utf8_decode("Nombre del Empleado "), 'LTRB', 0, 'L', 1);
-        $this->SetFont('');
-        $this->Cell(65, 7, utf8_decode(" " . $NameCollaborator), 'LTRB', 0, 'L', 0);
+        $this->Cell(40, 7, utf8_decode(" " . $CT_Description), 'LTRB', 0, 'L', 0);
 
 
-        $this->Ln(3);
-        $this->SetFont('times', 'B', 12);
-        $this->Ln(4);
-        $this->Cell(32, 7, utf8_decode("Modelo "), 'LTRB', 0, 'L', 1);
-        $this->SetFont('');
-        $this->Cell(38, 7, utf8_decode(" " . $Marca . "/ " . $Modelo), 'LTRB', 0, 'L', 0);
-        $this->SetFont('times', 'B', 12);
-        $this->Cell(45, 7, utf8_decode("Cargo"), 'LTRB', 0, 'L', 1);
-        $this->SetFont('');
-        $this->Cell(65, 7, utf8_decode(" " . $EmployeePosition), 'LTRB', 0, 'L', 0);
 
-        $this->Ln(3);
-        $this->SetFont('times', 'B', 12);
-        $this->Ln(4);
-        $this->Cell(32, 7, utf8_decode("Serial "), 'LTRB', 0, 'L', 1);
-        $this->SetFont('');
-        $this->Cell(38, 7, utf8_decode(" " . $Serial), 'LTRB', 0, 'L', 0);
-        $this->SetFont('times', 'B', 12);
-        $this->Cell(45, 7, utf8_decode("Departamento "), 'LTRB', 0, 'L', 1);
-        $this->SetFont('');
-        $this->Cell(65, 7, utf8_decode(" " . $PCS_Description), 'LTRB', 0, 'L', 0);
-
-        $this->Ln(3);
-        $this->SetFont('times', 'B', 12);
-        $this->Ln(4);
-        $this->Cell(32, 7,  utf8_decode("Etiqueta N° "), 'LTRB', 0, 'L', 1);
-        $this->SetFont('');
-        $this->Cell(38, 7,  utf8_decode(" " . $Correlativo), 'LTRB', 0, 'L', 0);
+        $this->Ln(7);
+        //Gerencia
         $this->SetFont('times', 'B', 12);
         $this->Cell(45, 7,  utf8_decode("Gerencia: "), 'LTRB', 0, 'L', 1);
         $this->SetFont('');
-        $this->Cell(65, 7, " " . $MNG_Description, 'LTRB', 0, 'L', 0);
-        $this->Ln(3);
+        $this->Cell(55, 7, " " . $MNG_Description, 'LTRB', 0, 'L', 0);
+        //Modelo
+        $this->SetFont('times', 'B', 12);
+        $this->Cell(32, 7, utf8_decode("Modelo: "), 'LTRB', 0, 'L', 1);
+        $this->SetFont('');
+        $this->Cell(40, 7, utf8_decode(" " . $Marca . "/ " . $Modelo), 'LTRB', 0, 'L', 0);
 
 
-        $this->Ln(8);
+        $this->Ln(7);
+        $this->SetFont('times', 'B', 12);
+        // Departamento
+        $this->Cell(45, 7, utf8_decode("Departamento "), 'LTRB', 0, 'L', 1);
+        $this->SetFont('');
+        $this->Cell(55, 7, utf8_decode($PCS_Description), 'LTRB', 0, 'L', 0);
+        // Serial
+        $this->SetFont('times', 'B', 12);
+        $this->Cell(32, 7, utf8_decode("Serial "), 'LTRB', 0, 'L', 1);
+        $this->SetFont('');
+        $this->Cell(40, 7, utf8_decode($Serial), 'LTRB', 0, 'L', 0);
 
+        $this->Ln(7);
+        // Cargo
+        $this->SetFont('times', 'B', 12);
+        $this->Cell(45, 14, utf8_decode("Cargo"), 'LTRB', 0, 'L', 1);
+        $this->SetFont('');
+        $this->Cell(55, 14, utf8_decode($EmployeePosition), 'LTRB', 0, 'L', 0);
+        // Especificaciones
+        $this->SetFont('times', 'B', 12);
+        $this->Cell(32, 14, utf8_decode("Especificaciones: "), 'LTRB', 0, 'L', 1);
+        $this->SetFont('');
+        $this->MultiCell(40, 7, utf8_decode($especificaciones), 'LTRB', 'J', 0);
+
+        $this->Ln(5);
         $this->SetFont('times', '', 12);
         $this->MultiCell(0, 8, utf8_decode("Yo," . $NameCollaborator . " como miembro perteneciente al personal de Azucacera La Grecia S.A de C.V- ALG, de ahora en adelante llamado como 'Empleado', con un contrato de duracion de " . $mesesContratacion . " meses que dan inicio a apartir de la fecha de " . $fechaContratacion . " , declaro por la presente que recibo el equipo mencionado anteriormente bajo las siguientes condiciones:"), 0, 'J', $fill);
         $this->MultiCell(0, 8, utf8_decode("1. Entiendo que el equipo es propiedad de ALG y me fue asignado."), 0, 'J', $fill);
@@ -414,7 +449,7 @@ class PDF extends FPDF
     }
 }
 
-$pdf = new PDF($scndFirma,$idPCA);
+$pdf = new PDF($scndFirma, $idPCA);
 // Establecer márgenes
 $topMargin = 35; // Margen superior en unidades de medida del PDF
 $bottomMargin = 42; // Margen inferior en unidades de medida del PDF
@@ -429,12 +464,11 @@ $pdf->AliasNbPages();
 //Segunda página
 $pdf->AddPage();
 $pdf->SetY(35);
-$pdf->Body($_SESSION["NameUserlog"], $_SESSION["user_EmployeePosition"], $_SESSION["firmaUser"], $NameCollaborator, $EmployeeCode, $EmployeePosition, $Marca, $Modelo, $Serial, $Garantia, $Meses, $todayDate, $CT_Description, $PCS_Description, $Correlativo, $MNG_Description, $fechaContratacion, $mesesContratacion, $scndFirma);
+$pdf->Body($_SESSION["NameUserlog"], $_SESSION["user_EmployeePosition"], $_SESSION["firmaUser"], $NameCollaborator, $EmployeeCode, $EmployeePosition, $Marca, $Modelo, $Serial, $Garantia, $Meses, $todayDate, $CT_Description, $PCS_Description, $Correlativo, $MNG_Description, $fechaContratacion, $mesesContratacion, $scndFirma, $especificaciones, $codigoEmpleado);
 
 // Genera un nombre de archivo único basado en la fecha y la hora actual
 $timestamp = date("Y-m-d_H-i-s"); // Genera un timestamp en el formato deseado
-$nombreArchivo = "contradoEmpleado_Id" .$EmployeeCode.$timestamp . ".pdf"; // Nombre personalizado con marca de tiempo
+$nombreArchivo = "contradoEmpleado_Id" . $EmployeeCode . $timestamp . ".pdf"; // Nombre personalizado con marca de tiempo
 $pdfPath = "" . $nombreArchivo; // Ruta completa con nombre de archivo
 
 $pdf->Output($pdfPath, 'I'); // Guarda el PDF con el nombre personalizado
-?>

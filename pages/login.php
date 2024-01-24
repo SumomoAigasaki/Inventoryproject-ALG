@@ -49,6 +49,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   // Llamar al procedimiento almacenado para validar el usuario y la contraseña
   $resultado = null;
+  // Verificar si el valor contiene comillas simples
+  if (strpos($username, "'") !== false || strpos($password, "'") !== false) {
+    session_start();
+    $_SESSION["icon"] = "question";
+    $_SESSION["title"] = "Cadena de texto no valida";
+    $_SESSION["error_message"] = "El valor no puede contener comillas simples.";
+    header("Location: login.php");
+    exit();
+    // Puedes redirigir o manejar el error de otra manera según tus necesidades
+  }
   $conn->query("CALL sp_validate_user('$username','$password', @resultado)");
   $resultado = $conn->query("SELECT @resultado")->fetch_assoc()["@resultado"];
 
@@ -68,7 +78,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $_SESSION["error_message"] = "Contraseña y/o usuario inválido. Ingrese credenciales correctas.";
     header("Location: login.php");
     exit();
-  }else if ($resultado == 2) {
+  } else if ($resultado == 2) {
     // Usuario y/o contraseña son incorrectos, mostrar un mensaje de error
     session_start();
     $_SESSION["icon"] = "info";
@@ -76,7 +86,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $_SESSION["error_message"] = "El correo esta inactivo y/o deshabilitado comuníquese con el administrador .";
     header("Location: login.php");
     exit();
-  }else if ($resultado == 1) {
+  } else if ($resultado == 1) {
     // Usuario y/o contraseña son incorrectos, mostrar un mensaje de error
     session_start();
     $_SESSION["icon"] = "warning";
@@ -90,34 +100,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <!-- /.login-logo -->
 
 <body class="hold-transition login-page">
-<script src='../public/js/sweetalert2/sweetalert2.min.js'></script>
-      <script>
-        <?php
-        if (isset($_SESSION["error_message"]) && isset($_SESSION["icon"]) && isset($_SESSION["title"])) {
-          $icon = $_SESSION["icon"];
-          $title = $_SESSION["title"];
-          $errorMessage = $_SESSION["error_message"];
-          unset($_SESSION["error_message"], $_SESSION["icon"]);
-        ?>
-          Swal.fire({
-            icon: '<?php echo $icon; ?>',
-            title: '<?php echo $title; ?>',
-            text: '<?php echo $errorMessage; ?>',
-            confirmButtonText: 'Aceptar'
-          });
-        <?php
-        }
-        ?>
-      </script>
+  <script src='../public/js/sweetalert2/sweetalert2.min.js'></script>
+  <script>
+    <?php
+    if (isset($_SESSION["error_message"]) && isset($_SESSION["icon"]) && isset($_SESSION["title"])) {
+      $icon = $_SESSION["icon"];
+      $title = $_SESSION["title"];
+      $errorMessage = $_SESSION["error_message"];
+      unset($_SESSION["error_message"], $_SESSION["icon"]);
+    ?>
+      Swal.fire({
+        icon: '<?php echo $icon; ?>',
+        title: '<?php echo $title; ?>',
+        text: '<?php echo $errorMessage; ?>',
+        confirmButtonText: 'Aceptar'
+      });
+    <?php
+    }
+    ?>
+  </script>
   <div class="login-box">
     <div class="card card-outline card-primary">
       <div class="card-header text-center">
         <a href="what_is.php" class="h1"><b>INFRAG</b></a>
       </div>
-      
+
 
 
       <div class="card-body">
+        
         <p class="login-box-msg">Ingresa tu correo para Iniciar sesion</p>
 
         <form action="" method="POST" name="formLogin" id="formLogin">
