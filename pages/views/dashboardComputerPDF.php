@@ -3,7 +3,6 @@ require('../../public/FPDF/fpdf.php');
 include "../../includes/conecta.php";
 include "../controllers/reporteDashboardComputer.php";
 
-// include('../js/pages/reportWarranty.js');
 //Obtenemos la variable que pasamos tras la url con metodo get 
 
 // Recibir y procesar los datos enviados desde JavaScript
@@ -22,11 +21,7 @@ class warrantyPDF extends FPDF
 
     function Header()
     {
-        // $this->SetFillColor(226, 60, 25); // Establece el color de fondo del pie de página (en este caso, naranja)
-        // // Dibuja un rectángulo con el color de fondo que cubre solo el área del encabezado
-        // $this->Rect(0, 0, $this->GetPageWidth(), 40, 'F');
-
-
+       
         // Encabezado común para todas las páginas (excepto las primeras)
         if (!$this->excludeFromHeader) {
             $this->SetFont('Arial', 'B', 12);
@@ -40,7 +35,6 @@ class warrantyPDF extends FPDF
             $this->Ln(40);
         }
     }
-
 
     function Footer()
     {
@@ -721,7 +715,7 @@ class warrantyPDF extends FPDF
             
 
 
-        // Gráfico de Dispersión
+        // 3.4 Gráfico de Dispersión
             $this->AddPage('L');
             $this->AddCustomTitle('III.IV Análisis Gráfico- Gráfico de Dispersión');
             $this->Ln(2);
@@ -904,5 +898,5 @@ $nombreArchivo = "InformeComputadoras" . $timestamp . ".pdf";
 $pdfPath = "" . $nombreArchivo;
 
 $pdf->Output($pdfPath, 'I');
-// Accede a los elementos del array
-// var_dump($alturaPag);
+
+?>
