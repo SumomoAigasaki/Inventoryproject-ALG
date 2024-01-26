@@ -188,28 +188,7 @@ require_once "../templates/menu.php";
 
 
                                 </div>
-                                <div class="row justify-content-center">
-                                    <!-- Estado de la computadora  -->
-                                    <!-- <div class="col-sm-3">
-                                        <div class="form-group">
-                                            <label>Estado del Usuario: </label>
-                                            <?php $resultado = mysqli_query($conn, "CALL sp_status_select()"); ?>
-                                            <select class="form-control" id="selectStatus" name="selectStatus">
-                                                <?php while ($row = mysqli_fetch_array($resultado)) { ?>
-                                                    <option value="<?php echo $row['STS_idTbl_Status']; ?>"><?php echo $row['STS_Description']; ?></option>
-                                                <?php }
-                                                #NOTA
-                                                #CADA QUE QUIERA HACER UNA NUEVA CONSULTA CON PROCEDIMIENTOS ALMACENADOS ESTOS EL RESULTADO SE CIERRA Y LA VARIABLE DE LA CONECCION SE PREPARA PARA EL NUEVO RESULTADO
-                                                # QUE TENDRA ABAJO
-                                                $resultado->close();
-                                                $conn->next_result();
-                                                ?>
-                                            </select>
-                                        </div>
-                                    </div> -->
-
-
-                                </div>
+                           
 
                                 <div class="row justify-content-center" style="padding-bottom:10px;">
                                     <div class="col-mb-3">

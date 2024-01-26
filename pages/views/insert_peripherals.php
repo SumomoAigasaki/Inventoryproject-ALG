@@ -92,7 +92,7 @@ require_once "../templates/menu.php";
 
                                 <div class="row justify-content-center" style="padding-top:10px; padding-bottom:10px;">
 
-                                    <!-- nombre -->
+                                    <!-- Nombre Periferico-->
                                     <div class="col-sm-4">
                                         <div class="form-group" style="padding-top: 20px;">
                                             <label><code>*</code>Nombre Periferico:</label>
@@ -122,7 +122,7 @@ require_once "../templates/menu.php";
                                     <div class="col-sm-4">
                                         <div class="form-group" style="padding-top: 20px;">
                                             <label>Descripcion Principal Periferico:</label>
-                                            <input type="text" class="form-control" name="txt_description" id="txt_description" maxlength="45" >
+                                            <input type="text" class="form-control" name="txt_description" id="txt_description" maxlength="45">
                                         </div>
                                     </div>
 

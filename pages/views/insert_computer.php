@@ -183,12 +183,13 @@ require_once "../templates/menu.php"; ?>
                         <form role="form" action="" method="POST" name="formInsertCMP" id="formInsertCMP" class="form-horizontal" enctype="multipart/form-data">
                             <div class="card-body">
                                 <label class="form-check-label" style="padding-bottom: 5px;"> A continuación se le pedirá que <b> Ingrese</b> los siguientes datos:</label>
-                                <!-- Input para guardar la lista de los software a guardar -->
-                                <input type="hidden" class="form-control" id="TxtId" name="TxtId" placeholder="">
+                             
                                 <!-- Input ocultos  -->
-                                <!-- <input type="hidden" class="form-control" id="todayDate" name="todayDate" placeholder="<?php echo $todayDate ?>"> -->
-                                <input type="hidden" class="form-control" id="accion" name="accion" placeholder="">
-                                <div class="row" style="padding-top:10px; padding-bottom:10px;">
+                                 <!-- Input para guardar la lista de los software a guardar -->
+                                 <input type="hidden" class="form-control" id="TxtId" name="TxtId" placeholder="">
+                                 <input type="hidden" class="form-control" id="accion" name="accion" placeholder="">
+                                 <!-- Fila 1   -->
+                                 <div class="row" style="padding-top:10px; padding-bottom:10px;">
                                     <!-- Fecha de Compra -->
                                     <div class="col-sm-2">
                                         <div class="form-group">
@@ -263,7 +264,8 @@ require_once "../templates/menu.php"; ?>
                                         </div>
                                     </div>
                                 </div>
-                                <!-- Comienzo fila 2 -->
+
+                                <!-- Fila 2 -->
                                 <div class="row" style="padding-bottom:10px;">
 
                                     <!-- Servitag-->
@@ -282,7 +284,7 @@ require_once "../templates/menu.php"; ?>
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- Anho limite garantia -->
+                                    <!--Año Limite Garantía -->
                                     <div class="col-sm-2">
                                         <div class="form-group">
                                             <label>Año Limite Garantía: </label>
@@ -311,7 +313,7 @@ require_once "../templates/menu.php"; ?>
                                             </select>
                                         </div>
                                     </div>
-                                    <!-- Lincencia -->
+                                    <!-- Licencia -->
                                     <div class="col-sm-3">
                                         <div class="form-group">
                                             <label>Licencia: </label>
@@ -319,8 +321,9 @@ require_once "../templates/menu.php"; ?>
                                         </div>
                                     </div>
                                 </div>
-                                <!-- Comienzo fila 3 -->
+                                <!-- Fila 3 -->
                                 <div class="row justify-content-center" style="padding-bottom:10px;">
+
                                     <!-- Tarjeta Madre -->
                                     <div class="col-sm-2">
                                         <div class="form-group">
@@ -349,24 +352,6 @@ require_once "../templates/menu.php"; ?>
                                             </select>
                                         </div>
                                     </div>
-                                    <!-- Estado de la computadora  -->
-                                    <!-- <div class="col-sm-3">
-                                        <div class="form-group">
-                                            <label>Estado del Computador: </label>
-                                            <?php $resultado = mysqli_query($conn, "CALL sp_status_select()"); ?>
-                                            <select class="form-control" id="selectStatus" name="selectStatus">
-                                                <?php while ($row = mysqli_fetch_array($resultado)) { ?>
-                                                    <option value="<?php echo $row['STS_idTbl_Status']; ?>"><?php echo $row['STS_Description']; ?></option>
-                                                <?php }
-                                                #NOTA
-                                                #CADA QUE QUIERA HACER UNA NUEVA CONSULTA CON PROCEDIMIENTOS ALMACENADOS ESTOS EL RESULTADO SE CIERRA Y LA VARIABLE DE LA CONECCION SE PREPARA PARA EL NUEVO RESULTADO
-                                                # QUE TENDRA ABAJO
-                                                $resultado->close();
-                                                $conn->next_result();
-                                                ?>
-                                            </select>
-                                        </div>
-                                    </div> -->
 
                                     <!-- Localizacion -->
                                     <div class="col-sm-2">
@@ -412,10 +397,9 @@ require_once "../templates/menu.php"; ?>
                                             <textarea type="text" class="form-control" name="txtObservation" id="txtObservation" maxlength="100" value="<?php echo (isset($observations) ? $observations : ""); ?>"> </textarea>
                                         </div>
                                     </div>
-
-
                                 </div>
-                                <!-- Comienzo fila 4 -->
+                                
+                                <!-- Fila 4 -->
                                 <div class="row justify-content-center">
 
                                     <!-- IMAGEN -->
@@ -432,6 +416,7 @@ require_once "../templates/menu.php"; ?>
 
 
                                 </div>
+                                 <!-- Fila 5 -->
                                 <div class="row justify-content-center" style="padding-bottom:20px;">
                                     <!-- Boton guardar -->
                                     <div class="col-sm-2" style="padding-top:40px;">
@@ -467,7 +452,7 @@ if (isset($_POST["buttonInsertCMP"])) {
     $cmpLicence = $_POST['txtLicense'];
     if (empty($cmpLicence)) {
         $cmpLicence = NULL;
-    } 
+    }
     $cmpMotherboard = $_POST['txtSerial'];
     $cmpIdStatu = 2;
     $cmpIdLocation = $_POST['selectLocation'];

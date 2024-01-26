@@ -157,25 +157,6 @@ require_once "../templates/menu.php";
                                             </select>
                                         </div>
                                     </div>
-                                    <!-- <div class="col-sm-2" style="padding-top: 50px;">
-                                        <div class="form-group">
-                                            <label>Fabricante: </label>
-                                            <input type="text" id="searchManufacturer" placeholder="Buscador para fabricantes: " class="form-control">
-                                            <?php $resultado = mysqli_query($conn, "CALL sp_manufacturerSoft_Select()"); ?>
-                                            <select class="form-control" id="slct_manufacturerSftType" name="slct_manufacturerSftType">
-                                                <?php while ($row = mysqli_fetch_array($resultado)) { ?>
-                                                    <option value="<?php echo $row['MFS_idtbl_manufacturer_software']; ?>"><?php echo $row['MFS_Description']; ?></option>
-                                                <?php }
-                                                #NOTA
-                                                #CADA QUE QUIERA HACER UNA NUEVA CONSULTA CON PROCEDIMIENTOS ALMACENADOS ESTOS EL RESULTADO SE CIERRA Y LA VARIABLE DE LA CONECCION SE PREPARA PARA EL NUEVO RESULTADO
-                                                # QUE TENDRA ABAJO
-                                                $resultado->close();
-                                                $conn->next_result();
-                                                ?>
-                                            </select>
-                                        </div>
-                                    </div> -->
-
                                 </div> <!-- Fin fila 1 -->
 
                                 <div class="row">

@@ -59,8 +59,6 @@ require_once "../templates/menu.php";
 
                     </ol><!-- /.modal-dialog -->
                 </div>
-
-
                 <div class="col-sm-4">
                     <!--cinta de home y el nombre de la pagina -->
                     <ol class="breadcrumb float-sm-right">
@@ -105,9 +103,6 @@ require_once "../templates/menu.php";
                                             <input type="text" class="form-control datepicker-input" name="txtDateAdmision" id="txtDateAdmision">
                                         </div>
                                     </div>
-
-
-
                                     <!-- Computadora-->
                                     <div class="col-sm-4">
                                         <div class="form-group" style="padding-top: 10px;">

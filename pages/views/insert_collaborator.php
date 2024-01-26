@@ -330,8 +330,8 @@ require_once "../templates/menu.php"; ?>
                                         </div>
                                     </div>
 
-                                     <!-- Meses de Contratación -->
-                                     <div class="col-sm-3">
+                                    <!-- Meses de Contratación -->
+                                    <div class="col-sm-3">
                                         <div class="form-group">
                                             <label><code>*</code> Meses de Contratación:</label>
                                             <input type="number" class="form-control" name="txtContratMounth" id="txtContratMounth">
@@ -423,7 +423,7 @@ require_once "../templates/footer.php";
             toastr.warning("El <b>Cargo de Desempeño</b> esta vacio(a).<br>Por favor Ingrese un Cargo de Desempeño valida.");
             positionTxt.focus();
             return false;
-        }else if (typeContratcSlct.selectedIndex == 0) {
+        } else if (typeContratcSlct.selectedIndex == 0) {
             toastr.warning('El <b>Tipo de Contratacion</b> esta vacio(a).<br>Por favor Ingrese un Tipo de Contratacion valida.');
             typeContratcSlct.focus();
             return false;
@@ -431,11 +431,11 @@ require_once "../templates/footer.php";
             toastr.warning("La <b>Fecha de Contratacón</b> esta vacio(a).<br>Por favor Ingrese una Fecha de Contratacón valida.");
             contractDateTxt.focus();
             return false;
-        }else if (contractMounthTxt.value.trim() === "") {
+        } else if (contractMounthTxt.value.trim() === "") {
             toastr.warning("El <b>Meses de Contratacón</b> esta vacio(a).<br>Por favor Ingrese una Meses de Contratacón valida.");
             contractMounthTxt.focus();
             return false;
-        }else {
+        } else {
             // Si no hay errores, procesa los datos enviados
             if (accionInput.value.trim() === "") {
                 accionInput.value = "1";
@@ -504,18 +504,19 @@ if (isset($_POST["buttonInsertCBT"])) {
     $todayDate = date("Y-m-d");
     $idUser = $_SESSION["User_idTbl_User"];
     $status = '2';
-    $academicDegreeCBT=$_POST["slctGrade"];
-    $typeContractCBT=$_POST["slcTypeContract"];
-    $hireStartDateCBT=$_POST["txtContratcDate"];
-    $hiringMonthsCBT=$_POST["txtContratMounth"];
-  
-    
+    $academicDegreeCBT = $_POST["slctGrade"];
+    $typeContractCBT = $_POST["slcTypeContract"];
+    $hireStartDateCBT = $_POST["txtContratcDate"];
+    $hiringMonthsCBT = $_POST["txtContratMounth"];
+
+
 
     if (empty($imgCBT)) {
         $imgCBT = '/resources/Collaborator/default.jpg';
     } else {
         $imgCBT = '/resources/Collaborator/' . $_FILES['fileImg']['name'];
     }
+    
     # Ruta de la carpeta de destino para los archivos
     $urlCBT = '../../resources/Collaborator/';
     if ($PermisoCBT) {
@@ -526,7 +527,7 @@ if (isset($_POST["buttonInsertCBT"])) {
             $query = "CALL sp_insertCollaborator('$imgCBT', '$employeCodeCBT', '$nacionalityCBT', '$firstNameCBT', '$secondNameCBT', '$firstSurnameCBT', '$secondSurnameCBT', '$genderCBT', '$phoneNumberCBT', '$birthDateCBT', '$addressCBT', '$processCBT', '$managementCBT', '$todayDate', '$idUser','$status','$employeePositionCBT','$academicDegreeCBT','$typeContractCBT','$hireStartDateCBT','$hiringMonthsCBT');";
             echo $query;
             // Mandamos los parametros y los input que seran enviados al PA O SP
-            $stmt->bind_param("sssssssssssssssssssss", $imgCBT, $employeCodeCBT, $nacionalityCBT, $firstNameCBT, $secondNameCBT, $firstSurnameCBT, $secondSurnameCBT, $genderCBT, $phoneNumberCBT, $birthDateCBT, $addressCBT, $processCBT, $managementCBT, $todayDate, $idUser, $status, $employeePositionCBT,$academicDegreeCBT,$typeContractCBT, $hireStartDateCBT,  $hiringMonthsCBT);
+            $stmt->bind_param("sssssssssssssssssssss", $imgCBT, $employeCodeCBT, $nacionalityCBT, $firstNameCBT, $secondNameCBT, $firstSurnameCBT, $secondSurnameCBT, $genderCBT, $phoneNumberCBT, $birthDateCBT, $addressCBT, $processCBT, $managementCBT, $todayDate, $idUser, $status, $employeePositionCBT, $academicDegreeCBT, $typeContractCBT, $hireStartDateCBT,  $hiringMonthsCBT);
 
 
             // Ejecutar el procedimiento almacenado
