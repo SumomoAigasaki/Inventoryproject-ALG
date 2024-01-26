@@ -4,21 +4,21 @@ require_once "../templates/menu.php";
 
 function dataTablePeripherals($stmt)
 {
-     while ($row = $stmt->fetch_assoc()) {
-    echo "<tr>";
-    echo "<td>" . $row['PRL_idTbl_Peripherals'] . "</td>";
-    echo "<td>" . $row['PRL_Name'] . "</td>";
-    echo "<td>" . $row['BRD_Description'] . "</td>";
-    echo "<td>" . $row['CPT_Description'] . "</td>";
-    echo "<td>" . $row['PRL_Main_Description'] . "</td>";
-    echo "<td>" . $row['CPD_Description'] . "</td>";
-    echo "<td>" . $row['LCT_Description'] . "</td>";
-    echo "<td>" . $row['PRL_Inventory_Date'] . "</td>";
-    echo "<td>" . $row['PRL_Observations'] . "</td>";
-    echo "<td>" . $row['User_Username'] . "</td>";
-    echo "<td>" . $row['STS_Description'] . "</td>";
-    echo "</tr>";
-}
+    while ($row = $stmt->fetch_assoc()) {
+        echo "<tr>";
+        echo "<td>" . $row['PRL_idTbl_Peripherals'] . "</td>";
+        echo "<td>" . $row['PRL_Name'] . "</td>";
+        echo "<td>" . $row['BRD_Description'] . "</td>";
+        echo "<td>" . $row['CPT_Description'] . "</td>";
+        echo "<td>" . $row['PRL_Main_Description'] . "</td>";
+        echo "<td>" . $row['CPD_Description'] . "</td>";
+        echo "<td>" . $row['LCT_Description'] . "</td>";
+        echo "<td>" . $row['PRL_Inventory_Date'] . "</td>";
+        echo "<td>" . $row['PRL_Observations'] . "</td>";
+        echo "<td>" . $row['User_Username'] . "</td>";
+        echo "<td>" . $row['STS_Description'] . "</td>";
+        echo "</tr>";
+    }
 }
 ?>
 
@@ -67,10 +67,10 @@ function dataTablePeripherals($stmt)
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Nombre Perifico </th>
+                                        <th>Nombre Periférico</th>
                                         <th>Marca</th>
                                         <th>Tipo de Componente</th>
-                                        <th>Descripcion Principal</th>
+                                        <th>Descripción Principal</th>
                                         <th>Especificaciones</th>
                                         <th>Localización</th>
                                         <th>Fecha de Ingreso</th>
@@ -118,10 +118,10 @@ function dataTablePeripherals($stmt)
                                     <tr>
                                     <tr>
                                         <th>#</th>
-                                        <th>Nombre Perifico </th>
+                                        <th>Nombre Periférico</th>
                                         <th>Marca</th>
                                         <th>Tipo de Componente</th>
-                                        <th>Descripcion Principal</th>
+                                        <th>Descripción Principal</th>
                                         <th>Especificaciones</th>
                                         <th>Localización</th>
                                         <th>Fecha de Ingreso</th>
@@ -155,4 +155,3 @@ require_once "../templates/footer.php";
         });
     });
 </script>
-

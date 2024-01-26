@@ -77,7 +77,7 @@ function dataTableCollaborator($stmt)
                         </form>
                         <!-- contenido para la el datatable 1-->
                         <div class="card-header">
-                            <h3 class="card-title">Listado General de Perifericos del sistema <?php echo nameProject; ?> </h3>
+                            <h3 class="card-title">Listado General de Colaboradores del sistema <?php echo nameProject; ?> </h3>
                         </div>
                         <div class="card-body">
                             <!-- Tabla 1 -->
@@ -85,13 +85,13 @@ function dataTableCollaborator($stmt)
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Codigo de empleado </th>
+                                        <th>Código de empleado</th>
                                         <th>Nacionalidad</th>
-                                        <th>Grado de. Est</th>
+                                        <th>Grado de Est.</th>
                                         <th>Nombre Completo</th>
-                                        <th>Genero</th>
+                                        <th>Género</th>
                                         <th>Dirección</th>
-                                        <th>Numero de telefono</th>
+                                        <th>Número de teléfono</th>
                                         <th>Fecha de nacimiento</th>
                                         <th>Gestión</th>
                                         <th>Proceso</th>
@@ -142,13 +142,13 @@ function dataTableCollaborator($stmt)
                                 <tfoot>
                                     <tr>
                                         <th>#</th>
-                                        <th>Codigo de empleado </th>
+                                        <th>Código de empleado</th>
                                         <th>Nacionalidad</th>
-                                        <th>Grado de. Est</th>
+                                        <th>Grado de Est.</th>
                                         <th>Nombre Completo</th>
-                                        <th>Genero</th>
+                                        <th>Género</th>
                                         <th>Dirección</th>
-                                        <th>Numero de telefono</th>
+                                        <th>Número de teléfono</th>
                                         <th>Fecha de nacimiento</th>
                                         <th>Gestión</th>
                                         <th>Proceso</th>

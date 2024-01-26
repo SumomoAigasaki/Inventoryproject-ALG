@@ -50,7 +50,7 @@ function dataTableComputer($stmt)
                 <div class="col-sm-6">
                     <h1><?php echo $pageName; ?></h1>
                 </div>
-               
+
 
                 <div class="col-sm-6">
                     <!--cinta de home y el nombre de la pagina -->
@@ -90,18 +90,18 @@ function dataTableComputer($stmt)
                                         <th>Fecha Adquisición</th>
                                         <th>Marca</th>
                                         <th>Imagen</th>
-                                        <th>Nomb. Tecnico</th>
+                                        <th>Nomb. Técnico</th>
                                         <th>Modelo</th>
                                         <th>Tipo PC</th>
                                         <th>Servitag</th>
                                         <th>Licencia</th>
-                                        <th>serial</th>
+                                        <th>Serial</th>
                                         <th>Especificaciones</th>
                                         <th>Sistema Operativo</th>
-                                        <th>Fecha Limite Garantia</th>
-                                        <th>Tipo Garantia</th>
+                                        <th>Fecha Límite Garantía</th>
+                                        <th>Tipo Garantía</th>
                                         <th>Estado</th>
-                                        <th>Localizacion</th>
+                                        <th>Localización</th>
                                         <th>Observaciones</th>
                                         <th>Imagen de Reporte</th>
                                         <th title="Usuario Realizó Registro">Usuario</th>
@@ -149,18 +149,18 @@ function dataTableComputer($stmt)
                                         <th>Fecha Adquisición</th>
                                         <th>Marca</th>
                                         <th>Imagen</th>
-                                        <th>Nomb. Tecnico</th>
+                                        <th>Nomb. Técnico</th>
                                         <th>Modelo</th>
                                         <th>Tipo PC</th>
                                         <th>Servitag</th>
                                         <th>Licencia</th>
-                                        <th>serial</th>
+                                        <th>Serial</th>
                                         <th>Especificaciones</th>
                                         <th>Sistema Operativo</th>
-                                        <th>Fecha Limite Garantia</th>
-                                        <th>Tipo Garantia</th>
+                                        <th>Fecha Límite Garantía</th>
+                                        <th>Tipo Garantía</th>
                                         <th>Estado</th>
-                                        <th>Localizacion</th>
+                                        <th>Localización</th>
                                         <th>Observaciones</th>
                                         <th>Imagen de Reporte</th>
                                         <th title="Usuario Realizó Registro">Usuario</th>

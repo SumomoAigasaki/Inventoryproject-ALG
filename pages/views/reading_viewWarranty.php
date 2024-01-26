@@ -9,7 +9,7 @@ function dataTableWarranty($stmt)
         echo "<td>" . $row['WR_idTbl_Warranty_Registration'] . "</td>";
         echo "<td>" . $row['WR_Date_Admission'] . "</td>";
         echo "<td>" . $row['WR_Application_Number'] . "</td>";
-     
+
         echo "<td>" . $row['Info'] . "</td>";
         echo "<td>";
 
@@ -116,9 +116,9 @@ function dataTableWarranty($stmt)
                                         <th>Fecha Creación Reporte</th>
                                         <th>Número de Reporte</th>
                                         <th>Computadora</th>
-                                        <th>Problema Principal </th>
+                                        <th>Problema Principal</th>
                                         <th>Acciones Realizadas</th>
-                                        <th>Diagnostico </th>
+                                        <th>Diagnóstico</th>
                                         <th>Solución</th>
                                         <th>Observaciones</th>
                                         <th>Estado</th>
@@ -167,13 +167,14 @@ function dataTableWarranty($stmt)
                                         <th>Fecha Creación Reporte</th>
                                         <th>Número de Reporte</th>
                                         <th>Computadora</th>
-                                        <th>Problema Principal </th>
+                                        <th>Problema Principal</th>
                                         <th>Acciones Realizadas</th>
-                                        <th>Diagnostico </th>
+                                        <th>Diagnóstico</th>
                                         <th>Solución</th>
                                         <th>Observaciones</th>
                                         <th>Estado</th>
                                         <th title="Usuario que hizo Registro">Usuario</th>
+
                                     </tr>
                                 </tfoot>
                             </table>

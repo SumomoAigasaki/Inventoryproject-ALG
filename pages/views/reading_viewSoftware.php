@@ -4,33 +4,33 @@ require_once "../templates/menu.php";
 
 function dataTableSoftware($stmt)
 {
-  while ($row = $stmt->fetch_assoc()) {
-    echo "<tr>";
-    echo "<td>" . $row['SFT_idTbl_Software'] . "</td>";
-    echo "<td>";
-    if (empty($row['SFT_Image'])) {
-      echo "<li class='list-inline-item'>
+    while ($row = $stmt->fetch_assoc()) {
+        echo "<tr>";
+        echo "<td>" . $row['SFT_idTbl_Software'] . "</td>";
+        echo "<td>";
+        if (empty($row['SFT_Image'])) {
+            echo "<li class='list-inline-item'>
                       <img alt='Avatar' width='50' height='50' class='table-avatar img-circle' src='../../resources/Software/default.jpg'>
                     </li>";
-    } else {
-      echo "<li class='list-inline-item'>
+        } else {
+            echo "<li class='list-inline-item'>
                       <img alt='Avatar' width='50' height='50' class='table-avatar img-circle' src='../.." . $row['SFT_Image'] . "'>
                     </li>";
+        }
+        echo "</td>";
+        echo "<td>" . $row['SFT_Software_Name'] . "</td>";
+        echo "<td>" . $row['MFS_Description'] . "</td>";
+        echo "<td>" . $row['SFT_Version_Installe'] . "</td>";
+        echo "<td>" . $row['SFT_Serial'] . "</td>";
+        echo "<td>" . $row['STP_Description'] . "</td>";
+        echo "<td>" . $row['LC_Description'] . "</td>";
+        echo "<td>" . $row['CTG_Description'] . "</td>";
+        echo "<td>" . $row['SFT_Inventory_Date'] . "</td>";
+        echo "<td>" . $row['SFT_Observations'] . "</td>";
+        echo "<td>" . $row['User_Username'] . "</td>";
+        echo "<td>" . $row['STS_Description'] . "</td>";
+        echo "</tr>";
     }
-    echo "</td>";
-    echo "<td>" . $row['SFT_Software_Name'] . "</td>";
-    echo "<td>" . $row['MFS_Description'] . "</td>";
-    echo "<td>" . $row['SFT_Version_Installe'] . "</td>";
-    echo "<td>" . $row['SFT_Serial'] . "</td>";
-    echo "<td>" . $row['STP_Description'] . "</td>";
-    echo "<td>" . $row['LC_Description'] . "</td>";
-    echo "<td>" . $row['CTG_Description'] . "</td>";
-    echo "<td>" . $row['SFT_Inventory_Date'] . "</td>";
-    echo "<td>" . $row['SFT_Observations'] . "</td>";
-    echo "<td>" . $row['User_Username'] . "</td>";
-    echo "<td>" . $row['STS_Description'] . "</td>";
-    echo "</tr>";
-  }
 }
 ?>
 
@@ -78,15 +78,15 @@ function dataTableSoftware($stmt)
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
-                                    <th>#</th>
+                                        <th>#</th>
                                         <th>Imagen</th>
-                                        <th>Nombre Software </th>
+                                        <th>Nombre Software</th>
                                         <th>Fabricante del Software</th>
-                                        <th>Version de Instalación</th>
-                                        <th>Licensia/Serial</th>
+                                        <th>Versión de Instalación</th>
+                                        <th>Licencia/Serial</th>
                                         <th>Tipo de Software</th>
-                                        <th>Clasificacion de Licencia</th>
-                                        <th>Categoria</th>
+                                        <th>Clasificación de Licencia</th>
+                                        <th>Categoría</th>
                                         <th>Fecha de Ingreso</th>
                                         <th>Observaciones</th>
                                         <th title="Usuario que hizo Registro">Usuario</th>
@@ -116,7 +116,7 @@ function dataTableSoftware($stmt)
 
                                             // Realizar consulta para obtener todos los registros
                                             $stmt = $conn->query("CALL sp_readingSoftware()");
-                                        
+
                                             dataTableSoftware($stmt);
                                             $stmt->close();
                                             $conn->next_result();
@@ -130,18 +130,17 @@ function dataTableSoftware($stmt)
                                     <tr>
                                         <th>#</th>
                                         <th>Imagen</th>
-                                        <th>Nombre Software </th>
+                                        <th>Nombre Software</th>
                                         <th>Fabricante del Software</th>
-                                        <th>Version de Instalación</th>
-                                        <th>Licensia/Serial</th>
+                                        <th>Versión de Instalación</th>
+                                        <th>Licencia/Serial</th>
                                         <th>Tipo de Software</th>
-                                        <th>Clasificacion de Licencia</th>
-                                        <th>Categoria</th>
+                                        <th>Clasificación de Licencia</th>
+                                        <th>Categoría</th>
                                         <th>Fecha de Ingreso</th>
                                         <th>Observaciones</th>
                                         <th title="Usuario que hizo Registro">Usuario</th>
                                         <th>Estado</th>
-                                       
                                     </tr>
                                 </tfoot>
                             </table>
