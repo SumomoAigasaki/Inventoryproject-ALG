@@ -97,7 +97,7 @@ if (in_array('Reading', array_column($privilegios, 'modulo'))) {
 
                     if ($PermisoDWR) {
                         echo '<li class="nav-item">';
-                        echo '    <a href="#" class="nav-link">';
+                        echo '    <a href="../views/dashboard_computer.php" class="nav-link">';
                         echo '        <i class="far fa-circle nav-icon"></i>';
                         echo '        <p>Dashboard Computadoras</p>';
                         echo '    </a>';

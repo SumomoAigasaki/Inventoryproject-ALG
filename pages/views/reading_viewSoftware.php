@@ -116,10 +116,7 @@ function dataTableSoftware($stmt)
 
                                             // Realizar consulta para obtener todos los registros
                                             $stmt = $conn->query("CALL sp_readingSoftware()");
-                                            // $query= "CALL sp_selectAllUser()";
-                                            // echo $query;
-                                            // Ejecutar el procedimiento almacenado
-                                            // Obtener todos los resultados
+                                        
                                             dataTableSoftware($stmt);
                                             $stmt->close();
                                             $conn->next_result();

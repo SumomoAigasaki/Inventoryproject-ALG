@@ -145,6 +145,12 @@ elseif ($actualPage == 'view_permissions.php') {
 
 
 //Dashboard
+elseif ($actualPage == 'dashboard_computer.php') {
+  $pageName = 'Dashboard Computadoras ';
+  $sectionName = 'Dashboard';
+  $pageLink = "dashboard_computer.php";
+}
+
 elseif ($actualPage == 'dashboard_warranty.php') {
   $pageName = 'Dashboard Garantia ';
   $sectionName = 'Dashboard';
@@ -152,26 +158,26 @@ elseif ($actualPage == 'dashboard_warranty.php') {
 }
 
 //Lectura de computadoras
-elseif ($actualPage == 'reading_viewComputer.php') {
-  $pageName = 'Vista de Computadoras';
-  $sectionName = 'Vista Computradoras';
-  $pageLink = "reading_viewComputer.php";
-}
+  elseif ($actualPage == 'reading_viewComputer.php') {
+    $pageName = 'Vista de Computadoras';
+    $sectionName = 'Vista Computradoras';
+    $pageLink = "reading_viewComputer.php";
+  }
 
 
 //Lectura de Asignacion pc
-elseif ($actualPage == 'reading_viewAssignmentPC.php') {
-  $pageName = 'Vista de Asignación de Computadoras';
-  $sectionName = 'Vista Asignación  de Computadoras';
-  $pageLink = "reading_viewAssignmentPC.php";
-}
+  elseif ($actualPage == 'reading_viewAssignmentPC.php') {
+    $pageName = 'Vista de Asignación de Computadoras';
+    $sectionName = 'Vista Asignación  de Computadoras';
+    $pageLink = "reading_viewAssignmentPC.php";
+  }
 
 //Lectura de Garantia
-elseif ($actualPage == 'reading_viewWarranty.php') {
-  $pageName = 'Vista de Garantias';
-  $sectionName = 'Vista  Garantias';
-  $pageLink = "reading_viewWarranty.php";
-}
+  elseif ($actualPage == 'reading_viewWarranty.php') {
+    $pageName = 'Vista de Garantias';
+    $sectionName = 'Vista  Garantias';
+    $pageLink = "reading_viewWarranty.php";
+  }
 
 //Lectura de software
 elseif ($actualPage == 'reading_viewSoftware.php') {
