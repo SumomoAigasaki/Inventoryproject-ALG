@@ -1,24 +1,22 @@
 function index(){
     this.ini = function(){
-      //   console.log("Inicio  Dashbord js...");
-         //Extraccion de datos  para las cards
+        //Extraccion de datos  para las cards
             this.dataModalRecNew();
             this.dataModalRAMS();
             this.dataModalCPU();
             this.dataModalDISK();
-         //Extraccion de datos  para las Graficas de Barra y Modals
+        //Extraccion de datos  para las Graficas de Barra y Modals
             this.dataBarGraph();
             this.dataModalBarGraph();
-         //Extraccion de datos  para las Graficas de Escritorio de Pastel y Modals
+        //Extraccion de datos  para las Graficas de Escritorio de Pastel y Modals
             this.dataPieGraphDesktop();
             this.dataModalPieGraphDesktop();
-         //Extraccion de datos  para las Graficas de Laptos de Pastel y Modals
+        //Extraccion de datos  para las Graficas de Laptos de Pastel y Modals
             this.dataPieGraphLaptos();
             this.dataModalPieGraphLaptops();
-            
         //Extraccion de datos  para las Graficas de Dispersion y Modals
-        this.dataScatterPlot();
-        this.dataModalScatterPlot();
+            this.dataScatterPlot();
+            this.dataModalScatterPlot();
      
   
       
@@ -583,165 +581,158 @@ function index(){
                 });
             
         };
-      //Grafica de Dispersion
+    //Grafica de Dispersion
   
-       // Informacion Grafica de Dispersion
-        this.dataScatterPlot = function () {
-            var yearSeleccionado = obtenerYearSeleccionado();
-        
-            $.ajax({
-                statusCode: {
-                    404: function () {
-                        console.log("Esta pagina no existe");
+        // Informacion Grafica de Dispersion
+            this.dataScatterPlot = function () {
+                var yearSeleccionado = obtenerYearSeleccionado();
+            
+                $.ajax({
+                    statusCode: {
+                        404: function () {
+                            console.log("Esta pagina no existe");
+                        }
+                    },
+                    url: '../controllers/dashboardComputerService.php',
+                    method: 'POST',
+                    data: {
+                        rq: "11",
+                        sp_year: yearSeleccionado // Enviar el año seleccionado o null al servidor
                     }
-                },
-                url: '../controllers/dashboardComputerService.php',
-                method: 'POST',
-                data: {
-                    rq: "11",
-                    sp_year: yearSeleccionado // Enviar el año seleccionado o null al servidor
-                }
-            }).done(function (datos) {
-                var tonalidadesVerde = ['#1A3E1F', '#145A2A', '#0B7433', '#008000', '#208E37', '#49A54A', '#80C080'];
-                var tonalidadesAzul = ['#112135', '#132C48', '#11385D', '#003F6D', '#1A527C', '#4E7A99', '#819FB5'];
-                var escalaGrises = ['#191919', '#232323', '#2d2d2d', '#323232', '#474747', '#707070', '#99999'];
-                var colors = [];
-                for (var i = 0; i < tonalidadesAzul.length; i++) {
-                    colors.push(tonalidadesVerde[i]);
-                    colors.push(tonalidadesAzul[i]);
-                    colors.push(escalaGrises[i]);
-                }
-        
-                let etiquetasScatter = new Array();
-                let dataScatter = new Array();
-                var jDatos = JSON.parse(datos);
-                
-                if (jDatos.length === 0) {
-                    var ctx = document.getElementById("scatterChartLocation").getContext("2d");
-    
-                    var myChart = new Chart(ctx, {
-                        options: {
-                            responsive: true,
-                        
-                        },
-                    });
-                    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-                    var noDataText = "Lo sentimos, no se encontraron registros para el año seleccionado";
-                    ctx.textAlign = 'center';
-                    ctx.fillText(noDataText, ctx.canvas.width / 2, ctx.canvas.height / 2);
-    
+                }).done(function (datos) {
+                    var tonalidadesVerde = ['#1A3E1F', '#145A2A', '#0B7433', '#008000', '#208E37', '#49A54A', '#80C080'];
+                    var tonalidadesAzul = ['#112135', '#132C48', '#11385D', '#003F6D', '#1A527C', '#4E7A99', '#819FB5'];
+                    var escalaGrises = ['#191919', '#232323', '#2d2d2d', '#323232', '#474747', '#707070', '#99999'];
+                    var colors = [];
+                    for (var i = 0; i < tonalidadesAzul.length; i++) {
+                        colors.push(tonalidadesVerde[i]);
+                        colors.push(tonalidadesAzul[i]);
+                        colors.push(escalaGrises[i]);
+                    }
+            
+                    let etiquetasScatter = new Array();
+                    let dataScatter = new Array();
+                    var jDatos = JSON.parse(datos);
                     
-                    return; // Detener la ejecución ya que no hay datos
-                }
-                else{
-                    for (let i in jDatos) {
-                        etiquetasScatter.push(jDatos[i].Localizacion);
-                        dataScatter.push(jDatos[i].CantidadRegistrosLCT);
+                    if (jDatos.length === 0) {
+                        var ctx = document.getElementById("scatterChartLocation").getContext("2d");
+        
+                        var myChart = new Chart(ctx, {
+                            options: {
+                                responsive: true,
+                            
+                            },
+                        });
+                        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+                        var noDataText = "Lo sentimos, no se encontraron registros para el año seleccionado";
+                        ctx.textAlign = 'center';
+                        ctx.fillText(noDataText, ctx.canvas.width / 2, ctx.canvas.height / 2);
+        
+                        
+                        return; // Detener la ejecución ya que no hay datos
                     }
-    
-                    let data = {
-                        datasets: etiquetasScatter.map((localizacion, index) => {
-                            return {
-                                label: `${localizacion}`,
-                                message: `${dataScatter[index]} Dispositivo(s) Localizados en: "${localizacion}"`,
-                                data: [{
-                                    x: index, // Coordenada X para la posición del punto (puedes usar index o cualquier otra cosa dependiendo de tus necesidades)
-                                    y: dataScatter[index], // Coordenada Y para la posición del punto basado en la cantidad de datos
-                                    r: (dataScatter[index]) / 2, // Calcular el tamaño del círculo basado en la cantidad de datos
-                                }], // Usar la cantidad de datos correspondiente a cada área como valor
-                                borderColor: colors[index % colors.length], // Usar un color del arreglo de colores para cada área
-                                backgroundColor: colors[index % colors.length], // Usar el mismo color como fondo para cada área
-                            };
-                        }),
-                    };
-    
-                    var ctx = document.getElementById("scatterChartLocation").getContext("2d");
-                    var myChart = new Chart(ctx, {
-                        type: 'bubble',
-                        data: data,
-                        options: {
-                            responsive: true,
-                            plugins: {
-                                legend: {
-                                    position: 'right',
-                                },
-                                tooltip: {
-                                    callbacks: {
-                                        label: function (context) {
-                                            const label = context.dataset.message || '';
-                                            if (context.parsed.y !== null) {
-                                                return `${label} `;
-                                            }
-                                            return label;
+                    else{
+                        for (let i in jDatos) {
+                            etiquetasScatter.push(jDatos[i].Localizacion);
+                            dataScatter.push(jDatos[i].CantidadRegistrosLCT);
+                        }
+        
+                        let data = {
+                            datasets: etiquetasScatter.map((localizacion, index) => {
+                                return {
+                                    label: `${localizacion}`,
+                                    message: `${dataScatter[index]} Dispositivo(s) Localizados en: "${localizacion}"`,
+                                    data: [{
+                                        x: index, // Coordenada X para la posición del punto (puedes usar index o cualquier otra cosa dependiendo de tus necesidades)
+                                        y: dataScatter[index], // Coordenada Y para la posición del punto basado en la cantidad de datos
+                                        r: (dataScatter[index]) / 2, // Calcular el tamaño del círculo basado en la cantidad de datos
+                                    }], // Usar la cantidad de datos correspondiente a cada área como valor
+                                    borderColor: colors[index % colors.length], // Usar un color del arreglo de colores para cada área
+                                    backgroundColor: colors[index % colors.length], // Usar el mismo color como fondo para cada área
+                                };
+                            }),
+                        };
+        
+                        var ctx = document.getElementById("scatterChartLocation").getContext("2d");
+                        var myChart = new Chart(ctx, {
+                            type: 'bubble',
+                            data: data,
+                            options: {
+                                responsive: true,
+                                plugins: {
+                                    legend: {
+                                        position: 'right',
+                                    },
+                                    tooltip: {
+                                        callbacks: {
+                                            label: function (context) {
+                                                const label = context.dataset.message || '';
+                                                if (context.parsed.y !== null) {
+                                                    return `${label} `;
+                                                }
+                                                return label;
+                                            },
                                         },
                                     },
+                                    title: {
+                                        display: true,
+                                        text: `Cantidad de Computadoras por Localizacion, Año-"${yearSeleccionado}"`,
+                                    },
                                 },
-                                title: {
-                                    display: true,
-                                    text: `Cantidad de Computadoras por Localizacion, Año-"${yearSeleccionado}"`,
-                                },
+                            
                             },
-                        
-                        },
-                    });
-                }    
-                        
-        
-            }).fail(function () {
-                document.getElementById("scatterChart").innerHTML = "Error al obtener datos del servidor";
-            });
-    
-        }
+                        });
+                    }    
+                            
             
-       // Informacion Modal la Grafica de Dispersion
-       this.dataModalScatterPlot = function() {
-          var yearSeleccionado = obtenerYearSeleccionado();
-  
-          $.ajax({
-              statusCode: {
-                  404: function() {
-                      console.log("Esta pagina no existe");
-                  }
-              },
-              url: '../controllers/dashboardComputerService.php',
-              method: 'POST',
-              data: {
-                  rq: "12",
-                  sp_year: yearSeleccionado // Enviar el año seleccionado o null al servidor
-              }
-          }).done(function(datos) {
-              const parsedData = JSON.parse(datos);
-           
-              if (parsedData.data && parsedData.data.length > 0) {
-                  var registros = parsedData.data; // Array de objetos con los datos
-                  var totalRegistros = parsedData.total_registros; // Total de registros
-          
-                  var table = $('#modal-xl-ScatterLocation').find('.table tbody');
-                  table.empty(); // Limpia el cuerpo de la tabla
-                //   console.log("JS RQ 11");
-                //   console.log(registros);
-                  for (var i in registros) {
-                    table.append('<tr><td>' + registros[i].idComputer + '</td><td>' + registros[i].fechaAdquisicion + '</td><td>' + registros[i].nombreTecnico + '</td><td>' + registros[i].tipoEquipo + '</td><td>' + registros[i].Localizacion + '</td><td>' + registros[i].modelo + '</td><td>' + registros[i].especificaciones + '</td><td>' + registros[i].estado + '</td><td>' + registros[i].usuario + '</td></tr>');   
-                  }
-                  $("#dataCountScatter").text(parseFloat(totalRegistros).toLocaleString());
-              } else {
-                  // No hay datos, agregar mensaje a la tabla
-                  var table = $('#modal-xl-ScatterLocation').find('.table tbody');
-                  table.empty(); // Limpia el cuerpo de la tabla
-                  
-                  // Agregar una fila con una celda que contiene el mensaje centrado
-                  table.append('<tr><td colspan="6" style="text-align: center;">Lo sentimos, no se encontraron registros para el año seleccionado</td></tr>');
-                  $("#dataCountScatter").text("0");
-              }
-          });
-           // Mostrar los datos antes de enviar la solicitud AJAX
-          //  console.log("Datos a enviar en RQ-7:");
-          //  console.log({
-          //      rq: "7",
-          //      sp_year: yearSeleccionado // yearSeleccionado es una variable que contiene el año seleccionado
-          //  });
-          
-       };
+                }).fail(function () {
+                    document.getElementById("scatterChart").innerHTML = "Error al obtener datos del servidor";
+                });
+        
+            }
+            
+        // Informacion Modal la Grafica de Dispersion
+            this.dataModalScatterPlot = function() {
+                var yearSeleccionado = obtenerYearSeleccionado();
+        
+                $.ajax({
+                    statusCode: {
+                        404: function() {
+                            console.log("Esta pagina no existe");
+                        }
+                    },
+                    url: '../controllers/dashboardComputerService.php',
+                    method: 'POST',
+                    data: {
+                        rq: "12",
+                        sp_year: yearSeleccionado // Enviar el año seleccionado o null al servidor
+                    }
+                }).done(function(datos) {
+                    const parsedData = JSON.parse(datos);
+                
+                    if (parsedData.data && parsedData.data.length > 0) {
+                        var registros = parsedData.data; // Array de objetos con los datos
+                        var totalRegistros = parsedData.total_registros; // Total de registros
+                
+                        var table = $('#modal-xl-ScatterLocation').find('.table tbody');
+                        table.empty(); // Limpia el cuerpo de la tabla
+                        //   console.log("JS RQ 11");
+                        //   console.log(registros);
+                        for (var i in registros) {
+                            table.append('<tr><td>' + registros[i].idComputer + '</td><td>' + registros[i].fechaAdquisicion + '</td><td>' + registros[i].nombreTecnico + '</td><td>' + registros[i].tipoEquipo + '</td><td>' + registros[i].Localizacion + '</td><td>' + registros[i].modelo + '</td><td>' + registros[i].especificaciones + '</td><td>' + registros[i].estado + '</td><td>' + registros[i].usuario + '</td></tr>');   
+                        }
+                        $("#dataCountScatter").text(parseFloat(totalRegistros).toLocaleString());
+                    } else {
+                        // No hay datos, agregar mensaje a la tabla
+                        var table = $('#modal-xl-ScatterLocation').find('.table tbody');
+                        table.empty(); // Limpia el cuerpo de la tabla
+                        
+                        // Agregar una fila con una celda que contiene el mensaje centrado
+                        table.append('<tr><td colspan="6" style="text-align: center;">Lo sentimos, no se encontraron registros para el año seleccionado</td></tr>');
+                        $("#dataCountScatter").text("0");
+                    }
+                });
+            };
   
   
       
