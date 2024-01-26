@@ -1,39 +1,39 @@
 <?php
 //validaciones para los modulos
-#dashboard
-if (in_array('Dashboard', array_column($privilegios, 'modulo'))) {
-    $PermisoDashboard = true;
-} else {
-    $PermisoDashboard = false;
-}
+    #dashboard
+        if (in_array('Dashboard', array_column($privilegios, 'modulo'))) {
+            $PermisoDashboard = true;
+        } else {
+            $PermisoDashboard = false;
+        }
 
-#transaction
-if (in_array('Transaction', array_column($privilegios, 'modulo'))) {
-    $PermisoTransaction = true;
-} else {
-    $PermisoTransaction = false;
-}
+    #transaction
+        if (in_array('Transaction', array_column($privilegios, 'modulo'))) {
+            $PermisoTransaction = true;
+        } else {
+            $PermisoTransaction = false;
+        }
 
-#masterdata
-if (in_array('MasterData', array_column($privilegios, 'modulo'))) {
-    $PermisoMasterData = true;
-} else {
-    $PermisoMasterData = false;
-}
+    #masterdata
+        if (in_array('MasterData', array_column($privilegios, 'modulo'))) {
+            $PermisoMasterData = true;
+        } else {
+            $PermisoMasterData = false;
+        }
 
-#Seguridad
-if (in_array('Security', array_column($privilegios, 'modulo'))) {
-    $PermisoSecurity = true;
-} else {
-    $PermisoSecurity = false;
-}
+    #Seguridad
+        if (in_array('Security', array_column($privilegios, 'modulo'))) {
+            $PermisoSecurity = true;
+        } else {
+            $PermisoSecurity = false;
+        }
 
-#Lector
-if (in_array('Reading', array_column($privilegios, 'modulo'))) {
-    $PermisoReading = true;
-} else {
-    $PermisoReading = false;
-}
+    #Lector
+        if (in_array('Reading', array_column($privilegios, 'modulo'))) {
+            $PermisoReading = true;
+        } else {
+            $PermisoReading = false;
+        }
 
 
 
