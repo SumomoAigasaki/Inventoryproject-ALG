@@ -10,9 +10,6 @@ require_once "../templates/menu.php";
                 <div class="col-sm-6">
                     <h1><?php echo $pageName; ?></h1>
                 </div>
-
-
-
                 <div class="col-sm-6">
                     <!--cinta de home y el nombre de la pagina -->
                     <ol class="breadcrumb float-sm-right">
@@ -38,16 +35,11 @@ require_once "../templates/menu.php";
             <h2 class="headline text-warning"> 404</h2>
 
             <div class="error-content">
-                <!-- <h3><i class="fas fa-exclamation-triangle text-warning"></i>¡Ups! Página no encontrada.</h3> -->
-               
                 <h3> <i class="far fa-hand-paper text-warning"></i></i></i>¡Ups! Página no encontrada.</h3>
-                
                 <p>
                     No pudimos encontrar la página que estabas buscando.
                     Mientras tanto, puedes <a href="index.php">volver al dashboard</a>
                 </p>
-
-
             </div>
             <!-- /.error-content -->
         </div>
