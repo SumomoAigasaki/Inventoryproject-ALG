@@ -109,18 +109,17 @@ function dataTableUser($stmt)
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Nombre Perifico </th>
+                                        <th>Nombre Periférico</th>
                                         <th>Marca</th>
                                         <th>Tipo de Componente</th>
-                                        <th>Descripcion Principal</th>
+                                        <th>Descripción Principal</th>
                                         <th>Especificaciones</th>
                                         <th>Localización</th>
                                         <th>Fecha de Ingreso</th>
                                         <th>Observaciones</th>
-                                        <th>Usuario</th>
+                                        <th title="Usuario que hizo Registro">Usuario</th>
                                         <th>Estado</th>
                                         <th>Opciones</th>
-
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -171,15 +170,15 @@ function dataTableUser($stmt)
                                 <tfoot>
                                     <tr>
                                         <th>#</th>
-                                        <th>Nombre Perifico </th>
+                                        <th>Nombre Periférico</th>
                                         <th>Marca</th>
                                         <th>Tipo de Componente</th>
-                                        <th>Descripcion Principal</th>
+                                        <th>Descripción Principal</th>
                                         <th>Especificaciones</th>
                                         <th>Localización</th>
                                         <th>Fecha de Ingreso</th>
                                         <th>Observaciones</th>
-                                        <th>Usuario</th>
+                                        <th title="Usuario que hizo Registro">Usuario</th>
                                         <th>Estado</th>
                                         <th>Opciones</th>
                                     </tr>

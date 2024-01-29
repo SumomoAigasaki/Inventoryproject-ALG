@@ -125,13 +125,13 @@ function dataTableUser($stmt)
                 <thead>
                   <tr>
                     <th>#</th>
-                    <th>Codigo de empleado </th>
+                    <th>Código de empleado</th>
                     <th>Nacionalidad</th>
-                    <th>Grado de. Est</th>
+                    <th>Grado de Est.</th>
                     <th>Nombre Completo</th>
-                    <th>Genero</th>
+                    <th>Género</th>
                     <th>Dirección</th>
-                    <th>Numero de telefono</th>
+                    <th>Número de teléfono</th>
                     <th>Fecha de nacimiento</th>
                     <th>Gestión</th>
                     <th>Proceso</th>
@@ -140,7 +140,7 @@ function dataTableUser($stmt)
                     <th>Fecha Contratación</th>
                     <th>Meses Contratación</th>
                     <th>Fecha inventario</th>
-                    <th>Usuario</th>
+                    <th title="Usuario que hizo Registro">Usuario</th>
                     <th>Estado</th>
                     <th>Opciones</th>
 
@@ -193,14 +193,14 @@ function dataTableUser($stmt)
                 </tbody>
                 <tfoot>
                   <tr>
-                    <th>#</th>
-                    <th>Codigo de empleado </th>
+                  <th>#</th>
+                    <th>Código de empleado</th>
                     <th>Nacionalidad</th>
-                    <th>Grado de. Est</th>
+                    <th>Grado de Est.</th>
                     <th>Nombre Completo</th>
-                    <th>Genero</th>
+                    <th>Género</th>
                     <th>Dirección</th>
-                    <th>Numero de telefono</th>
+                    <th>Número de teléfono</th>
                     <th>Fecha de nacimiento</th>
                     <th>Gestión</th>
                     <th>Proceso</th>
@@ -209,7 +209,7 @@ function dataTableUser($stmt)
                     <th>Fecha Contratación</th>
                     <th>Meses Contratación</th>
                     <th>Fecha inventario</th>
-                    <th>Usuario</th>
+                    <th title="Usuario que hizo Registro">Usuario</th>
                     <th>Estado</th>
                     <th>Opciones</th>
                   </tr>

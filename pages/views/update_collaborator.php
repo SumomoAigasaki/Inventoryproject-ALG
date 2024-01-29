@@ -139,9 +139,8 @@ $conn->next_result();
 
                                 <!--  1 FILA -->
                                 <div class="row" style="padding-top:10px; padding-bottom:10px;">
-                                    <!--  Carusel de imagenes -->
+                                      <!-- Image -->
                                     <div class="col-sm-6 d-flex justify-content-center align-items-center">
-                                        <!-- Image -->
                                         <div class="form-group" style="padding-left:15px;">
                                             <label>Imagen de Referencia</label>
                                             <div class="input-group" style="flex-direction: column; padding-left:15px; display: flex; justify-content: center; align-items: center;">
@@ -150,7 +149,7 @@ $conn->next_result();
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- 1ERA COLUMAN DE LA ROW 1 -->
+                                    <!-- Columna 1, Fila 1-->
                                     <div class="col-sm-3">
                                         <!-- FECHA DE INVENTARIO -->
                                         <div class="form-group" style="padding-top:25px; padding-bottom:10px;">
@@ -182,16 +181,13 @@ $conn->next_result();
 
                                     </div>
 
-                                    <!-- 2DA COLUMAN DE LA ROW 1 -->
+                                     <!-- Columna 2, Fila 1-->
                                     <div class="col-sm-3" style="padding-top:25px; padding-bottom:10px;">
                                         <!-- Codigo de Empleado -->
-
                                         <div class="form-group">
                                             <label><code>*</code>Código Empleado:</label>
                                             <input type="text" class="form-control" name="txtEmployeeCode" id="txtEmployeeCode" maxlength="17" placeholder="ALGCBT202#_00000" value="<?php echo $CBT_Employee_Code ?>">
                                         </div>
-
-
                                         <!-- Número de teléfono -->
                                         <div class="form-group" style="padding-top:37px;">
                                             <label><code>*</code>Número de teléfono :</label>
@@ -200,7 +196,7 @@ $conn->next_result();
                                     </div>
                                 </div>
 
-                                <!-- FILA 2-->
+                                <!-- Fila 2-->
                                 <div class="row">
                                     <!-- Primer Nombre -->
                                     <div class="col-sm-3">
@@ -209,7 +205,6 @@ $conn->next_result();
                                             <input type="text" class="form-control" name="txtfirstName" id="txtfirstName" maxlength="25" placeholder="José" value="<?php echo $CBT_First_Name ?>">
                                         </div>
                                     </div>
-
                                     <!-- Segundo Nombre -->
                                     <div class="col-sm-3">
                                         <div class="form-group">
@@ -217,7 +212,6 @@ $conn->next_result();
                                             <input type="text" class="form-control" name="txtsecondName" id="txtsecondName" maxlength="25" placeholder="Santos" value="<?php echo $CBT_Second_Name ?>">
                                         </div>
                                     </div>
-
                                     <!-- Primer Apellido -->
                                     <div class="col-sm-3">
                                         <div class="form-group">
@@ -225,7 +219,6 @@ $conn->next_result();
                                             <input type="text" class="form-control" name="txtfirstSurname" id="txtfirstSurname" maxlength="25" placeholder="Martinez" value="<?php echo $CBT_First_Surname ?>">
                                         </div>
                                     </div>
-
                                     <!-- Segundo Apellido -->
                                     <div class="col-sm-3">
                                         <div class="form-group">
@@ -300,7 +293,6 @@ $conn->next_result();
 
                                 <!-- Fila 4 -->
                                 <div class="row" style="padding-top:30px;">
-
                                     <!-- Gerencia -->
                                     <div class="col-sm-3">
                                         <div class="form-group">
@@ -323,7 +315,6 @@ $conn->next_result();
                                             </select>
                                         </div>
                                     </div>
-
                                     <!-- Proceso -->
                                     <div class="col-sm-3">
                                         <div class="form-group">
@@ -375,15 +366,10 @@ $conn->next_result();
                                             </select>
                                         </div>
                                     </div>
-
-
-
-                                    <!--/. fila 4 -->
                                 </div>
 
                                 <!-- Fila 5-->
                                 <div class="row justify-content-center" style="padding-bottom:10px;">
-
                                     <!-- Fecha de Contratacion -->
                                     <div class="col-sm-3">
                                         <div class="form-group">
@@ -391,7 +377,6 @@ $conn->next_result();
                                             <input type="text" class="form-control datepicker-input" name="txtDateHirtStart" id="txtDateHirtStart" value="<?php echo $CBT_Date_Hire_Start ?>">
                                         </div>
                                     </div>
-
                                     <!-- Meses de Contratacion -->
                                     <div class="col-sm-3">
                                         <div class="form-group">
@@ -399,7 +384,6 @@ $conn->next_result();
                                             <input type="number" class="form-control" name="txtMountHiring" id="txtMountHiring" value="<?php echo $CBT_Hiring_Months ?>">
                                         </div>
                                     </div>
-
                                     <!-- Fecha aprox. Termina Contratacion -->
                                     <div class="col-sm-3">
                                         <div class="form-group">
@@ -407,7 +391,7 @@ $conn->next_result();
                                             <input type="text" class="form-control" name="txtDateHirtEnd" id="txtDateHirtEnd" readonly>
                                         </div>
                                     </div>
-                                    <!-- Estado de la computadora  -->
+                                    <!-- Estado Colaborador  -->
                                     <div class="col-sm-3">
                                         <div class="form-group">
                                             <label><code>*</code>Estado Colaborador: </label>
@@ -434,7 +418,6 @@ $conn->next_result();
                                     <div class="col-mb-3">
                                         <button type="submit" class="btn btn-block bg-olive" id="buttonUpdateCBT" name="buttonUpdateCBT" onclick='return validate_data();'>Actualizar</button>
                                     </div>
-
                                 </div>
                             </div>
 
@@ -474,11 +457,11 @@ if (isset($_POST["buttonUpdateCBT"])) {
     $employeePositionCBT = $_POST["txtposition"];
 
     $gadreCBT = $_POST["slctGrade"];
-    $tContractCBT = $_POST["slcTypeContract"]; 
-    $dateHirtCBT = $_POST["txtDateHirtStart"]; 
-    $mounthHiringCBT = $_POST["txtMountHiring"]; 
-    
-    
+    $tContractCBT = $_POST["slcTypeContract"];
+    $dateHirtCBT = $_POST["txtDateHirtStart"];
+    $mounthHiringCBT = $_POST["txtMountHiring"];
+
+
 
     if (empty($_FILES['imgCBT']['name'])) {
         // El campo de imagen está vacío
@@ -494,7 +477,7 @@ if (isset($_POST["buttonUpdateCBT"])) {
             //llamamos el procedimiento almacemado de actualizar computadora 
             $stmt = $conn->prepare("CALL sp_updateCollaborator(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
             // Mandamos los parametros y los input que seran enviados al PA O SP
-            $stmt->bind_param("sssssssssssssssssssss", $idCBT, $CBTimage, $inventoryDateCBT, $nacionalityCBT, $employeeCodeCBT, $phoneNumberCBT, $firstNameCBT, $secondNameCBT, $firstSurnameCBT, $secondSurnameCBT, $genderCBT, $birthDateCBT, $addressCBT, $managementCBT, $processCBT, $statusCBT, $employeePositionCBT,$gadreCBT,$tContractCBT,$dateHirtCBT,$mounthHiringCBT);
+            $stmt->bind_param("sssssssssssssssssssss", $idCBT, $CBTimage, $inventoryDateCBT, $nacionalityCBT, $employeeCodeCBT, $phoneNumberCBT, $firstNameCBT, $secondNameCBT, $firstSurnameCBT, $secondSurnameCBT, $genderCBT, $birthDateCBT, $addressCBT, $managementCBT, $processCBT, $statusCBT, $employeePositionCBT, $gadreCBT, $tContractCBT, $dateHirtCBT, $mounthHiringCBT);
             // Ejecutar el procedimiento almacenado
 
             $stmt->execute();
@@ -515,7 +498,7 @@ if (isset($_POST["buttonUpdateCBT"])) {
             $conn->next_result();
             // se extraen los valores qu     nos devuelve el procedimiento almacenado y enviamos el error
             if ($answerExistsComp > 0) {
-                echo '<script > toastr.success("Los datos de (<b>' . $employeeCodeCBT . ' '. $firstNameCBT. ' '.$firstSurnameCBT. '</b>) se Guardaron de manera exitosa.", "¡¡Enhorabuena!!"); ';
+                echo '<script > toastr.success("Los datos de (<b>' . $employeeCodeCBT . ' ' . $firstNameCBT . ' ' . $firstSurnameCBT . '</b>) se Guardaron de manera exitosa.", "¡¡Enhorabuena!!"); ';
                 echo 'setTimeout(function() {';
                 echo '  window.location.href = "view_collaborator.php";';
                 echo ' }, 2000); // 2000 milisegundos = 2 segundos de retraso ';
@@ -677,25 +660,26 @@ if (isset($_POST["buttonUpdateCBT"])) {
             reader.readAsDataURL(input.files[0]);
         }
     }
+    
     // El listener va asignado al input
     $("#imgCBT").change(function() {
         readURL(this);
     });
 
-    // $(document).ready(function() {
-    //  $('#txtDateHirtStart, #txtMountHiring').on('change', function() {
-    //      var startDate = new Date($('#txtDateHirtStart').val());
-    //      var hiringMonths = parseInt($('#txtMountHiring').val());
+    $(document).ready(function() {
+     $('#txtDateHirtStart, #txtMountHiring').on('change', function() {
+         var startDate = new Date($('#txtDateHirtStart').val());
+         var hiringMonths = parseInt($('#txtMountHiring').val());
 
-    //         if (!isNaN(startDate.getTime()) && hiringMonths) {
-    //             var endDate = new Date(startDate.getFullYear(), startDate.getMonth() + hiringMonths, startDate.getDate());
-    //             endDate.setDate(endDate.getDate() - 1); // Ajustar al último día del mes
+            if (!isNaN(startDate.getTime()) && hiringMonths) {
+                var endDate = new Date(startDate.getFullYear(), startDate.getMonth() + hiringMonths, startDate.getDate());
+                endDate.setDate(endDate.getDate() + 1); // Ajustar al último día del mes
 
-    //             var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth() + 1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
-    //             $('#txtDateHirtEnd').val(formattedEndDate);
-    //         }
-    //     });
-    // });
+                var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth() + 1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
+                $('#txtDateHirtEnd').val(formattedEndDate);
+            }
+        });
+    });
 
     document.addEventListener('DOMContentLoaded', function() {
         var startDate = new Date(document.getElementById('txtDateHirtStart').value);

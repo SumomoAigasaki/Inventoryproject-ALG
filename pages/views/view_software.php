@@ -122,18 +122,19 @@ function dataTableUser($stmt)
                   <tr>
                     <th>#</th>
                     <th>Imagen</th>
-                    <th>Nombre Software </th>
+                    <th>Nombre Software</th>
                     <th>Fabricante del Software</th>
-                    <th>Version Instalada</th>
+                    <th>Versión Instalada</th>
                     <th>Serial</th>
                     <th>Tipo de Software</th>
-                    <th>Clasificacion de Licencia</th>
-                    <th>Categoria</th>
+                    <th>Clasificación de Licencia</th>
+                    <th>Categoría</th>
                     <th>Fecha de Ingreso</th>
                     <th>Observaciones</th>
                     <th>Usuario</th>
                     <th>Estado</th>
                     <th>Opciones</th>
+
 
                   </tr>
                 </thead>
@@ -186,18 +187,19 @@ function dataTableUser($stmt)
                   <tr>
                     <th>#</th>
                     <th>Imagen</th>
-                    <th>Nombre Software </th>
+                    <th>Nombre Software</th>
                     <th>Fabricante del Software</th>
-                    <th>Version Instalada</th>
+                    <th>Versión Instalada</th>
                     <th>Serial</th>
                     <th>Tipo de Software</th>
-                    <th>Clasificacion de Licencia</th>
-                    <th>Categoria</th>
+                    <th>Clasificación de Licencia</th>
+                    <th>Categoría</th>
                     <th>Fecha de Ingreso</th>
                     <th>Observaciones</th>
                     <th>Usuario</th>
                     <th>Estado</th>
                     <th>Opciones</th>
+
                   </tr>
                 </tfoot>
               </table>

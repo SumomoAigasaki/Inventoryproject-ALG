@@ -104,8 +104,9 @@ $conn->next_result();
                                 <input type="hidden" class="form-control" id="softwareId" name="softwareId" value="<?php echo $SFT_idTbl_Software ?>">
                                 <input type="hidden" class="form-control" id="txtAction" name="txtAction">
 
-                                <!--  Primer Row DE LA IZQUIERDA-->
+                                <!-- Fila 1-->
                                 <div class="row" style="padding-top:10px; padding-bottom:10px;">
+                                    <!-- Columna 1 Fila 1-->
                                     <div class="col-sm-6">
                                         <!-- Image -->
                                         <div class="form-group" style="padding-left:15px;">
@@ -115,12 +116,12 @@ $conn->next_result();
                                                 <input type="file" name="imgSoft" id="imgSoft" accept="image/png,image/jpeg" style="padding-left:15px; padding-top:2.5px;">
                                             </div>
                                         </div>
-                                        <!-- USERNAME -->
+                                        <!-- Nomb. Soft. -->
                                         <div class="form-group" style="padding-left:15px;">
                                             <label ACRONYM title="Nombre de Software"><code>*</code>Nomb. Soft.: </label>
                                             <input type="text" class="form-control" id="txtNombreSoftware" name="txtNombreSoftware" maxlength="45" value="<?php echo $SFT_Software_Name; ?>" placeholder="Nickname">
                                         </div>
-                                        <!-- VERSION -->
+                                        <!-- Version. Soft. Instalada  -->
                                         <div class="form-group" style="padding-left:15px;">
                                             <label ACRONYM title="Version de Software Instalada"><code>*</code>Version. Soft. Instalada : </label>
                                             <input type="text" class="form-control" id="txtVersionSoftware" name="txtVersionSoftware" maxlength="25" value="<?php echo $SFT_Version_Installe; ?>" placeholder="Version">
@@ -148,9 +149,8 @@ $conn->next_result();
                                                 ?>
                                             </select>
                                         </div>
-
                                     </div>
-                                    <!--  Segunda Row -->
+                                    <!-- Columna 2 Fila 1-->
                                     <div class="col-sm-6">
                                         <!-- Fecha de registro -->
                                         <div class="form-group" style="padding-left:15px;">
@@ -177,9 +177,7 @@ $conn->next_result();
                                                 ?>
                                             </select>
                                         </div>
-
-
-                                        <!-- categoria  -->
+                                        <!-- Categoria  -->
                                         <div class="form-group" style="padding-left:15px; padding-top:2.5px;">
                                             <label><code>*</code>Categoria: </label>
                                             <?php $resultado = mysqli_query($conn, "CALL sp_selectCategory()"); ?>
@@ -197,7 +195,7 @@ $conn->next_result();
                                                 ?>
                                             </select>
                                         </div>
-
+                                        <!-- Fabricante  -->
                                         <div class="form-group" style="padding-left:15px; padding-top:2.5px;">
                                             <label><code>*</code>Fabricante: </label>
                                             <?php $resultado = mysqli_query($conn, "CALL sp_manufacturerSoft_Select()"); ?>
@@ -216,7 +214,7 @@ $conn->next_result();
                                                 ?>
                                             </select>
                                         </div>
-                                        <!-- Estado -->
+                                        <!-- Estado del Software -->
                                         <div class="form-group" style="padding-left:15px; padding-top:2.5px;">
                                             <label><code>*</code>Estado del Software: </label>
                                             <?php $resultado = mysqli_query($conn, "CALL sp_status_select()"); ?>
@@ -234,31 +232,22 @@ $conn->next_result();
                                                 ?>
                                             </select>
                                         </div>
-
                                         <!-- Observaciones -->
                                         <div class="form-group" style="padding-left:15px; padding-top:2.5px;">
                                             <label>Observaciones: </label>
                                             <textarea type="text" class="form-control" name="txtObservation" id="txtObservation" maxlength="60"> <?php echo $SFT_Observations; ?></textarea>
                                         </div>
-
                                     </div>
-                                    <div class="col-sm-4">
-
-                                    </div>
-
                                 </div>
-                                <!-- Comienzo fila 5 -->
+                                <!-- Fila 2 -->
                                 <div class="row justify-content-center" style="padding-bottom:10px;">
+                                    <!-- Boton guardar-->
                                     <div class="col-mb-12">
                                         <button type="submit" id="buttonUpdateSoftware" name="buttonUpdateSoftware" class="btn btn-block bg-olive" onclick='return validateData();'>Actualizar</button>
                                     </div>
 
                                 </div>
                             </div>
-
-
-
-
                     </div>
                     </form>
 
@@ -285,7 +274,6 @@ if (isset($_POST["buttonUpdateSoftware"])) {
     date_default_timezone_set('America/Mexico_City');
     $idSoftwareHidde = $_POST["softwareId"];
     $action = $_POST["txtAction"];
-
     $dataRegisterInput = $_POST["txtFechaIngresado"];
     $nameSoftwareInput = $_POST["txtNombreSoftware"];
     $versionSoftwareInput = $_POST["txtVersionSoftware"];
@@ -308,12 +296,13 @@ if (isset($_POST["buttonUpdateSoftware"])) {
     }
 
     $uploads_dir = '../../resources/Software/';  // Ruta de la carpeta de destino para los archivos
+    //Validacion de Permisos
+    if ($PermisoSTF) {
 
-    if ($PermisoSTF && $action == "true") {
 
-        //preparamos el insert
         try {
 
+            // Se prepara el procedimiento almancenado con los Placeholders del mismo
             $stmt = $conn->prepare("CALL sp_updateSoftware(?,?,?,?,?,?,?,?,?,?,?,?)");
 
             // Mandamos los parametros y los input que seran enviados al PA O SP

@@ -153,15 +153,7 @@ $conn->next_result();
                                 <input type="hidden" class="form-control" id="todayDate" name="todayDate">
                                 <input type="hidden" class="form-control" id="accion" name="accion" placeholder="">
                                 <input type="hidden" class="form-control" id="TxtIdUSP" name="TxtIdUSP" value="<?php echo $USP_IDtbl_user_privileges ?>">
-                                <!-- <input type="hidden" class="form-control" id="TxtIdUSP" name="TxtIdUSP" value="<?php
-                                                                                                                    if (is_array($existingUSPID)) {
-                                                                                                                        foreach ($existingUSPID as $array) {
-                                                                                                                            echo implode(',', $array) . ',';
-                                                                                                                        }
-                                                                                                                    } else {
-                                                                                                                        echo $existingUSPID;
-                                                                                                                    }
-                                                                                                                    ?>"> -->
+
                                 <!-- Input oculto MODULO -->
                                 <input type="hidden" class="form-control" id="txtIdModule" name="txtIdModule" placeholder="">
                                 <!-- Input oculto PRIVILEGIOS -->
@@ -169,8 +161,7 @@ $conn->next_result();
 
                                 <!-- Fila 1 -->
                                 <div class="row justify-content-center" style="padding-top:10px; padding-bottom:10px;">
-
-                                    <!-- ROL-->
+                                    <!-- Rol-->
                                     <div class="col-sm-2">
                                         <div class="form-group" style="padding-top: 10px;">
                                             <label><code> * </code>Rol:</label>
@@ -192,7 +183,6 @@ $conn->next_result();
                                             </select>
                                         </div>
                                     </div>
-
                                     <!-- Modulo-->
                                     <div class="col-sm-4">
                                         <div class="form-group" style="padding-top: 10px;">
@@ -240,14 +230,11 @@ $conn->next_result();
 
                                 <!-- Fila 2 -->
                                 <div class="row justify-content-center" style="padding-top:10px; padding-bottom:10px;">
-
-
+                                    <!-- Boton guardar-->
                                     <div class="row justify-content-center" style="padding-bottom:20px;">
                                         <div class="col-mb-3">
                                             <button type="submit" class="btn btn-block bg-olive" id="buttonUpdateUSP" name="buttonUpdateUSP" onclick='return validate_data();'>Actualizar</button>
                                         </div>
-                                    </div>
-                                    <div class="form-group">
                                     </div>
                                 </div>
                             </div>
@@ -485,7 +472,7 @@ if (isset($_POST["buttonUpdateUSP"])) {
     $todayDate = date("Y-m-d");
     $user = $_SESSION["User_idTbl_User"];
 
-    $listIdPrivileges = array(); // Inicializa un array para almacenar los IDs
+    $listIdPrivileges = array(); // Inicializa un array para almacenar los IDs de los privilegios 
 
     foreach ($listIdDecodedPrivilege as $cicleValues) {
         $id = $cicleValues->id; // Obtiene el valor del campo 'id' de cada objeto
@@ -494,21 +481,9 @@ if (isset($_POST["buttonUpdateUSP"])) {
 
     }
     $listIdPrivileges[] = $listIdPrivilege;
-
-    // Imprime los IDs obtenidos
-
-    // echo "<pre>";
-    // // // echo"<p>lista Decodificada</p>";
-    // // // var_dump($listIdDecodedPrivilege);
-    // // // var_dump($rolId);
-    // echo "<p>IDs de la lista decodificada:</p>";
-    // var_dump($listIdPrivilege);
-    // echo "<p>Privilegios Previos guardados</p>";
-    // print_r($savedPrivilegeIdList);
-    // echo "</pre>";
     $indexToRetrieve = 0;
     $answerExistsUSP = 0; // Inicializar la variable antes de su uso
-
+    // Verificar el permiso para realizar la operación
     if ($PermisoRLS) {
         try {
             foreach (array_column($listIdPrivilege, 'PRVid') as $cicleValues) {
@@ -516,24 +491,7 @@ if (isset($_POST["buttonUpdateUSP"])) {
                 // Verifica si el valor actual de array_column($listIdPrivilege, 'PRVid') no está presente en el array_column($savedPrivilegeIdList, 'PRV_idTbl_Privileges')
 
                 if (!in_array($cicleValues, array_column($savedPrivilegeIdList, 'PRV_idTbl_Privileges'))) {
-                    // Coloca aquí el código que se ejecutará si el valor no está presente en el array
-                    //el valor nuevo no esta en la lista antigua  
-                    //ACTUALIZAR
-                    // echo "<pre>";
-                    // echo "<p>Privilegios Previos guardados</p>";
-                    // print_r($savedPrivilegeIdList);
-                    // echo "</pre>";
-                    //metodo para obtener el idUSP
-                    // Verificamos si el índice que deseas obtener existe en el array
-                    // if (isset($savedPrivilegeIdList[$indexToRetrieve]['idUSP'])) {
-                    //     // Si existe, mostramos el valor correspondiente 
-                    //     //para obtener el IDUSP
-                    //     $idUSP = $savedPrivilegeIdList[$indexToRetrieve]['idUSP'];
-                    //     // $idModulo= $savedPrivilegeIdList[$indexToRetrieve]['MDU_idtbl_Module'];
-                    //     // echo "<p>El valor del ID correspondiente al índice $indexToRetrieve es: $idUSP</p>";
-                    // }
 
-                    //metodo para obtener el idmodulo
                     // Verificamos si el índice que deseas obtener existe en el array
                     if (isset($listIdPrivilege[$indexToRetrieve]['MDU_idtbl_Module'])) {
                         // Si existe, mostramos el valor correspondiente 
@@ -541,67 +499,60 @@ if (isset($_POST["buttonUpdateUSP"])) {
                         $idModulo = $listIdPrivilege[$indexToRetrieve]['MDU_idtbl_Module'];
                         // echo "<p>El valor del ID correspondiente al índice $indexToRetrieve es: $idModulo</p>";
                     }
-
-
-
                     $STSId = '2';
-                    // Verificar el permiso para realizar la operación
-
                     $stmt = $conn->prepare("CALL sp_updateUserPermissions(?,?,?,?,?,?)");
-
-
-                    // Vincular los parámetros al procedimiento almacenado
-                    $stmt->bind_param("ssssss", $rolId, $idModulo, $cicleValues, $todayDate, $STSId, $user);
-                    // $query = "CALL sp_updateUserPermissions( '$rolId','$idModulo','$cicleValues','$todayDate','$STSId','$user');";
-                    // echo $query;
-                    // Ejecutar el procedimiento almacenado
-                    $stmt->execute();
-
-                    if ($stmt->error) {
-                        error_log("Error en la ejecución del segundo procedimiento almacenado: " . $stmt->error);
-                    }
-
-                    // Obtener el valor de la variable de salida
-                    $stmt->bind_result($answerExistsUSP);
-                    $stmt->fetch();
-                    $stmt->close();
-                    $conn->next_result();
+                     // Vincular los parámetros al procedimiento almacenado
+                     $stmt->bind_param("ssssss", $rolId, $idModulo, $cicleValues, $todayDate, $STSId, $user);
+                     // $query = "CALL sp_updateUserPermissions( '$rolId','$idModulo','$cicleValues','$todayDate','$STSId','$user');";
+                     // echo $query;
+                     // Ejecutar el procedimiento almacenado
+                     $stmt->execute();
+ 
+                     if ($stmt->error) {
+                         error_log("Error en la ejecución del segundo procedimiento almacenado: " . $stmt->error);
+                     }
+ 
+                     // Obtener el valor de la variable de salida
+                     $stmt->bind_result($answerExistsUSP);
+                     $stmt->fetch();
+                     $stmt->close();
+                     $conn->next_result();
+                }                   
                     // echo '<script > toastr.info("Toca Actualizar escogiste un nuevo dato.","¡Hola!  Informacion: 1");</script >';
                 }
                 $indexToRetrieve++;
-            }
+                
+                // Identificar las opciones que se deseleccionaron de la lista originar (marcar como "Desinstaladas")
+                $optionsToMarkAsUninstalled = array_diff(array_column($savedPrivilegeIdList, 'PRV_idTbl_Privileges'), array_column($listIdPrivilege, 'PRVid'));
 
-            // Identificar las opciones que se deseleccionaron de la lista originar (marcar como "Desinstaladas")
-            $optionsToMarkAsUninstalled = array_diff(array_column($savedPrivilegeIdList, 'PRV_idTbl_Privileges'), array_column($listIdPrivilege, 'PRVid'));
+                if (!empty($optionsToMarkAsUninstalled)) {
+                    foreach ($optionsToMarkAsUninstalled as $optionValue) {
+                        // Suponiendo que $optionValue es un valor simple en el array
+                        // echo "Option Value: " . $optionValue . "<br>";
+                        // O realiza alguna operación con $optionValue aquí
 
-            if (!empty($optionsToMarkAsUninstalled)) {
-                foreach ($optionsToMarkAsUninstalled as $optionValue) {
-                    // Suponiendo que $optionValue es un valor simple en el array
-                    // echo "Option Value: " . $optionValue . "<br>";
-                    // O realiza alguna operación con $optionValue aquí
-
-                    $stmt = $conn->prepare("CALL sp_disableUserPermission(?,?)");
+                        $stmt = $conn->prepare("CALL sp_disableUserPermission(?,?)");
 
 
-                    // Vincular los parámetros al procedimiento almacenado
-                    $stmt->bind_param("ss", $rolId, $optionValue);
-                    // $query = "CALL sp_disableUserPermission( '$rolId','$optionValue');";
-                    // echo $query;
-                    // Ejecutar el procedimiento almacenado
-                    $stmt->execute();
+                        // Vincular los parámetros al procedimiento almacenado
+                        $stmt->bind_param("ss", $rolId, $optionValue);
+                        // $query = "CALL sp_disableUserPermission( '$rolId','$optionValue');";
+                        // echo $query;
+                        // Ejecutar el procedimiento almacenado
+                        $stmt->execute();
 
-                    if ($stmt->error) {
-                        error_log("Error en la ejecución del segundo procedimiento almacenado: " . $stmt->error);
+                        if ($stmt->error) {
+                            error_log("Error en la ejecución del segundo procedimiento almacenado: " . $stmt->error);
+                        }
+
+                        // Obtener el valor de la variable de salida
+                        $stmt->bind_result($answerExistsUSP);
+                        $stmt->fetch();
+                        $stmt->close();
+                        $conn->next_result();
+                        // echo '<script > toastr.info("Toca marcar un registro como inactivo.","¡Hola!  Informacion: 2");</script >';
                     }
-
-                    // Obtener el valor de la variable de salida
-                    $stmt->bind_result($answerExistsUSP);
-                    $stmt->fetch();
-                    $stmt->close();
-                    $conn->next_result();
-                    // echo '<script > toastr.info("Toca marcar un registro como inactivo.","¡Hola!  Informacion: 2");</script >';
                 }
-            }
         } catch (mysqli_sql_exception $e) {
             if ($e->getCode() == 1062) {
                 // if (strpos($e->getMessage(), 'CMP_idTbl_Computer_UNIQUE') !== false) {

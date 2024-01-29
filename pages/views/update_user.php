@@ -101,8 +101,9 @@ $conn->next_result();
                                 <input type="hidden" class="form-control" id="userId" name="userId" value="<?php echo $User_idTbl_User ?>">
                                 <input type="hidden" class="form-control" id="txtAction" name="txtAction">
 
-                                <!--  Primer Row DE LA IZQUIERDA-->
+                                <!-- Fila 1 -->
                                 <div class="row" style="padding-top:10px; padding-bottom:10px;">
+                                    <!-- Columna 1 Fila 1 -->
                                     <div class="col-sm-6">
                                         <!-- Image -->
                                         <div class="form-group" style="padding-left:15px;">
@@ -112,13 +113,12 @@ $conn->next_result();
                                                 <input type="file" name="imgUser" id="imgUser" accept="image/png,image/jpeg" style="padding-left:15px; padding-top:2.5px;">
                                             </div>
                                         </div>
-                                        <!-- USERNAME -->
+                                        <!-- Nomb. Usuario -->
                                         <div class="form-group" style="padding-left:15px;">
                                             <label ACRONYM title="Nombre de Usuario"><code>*</code>Nomb. Usuario: </label>
                                             <input type="text" class="form-control" id="txtNombreUsuario" name="txtNombreUsuario" maxlength="45" value="<?php echo $User_Username; ?>" placeholder="Nickname">
                                         </div>
-
-                                        <!-- Fecha de registro -->
+                                        <!-- Fecha de Ingreso-->
                                         <div class="form-group" style="padding-left:15px;">
                                             <label ACRONYM title="Fecha que fue ingresado">Fec. Ingreso:</label>
                                             <div class="input-group">
@@ -126,10 +126,9 @@ $conn->next_result();
                                             </div>
                                         </div>
                                     </div>
-                                    <!--  Segunda Row -->
+                                    <!-- Columna 2 Fila 1 -->
                                     <div class="col-sm-6">
-
-                                        <!-- COLABORADOR -->
+                                        <!-- Colaborador -->
                                         <div class="form-group" style="padding-left:15px; padding-top:2.5px;">
                                             <label ACRONYM title="Nombre de Colaborador"><code>*</code>Nomb. Colaborador: </label>
                                             <!-- <input type="text" class="form-control" id="txt_busqueda" name="txt_busqueda" placeholder="Buscar Colaborador"> -->
@@ -154,7 +153,7 @@ $conn->next_result();
                                             <label ACRONYM title="Correo Electronico"><code>*</code>Email </label>
                                             <input type="emai" class="form-control" id="txtEmail" name="txtEmail" maxlength="45" value="<?php echo $User_Email; ?>" placeholder="Nickname">
                                         </div>
-                                        <!-- Estado -->
+                                        <!-- Estado del Usuario -->
                                         <div class="form-group" style="padding-left:15px; padding-top:2.5px;">
                                             <label><code>*</code>Estado del Usuario: </label>
                                             <?php $resultado = mysqli_query($conn, "CALL sp_status_select()"); ?>
@@ -172,7 +171,7 @@ $conn->next_result();
                                                 ?>
                                             </select>
                                         </div>
-                                        <!-- ROL DE USUARIO -->
+                                        <!-- Rol de Usuario-->
                                         <div class="form-group" style="padding-left:15px; padding-top:2.5px;">
                                             <label><code>*</code>Rol de Usuario: </label>
                                             <?php $resultado = mysqli_query($conn, "CALL sp_rolesSelect()"); ?>
@@ -190,25 +189,17 @@ $conn->next_result();
                                                 ?>
                                             </select>
                                         </div>
-
                                     </div>
-                                    <div class="col-sm-4">
-
-                                    </div>
-
                                 </div>
-                                <!-- Comienzo fila 5 -->
+                                <!-- Fila 2 -->
                                 <div class="row justify-content-center" style="padding-bottom:10px;">
+                                 <!-- Boton Guardar-->
                                     <div class="col-mb-12">
                                         <button type="submit" id="buttonUpdateUser" name="buttonUpdateUser" class="btn btn-block bg-olive" onclick='return validateData();'>Actualizar</button>
                                     </div>
 
                                 </div>
                             </div>
-
-
-
-
                     </div>
                     </form>
 

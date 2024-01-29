@@ -15,22 +15,37 @@ function dataTableUser($stmt)
   while ($row = $stmt->fetch_assoc()) {
     echo "<tr>";
     echo "<td>" . $row['WR_idTbl_Warranty_Registration'] . "</td>";
- 
-    echo "<td>" . $row['WR_Application_Number'] . "</td>";
     echo "<td>" . $row['WR_Date_Admission'] . "</td>";
+    echo "<td>" . $row['WR_Application_Number'] . "</td>";
+
     echo "<td>" . $row['Info'] . "</td>";
     echo "<td>";
 
     if (empty($row['WR_Image_Problem'])) {
       echo "<li class='list-inline-item'>
-                      <img alt='Avatar' width='50' height='50' class='table-avatar img-circle' src='../../resources/Warranty/default.jpg'>
-                    </li>" . $row['WR_Main_Problem'];
+                  <img alt='Avatar' width='50' height='50' class='table-avatar img-circle' src='../../resources/Warranty/DefaultProblem.jpg'>
+                </li>" . $row['WR_Main_Problem'];
     } else {
       echo "<li class='list-inline-item'>
-                      <img alt='Avatar' width='50' height='50' class='table-avatar img-circle' src='../.." . $row['WR_Image_Problem'] . "'>
-                    </li>   " . $row['WR_Main_Problem'];
+                  <img alt='Avatar' width='50' height='50' class='table-avatar img-circle' src='../.." . $row['WR_Image_Problem'] . "'>
+                </li>   " . $row['WR_Main_Problem'];
     }
     echo "</td>";
+    echo "<td>" . $row['WR_ActionsDone'] . "</td>";
+    echo "<td>" . $row['WR_Diagnosis'] . "</td>";
+    echo "<td>";
+
+    if (empty($row['WR_Image_Solution'])) {
+      echo "<li class='list-inline-item'>
+                  <img alt='Avatar' width='50' height='50' class='table-avatar img-circle' src='../../resources/Warranty/computadoraMantenimiento.png'>
+                </li>  <p> No se ha ingreso solucion </p>";
+    } else {
+      echo "<li class='list-inline-item'>
+                  <img alt='Avatar' width='50' height='50' class='table-avatar img-circle' src='../.." . $row['WR_Image_Solution'] . "'>
+                </li>   " . $row['WR_Solution'];
+    }
+    "</td>";
+    echo "<td>" . $row['WR_Date_Solution'] . "</td>";
     echo "<td>" . $row['WR_Observation'] . "</td>";
     // Apartado para dar color a la parte del estado 
     echo "<td>";
@@ -45,20 +60,19 @@ function dataTableUser($stmt)
     } elseif ($row['STS_Description'] == "Deshabilitado") {
       echo "<span class='text-maroon'><i class='fas fa-trash nav-icon'></i></span> ";
     }
-    echo "" . $row['STS_Description']  . "</td>";
+    echo  $row['STS_Description']  . "</td>";
     echo "<td>" . $row['User_Username'] . "</td>";
-
-    $WR_ActionsDone = $row['WR_ActionsDone'];
-    $WR_Diagnosis = $row['WR_Diagnosis'];
-    $WR_Solution = $row['WR_Solution'];
-    $WR_Image_Solution = $row['WR_Image_Solution'];
-    $WR_Date_Solution = $row['WR_Date_Solution'];
-
-   
-    $idWR = $row['WR_idTbl_Warranty_Registration'];
-  
-  
-
+    echo "<td align='center'> 
+      <a href='../views/update_warranty.php?p=" . $row['WR_idTbl_Warranty_Registration'] . "' class='btn btn-outline-primary btn-sm' title='Editar Registro'>
+        <i class='fas fa-pencil-alt'></i>
+      </a>
+      <a href='../views/warrantyReport.php?p=" . $row['WR_idTbl_Warranty_Registration'] . "' class='btn btn-outline-info btn-sm' title='Editar Registro' target='_blank'>
+        <i class='fas fa-file-alt'></i>
+      </a>
+      <button class='btn btn-outline-danger btn-sm btnDeleteWR' title='Eliminar Registro' name='btnDeleteUSER' id='btnDeleteUSER' data-id='" . $row['WR_idTbl_Warranty_Registration'] . "'>
+        <i class='fas fa-trash-alt'></i>
+      </button>
+    </td>";
     echo "</tr>";
   }
 }
@@ -101,7 +115,7 @@ function dataTableUser($stmt)
           <!--cinta de home y el nombre de la pagina -->
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="../templates/index.php">
-               Inicio
+                Inicio
               </a></li>
             <li class="breadcrumb-item active">
               <?php echo $pageName; ?>
@@ -148,7 +162,7 @@ function dataTableUser($stmt)
                     <th>Observaciones</th>
                     <th>Estado</th>
                     <th>Usuario</th>
-
+                    <th>Opciones</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -198,7 +212,7 @@ function dataTableUser($stmt)
                 </tbody>
                 <tfoot>
                   <tr>
-                  <th>#</th>
+                    <th>#</th>
                     <th>Número de Reporte</th>
                     <th>Fecha Creación Reporte</th>
                     <th>Computadora</th>
@@ -210,7 +224,7 @@ function dataTableUser($stmt)
                     <th>Observaciones</th>
                     <th>Estado</th>
                     <th>Usuario</th>
-
+                    <th>Opciones</th>
                   </tr>
                 </tfoot>
               </table>

@@ -24,15 +24,15 @@ function dataTableUser($stmt)
             <a href='../views/update_assignment_pc.php?p=" . $row['PCA_idTbl_PC_Assignment'] . "' class='btn btn-outline-primary btn-sm' title='Editar Registro'>
               <i class='fas fa-pencil-alt'></i>
             </a>
-            <a href='../views/view_mappingSoftware.php?p=" . $row['PCA_idTbl_PC_Assignment'] . "' class='btn btn-outline-info btn-sm' title='Más Información'>
+            <a href='../views/view_mappingSoftware.php?p=" . $row['PCA_idTbl_PC_Assignment'] . "'  class='btn btn-outline-info btn-sm' title='Más Información'>
             <i class='fas fa-info'></i>
             </a>";
     if ($row['STS_Description'] == "Activo(a)") {
-    echo"  <a  href='../views/PCassignmentcontract.php?p=" . $row['PCA_idTbl_PC_Assignment'] . "' class='btn btn-outline-dark btn-sm imprimirContrato' title='Imprimir Contrato' name='imprimirContrato' id='imprimirContrato' >
+      echo "  <a  href='../views/PCassignmentcontract.php?p=" . $row['PCA_idTbl_PC_Assignment'] . "' class='btn btn-outline-dark btn-sm imprimirContrato' title='Imprimir Contrato' name='imprimirContrato' id='imprimirContrato' target='_blank' >
               <i class='fa fa-file-contract'></i>
             </a>";
-            }
-     echo"     <button class='btn btn-outline-danger btn-sm btnDeletePCA' title='Eliminar Registro' name='btnDeletePCA' id='btnDeletePCA' data-id='" . $row['PCA_idTbl_PC_Assignment'] . "'>
+    }
+    echo "     <button class='btn btn-outline-danger btn-sm btnDeletePCA' title='Eliminar Registro' name='btnDeletePCA' id='btnDeletePCA' data-id='" . $row['PCA_idTbl_PC_Assignment'] . "'>
               <i class='fas fa-trash-alt'></i>
             </button>
           </td>";
@@ -77,7 +77,7 @@ function dataTableUser($stmt)
           <!--cinta de home y el nombre de la pagina -->
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="../templates/index.php">
-               Inicio
+                Inicio
               </a></li>
             <li class="breadcrumb-item active">
               <?php echo $pageName; ?>
@@ -124,7 +124,6 @@ function dataTableUser($stmt)
                     <th>Usuario</th>
                     <th>Estado</th>
                     <th>Opciones</th>
-
                   </tr>
                 </thead>
                 <tbody>

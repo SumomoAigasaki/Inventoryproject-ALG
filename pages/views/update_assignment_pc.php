@@ -145,7 +145,9 @@ $conn->next_result();
                                 <input type="hidden" class="form-control" id="TxtIdPCAsignment" name="TxtIdPCAsignment" value="<?php echo $PCA_idTbl_PC_Assignment ?>">
                                 <input type="hidden" class="form-control" id="TxtIdMappingsoftware" name="TxtIdMappingsoftware">
 
+                                <!-- Fila 1 -->
                                 <div class="row justify-content-center" style="padding-bottom:20px;">
+                                    <!-- Contrato de Asignacion de PC-->
                                     <div class="col-mb-4">
                                         <label>Contrato de Asignacion de PC</label>
                                         <div class="input-group" style="flex-direction: column; padding-left: 15px; display: flex; justify-content: center; align-items: center;">
@@ -162,7 +164,7 @@ $conn->next_result();
                                         </div>
                                     </div>
                                 </div>
-                                <!-- Fila 1 -->
+                                <!-- Fila 2 -->
                                 <div class="row justify-content-center" style="padding-top:10px; padding-bottom:10px;">
 
                                     <!-- Colaborador-->
@@ -185,7 +187,6 @@ $conn->next_result();
                                             </select>
                                         </div>
                                     </div>
-
                                     <!-- Computadora-->
                                     <div class="col-sm-3">
                                         <div class="form-group" style="padding-top: 10px;">
@@ -206,8 +207,7 @@ $conn->next_result();
                                             </select>
                                         </div>
                                     </div>
-
-                                    <!-- ESTADO -->
+                                    <!-- Estado -->
                                     <div class="col-sm-3" style="padding-top: 10px;">
                                         <div class="form-group">
                                             <label><code>*</code>Estado de asignacion PC: </label>
@@ -237,7 +237,7 @@ $conn->next_result();
 
                                 </div>
 
-                                <!-- Fila 2 -->
+                                <!-- Fila 3 -->
                                 <div class="row justify-content-center" style="padding-top:10px; padding-bottom:10px;">
                                     <!-- Software-->
                                     <div class="col-sm-5">
@@ -255,10 +255,9 @@ $conn->next_result();
                                             </select>
                                         </div>
                                     </div>
-
+                                    <!-- Fecha de Instalacion Software -->
                                     <div class="col-sm-3">
                                         <div class="form-group">
-                                            <!-- Fecha de Instalacion Software -->
                                             <label><code>*</code> Fecha de Instalacion Software:</label>
                                             <input type="text" class="form-control datepicker-input" name="txtInstalleSoftware" id="txtInstalleSoftware" value="<?php echo $MS_Instalation_date ?>">
                                         </div>
@@ -270,13 +269,13 @@ $conn->next_result();
                                         </div>
                                     </div>
 
-
                                     <div class="col-sm-4">
                                         <!-- Fecha de Retorno -->
                                         <div class="form-group">
                                             <label ACRONYM title="Fecha en que el area de TI le hace entrega del dispositivo"><code>*</code> Fecha de Entrega:</label>
                                             <input type="text" class="form-control datepicker-input" name="txtDeadline" id="txtDeadline" value="<?php echo $PCA_Date_Assignment ?>">
                                         </div>
+                                        <!-- Meses de Contratación -->
                                         <div class="form-group">
                                             <label> Meses de Contratación:</label>
                                             <input type="number" class="form-control " name="txtmonth" id="txtmonth" onchange="calcularFechaRetorno()" value="<?php echo $PCA_months_hiring ?>">
@@ -288,9 +287,8 @@ $conn->next_result();
                                         </div>
 
                                     </div>
-
-
                                 </div>
+                                <!-- Fila 4 -->
                                 <div class="row justify-content-center" style="padding-bottom:20px;">
                                     <div class="col-mb-3">
                                         <button type="submit" class="btn btn-block bg-olive" id="buttonUpdatePCA" name="buttonUpdatePCA" onclick='return validate_data();'>Actualizar</button>
@@ -479,7 +477,7 @@ require_once "../templates/footer.php";
 
         }
     }
-    
+
     $(function() {
         $(".datepicker-input").datepicker({
             dateFormat: "yy-mm-dd"

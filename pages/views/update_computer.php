@@ -135,7 +135,6 @@ $conn->next_result();
             <div class="card-header">
               <h3 class="card-title">Formulario para <?php echo $pageName; ?> </h3>
             </div>
-
             <!-- form start -->
             <form role="form" action="" method="POST" name="formUpdateCMP" id="formUpdateCMP" class="form-horizontal" enctype="multipart/form-data">
               <div class="card-body">
@@ -145,9 +144,9 @@ $conn->next_result();
                 <input type="hidden" class="form-control" id="txtIdComputer" name="txtIdComputer" value="<?php echo $CMP_idTbl_Computer ?>">
                 <input type="hidden" class="form-control" id="txtAccion" name="txtAccion" value="2">
 
-                <!--  Primer Row -->
+                <!--  Fila 1 -->
                 <div class="row" style="padding-top:10px; padding-bottom:10px;">
-
+                  <!-- Columna 1, Fila 1-->
                   <div class="col-sm-6 d-flex justify-content-center align-items-center">
                     <!-- Image -->
                     <div class="form-group" style="padding-left:15px;">
@@ -159,16 +158,16 @@ $conn->next_result();
                     </div>
 
                   </div>
-                  <!-- 1ERA COLUMAN DE LA ROW 1 -->
+                  <!-- Columna 2, Fila 1-->
                   <div class="col-sm-3">
-                    <!-- FECHA DE INVENTARIO -->
+                    <!-- Fecha de Inventariado -->
                     <div class="form-group">
                       <label>Fecha de Inventariado:</label>
                       <div class="input-group">
                         <input type="text" class="form-control" id="todayDate" name="todayDate" value="<?php echo $inventoryDate ?>" readonly>
                       </div>
                     </div>
-                    <!-- MARCA  -->
+                    <!-- Marca  -->
                     <div>
                       <div class="form-group">
                         <label><code>*</code>Marca: </label>
@@ -193,16 +192,16 @@ $conn->next_result();
                     </div>
                   </div>
 
-                  <!-- 2DA COLUMAN DE LA ROW 1 -->
+                  <!-- Columna 3, Fila 1-->
                   <div class="col-sm-3">
+                    <!-- Fecha de Compra -->
                     <div class="form-group">
-                      <!-- Fecha de Compra -->
                       <label><code>*</code>Fecha de Compra:</label>
                       <div class="input-group">
                         <input type="text" class="form-control datepicker-input" name="txtAcquisitionDate" id="txtAcquisitionDate" value="<?php echo $CMP_Acquisition_Date; ?>">
                       </div>
                     </div>
-                    <!-- MODELOS  -->
+                    <!-- Modelo  -->
                     <div>
                       <div class="form-group">
                         <label><code>*</code>Modelo : </label>
@@ -226,9 +225,9 @@ $conn->next_result();
                   </div>
                 </div>
 
-                <!-- Comienzo fila 2 -->
+                <!-- Fila 2-->
                 <div class="row">
-                  <!-- TIPO DE COMPUTADORA -->
+                  <!-- Tipo de Computadora -->
                   <div class="col-sm-2">
                     <div class="form-group">
                       <label><code>*</code>Tipo de Computadora : </label>
@@ -248,21 +247,20 @@ $conn->next_result();
                       </select>
                     </div>
                   </div>
-                  <!-- Nombre Tecnico-->
+                  <!-- Nombre Técnico -->
                   <div class="col-sm-2">
                     <div class="form-group">
                       <label><code>*</code>Nombre Técnico: </label>
                       <input type="text" class="form-control" name="txtTechnicalName" id="txtTechnicalName" maxlength="45" value="<?php echo $CMP_Technical_Name; ?>" placeholder="ASSET2023-0#">
                     </div>
                   </div>
-                  <!-- Servitag-->
+                  <!-- Servitag -->
                   <div class="col-sm-2">
                     <div class="form-group">
                       <label><code>*</code>Servitag: </label>
                       <input type="text" class="form-control" name="txtServitag" id="txtServitag" maxlength="45" value="<?php echo $CMP_Servitag; ?>" placeholder="FKCX???">
                     </div>
                   </div>
-
                   <!-- Tipo de Garantia -->
                   <div class="col-sm-3">
                     <div class="form-group">
@@ -306,10 +304,9 @@ $conn->next_result();
                   </div>
 
                 </div>
-                <!-- Comienzo fila 3 -->
+                <!-- Fila 3 -->
                 <div class="row" style="padding-bottom:10px;">
-
-                  <!-- Lincencia -->
+                  <!-- Licencia -->
                   <div class="col-sm-3">
                     <div class="form-group">
                       <label>Licencia: </label>
@@ -364,7 +361,7 @@ $conn->next_result();
                       </select>
                     </div>
                   </div>
-                  <!-- Localizacion -->
+                  <!-- Localización Computadora -->
                   <div class="col-sm-2">
                     <label><code>*</code>Localización Computadora: </label>
                     <div class="form-group">
@@ -386,7 +383,7 @@ $conn->next_result();
                   </div>
                 </div>
 
-                <!-- Comienzo fila 4 -->
+                <!-- Fila  -->
                 <div class="row" style="padding-bottom:10px;">
 
                   <!-- Especificaciones del Equipo-->
@@ -405,14 +402,13 @@ $conn->next_result();
                       </select>
                     </div>
                   </div>
-
-
                   <!-- Observaciones -->
                   <div class="col-sm-4">
                     <div class="form-group  mb-3">
                       <label>Observaciones: </label>
                       <textarea type="text" class="form-control" name="txtObservation" id="txtObservation" maxlength="100"> <?php echo $CMP_Observations; ?></textarea>
                     </div>
+                    <!-- Denuncia boton -->
                     <div class="form-group">
                       <div class="form-check">
                         <input ACRONYM title="Presiona para confirmar que el equipo tiene una denuncia" class="form-check-input" type="checkbox" id="checkReport">
@@ -429,12 +425,10 @@ $conn->next_result();
                     </div>
                   </div>
 
-                  <!-- Boton guardar -->
-
-                  <!--/. fila 4 -->
                 </div>
-                <!-- Comienzo fila 5 -->
+                <!-- Fila 5  -->
                 <div class="row justify-content-center" style="padding-bottom:10px;">
+                  <!-- Boton Guardar -->
                   <div class="col-mb-3">
                     <button type="submit" class="btn btn-block bg-olive" id="buttonUpdateComputer" name="buttonUpdateComputer" onclick='return validate_data();'>Actualizar</button>
                   </div>
@@ -498,9 +492,7 @@ $conn->next_result();
 
 <!--Validaciones de PHP-->
 <?php
-//validacion si preciona el boton  
-
-# En caso de que haya sido el de guardar, no agregamos más campos
+//validacion si presiona el boton  
 $uploads_dir = '../../resources/Computer/';  // Ruta de la carpeta de destino para los archivos
 if (isset($_POST["buttonUpdateComputer"])) {
   $accion = $_POST["txtAccion"]; // Acción recibida del formulario (puede ser "insert" o "update")
@@ -516,7 +508,7 @@ if (isset($_POST["buttonUpdateComputer"])) {
   $cmpLicence = $_POST['txtLicense']; // Licencia de la computadora
   if (empty($cmpLicence)) {
     $cmpLicence = NULL;
-} 
+  }
   $cmpMotherboard = $_POST['txtSerial']; // Número de serie de la tarjeta madre
   $cmpso = $_POST['slctOS']; // ID del sistema operativo
   $cmpIdStatu = $_POST['selectStatus']; // ID del estado de la computadora
@@ -536,7 +528,6 @@ if (isset($_POST["buttonUpdateComputer"])) {
 
   // Obtener la ruta completa de la imagen del reporte
   if (empty($_FILES['fileReport']['name'])) {
-
     $cmpImgCompReport = $CMP_Report;  // El campo de imagen está vacío
   } else {
     // El campo no está vacío
@@ -673,7 +664,7 @@ if (isset($_POST["buttonUpdateComputer"])) {
             }
           }
         }
-        
+
         // Verificar si la inserción fue exitosa
         if ($answerExistsComp > 0) {
           // Mostrar mensaje de éxito y redirigir después de 2 segundos
@@ -754,13 +745,13 @@ if (isset($_POST["buttonUpdateComputer"])) {
     let locationsSelect = document.getElementById('selectLocations');
     let todayDateInput = document.getElementById('todayDate');
     let peripheralsSlct = document.getElementById('slctPeripherals');
-        let selectedOptions = Array.from(slctPeripherals.selectedOptions);
-        if (selectedOptions.length == 0) {
-            // alert('Ninguna opción ha sido seleccionada.');
-            toastr.warning('No ha seleccionado ninguna <b>Especificacion del Equipo</b> esta vacio(a).<br>Por favor Ingrese una Software valida');
-            peripheralsSlct.focus();
-            return false;
-        }
+    let selectedOptions = Array.from(slctPeripherals.selectedOptions);
+    if (selectedOptions.length == 0) {
+      // alert('Ninguna opción ha sido seleccionada.');
+      toastr.warning('No ha seleccionado ninguna <b>Especificacion del Equipo</b> esta vacio(a).<br>Por favor Ingrese una Software valida');
+      peripheralsSlct.focus();
+      return false;
+    }
     let typeGuanteeSelect = document.getElementById('selectTypeGuarantee');
 
     if (acquisitionFecha.value.trim() === "") {
@@ -806,7 +797,6 @@ if (isset($_POST["buttonUpdateComputer"])) {
       typeGuanteeSelect.focus();
     } else {
       // Si no hay errores, procesa los datos enviados
-      //$opcion = $_POST['opciones'];
       if (accionInput.value.trim() === "") {
         accionInput.value = "2";
 

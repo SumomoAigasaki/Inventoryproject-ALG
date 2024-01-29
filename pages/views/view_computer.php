@@ -101,7 +101,7 @@ function dataTableComputer($stmt)
           <!--cinta de home y el nombre de la pagina -->
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="../templates/index.php">
-               Inicio
+                Inicio
               </a></li>
             <li class="breadcrumb-item active">
               <?php echo $pageName; ?>
@@ -136,21 +136,21 @@ function dataTableComputer($stmt)
                     <th>Fecha Adquisición</th>
                     <th>Marca</th>
                     <th>Imagen</th>
-                    <th>Nomb. Tecnico</th>
+                    <th>Nomb. Técnico</th>
                     <th>Modelo</th>
                     <th>Tipo PC</th>
                     <th>Servitag</th>
                     <th>Licencia</th>
-                    <th>serial</th>
+                    <th>Serial</th>
                     <th>Especificaciones</th>
                     <th>Sistema Operativo</th>
-                    <th>Fecha Limite Garantia</th>
-                    <th>Tipo Garantia</th>
+                    <th>Fecha Límite Garantía</th>
+                    <th>Tipo Garantía</th>
                     <th>Estado</th>
-                    <th>Localizacion</th>
+                    <th>Localización</th>
                     <th>Observaciones</th>
                     <th>Imagen de Reporte</th>
-                    <th>Usuario</th>
+                    <th title="Usuario Realizó Registro">Usuario</th>
                     <th>Opciones</th>
 
                   </tr>
@@ -206,21 +206,21 @@ function dataTableComputer($stmt)
                     <th>Fecha Adquisición</th>
                     <th>Marca</th>
                     <th>Imagen</th>
-                    <th>Nomb. Tecnico</th>
+                    <th>Nomb. Técnico</th>
                     <th>Modelo</th>
                     <th>Tipo PC</th>
                     <th>Servitag</th>
                     <th>Licencia</th>
-                    <th>serial</th>
+                    <th>Serial</th>
                     <th>Especificaciones</th>
                     <th>Sistema Operativo</th>
-                    <th>Fecha Limite Garantia</th>
-                    <th>Tipo Garantia</th>                    
+                    <th>Fecha Límite Garantía</th>
+                    <th>Tipo Garantía</th>
                     <th>Estado</th>
-                    <th>Localizacion</th>
+                    <th>Localización</th>
                     <th>Observaciones</th>
                     <th>Imagen de Reporte</th>
-                    <th>Usuario</th>
+                    <th title="Usuario Realizó Registro">Usuario</th>
                     <th>Opciones</th>
 
                   </tr>
@@ -314,35 +314,35 @@ function deleteComputer()
   if (isset($_POST['id'])) {
     $id = $_POST["id"];
 
-      $stmt = $conn->prepare("CALL sp_deleteComputer(?)");
-      // Mandamos los parametros y los input que seran enviados al PA O SP
-      $stmt->bind_param("s", $id); // Ejecutar el procedimiento almacenado
+    $stmt = $conn->prepare("CALL sp_deleteComputer(?)");
+    // Mandamos los parametros y los input que seran enviados al PA O SP
+    $stmt->bind_param("s", $id); // Ejecutar el procedimiento almacenado
 
-      $stmt->execute();
-      // $query = "CALL sp_deleteComputer('$id')";
-      // echo $query;
-      // echo '<pre>';
+    $stmt->execute();
+    // $query = "CALL sp_deleteComputer('$id')";
+    // echo $query;
+    // echo '<pre>';
 
-      if ($stmt->error) {
-        error_log("Error en la ejecución del procedimiento almacenado: " . $stmt->error);
-      }
-      // Obtener el número de filas afectadas por el insert
-      $stmt->bind_result($idC);
-      $stmt->fetch();
-      // Cerrar el statement
-      $stmt->close();
-      // Avanzar al siguiente conjunto de resultados si hay varios
-      $conn->next_result();
+    if ($stmt->error) {
+      error_log("Error en la ejecución del procedimiento almacenado: " . $stmt->error);
+    }
+    // Obtener el número de filas afectadas por el insert
+    $stmt->bind_result($idC);
+    $stmt->fetch();
+    // Cerrar el statement
+    $stmt->close();
+    // Avanzar al siguiente conjunto de resultados si hay varios
+    $conn->next_result();
 
-      if ($idC > 0) {
-        echo '<script>
+    if ($idC > 0) {
+      echo '<script>
           setTimeout(function() {
             window.location.href = "view_computer.php";
           }, 10000);
         </script>';
-      }
     }
   }
+}
 
 
 // Llamar a la función deleteComputer

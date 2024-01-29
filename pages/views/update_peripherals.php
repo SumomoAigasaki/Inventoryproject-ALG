@@ -111,17 +111,16 @@ $conn->next_result();
                                 <input type="hidden" class="form-control" id="peripheralsId" name="peripheralsId" value="<?php echo $PRL_idtbl_Peripherals ?>">
                                 <input type="hidden" class="form-control" id="accion" name="accion" placeholder="">
 
+                                <!-- Fila 1 -->
                                 <div class="row justify-content-center" style="padding-top:10px; padding-bottom:10px;">
-
-                                    <!-- nombre -->
+                                    <!-- Nombre Periferico -->
                                     <div class="col-sm-4">
                                         <div class="form-group" style="padding-top: 20px;">
                                             <label><code>*</code>Nombre Periferico:</label>
                                             <input type="text" class="form-control" name="txt_namePRL" id="txt_namePRL" maxlength="45" value="<?php echo $PRL_Name ?>" required>
                                         </div>
                                     </div>
-
-                                    <!-- Tipo de componente  -->
+                                    <!-- Tipo de Periferico  -->
                                     <div class="col-sm-4" style="padding-top: 20px;">
                                         <div class="form-group">
                                             <label><code>*</code>Tipo De Periferico: </label>
@@ -141,17 +140,16 @@ $conn->next_result();
                                             </select>
                                         </div>
                                     </div>
-                                    <!-- Descripcion Principal  -->
+                                    <!-- Descripción Principal Periférico -->
                                     <div class="col-sm-4">
                                         <div class="form-group" style="padding-top: 20px;">
-                                            <label>Descripcion Principal Periferico:</label>
+                                            <label>Descripción Principal Periférico:</label>
                                             <input type="text" class="form-control" name="txt_description" id="txt_description" maxlength="45" value="<?php echo $PRL_Main_Description ?>">
                                         </div>
                                     </div>
+                                </div>
 
-
-                                </div> <!-- Fin fila 1 -->
-
+                                <!-- Fila 2 -->
                                 <div class="row">
                                     <!-- Especificacion del componente -->
                                     <div class="col-sm-4" style="padding-top: 20px;">
@@ -173,7 +171,6 @@ $conn->next_result();
                                             </select>
                                         </div>
                                     </div>
-
                                     <!-- Estado de la computadora  -->
                                     <div class="col-sm-4" style="padding-top: 20px;">
                                         <div class="form-group">
@@ -194,11 +191,10 @@ $conn->next_result();
                                             </select>
                                         </div>
                                     </div>
-
-                                    <!-- Localizacion -->
+                                    <!-- Localización del Componente -->
                                     <div class="col-sm-4" style="padding-top: 20px;">
                                         <div class="form-group">
-                                            <label><code>*</code>Localizacion del Componente : </label>
+                                            <label><code>*</code>Localización del Componente : </label>
                                             <?php $resultado = mysqli_query($conn, "CALL sp_location_select"); ?>
                                             <select class="form-control" id="slctLocation" name="slctLocation">
                                                 <?php while ($row = mysqli_fetch_array($resultado)) {
@@ -216,7 +212,7 @@ $conn->next_result();
                                     </div>
                                 </div>
 
-                                <!-- Observaciones -->
+                                <!-- Fila 3 -->
                                 <div class="row " style="padding-bottom:20px;">
                                     <!-- Fecha de registro -->
                                     <div class="col-sm-4" style="padding-top: 20px;">
@@ -227,8 +223,7 @@ $conn->next_result();
                                             </div>
                                         </div>
                                     </div>
-
-                                    <!-- ESTADO -->
+                                    <!-- Estado del Perifico -->
                                     <div class="col-sm-4" style="padding-top: 20px;">
                                         <div class="form-group">
                                             <label>Estado del Perifico: </label>
@@ -248,7 +243,7 @@ $conn->next_result();
                                             </select>
                                         </div>
                                     </div>
-
+                                    <!-- Observaciones -->
                                     <div class=" col-sm-4">
                                         <div class="form-group" style="padding-top: 20px;">
                                             <label>Observaciones: </label>
@@ -256,15 +251,15 @@ $conn->next_result();
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div class="row justify-content-center" style="padding-bottom:20px;">
-                                <div class="col-mb-3">
-                                    <button type="submit" class="btn btn-block bg-olive" id="buttonUpdatePRL" name="buttonUpdatePRL" onclick='return validate_data();'>Actualizar</button>
+                                <!-- Fila 4 -->
+                                <div class="row justify-content-center" style="padding-bottom:20px;">
+                                    <!-- Boton Guardar-->
+                                    <div class="col-mb-3">
+                                        <button type="submit" class="btn btn-block bg-olive" id="buttonUpdatePRL" name="buttonUpdatePRL" onclick='return validate_data();'>Actualizar</button>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                            </div>
+
                     </div>
                 </div>
 

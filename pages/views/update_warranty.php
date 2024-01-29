@@ -126,7 +126,7 @@ $conn->next_result();
 
                                 <!-- Fila 1 -->
                                 <div class="row justify-content-center" style="padding-bottom:20px;">
-                                    <!-- IMAGEN -->
+                                    <!-- Imagen de Referencia del Problema -->
                                     <div class="col-sm-4">
                                         <div class="form-group">
                                             <label>Imagen de Referencia del Problema: </label>
@@ -147,9 +147,6 @@ $conn->next_result();
                                             <input type="text" class="form-control datepicker-input" name="txtDateAdmision" id="txtDateAdmision" value="<?php echo $WR_Date_Admission ?>">
                                         </div>
                                     </div>
-
-
-
                                     <!-- Computadora-->
                                     <div class="col-sm-4">
                                         <div class="form-group" style="padding-top: 10px;">
@@ -172,7 +169,6 @@ $conn->next_result();
                                             </select>
                                         </div>
                                     </div>
-
                                     <!-- Numero de Reporte-->
                                     <div class="col-sm-4">
                                         <div class="form-group" style="padding-top: 10px;">
@@ -180,13 +176,10 @@ $conn->next_result();
                                             <input type="text" class="form-control" name="txtNumberApplications" id="txtNumberApplications" maxlength="45" value="<?php echo $WR_Application_Number ?>">
                                         </div>
                                     </div>
-
-
                                 </div>
 
                                 <!-- Fila 3 -->
                                 <div class="row justify-content-center" style="padding-top:10px; padding-bottom:10px;">
-
                                     <!--Problema Principal-->
                                     <div class="col-sm-4" style="padding-top: 10px;">
                                         <div class="form-group">
@@ -194,8 +187,6 @@ $conn->next_result();
                                             <textarea type="text" class="form-control" name="txtMainProblem" id="txtMainProblem" maxlength="255"><?php echo $WR_Main_Problem; ?> </textarea>
                                         </div>
                                     </div>
-
-
                                     <!-- Acciones Realizadas -->
                                     <div class="col-sm-4" style="padding-top: 10px;">
                                         <div class="form-group">
@@ -203,7 +194,6 @@ $conn->next_result();
                                             <textarea type="text" class="form-control" name="txtActionDone" id="txtActionDone" maxlength="255"><?php echo $WR_ActionsDone ?> </textarea>
                                         </div>
                                     </div>
-
                                     <!-- Diagnostico -->
                                     <div class="col-sm-4" style="padding-top: 10px;">
                                         <div class="form-group">
@@ -211,8 +201,6 @@ $conn->next_result();
                                             <textarea type="text" class="form-control" name="txtDiagnostic" id="txtDiagnostic" maxlength="255"><?php echo $WR_Diagnosis ?> </textarea>
                                         </div>
                                     </div>
-
-
                                 </div>
 
                                 <!-- Fila 4 -->
@@ -224,7 +212,6 @@ $conn->next_result();
                                             <input type="text" class="form-control datepicker-input" name="txtDateSolution" id="txtDateSolution" value="<?php echo $WR_Date_Solution ?>">
                                         </div>
                                     </div>
-
                                     <!-- Solución -->
                                     <div class="col-sm-4" style="padding-top: 10px;">
                                         <div class="form-group">
@@ -242,10 +229,9 @@ $conn->next_result();
                                             </div>
                                         </div>
                                     </div>
-
-
                                 </div>
-                                <!-- Fila 2 -->
+
+                                <!-- Fila 5 -->
                                 <div class="row justify-content-center" style="padding-top:10px; padding-bottom:10px;">
 
                                     <!-- Observaciones -->
@@ -277,16 +263,15 @@ $conn->next_result();
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-
-
-                            <div class="row justify-content-center" style="padding-bottom:20px;">
-                                <div class="col-mb-3">
-                                    <button type="submit" class="btn btn-block bg-olive" id="buttonUpdateWR" name="buttonUpdateWR" onclick='return validate_data();'>Guardar</button>
+                                <!-- Fila 6 -->
+                                <div class="row justify-content-center" style="padding-bottom:20px;">
+                                    <!-- Boton guardar -->
+                                    <div class="col-mb-3">
+                                        <button type="submit" class="btn btn-block bg-olive" id="buttonUpdateWR" name="buttonUpdateWR" onclick='return validate_data();'>Guardar</button>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                            </div>
+
                     </div>
                 </div>
                 </form>

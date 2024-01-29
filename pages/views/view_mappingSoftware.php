@@ -52,14 +52,14 @@ $idMS = $_GET['p'];
 $stmt = $conn->query("CALL sp_selectAllMappingSoftware($idMS)");
 if ($stmt->num_rows > 0) {
   while ($row = $stmt->fetch_assoc()) {
-      $computerid = $row['CMP_idTbl_Computer'];
-      $computername = $row['CMP_Technical_Name'];
-      $computadoraValue = $row['Datos'];
+    $computerid = $row['CMP_idTbl_Computer'];
+    $computername = $row['CMP_Technical_Name'];
+    $computadoraValue = $row['Datos'];
   }
 } else {
   $computerid = "Datos no disponibles";
-  $computername = "Datos no disponibles" ;
-  $computadoraValue ="Datos no disponibles" ;
+  $computername = "Datos no disponibles";
+  $computadoraValue = "Datos no disponibles";
   // Asigna valores predeterminados para $computername y $computadoraValue si es necesario
 }
 $stmt->close();
@@ -101,7 +101,7 @@ $conn->next_result();
           <!--cinta de home y el nombre de la pagina -->
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="../templates/index.php">
-               Inicio
+                Inicio
               </a></li>
             <li class="breadcrumb-item active">
               <?php echo $pageName; ?>
@@ -142,37 +142,25 @@ $conn->next_result();
                     <th>#</th>
                     <th>Fecha de Inventario</th>
                     <th>Software Instalado</th>
-                    <th>Fecha de Instalacion</th>
-
+                    <th>Fecha de Instalación</th>
                     <th>Estado</th>
-                    <th>Usuario</th>
-                    <?php
-                    $rol = $_SESSION["RLS_idTbl_Roles"];
-                    // Verificar si el rol tiene el rol 2 (administrador) y el permiso de SFT
-                    function validar_permisos($rol, $PermisoPCA)
-                    {
-                      if ($rol == "2" && $PermisoPCA) {
-                        return true;
-                      } else {
-                        return false;
-                      }
-                    }
-
-                    // if (validar_permisos($rol, $PermisoPCA)) {
-                    //   if ($opciones) {
-                    //     echo "<th>Opciones</th>";
-                    //   }
-                    // }
-                    ?>
-                    <!-- <th>Opciones</th> -->
-
+                    <th title="Usuario Realizó Registro">Usuario</th>
                   </tr>
                 </thead>
                 <tbody>
 
                   <?php
 
-
+                  $rol = $_SESSION["RLS_idTbl_Roles"];
+                  // Verificar si el rol tiene el rol 2 (administrador) y el permiso de SFT
+                  function validar_permisos($rol, $PermisoPCA)
+                  {
+                    if ($rol == "2" && $PermisoPCA) {
+                      return true;
+                    } else {
+                      return false;
+                    }
+                  }
 
                   function obtener_registros($conn, $rol, $PermisoPCA)
                   {
@@ -199,18 +187,9 @@ $conn->next_result();
                     <th>#</th>
                     <th>Fecha de Inventario</th>
                     <th>Software Instalado</th>
-                    <th>Fecha de Instalacion</th>
+                    <th>Fecha de Instalación</th>
                     <th>Estado</th>
                     <th>Usuario</th>
-                    <?php
-                    // if (validar_permisos($rol, $PermisoPCA)) {
-                    //   if ($opciones) {
-                    //     echo "<th>Opciones</th>";
-                    //   }
-                    // }
-                    ?>
-                    <!-- <th>Opciones</th> -->
-
                   </tr>
                 </tfoot>
               </table>
