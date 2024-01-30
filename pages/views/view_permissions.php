@@ -24,7 +24,7 @@ function dataTableUser($stmt)
     if ($row['RLS_Description'] !== $currentRol) {
       // Imprimir una fila para mostrar el rol y establecer el colspan
 
-      echo "<td  align='center'>  <a href='../views/update_permissions.php?p=" . $row['RLS_idTbl_Roles'] . "' class='btn btn-outline-primary btn-sm' title='Editar Permisos del Rol " . $row['RLS_idTbl_Roles'] . " '>
+      echo "<td  align='center'>  <a href='../views/update_permissions.php?p=" . $row['RLS_Description'] . "' class='btn btn-outline-primary btn-sm' title='Editar Permisos del Rol " . $row['RLS_idTbl_Roles'] . " '>
         <i class='fas fa-pencil-alt'></i> 
         </a> <b>" . $row['RLS_Description'] . "</b></td>";
       $currentRol = $row['RLS_Description']; // Actualizar el rol actual

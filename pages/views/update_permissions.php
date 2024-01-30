@@ -257,139 +257,119 @@ require_once "../templates/footer.php";
 </div>
 <!-- Validaciones generales sobre llenado de txt -->
 <script>
-    // Cuando el documento HTML está completamente cargado...
-    $(document).ready(function() {
+    var customArray = [];
 
-        var moduleSlct = $('select[name="slctModule"]').select2();
-        var moduleArray = [];
+// Para agregar valores en IDMODULO
+$('#slctModule').on('select2:select', function(e) {
+    var data = e.params.data;
 
-        function ActualizarCampoModulo() {
-            var selectModule = moduleSlct.val();
-            if (selectModule.length > 0) {
-                moduleArray = [];
+    // Verificar si el elemento ya está en el array
+    var index = customArray.findIndex(function(element) {
+        return element.id === data.id;
+    });
 
-                // Recorre los valores seleccionados y agrega los IDs al array
-
-                selectModule.forEach(function(optionValueModule) {
-                    var values = {
-                        "id": optionValueModule
-                    };
-                    moduleArray.push(values);
-                });
-
-                var arrayModule = JSON.stringify(moduleArray);
-
-                $('#txtIdModule').val(arrayModule);
-            } else {
-                // Si no hay opciones seleccionadas, borra el valor del campo de texto
-                $('#txtIdModule').val('');
-            }
-        }
-
-        // Agrega un manejador de evento para el cambio en el select #slctprivileges y de #slctModule
-        $('#slctModule').on('change', function() {
-            // Llama a la función para actualizar el campo de texto
-            ActualizarCampoModulo();
-            recorrerArray();
+    // Si no está en el array, agregarlo
+    if (index === -1) {
+        customArray.push({
+            id: data.id
         });
+    }
 
-        ActualizarCampoModulo();
+    console.log(customArray);
+    $('#txtIdModule').val(JSON.stringify(customArray));
+    // Llamar a recorrerArray después de actualizar txtIdModule
+    recorrerArray();
+});
+
+// para quitar valores deseleccionados en modulos
+$('#slctModule').on('select2:unselect', function(e) {
+    var data = e.params.data;
+
+    // Encontrar el índice del elemento deseleccionado y eliminarlo del array
+    var index = customArray.findIndex(function(element) {
+        return element.id === data.id;
+    });
+
+    if (index !== -1) {
+        customArray.splice(index, 1);
+    }
+
+    console.log(customArray);
+    $('#txtIdModule').val(JSON.stringify(customArray));
+
+    // Llamar a recorrerArray después de actualizar txtIdModule
+    recorrerArray();
+});
 
 
-        function recorrerArray() {
-            const txtIdModuleValue = document.getElementById("txtIdModule").value;
-            const customArray = JSON.parse(txtIdModuleValue);
-            const privilegiosSelect = document.getElementById("slctprivileges");
-            const modulosSeleccionados = new Set();
+function recorrerArray() {
+    const txtIdModuleValue = document.getElementById("txtIdModule").value;
+    const customArray = JSON.parse(txtIdModuleValue);
+    const privilegiosSelect = document.getElementById("slctprivileges");
+    const modulosSeleccionados = new Set();
 
-            // Recopilar todos los módulos seleccionados en un conjunto
-            customArray.forEach(function(element) {
-                modulosSeleccionados.add(element.id);
+    // Recopilar todos los módulos seleccionados en un conjunto
+    customArray.forEach(function(element) {
+        modulosSeleccionados.add(element.id);
+    });
+
+    // Iterar sobre las opciones y mostrar aquellas que estén en el conjunto de módulos seleccionados
+    for (let i = 0; i < privilegiosSelect.options.length; i++) {
+        const option = privilegiosSelect.options[i];
+        if (modulosSeleccionados.has(option.getAttribute("data-module")) || option.value === "") {
+            option.style.display = "block";
+        } else {
+            option.style.display = "none";
+        }
+    }
+}
+
+$(document).ready(function() {
+    // Inicializa el componente Dual Listbox para el select #slctprivileges
+    var demo1 = $('select[name="slctprivileges"]').bootstrapDualListbox();
+
+    // Variable para almacenar los IDs seleccionados
+    var array = [];
+
+    // Función para actualizar el campo de texto
+    function actualizarCampoTexto() {
+        // Obtiene los elementos seleccionados en el Dual Listbox del select #slctprivileges
+        var selectedOptions = demo1.val();
+
+        if (selectedOptions.length > 0) {
+            // Reinicia el array en cada cambio para evitar duplicados
+            array = [];
+
+            // Recorre los valores seleccionados y agrega los IDs al array
+            selectedOptions.forEach(function(optionValue) {
+                var moduleValue = $('select[name="slctprivileges"] option[value="' + optionValue + '"]').data('module');
+                var obj = {
+                    "id": optionValue,
+                    "module": moduleValue
+                };
+                array.push(obj);
             });
 
-            // Iterar sobre las opciones y mostrar aquellas que estén en el conjunto de módulos seleccionados
-            for (let i = 0; i < privilegiosSelect.options.length; i++) {
-                const option = privilegiosSelect.options[i];
-                if (modulosSeleccionados.has(option.getAttribute("data-module")) || option.value === "") {
-                    option.style.display = "block";
-                } else {
-                    option.style.display = "none";
-                }
-            }
+            // Convierte el array a una cadena JSON
+            var arrayTexto = JSON.stringify(array);
+
+            // Actualiza el valor del campo de texto con la cadena JSON
+            $('#txtIdPrivilege').val(arrayTexto);
+        } else {
+            // Si no hay opciones seleccionadas, borra el valor del campo de texto
+            $('#txtIdPrivilege').val('');
         }
+    }
 
-
-
-
-
-        //Datos extraidos de base de datos 
-        //los denominadore datos OLD 
-        // Inicializa el componente Dual Listbox para el select #slctprivileges
-        var demo1 = $('select[name="slctprivileges"]').bootstrapDualListbox();
-        // Inicializa el componente select2 para el select #slctprivileges
-        // var moduleSlct = $('select[name="slctModule"]').select2();
-
-        // Variable para almacenar los IDs seleccionados
-        var array = [];
-        // var moduleArray = [];
-
-        // Función para actualizar el campo de texto
-        function actualizarCampoTexto() {
-            // Obtiene los elementos seleccionados en el Dual Listbox del select #slctprivileges
-            var selectedOptions = demo1.val();
-            // var selectModule = moduleSlct.val();
-
-            //&& selectModule.length > 0
-            if (selectedOptions.length > 0) {
-                // Reinicia el array en cada cambio para evitar duplicados
-                array = [];
-                // moduleArray = [];
-
-                // Recorre los valores seleccionados y agrega los IDs al array
-
-                // selectModule.forEach(function(optionValueModule) {
-                //     var values = {
-                //         "id": optionValueModule
-                //     };
-                //     moduleArray.push(values);
-                // });
-
-                selectedOptions.forEach(function(optionValue) {
-                    var moduleValue = $('select[name="slctprivileges"] option[value="' + optionValue + '"]').data('module');
-                    var obj = {
-                        "id": optionValue,
-                        "module": moduleValue
-                    };
-                    array.push(obj);
-                });
-
-
-
-                // Convierte el array a una cadena JSON
-                var arrayTexto = JSON.stringify(array);
-                // var arrayModule = JSON.stringify(moduleArray);
-
-                // Actualiza el valor del campo de texto con la cadena JSON
-                //Estos seran los campos de texto antiguos 
-                $('#txtIdPrivilege').val(arrayTexto);
-                // $('#txtIdModuleOld').val(arrayModule);
-
-            } else {
-                // Si no hay opciones seleccionadas, borra el valor del campo de texto
-                $('#txtIdPrivilege').val('');
-                // $('#txtIdModuleOld').val('');
-            }
-        }
-
-        // Agrega un manejador de evento para el cambio en el select #slctprivileges y de #slctModule
-        $('#slctprivileges').on('change', function() {
-            // Llama a la función para actualizar el campo de texto
-            actualizarCampoTexto();
-        });
-
-        // Llama a la función al cargar la página para mostrar las opciones seleccionadas inicialmente
+    // Agrega un manejador de evento para el cambio en el select #slctprivileges
+    $('#slctprivileges').on('change', function() {
+        // Llama a la función para actualizar el campo de texto
         actualizarCampoTexto();
     });
+
+    // Llama a la función al cargar la página para mostrar las opciones seleccionadas inicialmente
+    actualizarCampoTexto();
+});
 </script>
 
 <!-- Validaciones de cajas vacias  -->
