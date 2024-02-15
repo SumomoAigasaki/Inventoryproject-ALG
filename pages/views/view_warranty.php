@@ -66,7 +66,7 @@ function dataTableUser($stmt)
       <a href='../views/update_warranty.php?p=" . $row['WR_idTbl_Warranty_Registration'] . "' class='btn btn-outline-primary btn-sm' title='Editar Registro'>
         <i class='fas fa-pencil-alt'></i>
       </a>
-      <a href='../views/warrantyReport.php?p=" . $row['WR_idTbl_Warranty_Registration'] . "' class='btn btn-outline-info btn-sm' title='Editar Registro' target='_blank'>
+      <a href='../views/warrantyReport.php?p=" . $row['WR_idTbl_Warranty_Registration'] . "' class='btn btn-outline-info btn-sm' title='Imprimir Reporte Tecnico' target='_blank'>
         <i class='fas fa-file-alt'></i>
       </a>
       <button class='btn btn-outline-danger btn-sm btnDeleteWR' title='Eliminar Registro' name='btnDeleteUSER' id='btnDeleteUSER' data-id='" . $row['WR_idTbl_Warranty_Registration'] . "'>
@@ -307,7 +307,7 @@ deleteRegister();
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Si, Quiero Elimnarlo!'
+      confirmButtonText: 'Si, Quiero Eliminarlo!'
     }).then((result) => {
       if (result.isConfirmed) {
         $('#deleteId').val(id);

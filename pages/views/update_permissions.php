@@ -28,6 +28,17 @@ while ($row = $stmt->fetch_assoc()) {
     );
     $existingModule[] = $moduloLista;
 
+
+    // Obtener la frecuencia de cada valor
+    $frequencies = array_count_values(array_column($existingModule, 'idModulo'));
+
+    // Filtrar solo los valores únicos
+    $uniqueValues = array_filter($frequencies, function ($count) {
+        return $count === 1;
+    });
+
+
+    // echo json_encode($groupedModules);
     //OBTENER UNA LISTA DE LOS ID REPETIDOS
 
     // Obtener elementos que se repiten una vez en el array existingModule
@@ -36,6 +47,36 @@ while ($row = $stmt->fetch_assoc()) {
 
     //LISTA de ID MODULOS SIN REPETIR
     $savedModuleIdList = array_keys($repeatedModuleValues);
+
+
+
+    // Obtener la frecuencia de cada valor
+    $frequencies = array_count_values(array_column($existingModule, 'idModulo'));
+
+    // Filtrar solo los valores únicos
+    $uniqueValues = array_filter($frequencies, function ($count) {
+        return $count === 1;
+    });
+
+    // Obtener las claves (valores únicos)
+    $uniqueModuleIdList = array_keys($uniqueValues);
+
+    // Eliminar elementos vacíos y reindexar el array
+    $filteredModuleIdList = array_values(array_filter($uniqueModuleIdList));
+
+    // Filtrar y agrupar por dígito
+    $groupedModules = array();
+    foreach ($filteredModuleIdList as $moduleId) {
+        $groupedModules["idmodulo"][] = $moduleId;
+    }
+
+    // Convertir el array en formato JSON
+    $groupedModulesJSON = json_encode($groupedModules);
+    $savedModuleIdListJSON = json_encode($savedModuleIdList);
+
+
+    // Imprimir el JSON una vez
+    // echo $savedModuleIdListJSON;
 
     //LISTA DE PRIVILEGIOS 
     $privilegesLista = array(
@@ -48,20 +89,7 @@ while ($row = $stmt->fetch_assoc()) {
 $stmt->close();
 $conn->next_result();
 
-// echo "<pre>";
-// echo "<p>* ID de USP: </p>";
-// print_r($existingUSPID);
-// echo "<p>* ID de ROL: " . $RLS_idTbl_Roles . "</p>";
-// echo "<p>* Lista de Modulos: </p>";
-// print_r($repeatedModuleValues);
 
-// echo "<p>* ID de los modulos</p>";  // Imprimir las claves almacenadas
-// print_r($savedModuleIdList);
-// echo "<p>* Modulos: </p>";
-// print_r($existingModule);
-// echo "<p>* Privilegios: </p>";
-// print_r($savedPrivilegeIdList);
-// echo "</pre>";
 ?>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
@@ -255,121 +283,145 @@ $conn->next_result();
 require_once "../templates/footer.php";
 ?>
 </div>
+
 <!-- Validaciones generales sobre llenado de txt -->
 <script>
     var customArray = [];
 
-// Para agregar valores en IDMODULO
-$('#slctModule').on('select2:select', function(e) {
-    var data = e.params.data;
+    // Evento al cargar el formulario
+    $(document).ready(function() {
+        // Asignar el JSON a la variable en JavaScript
+        var savedModuleIdList = <?php echo $savedModuleIdListJSON; ?>;
 
-    // Verificar si el elemento ya está en el array
-    var index = customArray.findIndex(function(element) {
-        return element.id === data.id;
-    });
-
-    // Si no está en el array, agregarlo
-    if (index === -1) {
-        customArray.push({
-            id: data.id
+        // Inicializar customArray con los valores de savedModuleIdList
+        customArray = savedModuleIdList.map(function(id) {
+            return {
+                id: '' + id + ''
+            };
         });
-    }
 
-    console.log(customArray);
-    $('#txtIdModule').val(JSON.stringify(customArray));
-    // Llamar a recorrerArray después de actualizar txtIdModule
-    recorrerArray();
-});
-
-// para quitar valores deseleccionados en modulos
-$('#slctModule').on('select2:unselect', function(e) {
-    var data = e.params.data;
-
-    // Encontrar el índice del elemento deseleccionado y eliminarlo del array
-    var index = customArray.findIndex(function(element) {
-        return element.id === data.id;
+        // Llamar a recorrerArray después de inicializar customArray
+        $('#txtIdModule').val(JSON.stringify(customArray));
+        recorrerArray();
     });
 
-    if (index !== -1) {
-        customArray.splice(index, 1);
-    }
+    // Para agregar valores en IDMODULO
+    $('#slctModule').on('select2:select', function(e) {
+        var data = e.params.data;
 
-    console.log(customArray);
-    $('#txtIdModule').val(JSON.stringify(customArray));
+        // Verificar si el elemento ya está en el array
+        var index = customArray.findIndex(function(element) {
+            return element.id === data.id;
+        });
 
-    // Llamar a recorrerArray después de actualizar txtIdModule
-    recorrerArray();
-});
-
-
-function recorrerArray() {
-    const txtIdModuleValue = document.getElementById("txtIdModule").value;
-    const customArray = JSON.parse(txtIdModuleValue);
-    const privilegiosSelect = document.getElementById("slctprivileges");
-    const modulosSeleccionados = new Set();
-
-    // Recopilar todos los módulos seleccionados en un conjunto
-    customArray.forEach(function(element) {
-        modulosSeleccionados.add(element.id);
-    });
-
-    // Iterar sobre las opciones y mostrar aquellas que estén en el conjunto de módulos seleccionados
-    for (let i = 0; i < privilegiosSelect.options.length; i++) {
-        const option = privilegiosSelect.options[i];
-        if (modulosSeleccionados.has(option.getAttribute("data-module")) || option.value === "") {
-            option.style.display = "block";
-        } else {
-            option.style.display = "none";
-        }
-    }
-}
-
-$(document).ready(function() {
-    // Inicializa el componente Dual Listbox para el select #slctprivileges
-    var demo1 = $('select[name="slctprivileges"]').bootstrapDualListbox();
-
-    // Variable para almacenar los IDs seleccionados
-    var array = [];
-
-    // Función para actualizar el campo de texto
-    function actualizarCampoTexto() {
-        // Obtiene los elementos seleccionados en el Dual Listbox del select #slctprivileges
-        var selectedOptions = demo1.val();
-
-        if (selectedOptions.length > 0) {
-            // Reinicia el array en cada cambio para evitar duplicados
-            array = [];
-
-            // Recorre los valores seleccionados y agrega los IDs al array
-            selectedOptions.forEach(function(optionValue) {
-                var moduleValue = $('select[name="slctprivileges"] option[value="' + optionValue + '"]').data('module');
-                var obj = {
-                    "id": optionValue,
-                    "module": moduleValue
-                };
-                array.push(obj);
+        // Si no está en el array, agregarlo
+        if (index === -1) {
+            customArray.push({
+                id: data.id
             });
+        }
 
-            // Convierte el array a una cadena JSON
-            var arrayTexto = JSON.stringify(array);
+        console.log(customArray);
+        $('#txtIdModule').val(JSON.stringify(customArray));
+        // Llamar a recorrerArray después de actualizar txtIdModule
+        recorrerArray();
+    });
 
-            // Actualiza el valor del campo de texto con la cadena JSON
-            $('#txtIdPrivilege').val(arrayTexto);
-        } else {
-            // Si no hay opciones seleccionadas, borra el valor del campo de texto
-            $('#txtIdPrivilege').val('');
+    // Para quitar valores deseleccionados en modulos
+    $('#slctModule').on('select2:unselect', function(e) {
+        var data = e.params.data;
+
+        // Encontrar el índice del elemento deseleccionado y eliminarlo del array
+        var index = customArray.findIndex(function(element) {
+            return element.id === data.id;
+        });
+
+        if (index !== -1) {
+            customArray.splice(index, 1);
+        }
+
+        console.log(customArray);
+        $('#txtIdModule').val(JSON.stringify(customArray));
+
+        // Llamar a recorrerArray después de actualizar txtIdModule
+        recorrerArray();
+    });
+
+    // Evento al cargar la página
+    $(document).ready(function() {
+        // Llamar a recorrerArray después de inicializar el Dual Listbox
+        recorrerArray();
+    });
+
+    // Función para recorrer el array y aplicar el filtro en el Dual Listbox
+    function recorrerArray() {
+        const txtIdModuleValue = document.getElementById("txtIdModule").value;
+        const customArray = JSON.parse(txtIdModuleValue);
+        const privilegiosSelect = document.getElementById("slctprivileges");
+        const modulosSeleccionados = new Set();
+
+        // Recopilar todos los módulos seleccionados en un conjunto
+        customArray.forEach(function(element) {
+            modulosSeleccionados.add(element.id);
+        });
+
+        // Iterar sobre las opciones y mostrar aquellas que estén en el conjunto de módulos seleccionados
+        for (let i = 0; i < privilegiosSelect.options.length; i++) {
+            const option = privilegiosSelect.options[i];
+            if (modulosSeleccionados.has(option.getAttribute("data-module")) || option.value === "") {
+                option.style.display = "block";
+            } else {
+                option.style.display = "none";
+            }
         }
     }
+    
+    $(document).ready(function() {
+        // Inicializa el componente Dual Listbox para el select #slctprivileges
+        var demo1 = $('select[name="slctprivileges"]').bootstrapDualListbox();
 
-    // Agrega un manejador de evento para el cambio en el select #slctprivileges
-    $('#slctprivileges').on('change', function() {
-        // Llama a la función para actualizar el campo de texto
+        // Variable para almacenar los IDs seleccionados
+        var array = [];
+
+        // Función para actualizar el campo de texto
+        function actualizarCampoTexto() {
+            // Obtiene los elementos seleccionados en el Dual Listbox del select #slctprivileges
+            var selectedOptions = demo1.val();
+
+            if (selectedOptions.length > 0) {
+                // Reinicia el array en cada cambio para evitar duplicados
+                array = [];
+
+                // Recorre los valores seleccionados y agrega los IDs al array
+                selectedOptions.forEach(function(optionValue) {
+                    var moduleValue = $('select[name="slctprivileges"] option[value="' + optionValue + '"]').data('module');
+                    var obj = {
+                        "id": optionValue,
+                        "module": moduleValue
+                    };
+                    array.push(obj);
+                });
+
+                // Convierte el array a una cadena JSON
+                var arrayTexto = JSON.stringify(array);
+
+                // Actualiza el valor del campo de texto con la cadena JSON
+                $('#txtIdPrivilege').val(arrayTexto);
+            } else {
+                // Si no hay opciones seleccionadas, borra el valor del campo de texto
+                $('#txtIdPrivilege').val('');
+            }
+        }
+
+        // Agrega un manejador de evento para el cambio en el select #slctprivileges
+        $('#slctprivileges').on('change', function() {
+            // Llama a la función para actualizar el campo de texto
+            actualizarCampoTexto();
+        });
+
+        // Llama a la función al cargar la página para mostrar las opciones seleccionadas inicialmente
         actualizarCampoTexto();
     });
-
-    // Llama a la función al cargar la página para mostrar las opciones seleccionadas inicialmente
-    actualizarCampoTexto();
-});
 </script>
 
 <!-- Validaciones de cajas vacias  -->
@@ -481,58 +533,58 @@ if (isset($_POST["buttonUpdateUSP"])) {
                     }
                     $STSId = '2';
                     $stmt = $conn->prepare("CALL sp_updateUserPermissions(?,?,?,?,?,?)");
-                     // Vincular los parámetros al procedimiento almacenado
-                     $stmt->bind_param("ssssss", $rolId, $idModulo, $cicleValues, $todayDate, $STSId, $user);
-                     // $query = "CALL sp_updateUserPermissions( '$rolId','$idModulo','$cicleValues','$todayDate','$STSId','$user');";
-                     // echo $query;
-                     // Ejecutar el procedimiento almacenado
-                     $stmt->execute();
- 
-                     if ($stmt->error) {
-                         error_log("Error en la ejecución del segundo procedimiento almacenado: " . $stmt->error);
-                     }
- 
-                     // Obtener el valor de la variable de salida
-                     $stmt->bind_result($answerExistsUSP);
-                     $stmt->fetch();
-                     $stmt->close();
-                     $conn->next_result();
-                }                   
-                    // echo '<script > toastr.info("Toca Actualizar escogiste un nuevo dato.","¡Hola!  Informacion: 1");</script >';
-                }
-                $indexToRetrieve++;
-                
-                // Identificar las opciones que se deseleccionaron de la lista originar (marcar como "Desinstaladas")
-                $optionsToMarkAsUninstalled = array_diff(array_column($savedPrivilegeIdList, 'PRV_idTbl_Privileges'), array_column($listIdPrivilege, 'PRVid'));
+                    // Vincular los parámetros al procedimiento almacenado
+                    $stmt->bind_param("ssssss", $rolId, $idModulo, $cicleValues, $todayDate, $STSId, $user);
+                    // $query = "CALL sp_updateUserPermissions( '$rolId','$idModulo','$cicleValues','$todayDate','$STSId','$user');";
+                    // echo $query;
+                    // Ejecutar el procedimiento almacenado
+                    $stmt->execute();
 
-                if (!empty($optionsToMarkAsUninstalled)) {
-                    foreach ($optionsToMarkAsUninstalled as $optionValue) {
-                        // Suponiendo que $optionValue es un valor simple en el array
-                        // echo "Option Value: " . $optionValue . "<br>";
-                        // O realiza alguna operación con $optionValue aquí
-
-                        $stmt = $conn->prepare("CALL sp_disableUserPermission(?,?)");
-
-
-                        // Vincular los parámetros al procedimiento almacenado
-                        $stmt->bind_param("ss", $rolId, $optionValue);
-                        // $query = "CALL sp_disableUserPermission( '$rolId','$optionValue');";
-                        // echo $query;
-                        // Ejecutar el procedimiento almacenado
-                        $stmt->execute();
-
-                        if ($stmt->error) {
-                            error_log("Error en la ejecución del segundo procedimiento almacenado: " . $stmt->error);
-                        }
-
-                        // Obtener el valor de la variable de salida
-                        $stmt->bind_result($answerExistsUSP);
-                        $stmt->fetch();
-                        $stmt->close();
-                        $conn->next_result();
-                        // echo '<script > toastr.info("Toca marcar un registro como inactivo.","¡Hola!  Informacion: 2");</script >';
+                    if ($stmt->error) {
+                        error_log("Error en la ejecución del segundo procedimiento almacenado: " . $stmt->error);
                     }
+
+                    // Obtener el valor de la variable de salida
+                    $stmt->bind_result($answerExistsUSP);
+                    $stmt->fetch();
+                    $stmt->close();
+                    $conn->next_result();
                 }
+                // echo '<script > toastr.info("Toca Actualizar escogiste un nuevo dato.","¡Hola!  Informacion: 1");</script >';
+            }
+            $indexToRetrieve++;
+
+            // Identificar las opciones que se deseleccionaron de la lista originar (marcar como "Desinstaladas")
+            $optionsToMarkAsUninstalled = array_diff(array_column($savedPrivilegeIdList, 'PRV_idTbl_Privileges'), array_column($listIdPrivilege, 'PRVid'));
+
+            if (!empty($optionsToMarkAsUninstalled)) {
+                foreach ($optionsToMarkAsUninstalled as $optionValue) {
+                    // Suponiendo que $optionValue es un valor simple en el array
+                    // echo "Option Value: " . $optionValue . "<br>";
+                    // O realiza alguna operación con $optionValue aquí
+
+                    $stmt = $conn->prepare("CALL sp_disableUserPermission(?,?)");
+
+
+                    // Vincular los parámetros al procedimiento almacenado
+                    $stmt->bind_param("ss", $rolId, $optionValue);
+                    // $query = "CALL sp_disableUserPermission( '$rolId','$optionValue');";
+                    // echo $query;
+                    // Ejecutar el procedimiento almacenado
+                    $stmt->execute();
+
+                    if ($stmt->error) {
+                        error_log("Error en la ejecución del segundo procedimiento almacenado: " . $stmt->error);
+                    }
+
+                    // Obtener el valor de la variable de salida
+                    $stmt->bind_result($answerExistsUSP);
+                    $stmt->fetch();
+                    $stmt->close();
+                    $conn->next_result();
+                    // echo '<script > toastr.info("Toca marcar un registro como inactivo.","¡Hola!  Informacion: 2");</script >';
+                }
+            }
         } catch (mysqli_sql_exception $e) {
             if ($e->getCode() == 1062) {
                 // if (strpos($e->getMessage(), 'CMP_idTbl_Computer_UNIQUE') !== false) {

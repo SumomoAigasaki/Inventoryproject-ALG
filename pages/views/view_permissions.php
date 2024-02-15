@@ -282,7 +282,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Si, Quiero Elimnarlo!'
+      confirmButtonText: 'Si, Quiero Eliminarlo!'
     }).then((result) => {
       if (result.isConfirmed) {
         $('#deleteId').val(id);

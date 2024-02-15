@@ -48,17 +48,15 @@ include "../includes/constantes.php";
                 </div> 
              <!-- /.card-body -->
             <div class="card-body">
-                <strong>Information & Resource AG</strong>
-                <p>El nombre como tal se enfoca en el aspecto de gestión de información y recursos que involucra el control de inventario de dispositivos, y la sigla AG para la empresa Azucarera La Grecia.</p>
+                <strong> Integración y Gestión de Recursos Avanzada y Global</strong>
+                <p> se destaca por su capacidad para integrar diversos recursos de manera avanzada y global. La integración refleja la capacidad de unificar y coordinar diferentes componentes, mientras que la gestión de recursos destaca la eficiencia y eficacia en la administración de los mismos. El término "avanzada" sugiere que tu sistema utiliza tecnologías y enfoques de vanguardia, y "global" indica que es capaz de abordar desafíos a una escala amplia.</p>
 
                 <strong>El sistema INFRAG</strong>
                 <p>El sosftware no es mas que una heramienta el cual viene a mejorar el proceso de gestion y control de inventario de dispositivos en el departamento de Informática, ya que hay un proceso lento el cual fue previamente analizado en el tiempo de practica por el pasante de Ing. en Computacion Sarahi Osorto de Universidad Tecnologica de Honduras. </p>
                 
-                <strong>Opciones</strong>
-                 <div>
-                    <a href="login.php">volver</a><br>
-                   
-                </div>
+                <strong>Otros Terminos de INFRAG</strong>
+                <p>representa una plataforma que integra, gestiona y lidera en el ámbito de recursos, reflejando valores de eficiencia, innovación y alcance global. </p>
+                
             </div>
             <!-- /.card-body -->
             </div>

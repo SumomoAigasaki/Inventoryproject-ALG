@@ -317,12 +317,12 @@
                     </a>
                 </li>
 
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a href="../views/explorer.php" class="nav-link">
                         <i class="nav-icon fas fa-globe"></i>
                         <p>Explorar </p>
                     </a>
-                </li>
+                </li> -->
             </ul>
         </nav>
         <!-- /.sidebar-menu -->
