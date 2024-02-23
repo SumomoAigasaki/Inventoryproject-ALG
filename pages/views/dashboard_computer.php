@@ -142,17 +142,18 @@ require_once "../templates/menu.php";
             </div>
             <!-- Grafica de Barras -->
             <div class="row">
-
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-header border-0">
-                            <div class="d-flex justify-content-between">
+                            <div class="d-flex justify-content-between align-items-center">
                                 <h3 class="card-title">Grafica de Barras- Resumen Mensual : Dispositivos Laptops y Escritorio</h3>
                                 <a href="" data-toggle="modal" data-target="#modal-xl-LineBar">Más Información</a>
                             </div>
                         </div>
-                        <div class="card-body">
-                            <canvas id="lineBar" style="max-height: 450px; max-width: 100%;"></canvas>
+                        <div class="card-body" style="max-height: 350px; overflow: hidden;">
+                            <div class="embed-responsive embed-responsive-16by9">
+                                <canvas id="lineBar" class="embed-responsive-item" style="max-height: 300px; max-width: 100%;"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -305,7 +306,7 @@ require_once "../templates/menu.php";
                             <th>Nombre de Dispositivo</th>
                             <th>Especificacion</th>
                             <th>Marca & Modelo</th>
-                            <th>Tipo de Garantia</th>                            
+                            <th>Tipo de Garantia</th>
                             <th>Localizacion</th>
                             <th>Estado</th>
                             <th>Usuario</th>
@@ -345,7 +346,7 @@ require_once "../templates/menu.php";
                             <th>Nombre de Dispositivo</th>
                             <th>Especificacion</th>
                             <th>Marca & Modelo</th>
-                            <th>Tipo de Garantia</th>                        
+                            <th>Tipo de Garantia</th>
                             <th>Localizacion</th>
                             <th>Estado</th>
                             <th>Usuario</th>
@@ -385,7 +386,7 @@ require_once "../templates/menu.php";
                             <th>Nombre de Dispositivo</th>
                             <th>Especificacion</th>
                             <th>Marca & Modelo</th>
-                            <th>Tipo de Garantia</th>                      
+                            <th>Tipo de Garantia</th>
                             <th>Localizacion</th>
                             <th>Estado</th>
                             <th>Usuario</th>
@@ -457,7 +458,7 @@ require_once "../templates/menu.php";
                 </button>
             </div>
             <div class="modal-body">
-               
+
 
                 <table class="table">
                     <thead>
@@ -583,7 +584,7 @@ require_once "../templates/footer.php";
         saveChartOnServer('pieChartDesktop', 'graficoPastelEscritorio.png');
         saveChartOnServer('pieChartLaptop', 'graficoPastelLaptos.png');
         saveChartOnServer('scatterChartLocation', 'graficoDispersion.png');
-       
+
     });
 
     function saveChartOnServer(chartId, fileName) {

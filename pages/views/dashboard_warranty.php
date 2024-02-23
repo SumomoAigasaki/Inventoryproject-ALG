@@ -151,8 +151,10 @@ require_once "../templates/menu.php";
                                 <a href="" data-toggle="modal" data-target="#modal-xl-LineBar">Más Información</a>
                             </div>
                         </div>
-                        <div class="card-body">
-                            <canvas id="lineBar" style="max-height: 450px; max-width: 100%;"></canvas>
+                        <div class="card-body" style="max-height: 350px; overflow: hidden;">
+                            <div class="embed-responsive embed-responsive-16by9">
+                                <canvas id="lineBar" class="embed-responsive-item" style="max-height: 300px; max-width: 100%;"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -183,13 +183,13 @@ require_once "../templates/menu.php"; ?>
                         <form role="form" action="" method="POST" name="formInsertCMP" id="formInsertCMP" class="form-horizontal" enctype="multipart/form-data">
                             <div class="card-body">
                                 <label class="form-check-label" style="padding-bottom: 5px;"> A continuación se le pedirá que <b> Ingrese</b> los siguientes datos:</label>
-                             
+
                                 <!-- Input ocultos  -->
-                                 <!-- Input para guardar la lista de los software a guardar -->
-                                 <input type="hidden" class="form-control" id="TxtId" name="TxtId" placeholder="">
-                                 <input type="hidden" class="form-control" id="accion" name="accion" placeholder="">
-                                 <!-- Fila 1   -->
-                                 <div class="row" style="padding-top:10px; padding-bottom:10px;">
+                                <!-- Input para guardar la lista de los software a guardar -->
+                                <input type="hidden" class="form-control" id="TxtId" name="TxtId" placeholder="">
+                                <input type="hidden" class="form-control" id="accion" name="accion" placeholder="">
+                                <!-- Fila 1   -->
+                                <div class="row" style="padding-top:10px; padding-bottom:10px;">
                                     <!-- Fecha de Compra -->
                                     <div class="col-sm-2">
                                         <div class="form-group">
@@ -398,28 +398,25 @@ require_once "../templates/menu.php"; ?>
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <!-- Fila 4 -->
                                 <div class="row justify-content-center">
-
                                     <!-- IMAGEN -->
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label>Imagen de Referencia Dispostivo: </label>
+                                        
                                             <div class="input-group" style=" display: flex;   justify-content: center;   align-items: center;   height: 200px;">
-                                                <img class="img-fluid" src="../../resources/Computer/default.jpg" width="250" height="250" id="imgPerfil">
+                                                <img class="img-fluid" src="../../resources/Computer/default.jpg" width="200" height="250" id="imgPerfil">
                                                 <input type="file" name="fileImg" id="fileImg" accept="image/png,image/jpeg" style="margin-left: 20px;text-align: center;">
                                             </div>
                                         </div>
                                     </div>
-
-
-
                                 </div>
-                                 <!-- Fila 5 -->
+                                <!-- Fila 5 -->
                                 <div class="row justify-content-center" style="padding-bottom:20px;">
                                     <!-- Boton guardar -->
-                                    <div class="col-sm-2" style="padding-top:40px;">
+                                    <div class="col-sm-2">
                                         <button type="submit" class="btn btn-block btn-info" id="buttonInsertCMP" name="buttonInsertCMP" onclick='return validate_data();'>Guardar</button>
                                     </div>
                                 </div>

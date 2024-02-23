@@ -11,11 +11,13 @@ include "../includes/constantes.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
-    <head>
+
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?php echo  $pageName; echo nameWeb; ?></title>
-     <!-- Archivos Base para el Dashboard -->
+    <title><?php echo  $pageName;
+            echo nameWeb; ?></title>
+    <!-- Archivos Base para el Dashboard -->
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
@@ -36,7 +38,7 @@ include "../includes/constantes.php";
     <link rel="stylesheet" href="../public/css/base/daterangepicker.css">
     <!-- summernote -->
     <link rel="stylesheet" href="../public/css/base/summernote-bs4.min.css">
-    </head>
+</head>
 
 <body>
 
@@ -44,21 +46,24 @@ include "../includes/constantes.php";
         <div class="container-fluid">
             <div class="card card-primary card-outline">
                 <div class="card-header">
-                     <h3 class="card-title">¿Que es <b>INFRAG</b>? </h3>
-                </div> 
-             <!-- /.card-body -->
-            <div class="card-body">
-                <strong> Integración y Gestión de Recursos Avanzada y Global</strong>
-                <p> se destaca por su capacidad para integrar diversos recursos de manera avanzada y global. La integración refleja la capacidad de unificar y coordinar diferentes componentes, mientras que la gestión de recursos destaca la eficiencia y eficacia en la administración de los mismos. El término "avanzada" sugiere que tu sistema utiliza tecnologías y enfoques de vanguardia, y "global" indica que es capaz de abordar desafíos a una escala amplia.</p>
+                    <h3 class="card-title">¿Que es <b>INFRAG</b>? </h3>
+                </div>
+                <!-- /.card-body -->
+                <div class="card-body">
+                    <strong>Information & Resource AG</strong>
+                    <p>El nombre como tal se enfoca en el aspecto de gestión de información y recursos que involucra el control de inventario de dispositivos, y la sigla AG para la empresa Azucarera La Grecia.</p>
 
-                <strong>El sistema INFRAG</strong>
-                <p>El sosftware no es mas que una heramienta el cual viene a mejorar el proceso de gestion y control de inventario de dispositivos en el departamento de Informática, ya que hay un proceso lento el cual fue previamente analizado en el tiempo de practica por el pasante de Ing. en Computacion Sarahi Osorto de Universidad Tecnologica de Honduras. </p>
-                
-                <strong>Otros Terminos de INFRAG</strong>
-                <p>representa una plataforma que integra, gestiona y lidera en el ámbito de recursos, reflejando valores de eficiencia, innovación y alcance global. </p>
-                
-            </div>
-            <!-- /.card-body -->
+                    <strong> Integración y Gestión de Recursos Avanzada y Global</strong>
+                    <p> se destaca por su capacidad para integrar diversos recursos de manera avanzada y global. La integración refleja la capacidad de unificar y coordinar diferentes componentes, mientras que la gestión de recursos destaca la eficiencia y eficacia en la administración de los mismos. El término "avanzada" sugiere que tu sistema utiliza tecnologías y enfoques de vanguardia, y "global" indica que es capaz de abordar desafíos a una escala amplia.</p>
+
+                    <strong>El sistema INFRAG</strong>
+                    <p>El sosftware no es mas que una heramienta el cual viene a mejorar el proceso de gestion y control de inventario de dispositivos en el departamento de Informática, ya que hay un proceso lento el cual fue previamente analizado en el tiempo de practica por el pasante de Ing. en Computacion Sarahi Osorto de Universidad Tecnologica de Honduras. </p>
+
+                    <strong>Otros Terminos de INFRAG</strong>
+                    <p>representa una plataforma que integra, gestiona y lidera en el ámbito de recursos, reflejando valores de eficiencia, innovación y alcance global. </p>
+
+                </div>
+                <!-- /.card-body -->
             </div>
         </div>
         <!-- /.container-fluid -->

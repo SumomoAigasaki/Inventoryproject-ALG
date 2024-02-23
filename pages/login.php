@@ -7,6 +7,9 @@ if (isset($_SESSION["username"])) {
   header("location: templates/index.php");
 }
 
+// Establecer la cabecera X-Frame-Options 
+header("X-Frame-Options: DENY"); // Puedes cambiar DENY a SAMEORIGIN o ALLOW-FROM según tus necesidades
+
 ?>
 
 <!DOCTYPE html>
@@ -31,9 +34,7 @@ if (isset($_SESSION["username"])) {
 <script>
   function validate() {
     var usuario = document.getElementById("username");
-    var contrasenhia = document.getElemntById("pass");
-
-    alert(contrasenhia.value + " - " + usuario.value);
+    var contrasenhia = document.getElementById("pass");
 
     if (usuario.value != "" && contrasenhia != "") {
       document.getElementById("formLogin").submit();
@@ -67,12 +68,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Usuario y contraseña son correctos, redirigir a la página de bienvenida
     session_start();
     $_SESSION['username'] = $username;
-
+    // Si el usuario es válido, establecer una cookie de sesión
+    setcookie("sesion_iniciada", "true", ['expires' => time() + 3600, 'path' => '/', 'samesite' => 'Strict']);
     header("Location:../pages/templates/index.php");
     exit();
   } else if ($resultado == 0) {
     // Usuario y/o contraseña son incorrectos, mostrar un mensaje de error
-    session_start();
     $_SESSION["icon"] = "error";
     $_SESSION["title"] = "Credenciales erróneas";
     $_SESSION["error_message"] = "Contraseña y/o usuario inválido. Ingrese credenciales correctas.";
@@ -80,7 +81,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     exit();
   } else if ($resultado == 2) {
     // Usuario y/o contraseña son incorrectos, mostrar un mensaje de error
-    session_start();
     $_SESSION["icon"] = "info";
     $_SESSION["title"] = "Correo Inactivo";
     $_SESSION["error_message"] = "El correo esta inactivo y/o deshabilitado comuníquese con el administrador .";
@@ -88,7 +88,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     exit();
   } else if ($resultado == 1) {
     // Usuario y/o contraseña son incorrectos, mostrar un mensaje de error
-    session_start();
     $_SESSION["icon"] = "warning";
     $_SESSION["title"] = "Correo inexistente";
     $_SESSION["error_message"] = "El correo no existe, ingrese uno que si exista..";
@@ -128,13 +127,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
       <div class="card-body">
-        
+
         <p class="login-box-msg">Ingresa tu correo para Iniciar sesion</p>
 
         <form action="" method="POST" name="formLogin" id="formLogin">
 
           <div class="input-group mb-3">
-            <input type="email" class="form-control" name="username" id="username" placeholder="Usuario" required autocomplete="current-password">
+            <input type="email" class="form-control" name="username" id="username" placeholder="Usuario" required autocomplete="current-username">
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-user"></span>

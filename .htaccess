@@ -1,4 +1,20 @@
-Options ALL -Indexes
-#  +FollowSymLinks
-RewriteEngine On
+# Deshabilitar la visualización de listado de directorios y configurar opciones globales para ciertos tipos de archivos
+<FilesMatch "\.(php|pl|sh|ini|log|inc|bak|config|sql|pot|po|mo)$">
+    Options ALL -Indexes
+    # Descomentar la siguiente línea si estás utilizando enlaces simbólicos
+    # +FollowSymLinks
+    RewriteEngine On
+</FilesMatch>
 
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    # Verificar si la solicitud se está haciendo a la URL base exacta
+    RewriteCond %{REQUEST_URI} ^/Inventoryproject-ALG/$
+    # Devolver un código de respuesta 404 (Not Found) y finalizar el proceso de reescritura
+    RewriteRule ^ - [R=404,L]
+</IfModule>
+
+<IfModule mod_headers.c>
+    # Eliminar el encabezado X-Powered-By para ocultar información del servidor
+    Header unset X-Powered-By
+</IfModule>

@@ -1,13 +1,29 @@
 <?php
+// Incluye el archivo que maneja la conexión a la base de datos y define constantes
 require_once "../../includes/conecta.php";
 require_once "../../includes/constantes.php";
+
+// Incluye el archivo que contiene la lógica de búsqueda de usuario
 include "../models/user_search.php";
-// Verificar si el usuario está autenticado
-if (empty($_SESSION["username"])) {
+
+// Verifica si el usuario está autenticado
+// Verifica si la cookie de sesión está presente
+if (isset($_COOKIE["sesion_iniciada"]) && $_COOKIE["sesion_iniciada"] === "true") {
+    // Si la cookie está presente y es "true", el usuario está autenticado
+    // Puedes agregar aquí el contenido del encabezado de navegación
+} else {
+    // Si la cookie no está presente o no es "true", el usuario no está autenticado
+    // Redirige al usuario a la página de cierre de sesión
     header("Location: ../templates/SignOff.php");
     exit();
 }
 ?>
+
+<!-- // if (empty($_SESSION["username"])) {
+//     header("Location: ../templates/SignOff.php");
+//     exit();
+// } -->
+
 <!DOCTYPE html>
 <html lang="en">
 
