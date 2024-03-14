@@ -35,7 +35,7 @@ while ($row = $stmt->fetch_assoc()) {
   $CMP_Report = $row['CMP_Report'];
   //valido si viene nulos o vacios los datos de BD ponga una imagen por default
   if (empty($CMP_Report) || $CMP_Report === null || $CMP_Report == "/resources/Computer/") {
-    $CMP_Report = "/resources/Computer/default.jpg";
+    $CMP_Report = "/resources/Computer/Vector_Denuncia.jpg";
   }
   $User_Username = $row['User_Username'];
   $TG_idtbl_Type_Guarantee = $row['TG_idtbl_Type_Guarantee'];
