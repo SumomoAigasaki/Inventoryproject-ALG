@@ -400,7 +400,7 @@ require_once "../templates/menu.php"; ?>
                                 </div>
 
                                 <!-- Fila 4 -->
-                                <div class="row justify-content-center">
+                                <div class="row justify-content-center" style="padding-bottom:20px;">
                                     <!-- IMAGEN -->
                                     <div class="col-sm-6">
                                         <div class="form-group">

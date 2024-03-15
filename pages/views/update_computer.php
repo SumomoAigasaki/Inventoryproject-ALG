@@ -363,7 +363,7 @@ $conn->next_result();
                   </div>
                   <!-- Localización Computadora -->
                   <div class="col-sm-2">
-                    <label><code>*</code>Localización Computadora: </label>
+                    <label title="Localización de computadora"><code>*</code>Loc. Computadora: </label>
                     <div class="form-group">
                       <?php $resultado = mysqli_query($conn, "CALL sp_location_select"); ?>
                       <select class="form-control select2bs4" id="selectLocations" name="selectLocations">

@@ -518,9 +518,9 @@ class warrantyPDF extends FPDF
         $this->Image($graficBarras, $posicionInicioX, 50, $anchoImagen);
         $this->Ln(2);
         // Análisis Gráfico- Gráfico de Barra
-        $this->SetY(115); // Mueve el cursor debajo de la imagen
+        $this->SetY(110); // Mueve el cursor debajo de la imagen
         // Ajusta la posición para la tabla debajo de la imagen
-        $posicionInicioY = $this->GetY() + 20; // Puedes ajustar el valor según sea necesario
+        $posicionInicioY = $this->GetY() ; // Puedes ajustar el valor según sea necesario
         $this->SetY($posicionInicioY);
 
         $this->SetFont('times', '', 12);

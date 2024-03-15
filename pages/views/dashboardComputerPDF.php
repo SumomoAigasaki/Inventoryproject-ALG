@@ -504,7 +504,7 @@ class warrantyPDF extends FPDF
             $this->Image($graficBarras, $posicionInicioX, 50, $anchoImagen);
             $this->Ln(2);
             // Análisis Gráfico- Gráfico de Barra
-            $this->SetY(100); // Mueve el cursor debajo de la imagen
+            $this->SetY(110); // Mueve el cursor debajo de la imagen
             // Ajusta la posición para la tabla debajo de la imagen
             $posicionInicioY = $this->GetY(); // Puedes ajustar el valor según sea necesario
             $this->SetY($posicionInicioY);
@@ -572,15 +572,15 @@ class warrantyPDF extends FPDF
             // Imagen del Gráfico Pastel
             //-- Centra la imagen horizontalmente
             $anchoPagina = $this->GetPageWidth();
-            $anchoImagen = 120; // Ajusta según el ancho de tu imagen
+            $anchoImagen = 90; // Ajusta según el ancho de tu imagen
             $posicionInicioX = ($anchoPagina - $anchoImagen) / 2;
             $this->Image($graficPastel, $posicionInicioX, 50, $anchoImagen);
             $this->Ln(2);
             $this->SetFont('times', '', 12);
             //-- Mueve el cursor debajo de la imagen
-            $this->SetY(110);
+            $this->SetY(125);
             // Ajusta la posición para la tabla debajo de la imagen
-            $posicionInicioY = $this->GetY() + 10; // Puedes ajustar el valor según sea necesario
+            $posicionInicioY = $this->GetY() ; // Puedes ajustar el valor según sea necesario
             $this->SetY($posicionInicioY);
             $this->MultiCell(0, 10, utf8_decode('Datos de Analisis con el tipo de dispositivo Escritorio:'), 0, 'J', 0);
             //-- Calcula la posición de inicio para centrar la tabla
@@ -639,7 +639,7 @@ class warrantyPDF extends FPDF
             $this->Ln();
             // $this->MultiCell(0, 10, utf8_decode("Nota: por cuestiones de espacio solo se visualizan 6 columnas, para mas información revisar el dashboard correspondiente."), 0, 'J', 0);
 
-        // 3.3 Gráfico Pastel Escritorio
+        // 3.3 Gráfico Pastel L
             $this->AddPage('L');
             $this->AddCustomTitle('III.III Análisis Gráfico- Gráfico Pastel Laptops');
             $this->ChapterTitle('III.III Análisis Gráfico- Gráfico Pastel Laptops');
@@ -647,15 +647,15 @@ class warrantyPDF extends FPDF
             // Imagen del Gráfico Pastel
             //-- Centra la imagen horizontalmente
             $anchoPagina = $this->GetPageWidth();
-            $anchoImagen = 120; // Ajusta según el ancho de tu imagen
+            $anchoImagen = 90; // Ajusta según el ancho de tu imagen
             $posicionInicioX = ($anchoPagina - $anchoImagen) / 2;
             $this->Image($graficPastel, $posicionInicioX, 50, $anchoImagen);
             $this->Ln(2);
             $this->SetFont('times', '', 12);
             //-- Mueve el cursor debajo de la imagen
-            $this->SetY(110);
+            $this->SetY(125);
             // Ajusta la posición para la tabla debajo de la imagen
-            $posicionInicioY = $this->GetY() + 10; // Puedes ajustar el valor según sea necesario
+            $posicionInicioY = $this->GetY(); // Puedes ajustar el valor según sea necesario
             $this->SetY($posicionInicioY);
             $this->MultiCell(0, 10, utf8_decode('Datos de Analisis con el tipo de dispositivo Laptops:'), 0, 'J', 0);
             //-- Calcula la posición de inicio para centrar la tabla
@@ -723,11 +723,11 @@ class warrantyPDF extends FPDF
             $this->ChapterTitle('III.IV Análisis Gráfico- Gráfico de Dispersión');
             $graficDispersion = '../../resources/Dashboard/Computer/graficoDispersion.png';
             $anchoPagina = $this->GetPageWidth(); // Centra la imagen horizontalmente
-            $anchoImagen = 120; // Ajusta según el ancho de tu imagen
+            $anchoImagen = 90; // Ajusta según el ancho de tu imagen
             $posicionInicioX = ($anchoPagina - $anchoImagen) / 2;
             $this->Image($graficDispersion,  $posicionInicioX, 50, $anchoImagen);
             $this->SetFont('times', '', 12);  // Configuracion de la fuente
-            $this->SetY(110); // Mueve el cursor debajo de la imagen
+            $this->SetY(125); // Mueve el cursor debajo de la imagen
             // Ajusta la posición para la tabla debajo de la imagen
             $posicionInicioY = $this->GetY() + 10; // Puedes ajustar el valor según sea necesario
             $this->SetY($posicionInicioY);
